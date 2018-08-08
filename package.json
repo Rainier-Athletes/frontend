@@ -63,6 +63,7 @@
   },
   "dependencies": {
     "dotenv": "^6.0.0",
+    "express": "^4.16.3",
     "react-router-dom": "^4.3.1",
     "uuid": "^3.3.2"
   }

@@ -1,0 +1,93 @@
+@import "vars";
+
+
+// content
+html, body {
+  position: relative; 
+  font-family: $font-primary;
+}
+head, script, link  { display: none; }
+p { display: inline-block; }
+span,em,strong { display: inline; }
+em { font-style: italic; }
+strong { font-weight: bold; }
+
+body {
+  background: $color-darkcyan;
+  font-size: 16px;
+}
+
+#root {
+  min-height: 900px;
+}
+
+blockquote {
+  border-left: $pad solid $color-lightgrey;
+  padding-left: $pad;
+}
+
+@for $i from 6 through 1 {
+  h#{$i} {
+    font-size: 9/($i + 2) * 1em;;
+  }
+}
+
+
+// form
+label {
+  font-size: 1.25em;
+  font-weight: bolder;
+  margin-bottom: $pad;
+}
+
+textarea, input {
+  background: $color-white;
+  border: none;
+  padding: 15px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  transition: 350ms all;
+
+  &:focus {
+    background: $color-black;
+    color: $color-white;
+  }
+
+  &::placeholder {
+    color: $color-lightgrey;
+  }
+}
+
+button {
+  cursor: pointer;
+}
+
+button,input[type="submit"] {
+  background: $color-lightgrey;
+  padding: $pad;
+  border: none;
+  border-radius: 3px;
+
+  &:hover {
+    background: $color-grey;
+  }
+
+  &:active {
+    background: $color-darkgrey;
+  }
+}
+
+footer {
+  height: 40px;
+  background: #000;
+  border-top: solid 5px #fff;
+  margin-top: 100px;
+}
+
+// lists
+ul,ol,li { margin-left: $pad * 2; }
+li { display: list-item; }
+ul li { list-style: disc; }
+ol li { list-style: decimal; }
+ol ol li , ul ol li { list-style: lower-alpha; }
+ol ul li , ul ul li { list-style: square; }

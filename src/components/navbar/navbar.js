@@ -24,18 +24,18 @@ class Navbar extends React.Component {
     const clientId = `&client_id=${GOOGLE_OAUTH_ID.trim()}`;
     const prompt = '&prompt=consent%20select_account';
     const responseType = '&response_type=code';
-    
+
     return [baseUrl, redirect, scope, clientId, prompt, responseType].join('');
   }
 
   renderJSX = (loggedIn) => {
     const JSXNotLoggedIn = (
-      <ul>
-        <li><Link to={routes.ROOT_ROUTE}>Rainier Athletes</Link></li>
-        <li><a href={ this.setGoogleOAuthUrl() }><img src={ googleBtn } /></a></li>
-      </ul>
+      <React.Fragment>
+        <span className="logo"><Link to={routes.ROOT_ROUTE}>Rainier Athletes</Link></span>
+        <span className="login"><a href={ this.setGoogleOAuthUrl() }><img className="google-btn" src={ googleBtn } /></a></span>
+      </React.Fragment>
     );
-   
+
 
     const JSXLoggedIn = (
       <ul>
@@ -50,7 +50,7 @@ class Navbar extends React.Component {
     const { loggedIn, doLogout } = this.props;
     return (
       <header className="header">
-        <nav>
+        <nav className="navbar">
           {this.renderJSX(loggedIn)}
         </nav>
         {

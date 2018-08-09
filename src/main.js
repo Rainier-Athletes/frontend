@@ -6,6 +6,8 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducer from './reducer/main';
 import App from './components/app/app';
+
+import './style/main.scss';
 // import thunk from './lib/middleware/redux-thunk';
 // import reporter from './lib/middleware/redux-reporter';
 // import session from './lib/middleware/redux-session';

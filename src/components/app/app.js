@@ -6,6 +6,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import AuthRedirect from '../auth-redirect/auth-redirect';
 // import Profile from '../profile/profile';
 import Navbar from '../navbar/navbar';
+import Iframe from '../iframe/iframe';
 
 import './app.scss';
 
@@ -15,8 +16,9 @@ export default class App extends React.Component {
       <div className="app">
         <BrowserRouter>
           <div>
-          <Navbar />
-          <Route exact path="*" component={AuthRedirect} />
+            <Navbar />
+            <Iframe />
+            <Route exact path="*" component={AuthRedirect} />
           </div>
         </BrowserRouter>
       </div>

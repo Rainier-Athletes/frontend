@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "description": "",
+  "description": "<!-- YOUR TRAVIS CI BADGE HERE -->",
   "main": "index.js",
   "scripts": {
     "test": "eslint --fix . && jest --coverage",

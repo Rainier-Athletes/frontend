@@ -1,0 +1,33 @@
+@import "vars"; 
+
+* {
+  // box model
+  position: static;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+
+  // font
+  // font-family: $font-primary;
+  font-size: 1em;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  white-space: normal;
+
+  // color
+  background: none;
+  color: $color-black;
+
+  // other
+  list-style: none;
+}
+
+form *:focus {
+  border: none;
+  outline: none;
+}
+

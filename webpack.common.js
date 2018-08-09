@@ -17,10 +17,11 @@ webpackConfig.output = {
 
 webpackConfig.plugins = [
   new HtmlWebpackPlugin({
-    title: 'Day 26 React App',
+    title: 'Rainier Athletes',
   }),
   new DefinePlugin({
     API_URL: JSON.stringify(process.env.API_URL),
+    GOOGLE_OAUTH_ID: JSON.stringify(process.env.GOOGLE_OAUTH_ID),
   }),
 ];
 

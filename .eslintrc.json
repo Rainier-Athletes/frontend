@@ -5,6 +5,10 @@
   },
   "parser": "babel-eslint",
   "plugins": ["jest", "react"],
+  "globals": {
+    "API_URL": true,
+    "GOOGLE_OAUTH_ID": true
+  },
   "rules": {
     "arrow-body-style": "off",
     "global-require": "off",

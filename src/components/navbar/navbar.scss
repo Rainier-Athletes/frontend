@@ -1,5 +1,31 @@
 @import '../../style/vars';
 
 .navbar {
+  top: 0;
+  position: fixed;
+  width: 100%;
+  background-color: #1f1f1f;
+  padding: 0;
 
-};
+  .logo {
+    float: left;
+
+    .rainier-logo {
+      width: 20em;
+      margin: 1em 1em;
+    }
+
+  }
+
+  .login {
+    color: white;
+    float: right;
+
+    .google-btn {
+      width: 10em;
+      margin: 1em;
+    }
+
+  }
+
+}

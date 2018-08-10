@@ -39,24 +39,22 @@ class Navbar extends React.Component {
 
 
     const JSXLoggedIn = (
-      <ul>
-        <li><Link to={routes.ROOT_ROUTE}>Rainier Athletes</Link></li>
-      </ul>
+      <React.Fragment>
+        <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
+        <span className="login"><button onClick={ this.props.doLogout }>Logout</button></span>
+      </React.Fragment>
     );
 
     return loggedIn ? JSXLoggedIn : JSXNotLoggedIn;
   }
 
   render() {
-    const { loggedIn, doLogout } = this.props;
+    const { loggedIn } = this.props;
     return (
       <header className="header">
         <nav className="navbar">
           {this.renderJSX(loggedIn)}
         </nav>
-        {
-          loggedIn ? <button onClick={ doLogout }>Logout</button> : null
-        }
       </header>
     );
   }

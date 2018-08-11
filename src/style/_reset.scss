@@ -1,4 +1,4 @@
-@import 'vars'; 
+@import 'vars';
 
 * {
   // box model
@@ -19,7 +19,6 @@
   white-space: normal;
 
   // color
-  background: $color-white;
   color: $color-black;
 
   // other
@@ -31,3 +30,6 @@ form *:focus {
   outline: none;
 }
 
+body {
+  margin: none;
+}

@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  // load
 });
 
 class Dashboard extends React.Component {
@@ -26,7 +27,6 @@ class Dashboard extends React.Component {
         <h1>Dashboard</h1>
       </div>
     );
-    console.log(loggedIn);
     return loggedIn ? dashboard : iframe;
   };
 

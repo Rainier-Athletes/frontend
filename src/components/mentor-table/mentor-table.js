@@ -5,7 +5,7 @@ import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import { render } from 'react-dom';
 import { makeData, Tips } from '../../lib/utils';
-import './point-tracker-table.scss';
+import './mentor-table.scss';
 
 const faker = require('faker');
 const { Editors, Toolbar, Formatters } = require('react-data-grid-addons');
@@ -84,7 +84,6 @@ export default class MentorTable extends React.Component {
     let originalRows = this.createRows(10);
     let rows = originalRows.slice(0);
     this.state = { originalRows, rows };
-    console.log(this.state)
   }
 
   createRows = (numberOfRows) => {
@@ -118,7 +117,6 @@ export default class MentorTable extends React.Component {
         this.grid.openCellEditor(rowIdx, idx);
       }
     };
-    console.log(clonedColumns);
     return clonedColumns;
   };
 
@@ -142,20 +140,20 @@ export default class MentorTable extends React.Component {
     };
 
     let rows = this.state.rows.slice();
-    rows = update(rows, {$push: [newRow]});
+    rows = update(rows, {$unshift: [newRow]});
     this.setState({ rows });
     console.log(this.state);
   };
 
   handleGridSort = (sortColumn, sortDirection) => {
     const comparer = (a, b) => {
-      if (sortDirection === 'ascend') {
+      if (sortDirection === 'ASC') {
         return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
-      } else if (sortDirection === 'descend') {
+      } else if (sortDirection === 'DESC') {
         return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
       }
     };
-    const rows = sortDirection === 'none' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
+    const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
 
     this.setState({ rows });
   };
@@ -167,6 +165,11 @@ export default class MentorTable extends React.Component {
 
     return this.state.rows[index];
   };
+
+  rowGetter = (i) => {
+    return this.state.rows[i];
+  };
+
 
   getSize = () => {
     return this.state.rows.length;

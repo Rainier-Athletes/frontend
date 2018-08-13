@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React from 'react';
+import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 // import 'bootstrap/dist/css/bootstrap.css';
 import update from 'immutability-helper';
@@ -7,14 +8,27 @@ import { render } from 'react-dom';
 import { makeData, Tips } from '../../lib/utils';
 import './mentor-table.scss';
 
+import * as profileActions from '../../actions/profile';
+
 const faker = require('faker');
 const { Editors, Toolbar, Formatters } = require('react-data-grid-addons');
 const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
 const { ImageFormatter } = Formatters;
 
-export default class MentorTable extends React.Component {
+const mapStateToProps = state => ({
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchProfile: profile => dispatch(profileActions.fetchProfileReq(profile)),
+  updateProfile: profile => dispatch(profileActions.updateProfileReq(profile)),
+  createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
+});
+
+class MentorTable extends React.Component {
   constructor(props, context) {
     super(props, context);
+    let originalRows = this.createRows(10);
+    let rows = originalRows.slice(0);
     this._columns = [
       {
         key: 'avatar',
@@ -49,6 +63,14 @@ export default class MentorTable extends React.Component {
         sortable: true,
       },
       {
+        key: 'role',
+        name: 'Role',
+        editable: true,
+        width: 200,
+        resizable: true,
+        sortable: true,
+      },
+      {
         key: 'address',
         name: 'Address',
         editable: true,
@@ -57,36 +79,22 @@ export default class MentorTable extends React.Component {
         sortable: true,
       },
       {
-        key: 'city',
-        name: 'City',
-        editable: true,
-        width: 200,
-        resizable: true,
-        sortable: true,
-      },
-      {
-        key: 'zipCode',
-        name: 'ZipCode',
-        editable: true,
-        width: 200,
-        resizable: true,
-        sortable: true,
-      },
-      {
-        key: 'phoneNumber',
-        name: 'Phone Number',
+        key: 'phone',
+        name: 'Phone',
         editable: true,
         width: 200,
         resizable: true,
         sortable: true,
       },
     ];
-    let originalRows = this.createRows(10);
-    let rows = originalRows.slice(0);
     this.state = { originalRows, rows };
   }
 
   createRows = (numberOfRows) => {
+    this.props.fetchProfile()
+      .then((res) => {
+        console.log(res);
+      });
     let rows = [];
     for (let i = 0; i < numberOfRows; i++) {
       rows[i] = this.createFakeRowObjectData(i);
@@ -101,10 +109,9 @@ export default class MentorTable extends React.Component {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
-      address: faker.address.streetName(),
-      city: 'Seattle',
-      zipCode: faker.address.zipCode(),
-      phoneNumber: faker.phone.phoneNumber(),
+      role: 'Mentor',
+      phone: faker.phone.phoneNumber(),
+      address: faker.address.zipCode(),
     };
   };
 
@@ -192,3 +199,5 @@ export default class MentorTable extends React.Component {
         rowScrollTimeout={200} />);
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(MentorTable);

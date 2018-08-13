@@ -83,7 +83,7 @@ export default class MentorTable extends React.Component {
     ];
     let originalRows = this.createRows(10);
     let rows = originalRows.slice(0);
-    this.state = { originalRows, rows };
+    this.state = { originalRows, rows, selectedIndexes: [] };
   }
 
   createRows = (numberOfRows) => {
@@ -142,7 +142,15 @@ export default class MentorTable extends React.Component {
     let rows = this.state.rows.slice();
     rows = update(rows, {$unshift: [newRow]});
     this.setState({ rows });
-    console.log(this.state);
+  };
+
+  onRowsSelected = (rows) => {
+    this.setState({selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
+  };
+
+  onRowsDeselected = (rows) => {
+    let rowIndexes = rows.map(r => r.rowIdx);
+    this.setState({selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1 )});
   };
 
   handleGridSort = (sortColumn, sortDirection) => {
@@ -154,7 +162,7 @@ export default class MentorTable extends React.Component {
       }
     };
     const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
-
+    console.log(this.state)
     this.setState({ rows });
   };
 
@@ -175,6 +183,8 @@ export default class MentorTable extends React.Component {
     return this.state.rows.length;
   };
 
+  // let deleteBtn = <button className="deleteBtn"> </button>
+
   render() {
     return (
       <ReactDataGrid
@@ -187,6 +197,16 @@ export default class MentorTable extends React.Component {
         onGridRowsUpdated={this.handleGridRowsUpdated}
         toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
         enableRowSelect={true}
+        onRowSelect={this.onRowSelect}
+        rowSelection={{
+          showCheckbox: true,
+          enableShiftSelect: true,
+          onRowsSelected: this.onRowsSelected,
+          onRowsDeselected: this.onRowsDeselected,
+          selectBy: {
+            indexes: this.state.selectedIndexes
+          }
+        }} 
         rowHeight={50}
         minHeight={600}
         rowScrollTimeout={200} />);

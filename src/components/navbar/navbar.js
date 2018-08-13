@@ -22,7 +22,7 @@ class Navbar extends React.Component {
     const baseUrl = 'https://accounts.google.com/o/oauth2/v2/auth?';
     const redirect = `redirect_uri=${API_URL}/oauth/google`;
     const scope = '&scope=openid%20email%20profile';
-    const clientId = `&client_id=${GOOGLE_OAUTH_ID.trim()}`;
+    const clientId = `&client_id=${GOOGLE_OAUTH_ID}`;
     const prompt = '&prompt=consent%20select_account';
     const responseType = '&response_type=code';
 

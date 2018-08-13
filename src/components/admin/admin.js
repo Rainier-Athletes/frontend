@@ -1,9 +1,10 @@
 import React from 'react';
+import MentorTable from '../mentor-table/mentor-table';
 
 class Admin extends React.Component {
   render() {
     return (
-      <h1>Admin Dashboard</h1>
+      <MentorTable />
     );
   }
 }

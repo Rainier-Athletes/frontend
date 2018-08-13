@@ -9,6 +9,7 @@ import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
 import Auth from '../auth/auth';
 import Admin from '../admin/admin';
+// import AdminModal from '../admin-modal/admin-modal';
 
 import './app.scss';
 
@@ -24,6 +25,9 @@ export default class App extends React.Component {
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
             <Route expact path="/admin" component={ AdminUser(Admin) } />
+            {/* <AdminModal /> */}
+
+            <Route exact path="*" component={AuthRedirect} />
           </div>
         </BrowserRouter>
       </div>

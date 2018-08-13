@@ -12,7 +12,7 @@ const { Editors, Toolbar, Formatters } = require('react-data-grid-addons');
 const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
 const { ImageFormatter } = Formatters;
 
-export default class PointTracker extends React.Component {
+export default class MentorTable extends React.Component {
   constructor(props, context) {
     super(props, context);
     this._columns = [
@@ -29,53 +29,62 @@ export default class PointTracker extends React.Component {
         name: 'First Name',
         editable: true,
         width: 200,
-        resizable: true
+        resizable: true,
+        sortable: true,
       },
       {
         key: 'lastName',
         name: 'Last Name',
         editable: true,
         width: 200,
-        resizable: true
+        resizable: true,
+        sortable: true,
       },
       {
         key: 'email',
         name: 'Email',
         editable: true,
         width: 200,
-        resizable: true
+        resizable: true,
+        sortable: true,
       },
       {
         key: 'address',
         name: 'Address',
         editable: true,
         width: 200,
-        resizable: true
+        resizable: true,
+        sortable: true,
       },
       {
         key: 'city',
         name: 'City',
         editable: true,
         width: 200,
-        resizable: true
+        resizable: true,
+        sortable: true,
       },
       {
         key: 'zipCode',
         name: 'ZipCode',
         editable: true,
         width: 200,
-        resizable: true
+        resizable: true,
+        sortable: true,
       },
       {
         key: 'phoneNumber',
         name: 'Phone Number',
         editable: true,
         width: 200,
-        resizable: true
+        resizable: true,
+        sortable: true,
       },
     ];
-
-    this.state = { rows: this.createRows(1) };
+    let originalRows = this.createRows(10);
+    let rows = originalRows.slice(0);
+    this.state = { originalRows, rows };
+    console.log(this.state)
   }
 
   createRows = (numberOfRows) => {
@@ -109,7 +118,7 @@ export default class PointTracker extends React.Component {
         this.grid.openCellEditor(rowIdx, idx);
       }
     };
-
+    console.log(clonedColumns);
     return clonedColumns;
   };
 
@@ -125,7 +134,6 @@ export default class PointTracker extends React.Component {
   };
 
   handleAddRow = ({ newRowIndex }) => {
-    console.log(newRowIndex);
     const newRow = {
       value: newRowIndex,
       userStory: '',
@@ -134,8 +142,21 @@ export default class PointTracker extends React.Component {
     };
 
     let rows = this.state.rows.slice();
-    console.log(rows);
     rows = update(rows, {$push: [newRow]});
+    this.setState({ rows });
+    console.log(this.state);
+  };
+
+  handleGridSort = (sortColumn, sortDirection) => {
+    const comparer = (a, b) => {
+      if (sortDirection === 'ascend') {
+        return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
+      } else if (sortDirection === 'descend') {
+        return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
+      }
+    };
+    const rows = sortDirection === 'none' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
+
     this.setState({ rows });
   };
 
@@ -156,9 +177,10 @@ export default class PointTracker extends React.Component {
       <ReactDataGrid
         ref={ node => this.grid = node }
         enableCellSelect={true}
+        onGridSort={this.handleGridSort}
         columns={this.getColumns()}
         rowGetter={this.getRowAt}
-        rowsCount={this.getSize()}
+        rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
         toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
         enableRowSelect={true}

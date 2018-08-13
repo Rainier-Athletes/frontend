@@ -7,7 +7,7 @@ import AuthRedirect from '../auth-redirect/auth-redirect';
 // import Profile from '../profile/profile';
 import Navbar from '../navbar/navbar';
 // import AdminModal from '../admin-modal/admin-modal';
-import PointTracker from '../point-tracker-table/point-tracker-table';
+import MentorTable from '../mentor-table/mentor-table';
 
 import './app.scss';
 
@@ -19,7 +19,7 @@ export default class App extends React.Component {
           <div>
           <Navbar />
           {/* <AdminModal /> */}
-          <PointTracker />
+          <MentorTable />
           <Route exact path="*" component={AuthRedirect} />
           </div>
         </BrowserRouter>

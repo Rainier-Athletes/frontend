@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Iframe from '../iframe/iframe';
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 import './_dashboard.scss';
 
@@ -18,7 +19,8 @@ class Dashboard extends React.Component {
   renderJSX = (loggedIn) => {
     const iframe = (
       <React.Fragment>
-        <Iframe />
+        {/* <Iframe /> */}
+        <PointTrackerForm />
       </React.Fragment>
     );
 

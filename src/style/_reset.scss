@@ -1,4 +1,4 @@
-@import "vars"; 
+@import 'vars';
 
 * {
   // box model
@@ -11,7 +11,7 @@
   box-sizing: border-box;
 
   // font
-  // font-family: $font-primary;
+  font-family: $font-primary;
   font-size: 1em;
   font-weight: normal;
   font-style: normal;
@@ -19,7 +19,6 @@
   white-space: normal;
 
   // color
-  background: none;
   color: $color-black;
 
   // other
@@ -31,3 +30,6 @@ form *:focus {
   outline: none;
 }
 
+body {
+  margin: none;
+}

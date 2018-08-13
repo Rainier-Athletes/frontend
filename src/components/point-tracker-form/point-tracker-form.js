@@ -4,6 +4,17 @@ import { connect } from 'react-redux';
 
 export default class PointTrackerForm extends React.Component {
   // const renderRow = () => ()
+  renderPeriodColumn = () => {
+    return (
+      <div className="period">
+        <label>Period</label>
+        <input type="number"/>
+        <input type="number"/>
+        <input type="number"/>
+        <input type="number"/>
+      </div>
+    );
+  }
 
   render() {
     return (
@@ -22,30 +33,48 @@ export default class PointTrackerForm extends React.Component {
         <form className="data-entry">
           <fieldset>
             <legend>Point Sheet and Grades</legend>
-            <table>
-              <thead>
-                <tr>
-                  <td>.</td>
-                  <td>Period 1</td>
-                  <td>Period 2</td>
-                  <td>Period 3</td>
-                  <td>Period 4</td>
-                  <td>Period 5</td>
-                  <td>Period 6</td>
-                  <td>Period 7</td>
-                  <td>Tutorial / Check-in</td>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+            <label></label>
+            <label>Periods Missed</label>
+            <label>Num. of Stamps</label>
+            <label>Num. of Xs</label>
+            <label>Grade</label>
+            { this.renderPeriodColumn() }
+            { this.renderPeriodColumn() }
+            { this.renderPeriodColumn() }
+            { this.renderPeriodColumn() }
+            { this.renderPeriodColumn() }
+            { this.renderPeriodColumn() }
+            { this.renderPeriodColumn() }
+            { this.renderPeriodColumn() }
+          </fieldset>
+          <fieldset>
+
           </fieldset>
 
           <fieldset>
             <legend>Synopsis</legend>
             <label htmlFor="student-action-items">Student Action Items</label>
             <textarea id="student-action-items"/>
+
+            <label htmlFor="sports-update">Sports Update</label>
+            <textarea id="sports-update"/>
+
+            <label htmlFor="additional-comments">Additional Comments</label>
+            <textarea id="additional-comments"/>
+
+            <label htmlFor="">Playing Time Earned</label>
+          <select>
+            <option value="" disabled defaultValue>Select Playing Time</option>
+            <option value="1">Entire Game</option>
+            <option value="2">All but start</option>
+            <option value="1">Three quarters</option>
+            <option value="2">Two quarters</option>
+            <option value="1">One quarter</option>
+            <option value="2">None of game</option>
+          </select>
+          <textarea id="playtime-comments" placeholder="Please explain..." />
           </fieldset>
+          <button type="submit">Preview</button>
         </form>
       </React.Fragment>
     );

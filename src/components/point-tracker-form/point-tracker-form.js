@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import PointTrackerTable from '../point-tracker-table/point-tracker-table';
+
 export default class PointTrackerForm extends React.Component {
-  // const renderRow = () => ()
   renderPeriodColumn = () => {
     return (
       <div className="period">
@@ -33,19 +34,7 @@ export default class PointTrackerForm extends React.Component {
         <form className="data-entry">
           <fieldset>
             <legend>Point Sheet and Grades</legend>
-            <label></label>
-            <label>Periods Missed</label>
-            <label>Num. of Stamps</label>
-            <label>Num. of Xs</label>
-            <label>Grade</label>
-            { this.renderPeriodColumn() }
-            { this.renderPeriodColumn() }
-            { this.renderPeriodColumn() }
-            { this.renderPeriodColumn() }
-            { this.renderPeriodColumn() }
-            { this.renderPeriodColumn() }
-            { this.renderPeriodColumn() }
-            { this.renderPeriodColumn() }
+            <PointTrackerTable/>
           </fieldset>
           <fieldset>
 

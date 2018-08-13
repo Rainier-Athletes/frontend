@@ -1,71 +1,51 @@
 import React from 'react';
-import { render } from 'react-dom';
-import ReactTable from 'react-table';
-import { makeData, Tips } from '../../lib/utils';
+import PropTypes from 'prop-types';
+
 import './point-tracker-table.scss';
 
-export default class PointTrackerTable extends React.Component {
+class PeriodColumn extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      data: makeData(),
-    };
+    this.state = '';
   }
-
+  
   render() {
-    const { data } = this.state;
     return (
-        <div>
-          <ReactTable
-          data={data}
-          columns={[
-            {
-              Header: 'Name',
-              columns: [
-                {
-                  Header: 'First Name',
-                  accessor: 'firstName',
-                },
-                {
-                  Header: 'Last Name',
-                  id: 'lastName',
-                  accessor: d => d.lastName,
-                },
-              ],
-            },
-            {
-              Header: 'Info',
-              columns: [
-                {
-                  Header: 'Age',
-                  accessor: 'age',
-                },
-                {
-                  Header: 'Status',
-                  accessor: 'status',
-                },
-              ],
-            },
-            {
-              Header: 'Stats',
-              columns: [
-                {
-                  Header: 'Visits',
-                  accessor: 'visits',
-                },
-              ],
-            },
-          ]}
-            defaultPageSize={10}
-            className="-striped -highlight"
-          />
-          <br />
-          <Tips />
-          <Logo />
-        </div>
+      <div className="column">
+        <label>{ this.props.label }</label>
+        <input type="number"/>
+        <input type="number"/>
+        <input type="number"/>
+        <input type="number"/>
+      </div>
     );
   }
 }
 
-render(<App />, document.getElementById('root'));
+export default class PointTrackerTable extends React.Component {
+  render() {
+    return (
+      <div className="point-table">
+        <div className="column labels">
+          <label>x</label>
+          <label>Periods Missed</label>
+          <label>Num. of Stamps</label>
+          <label>Num. of Xs</label>
+          <label>Grade</label>
+        </div>
+        <PeriodColumn label="Period 1"/>
+        <PeriodColumn label="Period 2"/>
+        <PeriodColumn label="Period 3"/>
+        <PeriodColumn label="Period 4"/>
+        <PeriodColumn label="Period 5"/>
+        <PeriodColumn label="Period 6"/>
+        <PeriodColumn label="Period 7"/>
+        <PeriodColumn label="Tutorial"/>
+      </div>
+    );
+  }
+}
+
+PeriodColumn.propTypes = {
+  label: PropTypes.string,
+};

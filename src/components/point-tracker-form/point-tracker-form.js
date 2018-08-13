@@ -31,17 +31,14 @@ export default class PointTrackerForm extends React.Component {
           <input id="date" type="date"/>
           <button type="submit">Create New Report</button>
         </form>
+          <h4>Point Sheet and Grades</h4>
         <form className="data-entry">
-          <fieldset>
-            <legend>Point Sheet and Grades</legend>
+          <div>
             <PointTrackerTable/>
-          </fieldset>
-          <fieldset>
+          </div>
 
-          </fieldset>
-
-          <fieldset>
-            <legend>Synopsis</legend>
+          <div className="synopsis">
+            <h4>Synopsis</h4>
             <label htmlFor="student-action-items">Student Action Items</label>
             <textarea id="student-action-items"/>
 
@@ -56,13 +53,13 @@ export default class PointTrackerForm extends React.Component {
             <option value="" disabled defaultValue>Select Playing Time</option>
             <option value="1">Entire Game</option>
             <option value="2">All but start</option>
-            <option value="1">Three quarters</option>
-            <option value="2">Two quarters</option>
-            <option value="1">One quarter</option>
-            <option value="2">None of game</option>
+            <option value="3">Three quarters</option>
+            <option value="4">Two quarters</option>
+            <option value="5">One quarter</option>
+            <option value="6">None of game</option>
           </select>
           <textarea id="playtime-comments" placeholder="Please explain..." />
-          </fieldset>
+          </div>
           <button type="submit">Preview</button>
         </form>
       </React.Fragment>

@@ -27,7 +27,7 @@ export default class PointTrackerTable extends React.Component {
     return (
       <div className="point-table">
         <div className="column labels">
-          <label>x</label>
+          <label></label>
           <label>Periods Missed</label>
           <label>Num. of Stamps</label>
           <label>Num. of Xs</label>

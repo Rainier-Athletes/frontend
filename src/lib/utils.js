@@ -3,13 +3,12 @@ export const cookieFetch = (key) => {
     .split(';')
     .map(str => str.split('='))
     .reduce((acc, cur) => {
-      const cookieKey = cur[0];
+      const cookieKey = cur[0].trim();
       const cookieVal = cur[1];
 
       acc[cookieKey] = cookieVal;
       return acc;
     }, {});
-
   return cookies[key];
 };
 

@@ -1,13 +1,48 @@
 import React from 'react';
+// import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import Iframe from '../iframe/iframe';
+
+import './_dashboard.scss';
+
+const mapStateToProps = state => ({
+  loggedIn: !!state.token,
+});
+
+const mapDispatchToProps = dispatch => ({
+  // load
+});
 
 class Dashboard extends React.Component {
+  renderJSX = (loggedIn) => {
+    const iframe = (
+      <React.Fragment>
+        <Iframe />
+      </React.Fragment>
+    );
+
+    const dashboard = (
+      <div className="main">
+        <h1>Dashboard</h1>
+      </div>
+    );
+    return loggedIn ? dashboard : iframe;
+  };
+
   render() {
     return (
-      <div>
-        <h1>Testing Dashboard</h1>
-      </div>
+      <React.Fragment>
+        {
+          this.renderJSX(this.props.loggedIn)
+        }
+      </React.Fragment>
     );
   }
 }
 
-export default Dashboard;
+Dashboard.propTypes = {
+  loggedIn: PropTypes.bool,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

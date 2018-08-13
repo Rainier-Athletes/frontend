@@ -30,6 +30,6 @@ export const userLogin = user => (store) => {
 };
 
 export const logout = () => (store) => {
-  cookieDelete('_token');
+  cookieDelete('RaToken');
   return store.dispatch(removeToken());
 };

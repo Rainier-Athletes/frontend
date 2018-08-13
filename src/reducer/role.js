@@ -1,14 +1,14 @@
 import { cookieFetch } from '../lib/utils';
 
-const TOKEN_KEY = 'RaToken';
-const token = cookieFetch(TOKEN_KEY);
-const defaultState = token || null;
+const ROLE_KEY = 'RaUser';
+const role = cookieFetch(ROLE_KEY);
+const defaultState = role || null;
 
 export default (state = defaultState, { type, payload }) => {
   switch (type) {
-    case 'TOKEN_SET':
+    case 'ROLE_SET':
       return payload;
-    case 'TOKEN_REMOVE':
+    case 'ROLE_REMOVE':
       return null;
     default:
       return state;

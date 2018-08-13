@@ -10,9 +10,9 @@ const mapStateToProps = state => ({
   loggedIn: !!state.token,
 });
 
-const mapDispatchToProps = dispatch => ({
-  // load
-});
+// const mapDispatchToProps = dispatch => ({
+//   // load
+// });
 
 class Dashboard extends React.Component {
   renderJSX = (loggedIn) => {
@@ -45,4 +45,4 @@ Dashboard.propTypes = {
   loggedIn: PropTypes.bool,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, null)(Dashboard);

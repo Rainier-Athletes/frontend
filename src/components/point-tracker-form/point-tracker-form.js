@@ -123,6 +123,7 @@ export default class PointTrackerForm extends React.Component {
           <input name="date" type="date" onChange={ this.handleChange }/>
           <button type="submit">Create New Report</button>
         </form>
+          <h4>Point Sheet and Grades</h4>
         <form className="data-entry">
           <fieldset>
             <label htmlFor="attendedCheckin">Attended Check-In</label>

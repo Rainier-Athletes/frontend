@@ -1,9 +1,8 @@
 .point-table {
-  // display: flex;
-  // justify-content: space-evenly;
   
   .labels {
     width: 6em;
+    font-size: 12px;
     text-align: right;
   }
 
@@ -23,7 +22,13 @@
 }
 
 .column {
-  // display: flex;
-  // justify-content: space-evenly;
-  // flex-direction: column;
+  font-size: 15px;
+}
+
+.data-entry {
+  display: block;
+}
+
+.synopsis {
+  padding-top: 5em;
 }

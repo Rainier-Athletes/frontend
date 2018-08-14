@@ -13,6 +13,14 @@ const { Editors, Toolbar, Formatters } = require('react-data-grid-addons');
 const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
 const { ImageFormatter } = Formatters;
 
+class SaveButton extends React.Component {
+  render() {
+    return (
+      <button className="updateBtn">Save</button>
+    );
+  }
+}
+
 export default class MentorTable extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -20,6 +28,7 @@ export default class MentorTable extends React.Component {
       {
         key: 'button',
         name: '',
+        formatter: SaveButton,
         width: 100,
         resizable: true,
         headerRenderer: ''
@@ -86,7 +95,6 @@ export default class MentorTable extends React.Component {
     this.state = { originalRows, rows, selectedIndexes: [] };
 
     this.deleteBtn = <button className="deleteBtn">Delete</button>;
-    this.updateBtn = <button className="updateBtn">Save</button>;
   }
 
   createRows = (numberOfRows) => {
@@ -97,11 +105,15 @@ export default class MentorTable extends React.Component {
     return rows;
   };
   
+  createSaveBtn = (index) => {
+    return {
+      id: 'id_' + index,
+      button: <button>Oopsie</button>,
+    };
+  };
 
   createFakeRowObjectData = (index) => {
     return {
-      id: 'id_' + index,
-      button: 'hey dere',
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),

@@ -85,7 +85,8 @@
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
     "superagent": "^3.8.3",
-    "url-loader": "^1.0.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "validator": "^10.5.0",
+    "url-loader": "^1.0.1"
   }
 }

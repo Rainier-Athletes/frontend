@@ -12,15 +12,17 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchWhitelist: email => dispatch(whitelistActions.fetchWhitelistReq(email)),
-  addWhitelist: email => dispatch(whitelistActions.addWhitelistReq(email)),
+  addWhitelist: (...info) => dispatch(whitelistActions.addWhitelistReq(...info)),
 });
 
 class WhiteList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      emails: [],
       modalShow: false,
+      email: '',
+      firstName: '',
+      lastName: '',
     };
   }
 
@@ -39,11 +41,20 @@ class WhiteList extends React.Component {
   }
 
   handleSubmit = () => {
-    this.props.addWhitelist()
+    const { email, firstName, lastName } = this.state;
+    this.props.addWhitelist(email, firstName, lastName)
       .then((res) => {
         console.log(res);
-        this.setState({ emails: res.body });
+        // this.setState({ emails: res.body });
       });
+  }
+
+  handleChange = (event) => {
+    const { name, value } = event.target;
+    console.log('hello', value);
+    this.setState({
+      [name]: value,
+    });
   }
 
   renderModal = (bool) => {
@@ -51,7 +62,32 @@ class WhiteList extends React.Component {
       return (
         <div className="modal-background">
           <div className="whitelist-modal">
-            <h1>invite</h1>
+            <form className="whitelist-form" onSubmit={ this.handleSubmit }>
+              <input
+                name="email"
+                placeholder="email"
+                type="email"
+                value={ this.state.email }
+                onChange={ this.handleChange }
+              />
+              <input
+                name="firstName"
+                placeholder="firstName"
+                type="text"
+                value={ this.state.firstName }
+                onChange={ this.handleChange }
+              />
+              <input
+                name="lastName"
+                placeholder="lastName"
+                type="text"
+                value={ this.state.lastName }
+                onChange={ this.handleChange }
+              />
+              <button type="submit">Send Invite</button>
+            </form>
+
+
           </div>
         </div>
       );

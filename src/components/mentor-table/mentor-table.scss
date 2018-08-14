@@ -1,3 +1,49 @@
+.react-grid-Toolbar {
+  border-color: black;
+}
+
+.btnGroup {
+  display: block;
+  left: 4em; 
+  position: relative;
+  float: right;
+  width: 10em;
+}
+
+.deleteBtn {
+  background: white;
+  border: 1px solid rgb(255, 112, 112);
+  color: red;
+  font-size: 14px;
+  margin-bottom: .3em;
+  position: relative;
+  padding: 6px 12px;
+  text-shadow: rgb(206, 206, 206);
+  width: 5.74em;
+}
+
+.deleteBtn:hover {
+  background: white;
+  border: 1px solid red;
+}
+
+.updateBtn {
+  background: white;
+  border: 1px solid rgb(103, 133, 231);
+  color: rgb(16, 62, 211);
+  font-size: 14px;
+  margin-bottom: 1em;
+  position: relative;
+  padding: 6px 12px;
+  text-shadow: rgb(206, 206, 206);
+  width: 5.74em;
+}
+
+.updateBtn:hover {
+  background: white;
+  border: 1px solid rgb(16, 62, 211);
+}
+
 .ReactTable {
   position: relative;
   display: -webkit-box;

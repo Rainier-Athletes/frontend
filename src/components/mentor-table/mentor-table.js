@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 // import 'bootstrap/dist/css/bootstrap.css';
 import update from 'immutability-helper';
+import classNames from 'classnames';
 import { render } from 'react-dom';
 import { makeData, Tips } from '../../lib/utils';
 import './mentor-table.scss';
@@ -30,12 +31,12 @@ class MentorTable extends React.Component {
     super(props, context);
     this._columns = [
       {
-        key: 'avatar',
-        name: 'Avatar',
-        width: 60,
-        formatter: ImageFormatter,
+        key: 'button',
+        name: '',
+        formatter: SaveButton,
+        width: 100,
         resizable: true,
-        headerRenderer: <ImageFormatter value={faker.image.cats()} />
+        headerRenderer: ''
       },
       {
         key: 'firstName',
@@ -109,18 +110,24 @@ class MentorTable extends React.Component {
         this.setState({ rows: rows});
       })
   };
+  
+  createSaveBtn = (index) => {
+    return {
+      id: 'id_' + index,
+      button: <button>Oopsie</button>,
+    };
+  };
 
   populateData = (profile, index) => {
     console.log('populate data', profile);
     return {
-      id: 'id_' + index,
-      avatar: faker.image.avatar(),
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      email: profile.email,
-      role: profile.role,
-      phone: profile.phone,
-      address: '',
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      email: faker.internet.email(),
+      address: faker.address.streetName(),
+      city: 'Seattle',
+      zipCode: faker.address.zipCode(),
+      phoneNumber: faker.phone.phoneNumber(),
     };
   };
 
@@ -158,7 +165,16 @@ class MentorTable extends React.Component {
     let rows = this.state.rows.slice();
     rows = update(rows, {$unshift: [newRow]});
     this.setState({ rows });
-    console.log(this.state);
+  };
+
+  onRowsSelected = (rows) => {
+    this.setState({selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
+
+  };
+
+  onRowsDeselected = (rows) => {
+    let rowIndexes = rows.map(r => r.rowIdx);
+    this.setState({selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1 )});
   };
 
   handleGridSort = (sortColumn, sortDirection) => {
@@ -170,7 +186,7 @@ class MentorTable extends React.Component {
       }
     };
     const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
-
+    console.log(this.state)
     this.setState({ rows });
   };
 
@@ -191,6 +207,23 @@ class MentorTable extends React.Component {
     return this.state.rows.length;
   };
 
+  handleCreate = (profile) => {
+    this.props.createProfile(profile)
+      .then(() => {
+        this.props.history.push(routes.PROFILE_ROUTE);
+      });
+  }
+
+  handleUpdate = (profile) => {
+    this.props.updateProfile(profile);
+    this.setState({ editing: false });
+  }
+
+  handleDelete = (id, event) => {
+    event.preventDefault();
+    this.props.onDelete(this.props.profiles[i].id);
+  }
+  
   render() {
     return (
       <ReactDataGrid
@@ -201,8 +234,18 @@ class MentorTable extends React.Component {
         rowGetter={this.getRowAt}
         rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
+        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><div className="btnGroup">{this.deleteBtn}{this.updateBtn}</div></div>}
         enableRowSelect={true}
+        onRowSelect={this.onRowSelect}
+        rowSelection={{
+          showCheckbox: true,
+          enableShiftSelect: true,
+          onRowsSelected: this.onRowsSelected,
+          onRowsDeselected: this.onRowsDeselected,
+          selectBy: {
+            indexes: this.state.selectedIndexes
+          }
+        }} 
         rowHeight={50}
         minHeight={600}
         rowScrollTimeout={200} />);

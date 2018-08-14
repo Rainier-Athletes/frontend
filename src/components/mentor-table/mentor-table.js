@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 // import 'bootstrap/dist/css/bootstrap.css';
 import update from 'immutability-helper';
+import classNames from 'classnames';
 import { render } from 'react-dom';
 import { makeData, Tips } from '../../lib/utils';
 import './mentor-table.scss';
@@ -84,6 +85,8 @@ export default class MentorTable extends React.Component {
     let originalRows = this.createRows(10);
     let rows = originalRows.slice(0);
     this.state = { originalRows, rows, selectedIndexes: [] };
+
+    this.deleteBtn = <button className="deleteBtn">Delete</button>;
   }
 
   createRows = (numberOfRows) => {
@@ -146,6 +149,7 @@ export default class MentorTable extends React.Component {
 
   onRowsSelected = (rows) => {
     this.setState({selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
+
   };
 
   onRowsDeselected = (rows) => {
@@ -210,7 +214,7 @@ export default class MentorTable extends React.Component {
         rowGetter={this.getRowAt}
         rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><button className="deleteBtn">Delete</button></div>}
+        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/>{this.deleteBtn}</div>}
         enableRowSelect={true}
         onRowSelect={this.onRowSelect}
         rowSelection={{

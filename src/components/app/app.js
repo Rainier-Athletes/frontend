@@ -7,6 +7,8 @@ import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
 import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
+import * as routes from '../../lib/routes';
 // import Auth from '../auth/auth';
 // import AdminModal from '../admin-modal/admin-modal';
 
@@ -23,7 +25,8 @@ export default class App extends React.Component {
             <Navbar />
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
-            <Route exact path="/admin" component={Admin} />
+            <Route exact path={routes.ADMIN_ROUTE} component={Admin} />
+            <Route exact path={routes.MENTOR_ROUTE} component={PointTrackerForm} />
             {/* <Route expact path="/admin" component={ AdminUser(Admin) } /> */}
             {/* <AdminModal /> */}
 

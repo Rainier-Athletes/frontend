@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import { convertDateToValue } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 
 const defaultState = {
@@ -109,6 +109,12 @@ export default class PointTrackerForm extends React.Component {
     });
   };
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    superagent.post
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -120,36 +126,72 @@ export default class PointTrackerForm extends React.Component {
             <option value="2">example student 2</option>
           </select>
           <label htmlFor="">Select Date</label>
-          <input name="date" type="date" onChange={ this.handleChange }/>
+          <input 
+            name="date" 
+            type="date"
+            onChange={ this.handleChange }
+            value={ convertDateToValue(this.state.date) }
+          />
           <button type="submit">Create New Report</button>
         </form>
           <h4>Point Sheet and Grades</h4>
         <form className="data-entry">
           <fieldset>
             <label htmlFor="attendedCheckin">Attended Check-In</label>
-            <input type="checkbox" name="attendedCheckin" onChange= { this.handleChange }/>
+            <input 
+              type="checkbox" 
+              name="attendedCheckin" 
+              onChange= { this.handleChange }
+              checked={ this.state.surveyQuestions.attendedCheckin }
+            />
 
             <label htmlFor="metFaceToFace">Met Face-to-Face</label>
-            <input type="checkbox" name="metFaceToFace" onChange= { this.handleChange }/>
+            <input 
+              type="checkbox" 
+              name="metFaceToFace" 
+              onChange= { this.handleChange }
+              checked={ this.state.surveyQuestions.metFaceToFace }
+            />
 
             <label htmlFor="hadOtherCommunication">Had Other Communication</label>
-            <input type="checkbox" name="hadOtherCommunication" onChange= { this.handleChange }/>
+            <input 
+              type="checkbox" 
+              name="hadOtherCommunication" 
+              onChange= { this.handleChange }
+              checked={ this.state.surveyQuestions.hadOtherCommunication }
+            />
 
             <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
-            <input type="checkbox" name="scoreSheetTurnedIn" onChange= { this.handleChange }/>
+            <input 
+              type="checkbox" 
+              name="scoreSheetTurnedIn" 
+              onChange= { this.handleChange }
+              checked={ this.state.surveyQuestions.scoreSheetTurnedIn }
+            />
           </fieldset>
           <fieldset>
             <legend>Point Sheet and Grades</legend>
-            <PointTrackerTable handleChange={ this.handleChange } subjects={ this.state.subjects }/>
+            <PointTrackerTable 
+              handleChange={ this.handleChange } 
+              subjects={ this.state.subjects }
+            />
           </fieldset>
           <fieldset>
             <legend>Synopsis</legend>
 
             <label htmlFor="extraPlayingTime">Extra Playing Time</label>
-            <textarea name="extraPlayingTime" onChange={ this.handleChange }/>
+            <textarea 
+              name="extraPlayingTime" 
+              onChange={ this.handleChange }
+              value={ this.state.synopsisComments.extraPlayingTime }
+            />
 
             <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
-            <select name="mentorGrantedPlayingTime" onChange={ this.handleChange }>
+            <select 
+              name="mentorGrantedPlayingTime" 
+              onChange={ this.handleChange }
+              value={ this.state.synopsisComments.mentorGrantedPlayingTime }
+              >
               <option value="" disabled defaultValue>Select Playing Time</option>
               <option value="Entire Game">Entire Game</option>
               <option value="All but start">All but start</option>
@@ -160,13 +202,25 @@ export default class PointTrackerForm extends React.Component {
             </select>
 
             <label htmlFor="studentActionItems">Student Action Items</label>
-            <textarea name="studentActionItems" onChange={ this.handleChange } />
+            <textarea 
+              name="studentActionItems" 
+              onChange={ this.handleChange } 
+              value={ this.state.synopsisComments.studentActionItems }
+            />
 
             <label htmlFor="sportsUpdate">Sports Update</label>
-            <textarea name="sportsUpdate" onChange={ this.handleChange } />
+            <textarea 
+              name="sportsUpdate" 
+              onChange={ this.handleChange } 
+              value={ this.state.synopsisComments.sportsUpdate }
+              />
 
             <label htmlFor="additionalComments">Additional Comments</label>
-            <textarea name="additionalComments" onChange={ this.handleChange }/>
+            <textarea 
+              name="additionalComments" 
+              onChange={ this.handleChange }
+              value={ this.state.synopsisComments.additionalComments }
+            />
             
           </fieldset>
           <button type="submit">Preview</button>

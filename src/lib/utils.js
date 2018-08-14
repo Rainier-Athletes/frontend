@@ -27,4 +27,19 @@ const cookieDelete = (key) => {
   document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 };
 
-export { renderIf, devLogger, cookieFetch, cookieDelete }; // eslint-disable-line
+const convertDateToValue = (date) => {
+  const dt = new Date(date);
+  const year = dt.getFullYear().toString();
+  const month = dt.getMonth().toString().padStart(2, '0');
+  const day = dt.getDay().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
+
+export { 
+  renderIf, 
+  devLogger, 
+  cookieFetch, 
+  cookieDelete,
+  convertDateToValue,
+}; 

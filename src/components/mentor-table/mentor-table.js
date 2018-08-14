@@ -13,13 +13,7 @@ const { Editors, Toolbar, Formatters } = require('react-data-grid-addons');
 const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
 const { ImageFormatter } = Formatters;
 
-class SaveButton extends React.Component {
-  render() {
-    return (
-      <button className="updateBtn">Save</button>
-    );
-  }
-}
+const updateBtn = <button className="updateBtn">Save</button>
 
 export default class MentorTable extends React.Component {
   constructor(props, context) {
@@ -28,7 +22,7 @@ export default class MentorTable extends React.Component {
       {
         key: 'button',
         name: '',
-        formatter: SaveButton,
+        formatter: updateBtn,
         width: 100,
         resizable: true,
         headerRenderer: ''
@@ -90,11 +84,11 @@ export default class MentorTable extends React.Component {
         sortable: true,
       },
     ];
-    let originalRows = this.createRows(10);
+    let originalRows = this.createRows(30);
     let rows = originalRows.slice(0);
     this.state = { originalRows, rows, selectedIndexes: [] };
 
-    this.deleteBtn = <button className="deleteBtn">Delete</button>;
+    this.deleteBtn = <button className="deleteBtn" onClick={this.deleteRow}>Delete</button>;
   }
 
   createRows = (numberOfRows) => {
@@ -161,14 +155,35 @@ export default class MentorTable extends React.Component {
   };
 
   onRowsSelected = (rows) => {
-    this.setState({selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
-
+    this.setState({'selectedIndexes': this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
+    // console.log(selectedIndexes);
   };
 
   onRowsDeselected = (rows) => {
     let rowIndexes = rows.map(r => r.rowIdx);
     this.setState({selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1 )});
   };
+
+  deleteRow = (id, event) => {
+    let newRows = this.state.rows.filter((row, i) => {
+     if(!this.state.selectedIndexes.includes(i)) return row
+    })
+
+    console.log('new rows',newRows);
+    this.setState({rows: newRows})
+    
+    // event.preventDefault();
+    // this.props.onDelete(this.props.profiles[i].id);
+    // this.setState((prevState) => {
+    //   rows: prevState.rows.filter((x, i), => i !==)
+    // })
+    // this.setState({filteredIndexes: this.state.selectedIndexes
+  }
+
+  // handleDelete = (id, event) => {
+  //   event.preventDefault();
+  //   this.props.onDelete(this.props.profiles[i].id);
+  // }
 
   handleGridSort = (sortColumn, sortDirection) => {
     const comparer = (a, b) => {
@@ -200,23 +215,18 @@ export default class MentorTable extends React.Component {
     return this.state.rows.length;
   };
 
-  handleCreate = (profile) => {
-    this.props.createProfile(profile)
-      .then(() => {
-        this.props.history.push(routes.PROFILE_ROUTE);
-      });
-  }
+  // handleCreate = (profile) => {
+  //   this.props.createProfile(profile)
+  //     .then(() => {
+  //       this.props.history.push(routes.PROFILE_ROUTE);
+  //     });
+  // }
 
-  handleUpdate = (profile) => {
-    this.props.updateProfile(profile);
-    this.setState({ editing: false });
-  }
+  // handleUpdate = (profile) => {
+  //   this.props.updateProfile(profile);
+  //   this.setState({ editing: false });
+  // }
 
-  handleDelete = (id, event) => {
-    event.preventDefault();
-    this.props.onDelete(this.props.profiles[i].id);
-  }
-  
   render() {
     return (
       <ReactDataGrid
@@ -225,9 +235,9 @@ export default class MentorTable extends React.Component {
         onGridSort={this.handleGridSort}
         columns={this.getColumns()}
         rowGetter={this.getRowAt}
-        rowsCount={this.state.rows.length}
+        rowsCount={this.state.rows.length} 
         onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><div className="btnGroup">{this.deleteBtn}{this.updateBtn}</div></div>}
+        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><div className="btnGroup">{this.deleteBtn}</div></div>}
         enableRowSelect={true}
         onRowSelect={this.onRowSelect}
         rowSelection={{

@@ -9,15 +9,27 @@ import googleBtn from '../../assets/google-btn.png';
 import rainierBtn from '../../assets/rainier-logo-horizontal.png';
 import './navbar.scss';
 
+import * as profileActions from '../../actions/profile';
+
 const mapStateToProps = state => ({
   loggedIn: !!state.token,
+  profile: state.profile,
 });
 
 const mapDispatchToProps = dispatch => ({
   doLogout: () => dispatch(authActions.logout()),
+  fetchProfile: profile => dispatch(profileActions.fetchProfileReq(profile)),
 });
 
 class Navbar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dropdown: false,
+    };
+  }
+
   setGoogleOAuthUrl = () => {
     const baseUrl = 'https://accounts.google.com/o/oauth2/v2/auth?';
     const redirect = `redirect_uri=${API_URL}/oauth/google`;
@@ -29,6 +41,26 @@ class Navbar extends React.Component {
     return [baseUrl, redirect, scope, clientId, prompt, responseType].join('');
   }
 
+  componentDidMount() {
+    this.props.fetchProfile()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch(console.error);
+  }
+
+  handleClickOutside = () => {
+    this.setState({
+      dropdown: false,
+    });
+  }
+
+  handleDropDownToggle = () => {
+    this.setState(prevState => ({
+      dropdown: !prevState.dropdown,
+    }));
+  }
+
   renderJSX = (loggedIn) => {
     const JSXNotLoggedIn = (
       <React.Fragment>
@@ -37,11 +69,23 @@ class Navbar extends React.Component {
       </React.Fragment>
     );
 
+    const dropdown = (
+      <div className="dropdown">
+        <button onClick={ this.props.doLogout }>Logout</button>
+      </div>
+    );
+
+    const name = this.props.profile ? this.props.profile.firstName : null;
 
     const JSXLoggedIn = (
       <React.Fragment>
         <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
-        <span className="login"><button onClick={ this.props.doLogout }>Logout</button></span>
+        <span className="login">
+          <button onClick={ this.handleDropDownToggle }>Welcome, { name }</button>
+          {
+            this.state.dropdown ? dropdown : null
+          }
+        </span>
       </React.Fragment>
     );
 
@@ -63,6 +107,8 @@ class Navbar extends React.Component {
 Navbar.propTypes = {
   loggedIn: PropTypes.bool,
   doLogout: PropTypes.func,
+  fetchProfile: PropTypes.func,
+  profile: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

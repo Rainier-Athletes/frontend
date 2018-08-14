@@ -8,8 +8,9 @@ import * as whitelistActions from '../../actions/whitelist';
 
 import './whitelist.scss';
 
-const mapStateToProps = state => ({
-});
+// const mapStateToProps = state => ({
+//   // state
+// });
 
 const mapDispatchToProps = dispatch => ({
   fetchWhitelist: email => dispatch(whitelistActions.fetchWhitelistReq(email)),
@@ -136,4 +137,4 @@ WhiteList.propTypes = {
   addWhitelist: PropTypes.func,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WhiteList);
+export default connect(null, mapDispatchToProps)(WhiteList);

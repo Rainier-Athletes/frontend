@@ -1,8 +1,11 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Iframe from '../iframe/iframe';
+import Admin from '../admin/admin';
+import * as routes from '../../lib/routes';
 // import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 import './_dashboard.scss';
@@ -20,11 +23,11 @@ class Dashboard extends React.Component {
       </React.Fragment>
     );
 
-    const dashboard = (
-      <div className="main">
-      </div>
-    );
-    return loggedIn ? dashboard : iframe;
+    const dashboard = () => {
+      return <Redirect to={routes.ADMIN_ROUTE} />;
+    };
+
+    return loggedIn ? dashboard() : iframe;
   };
 
   render() {

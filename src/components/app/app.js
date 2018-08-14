@@ -5,10 +5,11 @@ import { BrowserRouter, Route } from 'react-router-dom';
 // import Dashboard from '../dashboard/dashboard';
 import AuthRedirect from '../auth-redirect/auth-redirect';
 // import Profile from '../profile/profile';
-import Navbar from '../navbar/navbar';
-import Dashboard from '../dashboard/dashboard';
+// import Navbar from '../navbar/navbar';
+// import Dashboard from '../dashboard/dashboard';
 import Auth from '../auth/auth';
 import Admin from '../admin/admin';
+import MentorTable from '../mentor-table/mentor-table';
 // import AdminModal from '../admin-modal/admin-modal';
 
 import './app.scss';
@@ -21,8 +22,9 @@ export default class App extends React.Component {
       <div className="app">
         <BrowserRouter>
           <div>
-            <Navbar />
-            <Dashboard />
+            {/* <Navbar />
+            <Dashboard /> */}
+            <MentorTable />
             <Route exact path="*" component={AuthRedirect} />
             <Route expact path="/admin" component={ AdminUser(Admin) } />
             {/* <AdminModal /> */}

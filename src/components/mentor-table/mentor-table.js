@@ -182,9 +182,7 @@ export default class MentorTable extends React.Component {
   getSize = () => {
     return this.state.rows.length;
   };
-
-  // let deleteBtn = <button className="deleteBtn"> </button>
-
+  
   render() {
     return (
       <ReactDataGrid
@@ -195,7 +193,7 @@ export default class MentorTable extends React.Component {
         rowGetter={this.getRowAt}
         rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
+        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><button className="deleteBtn">Delete</button></div>}
         enableRowSelect={true}
         onRowSelect={this.onRowSelect}
         rowSelection={{

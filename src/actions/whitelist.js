@@ -6,12 +6,12 @@ export const setWhitelist = email => ({
   payload: email,
 });
 
-export const addWhitelistReq = email => (store) => {
+export const addWhitelistReq = (email, firstName, lastName) => (store) => {
   const { token } = store.getState();
   return superagent.post(`${API_URL}${routes.WHITELIST_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .send({ email: 'codefellows2@rainierathletes.org', firstName: 'Poppa', lastName: 'CodeFellows' })
+    .send({ email, firstName, lastName })
     .then((res) => {
       return store.dispatch(setWhitelist(res.body));
     });

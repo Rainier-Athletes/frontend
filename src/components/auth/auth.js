@@ -14,11 +14,10 @@ const Auth = roles => (Component) => {
       const { role } = this.props;
       const roleBase64 = Buffer.from(role, 'base64');
       const roleAscii = roleBase64.toString('ascii').slice(0, -1);
-    
+
       if (roles.includes(roleAscii)) {
         return <Component { ...this.props } />;
       }
-
       return null;
     }
   }

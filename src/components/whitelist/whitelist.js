@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import * as whitelistActions from '../../actions/whitelist';
+
+import './whitelist.scss';
 
 const mapStateToProps = state => ({
 });
@@ -17,6 +20,7 @@ class WhiteList extends React.Component {
     super(props);
     this.state = {
       emails: [],
+      modalShow: false,
     };
   }
 
@@ -28,7 +32,13 @@ class WhiteList extends React.Component {
       });
   };
 
-  handleClick = () => {
+  handleModalShow = () => {
+    this.setState({
+      modalShow: true,
+    });
+  }
+
+  handleSubmit = () => {
     this.props.addWhitelist()
       .then((res) => {
         console.log(res);
@@ -36,9 +46,30 @@ class WhiteList extends React.Component {
       });
   }
 
+  renderModal = (bool) => {
+    if (bool) {
+      return (
+        <div className="modal-background">
+          <div className="whitelist-modal">
+            <h1>invite</h1>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   render() {
     return (
-      <button onClick={ this.handleClick }>Add to Org</button>
+      <React.Fragment>
+        <button className="whitelist-btn" onClick={ this.handleModalShow }>
+          Invite
+          <FontAwesomeIcon icon="user-plus" />
+        </button>
+        {
+          this.renderModal(this.state.modalShow)
+        }
+      </React.Fragment>
     );
   }
 }

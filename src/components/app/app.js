@@ -1,17 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
 import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
+import Whitelist from '../whitelist/whitelist';
 import Auth from '../auth/auth';
 
 import './app.scss';
 
-library.add(faAngleDown);
+library.add(faAngleDown, faUserPlus);
 
 
 const AdminUser = Auth(['admin']);
@@ -26,6 +27,7 @@ export default class App extends React.Component {
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
             <Route expact path="/admin" component={ AdminUser(Admin) } />
+            <Route expact path="/whitelist" component={ AdminUser(Whitelist) } />
           </div>
         </BrowserRouter>
       </div>

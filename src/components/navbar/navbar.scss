@@ -26,7 +26,8 @@
       position: absolute;
       background-color: lightgray;
       top: 4.7em;
-      width: 12em;
+      right: 0;
+      width: 11em;
     }
 
     .google-btn {
@@ -39,9 +40,14 @@
 button {
   background-color: transparent !important;
   float: right;
-  padding: 1.8em 2.4em !important;
+  padding: 1.8em 0.8em !important;
+  margin-left: 1em;
 }
 
 .login > button {
   color: white;
+}
+
+.dropdown > button {
+  margin-right: 2em;
 }

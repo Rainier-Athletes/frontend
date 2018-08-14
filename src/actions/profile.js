@@ -39,7 +39,6 @@ export const fetchProfileReq = () => (store) => {
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .then((res) => {
-      console.log(res.body);
       return store.dispatch(setProfile(res.body));
     });
 };
@@ -50,7 +49,6 @@ export const fetchMyProfileReq = () => (store) => {
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}/me`)
     .set('Authorization', `Bearer ${token}`)
     .then((res) => {
-      console.log(res.body);
       return store.dispatch(setMyProfile(res.body));
     });
 };

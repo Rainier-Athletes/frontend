@@ -3,10 +3,12 @@ import token from './token';
 import role from './role';
 import profile from './profile';
 import myProfile from './myProfile';
+import whitelist from './whitelist';
 
 export default combineReducers({
   token,
   role,
   profile,
   myProfile,
+  whitelist,
 });

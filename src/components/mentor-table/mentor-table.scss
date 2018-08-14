@@ -1,3 +1,26 @@
+.react-grid-Toolbar {
+  border-color: black;
+}
+
+.deleteBtn {
+  background: white;
+  border: 1px solid rgb(255, 112, 112);
+  color: red;
+  align-items: flex-start;
+  float: right;
+  font-size: 14px;
+  margin-bottom: 1em;
+  margin-right: 1.13em;
+  position: relative;
+  padding: 6px 12px;
+  width: 5.74em;
+}
+
+.deleteBtn:hover {
+  background: white;
+  border: 1px solid red;
+}
+
 .ReactTable {
   position: relative;
   display: -webkit-box;

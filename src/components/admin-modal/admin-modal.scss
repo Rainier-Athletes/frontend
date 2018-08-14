@@ -1,0 +1,91 @@
+p {
+  font-size: 30px;
+}
+
+.modalContainer {
+  background: rgba(33, 33, 33, .97);
+  border-radius: 2em;
+  width: 25em;
+  height: 30em;
+  color: white;
+  font-family: helvetica;
+  position: absolute;
+}
+
+.field-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  text-align:center;
+  text-shadow: 0px 0px 3px black;
+  color: white;
+  font-weight: 300;
+  position: relative;
+  top: .4em;
+  margin-bottom: 1.3em;
+}
+
+input {
+  border: none;
+  border-radius: 1em;
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 300;
+  width: 75%;
+  height: 30px;
+  margin-bottom: 1.8em;
+  padding: 7px;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+.admin-mentor-btn {
+  display: none;
+  justify-content: center;
+}
+
+.enter-admin, .enter-mentor {
+  margin-left: 7px;
+  margin-right: 7px;
+  background: #099544;
+  box-shadow: 0px 3px #076e32;
+  border: none;
+  border-radius: 1em;
+  color: white;
+  width: 7em;
+  font-size: 20px;
+  font-weight: 300;
+  padding: 8px;
+  margin-top: -8px;
+}
+
+.enter {
+  background: #099544;
+  box-shadow: 0px 3px #076e32;
+  border: none;
+  border-radius: 2em;
+  color: white;
+  cursor: pointer;
+  width: 8em;
+  font-size: 20px;
+  font-weight: 300;
+  padding: 12px;
+}
+
+.enter:hover {
+  background: #0cc15d;
+}
+
+.enter-admin:hover, .enter-mentor:hover {
+  background: #0cc15d;
+}
+
+input:focus, button:focus {
+  outline: 0;
+}

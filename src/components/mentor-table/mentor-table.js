@@ -27,8 +27,6 @@ const mapDispatchToProps = dispatch => ({
 class MentorTable extends React.Component {
   constructor(props, context) {
     super(props, context);
-    let originalRows = this.createRows(10);
-    let rows = originalRows.slice(0);
     this._columns = [
       {
         key: 'avatar',
@@ -87,31 +85,41 @@ class MentorTable extends React.Component {
         sortable: true,
       },
     ];
-    this.state = { originalRows, rows };
+    this.state = {
+      rows: [],
+    };
+  }
+  componentWillMount = () => {
+    this.createRows();
   }
 
-  createRows = (numberOfRows) => {
+  createRows = () => {
     this.props.fetchProfile()
       .then((res) => {
         console.log(res);
-      });
-    let rows = [];
-    for (let i = 0; i < numberOfRows; i++) {
-      rows[i] = this.createFakeRowObjectData(i);
-    }
-    return rows;
+        let rows = [];
+        for (let i = 0; i < res.payload.length ; i++) {
+          rows[i] = this.populateData(res.payload[i], i);
+        }
+        return rows;
+      })
+      .then((rows) => {
+        console.log(rows);
+        this.setState({ rows: rows});
+      })
   };
 
-  createFakeRowObjectData = (index) => {
+  populateData = (profile, index) => {
+    console.log('populate data', profile);
     return {
       id: 'id_' + index,
       avatar: faker.image.avatar(),
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      email: faker.internet.email(),
-      role: 'Mentor',
-      phone: faker.phone.phoneNumber(),
-      address: faker.address.zipCode(),
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      email: profile.email,
+      role: profile.role,
+      phone: profile.phone,
+      address: '',
     };
   };
 

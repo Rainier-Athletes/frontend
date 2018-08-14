@@ -11,10 +11,6 @@ const mapStateToProps = state => ({
   loggedIn: !!state.token,
 });
 
-const mapDispatchToProps = dispatch => ({
-  // load
-});
-
 class Dashboard extends React.Component {
   renderJSX = (loggedIn) => {
     const iframe = (
@@ -26,7 +22,6 @@ class Dashboard extends React.Component {
 
     const dashboard = (
       <div className="main">
-        <h1>Dashboard</h1>
       </div>
     );
     return loggedIn ? dashboard : iframe;
@@ -47,4 +42,4 @@ Dashboard.propTypes = {
   loggedIn: PropTypes.bool,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, null)(Dashboard);

@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { convertDateToValue } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
+import * as pointTrackerActions from '../../actions/point-tracker';
 
 const defaultState = {
   _id: '1EF12348902093DECBA908', 
@@ -51,7 +52,11 @@ const defaultState = {
   },
 };
 
-export default class PointTrackerForm extends React.Component {
+const mapDispatchToProps = dispatch => ({
+  createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
+});
+
+class PointTrackerForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -111,15 +116,15 @@ export default class PointTrackerForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-
-    superagent.post
+    console.log('HANDLE SUBMIT FIRING!');
+    this.props.createPointTracker(this.state);
   }
 
   render() {
     return (
       <React.Fragment>
-        <h1>Hello from mentor landing</h1>
-        <form className="selection-menu">
+        <h4>Point Sheet and Grades</h4>
+        <form className="data-entry" onSubmit={ this.handleSubmit }>
           <label htmlFor="">Select Student</label>
           <select>
             <option value="1">example student 1</option>
@@ -132,10 +137,6 @@ export default class PointTrackerForm extends React.Component {
             onChange={ this.handleChange }
             value={ convertDateToValue(this.state.date) }
           />
-          <button type="submit">Create New Report</button>
-        </form>
-          <h4>Point Sheet and Grades</h4>
-        <form className="data-entry">
           <fieldset>
             <label htmlFor="attendedCheckin">Attended Check-In</label>
             <input 
@@ -221,11 +222,16 @@ export default class PointTrackerForm extends React.Component {
               onChange={ this.handleChange }
               value={ this.state.synopsisComments.additionalComments }
             />
-            
           </fieldset>
-          <button type="submit">Preview</button>
+          <button type="submit">Submit Point Tracker</button>
         </form>
       </React.Fragment>
     );
   }
 }
+
+PointTrackerForm.propTypes = {
+  createPointTracker: PropTypes.func,
+};
+
+export default connect(null, mapDispatchToProps)(PointTrackerForm);

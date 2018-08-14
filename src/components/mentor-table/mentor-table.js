@@ -18,12 +18,11 @@ export default class MentorTable extends React.Component {
     super(props, context);
     this._columns = [
       {
-        key: 'avatar',
-        name: 'Avatar',
-        width: 60,
-        formatter: ImageFormatter,
+        key: 'button',
+        name: '',
+        width: 100,
         resizable: true,
-        headerRenderer: <ImageFormatter value={faker.image.cats()} />
+        headerRenderer: ''
       },
       {
         key: 'firstName',
@@ -87,7 +86,7 @@ export default class MentorTable extends React.Component {
     this.state = { originalRows, rows, selectedIndexes: [] };
 
     this.deleteBtn = <button className="deleteBtn">Delete</button>;
-    this.updateBtn = <button className="updateBtn">Update</button>;
+    this.updateBtn = <button className="updateBtn">Save</button>;
   }
 
   createRows = (numberOfRows) => {
@@ -102,7 +101,7 @@ export default class MentorTable extends React.Component {
   createFakeRowObjectData = (index) => {
     return {
       id: 'id_' + index,
-      avatar: faker.image.avatar(),
+      button: 'hey dere',
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),

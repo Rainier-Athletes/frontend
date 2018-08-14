@@ -22,6 +22,11 @@
   width: 5.74em;
 }
 
+.deleteBtn:hover {
+  background: white;
+  border: 1px solid red;
+}
+
 .updateBtn {
   background: white;
   border: 1px solid rgb(103, 133, 231);
@@ -34,9 +39,9 @@
   width: 5.74em;
 }
 
-.deleteBtn:hover {
+.updateBtn:hover {
   background: white;
-  border: 1px solid red;
+  border: 1px solid rgb(16, 62, 211);
 }
 
 .ReactTable {

@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
-import PointTrackerForm from '../point-tracker-form/point-tracker-form';
+// import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 // import Dashboard from '../dashboard/dashboard';
 import AuthRedirect from '../auth-redirect/auth-redirect';
 // import Profile from '../profile/profile';
@@ -25,7 +25,7 @@ export default class App extends React.Component {
       <div className="app">
         <BrowserRouter>
           <div>
-            {/* <Navbar /> */}
+            <Navbar />
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
             <Route expact path="/admin" component={ AdminUser(Admin) } />

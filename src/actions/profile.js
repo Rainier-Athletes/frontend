@@ -6,6 +6,11 @@ export const setProfile = profile => ({
   payload: profile,
 });
 
+export const setMyProfile = profile => ({
+  type: 'MY_PROFILE_SET',
+  payload: profile,
+});
+
 export const createProfileReq = profile => (store) => {
   const { token } = store.getState();
   return superagent.post(`${API_URL}${routes.PROFILE_ROUTE}`)
@@ -29,7 +34,6 @@ export const updateProfileReq = profile => (store) => {
 };
 
 export const fetchProfileReq = () => (store) => {
-  console.log('fetch');
   const { token } = store.getState();
 
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
@@ -37,5 +41,16 @@ export const fetchProfileReq = () => (store) => {
     .then((res) => {
       console.log(res.body);
       return store.dispatch(setProfile(res.body));
+    });
+};
+
+export const fetchMyProfileReq = () => (store) => {
+  const { token } = store.getState();
+
+  return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}/me`)
+    .set('Authorization', `Bearer ${token}`)
+    .then((res) => {
+      console.log(res.body);
+      return store.dispatch(setMyProfile(res.body));
     });
 };

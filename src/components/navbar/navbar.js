@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import * as authActions from '../../actions/auth';
 import * as routes from '../../lib/routes';
@@ -13,12 +14,12 @@ import * as profileActions from '../../actions/profile';
 
 const mapStateToProps = state => ({
   loggedIn: !!state.token,
-  profile: state.profile,
+  myProfile: state.myProfile,
 });
 
 const mapDispatchToProps = dispatch => ({
   doLogout: () => dispatch(authActions.logout()),
-  fetchProfile: profile => dispatch(profileActions.fetchProfileReq(profile)),
+  fetchMyProfile: profile => dispatch(profileActions.fetchMyProfileReq(profile)),
 });
 
 class Navbar extends React.Component {
@@ -42,7 +43,7 @@ class Navbar extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchProfile()
+    this.props.fetchMyProfile()
       .then((res) => {
         console.log(res);
       })
@@ -75,13 +76,16 @@ class Navbar extends React.Component {
       </div>
     );
 
-    const name = this.props.profile ? this.props.profile.firstName : null;
+    const name = this.props.myProfile ? this.props.myProfile.firstName : null;
 
     const JSXLoggedIn = (
       <React.Fragment>
         <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
         <span className="login">
-          <button onClick={ this.handleDropDownToggle }>Welcome, { name }</button>
+          <button onClick={ this.handleDropDownToggle }>
+            Welcome, { name }
+            <FontAwesomeIcon icon="angle-down" />
+          </button>
           {
             this.state.dropdown ? dropdown : null
           }
@@ -107,8 +111,8 @@ class Navbar extends React.Component {
 Navbar.propTypes = {
   loggedIn: PropTypes.bool,
   doLogout: PropTypes.func,
-  fetchProfile: PropTypes.func,
-  profile: PropTypes.object,
+  fetchMyProfile: PropTypes.func,
+  myProfile: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

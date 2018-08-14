@@ -87,6 +87,7 @@ export default class MentorTable extends React.Component {
     this.state = { originalRows, rows, selectedIndexes: [] };
 
     this.deleteBtn = <button className="deleteBtn">Delete</button>;
+    this.updateBtn = <button className="updateBtn">Update</button>;
   }
 
   createRows = (numberOfRows) => {
@@ -96,6 +97,7 @@ export default class MentorTable extends React.Component {
     }
     return rows;
   };
+  
 
   createFakeRowObjectData = (index) => {
     return {
@@ -214,7 +216,7 @@ export default class MentorTable extends React.Component {
         rowGetter={this.getRowAt}
         rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/>{this.deleteBtn}</div>}
+        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><div className="btnGroup">{this.deleteBtn}{this.updateBtn}</div></div>}
         enableRowSelect={true}
         onRowSelect={this.onRowSelect}
         rowSelection={{

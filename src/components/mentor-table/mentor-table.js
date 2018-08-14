@@ -182,6 +182,23 @@ export default class MentorTable extends React.Component {
   getSize = () => {
     return this.state.rows.length;
   };
+
+  handleCreate = (profile) => {
+    this.props.createProfile(profile)
+      .then(() => {
+        this.props.history.push(routes.PROFILE_ROUTE);
+      });
+  }
+
+  handleUpdate = (profile) => {
+    this.props.updateProfile(profile);
+    this.setState({ editing: false });
+  }
+
+  handleDelete = (id, event) => {
+    event.preventDefault();
+    this.props.onDelete(this.props.profiles[i].id);
+  }
   
   render() {
     return (

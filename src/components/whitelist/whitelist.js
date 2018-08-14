@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import Invite from '../invite/invite';
 import * as whitelistActions from '../../actions/whitelist';
 
 import './whitelist.scss';
@@ -19,6 +20,7 @@ class WhiteList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      invites: [],
       modalShow: false,
       email: '',
       firstName: '',
@@ -29,8 +31,7 @@ class WhiteList extends React.Component {
   componentDidMount = () => {
     this.props.fetchWhitelist()
       .then((res) => {
-        console.log(res);
-        this.setState({ emails: res.body });
+        this.setState({ invites: res.payload });
       });
   };
 
@@ -44,7 +45,7 @@ class WhiteList extends React.Component {
     const { email, firstName, lastName } = this.state;
     this.props.addWhitelist(email, firstName, lastName)
       .then((res) => {
-        console.log(res);
+        console.log(res.payload);
         // this.setState({ emails: res.body });
       });
   }
@@ -56,6 +57,19 @@ class WhiteList extends React.Component {
       [name]: value,
     });
   }
+
+  showPending = () => {
+    const { invites } = this.state;
+    return (
+      <React.Fragment>
+        {
+          invites.filter(invite => invite.pending === true).map((invite) => {
+            return <Invite key={ invite._id } email={ invite.email }/>
+          })
+        }
+      </React.Fragment>
+    );
+  };
 
   renderModal = (bool) => {
     if (bool) {
@@ -87,6 +101,13 @@ class WhiteList extends React.Component {
               <button type="submit">Send Invite</button>
             </form>
 
+
+            <div className="modal-pending">
+              <p>Pending</p>
+              {
+                this.showPending()
+              }
+            </div>
 
           </div>
         </div>

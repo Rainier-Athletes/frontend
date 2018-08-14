@@ -73,7 +73,7 @@ class Navbar extends React.Component {
     );
 
     const dropdown = (
-      <div className="dropdown">
+      <div className="dropdown" style={{ zIndex: 999 }}>
         <button onClick={ this.props.doLogout }>Logout</button>
       </div>
     );

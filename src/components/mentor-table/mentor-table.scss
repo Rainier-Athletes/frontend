@@ -2,6 +2,12 @@
   border-color: black;
 }
 
+.react-grid-Container {
+  position: relative !important;
+  z-index: -1;
+  top: 5em;
+}
+
 .deleteBtn {
   background: white;
   border: 1px solid rgb(255, 112, 112);

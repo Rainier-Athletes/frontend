@@ -1,11 +1,11 @@
-@import "vars";
-
+@import 'vars';
 
 // content
 html, body {
   position: relative; 
   font-family: $font-primary;
 }
+
 head, script, link  { display: none; }
 p { display: inline-block; }
 span,em,strong { display: inline; }
@@ -13,7 +13,7 @@ em { font-style: italic; }
 strong { font-weight: bold; }
 
 body {
-  background: $color-darkcyan;
+  background: $color-white;
   font-size: 16px;
 }
 
@@ -41,7 +41,7 @@ label {
 }
 
 textarea, input {
-  background: $color-white;
+  background: $color-brand-green;
   border: none;
   padding: 15px;
   border-radius: 3px;
@@ -49,7 +49,7 @@ textarea, input {
   transition: 350ms all;
 
   &:focus {
-    background: $color-black;
+    background: $color-button-focus;
     color: $color-white;
   }
 

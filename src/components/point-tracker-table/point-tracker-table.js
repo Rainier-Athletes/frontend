@@ -4,26 +4,34 @@ import PropTypes from 'prop-types';
 import './point-tracker-table.scss';
 
 class PeriodColumn extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = '';
-  }
-  
   render() {
     return (
       <div className="column">
         <label>{ this.props.label }</label>
-        <input type="number"/>
-        <input type="number"/>
-        <input type="number"/>
-        <input type="number"/>
+        <input type="number" onChange={ this.props.handleChange } name={ `${this.props.label}-excusedDays` }/>
+        <input type="number" onChange={ this.props.handleChange } name={ `${this.props.label}-stamps` }/>
+        <input type="number" onChange={ this.props.handleChange } name={ `${this.props.label}-x` }/>
+        <input type="number" onChange={ this.props.handleChange } name={ `${this.props.label}-grade` }/>
       </div>
     );
   }
 }
 
+PeriodColumn.propTypes = {
+  label: PropTypes.string,
+  handleChange: PropTypes.func,
+};
+
 export default class PointTrackerTable extends React.Component {
   render() {
+    const subjects = this.props.subjects.map(subject => (
+      <PeriodColumn 
+        key={ subject.subjectName } 
+        label={ subject.subjectName } 
+        handleChange={ this.props.handleChange }
+      />
+    ));
+
     return (
       <div className="point-table">
         <div className="column labels">
@@ -33,19 +41,14 @@ export default class PointTrackerTable extends React.Component {
           <label>Num. of Xs</label>
           <label>Grade</label>
         </div>
-        <PeriodColumn label="Period 1"/>
-        <PeriodColumn label="Period 2"/>
-        <PeriodColumn label="Period 3"/>
-        <PeriodColumn label="Period 4"/>
-        <PeriodColumn label="Period 5"/>
-        <PeriodColumn label="Period 6"/>
-        <PeriodColumn label="Period 7"/>
-        <PeriodColumn label="Tutorial"/>
+        { subjects }
+        <PeriodColumn label="Tutorial" />
       </div>
     );
   }
 }
 
-PeriodColumn.propTypes = {
-  label: PropTypes.string,
+PointTrackerTable.propTypes = {
+  handleChange: PropTypes.func,
+  subjects: PropTypes.array,
 };

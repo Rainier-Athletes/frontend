@@ -16,6 +16,7 @@ const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
 const { ImageFormatter } = Formatters;
 
 const mapStateToProps = state => ({
+  profile: state.profile,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -23,7 +24,7 @@ const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(profileActions.updateProfileReq(profile)),
   createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
 });
-
+Component
 class MentorTable extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -41,7 +42,7 @@ class MentorTable extends React.Component {
         name: 'First Name',
         editable: true,
         width: 200,
-        resizable: true,
+        resizable: false,
         sortable: true,
       },
       {
@@ -49,7 +50,7 @@ class MentorTable extends React.Component {
         name: 'Last Name',
         editable: true,
         width: 200,
-        resizable: true,
+        resizable: false,
         sortable: true,
       },
       {
@@ -57,7 +58,7 @@ class MentorTable extends React.Component {
         name: 'Email',
         editable: true,
         width: 200,
-        resizable: true,
+        resizable: false,
         sortable: true,
       },
       {
@@ -65,7 +66,7 @@ class MentorTable extends React.Component {
         name: 'Role',
         editable: true,
         width: 200,
-        resizable: true,
+        resizable: false,
         sortable: true,
       },
       {
@@ -81,7 +82,7 @@ class MentorTable extends React.Component {
         name: 'Phone',
         editable: true,
         width: 200,
-        resizable: true,
+        resizable: false,
         sortable: true,
       },
     ];
@@ -126,7 +127,7 @@ class MentorTable extends React.Component {
   getColumns = () => {
     let clonedColumns = this._columns.slice();
     clonedColumns[2].events = {
-      onClick: (ev, args) => {
+      onClick: (events, args) => {
         const idx = args.idx;
         const rowIdx = args.rowIdx;
         this.grid.openCellEditor(rowIdx, idx);

@@ -17,3 +17,10 @@ If you have any questions, feel free to reach out to any one of the original tea
 
 ### COLLABORATORS
 This was the final project of the Code Fellows JS-401d25 cohort, August 2018. The code was developed by two teams, working on the frontend and backend code.
+
+
+### NOTE TO SELF :
+Client is interested in switching fonts to 
+Raleway
+<link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,500,500i,600,600i,700,900" rel="stylesheet">
+font-family: 'Raleway', sans-serif;

@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 // import PointTrackerForm from '../point-tracker-form/point-tracker-form';
-// import Dashboard from '../dashboard/dashboard';
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
 import Navbar from '../navbar/navbar';

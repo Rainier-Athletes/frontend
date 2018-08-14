@@ -35,10 +35,10 @@ class WhiteList extends React.Component {
       });
   };
 
-  handleModalShow = () => {
-    this.setState({
-      modalShow: true,
-    });
+  handleModalToggle = () => {
+    this.setState(prevState => ({
+      modalShow: !prevState.modalShow,
+    }));
   }
 
   handleSubmit = () => {
@@ -64,7 +64,7 @@ class WhiteList extends React.Component {
       <React.Fragment>
         {
           invites.filter(invite => invite.pending === true).map((invite) => {
-            return <Invite key={ invite._id } email={ invite.email }/>
+            return <Invite key={ invite._id } email={ invite.email }/>;
           })
         }
       </React.Fragment>
@@ -108,8 +108,8 @@ class WhiteList extends React.Component {
                 this.showPending()
               }
             </div>
-
           </div>
+          <button onClick={ this.handleModalToggle }>Close</button>
         </div>
       );
     }
@@ -119,7 +119,7 @@ class WhiteList extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <button className="whitelist-btn" onClick={ this.handleModalShow }>
+        <button className="whitelist-btn" onClick={ this.handleModalToggle }>
           Invite
           <FontAwesomeIcon icon="user-plus" />
         </button>

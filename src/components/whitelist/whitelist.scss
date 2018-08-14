@@ -13,7 +13,17 @@
   margin: auto;
   padding: 20px;
   width: 80%;
+  height: 20em;
   border-radius: 0.4em;
+
+
+  .whitelist-form {
+    float: left;
+  }
+
+  .modal-pending {
+    float: right;
+  }
 }
 
 .modal-background {

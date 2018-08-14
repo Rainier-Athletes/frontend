@@ -7,11 +7,12 @@ const Invite = (props) => {
   console.log(props);
   return (
     <React.Fragment>
-    <div id={ props._id } className="invite">
-      {
-        props.email
-      }
-    </div>
+      <br />
+      <div id={ props._id } className="invite">
+        {
+          props.email
+        }
+      </div>
     </React.Fragment>
 
   );

@@ -10,7 +10,7 @@ export default function PointTrackerTable(props) {
     key={ subject.subjectName } 
     label={ subject.subjectName }
     subject={ subject }
-    handleChange={ props.handleChange }
+    handleSubjectChange={ props.handleSubjectChange }
     />
   ));
   
@@ -33,6 +33,6 @@ export default function PointTrackerTable(props) {
 }
 
 PointTrackerTable.propTypes = {
-  handleChange: PropTypes.func,
+  handleSubjectChange: PropTypes.func,
   subjects: PropTypes.array,
 };

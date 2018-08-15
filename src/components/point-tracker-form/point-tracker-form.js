@@ -280,12 +280,12 @@ class PointTrackerForm extends React.Component {
       <div className="points-tracker">
         <React.Fragment>
           <form className="data-entry" onSubmit={ this.handleSubmit }>
-            <h1>POINT TRACKER TABLE</h1>
+            <h2>POINT TRACKER TABLE</h2>
               <h4>Point Sheet and Grades</h4>
               { selectOptionsJSX }
               { surveyQuestionsJSX }
                 <PointTrackerTable
-                  handleChange={ this.handleChange }
+                  handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.pointTracker.subjects }
               />
               { synopsisCommentsJSX }

@@ -1,10 +1,13 @@
 @import '../../style/vars';
 
 .point-tracker-form {
-  .points-tracker {
-    margin-top: 40px;
-  }
-  h1 {
-    color: $color-brand-blue;
-  }
 }
+    .points-tracker {
+      padding-top: 20px;
+      margin: 80px 20px 0 20px;
+    }
+
+    h2 {
+      color: $color-brand-blue;
+      padding-bottom: .5em;
+    }

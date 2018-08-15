@@ -79,9 +79,6 @@ class PointTrackerForm extends React.Component {
       parseInt(day, 10),
     );
 
-    console.log(year, month, day, 'YEAR MONTH DAY');
-    console.log(date.getTime(), 'DATE');
-    console.log(Date.now(), 'NOW');
 
     this.setState((prevState) => {
       const newState = { ...prevState };
@@ -166,9 +163,10 @@ class PointTrackerForm extends React.Component {
 
   render() {
     const selectOptionsJSX = (
-      <React.Fragment>
+      <section>
+        <div className="select-student">
         <label htmlFor="">Select Student</label>
-        <select onChange={ this.handleStudentSelect } >
+          <select onChange={ this.handleStudentSelect } >
           { this.state.students.map((student) => {
             const { _id, firstName, lastName } = student;
             return (
@@ -180,19 +178,22 @@ class PointTrackerForm extends React.Component {
               </option>
             );
           })}
-        </select>
+          </select>
+        </div>
+      <div className="select-date">
         <label htmlFor="">Select Date</label>
         <input
           name="date"
           type="date"
           onChange={ this.handleDateChange }
           value={ convertDateToValue(this.state.pointTracker.date) }
-        />
-      </React.Fragment>
+          />
+        </div>
+      </section>
     );
     
     const surveyQuestionsJSX = (
-      <fieldset>
+      <div className="survey-questions">
       <label htmlFor="attendedCheckin">Attended Check-In</label>
       <input
         type="checkbox"
@@ -224,7 +225,7 @@ class PointTrackerForm extends React.Component {
         onChange= { this.handleSurveyQuestionChange }
         checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }
       />
-    </fieldset>
+    </div>
     );
     
     const synopsisCommentsJSX = (

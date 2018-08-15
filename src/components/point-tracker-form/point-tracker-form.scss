@@ -1,10 +1,15 @@
 @import '../../style/vars';
 
-.point-tracker-form {
-  .points-tracker {
-    margin-top: 40px;
-  }
-  h1 {
-    color: $color-brand-blue;
-  }
+.select-student, .select-date {
+
+  display: inline-block;
+  padding: 10px;
+  
+}
+
+.survey-questions {
+
+  display: inline-block;
+  padding: 10px;
+  
 }

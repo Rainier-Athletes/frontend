@@ -131,13 +131,25 @@ class PointTrackerForm extends React.Component {
       .catch(console.error);
   }
 
+  handleStudentSelect = (event) => {
+    event.preventDefault();
+    const { value } = event.target;
+
+    this.setState((prevState) => {
+      const newState = { ...prevState };
+      newState.pointTracker.studentId = value;
+
+      return newState;
+    });
+  }
+
   render() {
     return (
       <React.Fragment>
         <h4>Point Sheet and Grades</h4>
         <form className="data-entry" onSubmit={ this.handleSubmit }>
           <label htmlFor="">Select Student</label>
-          <select>
+          <select onChange={ this.handleStudentSelect }>
             { this.state.students.map((student) => {
               const { _id, firstName, lastName } = student;
               return (

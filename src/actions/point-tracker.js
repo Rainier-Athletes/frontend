@@ -33,3 +33,16 @@ export const fetchStudents = studentIds => (store) => {
     })
     .catch(console.error);
 };
+
+export const fetchLastPointTracker = studentId => (store) => {
+  const { token } = store.getState();
+
+  return superagent.get(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
+    .set('Authorization', `Bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .then((response) => {
+      console.log(response.body, 'POINT TRACKER RESPONSE');
+      // return students;
+    })
+    .catch(console.error);
+};

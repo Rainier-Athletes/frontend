@@ -69,56 +69,58 @@ class PointTrackerForm extends React.Component {
     };
   }
 
-  handleChange = (event) => {
-    const { name, value, checked } = event.target;
+  handleRootChange = (event) => {
+    const { name, value } = event.target;
+    this.setState((prevState) => {
+      const newState = { ...prevState };
 
-    const rootNames = ['_id', 'date', 'studentId'];
-    const synopsisCommentsNames = Object.keys(this.state.synopsisComments);
-    const surveyQuestionNames = Object.keys(this.state.surveyQuestions);
+      newState.pointTracker[name] = value;
+      return newState;
+    });
+  }
 
-    if (rootNames.includes(name)) {
-      this.setState({ [name]: value });
-    }
+  handleSubjectChange = (event) => {
+    const { name, value } = event.target;
+    
+    this.setState((prevState) => {
+      const newState = { ...prevState };
+      const [subjectName, categoryName] = name.split('-');
+      
+      const newSubjects = newState.pointTracker.subjects
+        .map((subject) => {
+          if (subject.subjectName === subjectName) {
+            const newSubject = { ...subject };
+            newSubject.scoring[categoryName] = value;
+            return newSubject;
+          }
 
-    if (synopsisCommentsNames.includes(name)) {
-      this.setState((prevState) => {
-        const newSynopsisComments = {
-          ...prevState.synopsisComments,
-          [name]: value,
-        };
+          return subject;
+        });
 
-        return { synopsisComments: newSynopsisComments };
-      });
-    }
+      newState.pointTracker.subjects = newSubjects;
+      return newState;
+    });
+  }
 
-    if (surveyQuestionNames.includes(name)) {
-      this.setState((prevState) => {
-        const newSurveyQuestions = {
-          ...prevState.surveyQuestions,
-          [name]: checked,
-        };
-
-        return { surveyQuestions: newSurveyQuestions };
-      });
-    }
+  handleSurveyQuestionChange = (event) => {
+    const { name, checked } = event.target;
 
     this.setState((prevState) => {
-      let newSubjects = [...prevState.subjects];
-      const [subjectName, categoryName] = name.split('-');
-
-      newSubjects = newSubjects.map((subject) => {
-        if (subject.subjectName === subjectName) {
-          const newSubject = { ...subject };
-          newSubject.scoring[categoryName] = value;
-          return newSubject;
-        }
-
-        return subject;
-      });
-
-      return { subjects: newSubjects };
+      const newState = { ...prevState };
+      newState.pointTracker.surveyQuestions[name] = checked;
+      return newState;
     });
-  };
+  }
+
+  handleSynopsisCommentChange = (event) => {
+    const { name, value } = event.target;
+
+    this.setState((prevState) => {
+      const newState = { ...prevState };
+      newState.pointTracker.synopsisComments[name] = value;
+      return newState;
+    });
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -130,7 +132,7 @@ class PointTrackerForm extends React.Component {
       .then((students) => {
         this.setState({ students });
       })
-      .catch(console.error);
+      .catch(console.error); // eslint-disable-line
   }
 
   // TODO: fix this event handler
@@ -140,7 +142,7 @@ class PointTrackerForm extends React.Component {
 
     this.props.fetchLastPointTracker(studentId)
       .then((response) => {
-        console.log(response, 'RESPONSE');
+        console.log(response, 'RESPONSE'); // eslint-disable-line
       });
 
     this.setState((prevState) => {
@@ -160,6 +162,7 @@ class PointTrackerForm extends React.Component {
             const { _id, firstName, lastName } = student;
             return (
               <option 
+                placeholder="Select" 
                 key={ _id } 
                 value={ _id }
               >{ `${firstName} ${lastName}`}
@@ -171,7 +174,7 @@ class PointTrackerForm extends React.Component {
         <input
           name="date"
           type="date"
-          onChange={ this.handleChange }
+          onChange={ this.handleRootChange }
           value={ convertDateToValue(this.state.pointTracker.date) }
         />
       </React.Fragment>
@@ -183,7 +186,7 @@ class PointTrackerForm extends React.Component {
       <input
         type="checkbox"
         name="attendedCheckin"
-        onChange= { this.handleChange }
+        onChange= { this.handleSurveyQuestionChange }
         checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }
       />
 
@@ -191,7 +194,7 @@ class PointTrackerForm extends React.Component {
       <input
         type="checkbox"
         name="metFaceToFace"
-        onChange= { this.handleChange }
+        onChange= { this.handleSurveyQuestionChange }
         checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }
       />
 
@@ -199,7 +202,7 @@ class PointTrackerForm extends React.Component {
       <input
         type="checkbox"
         name="hadOtherCommunication"
-        onChange= { this.handleChange }
+        onChange= { this.handleSurveyQuestionChange }
         checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }
       />
 
@@ -207,27 +210,27 @@ class PointTrackerForm extends React.Component {
       <input
         type="checkbox"
         name="scoreSheetTurnedIn"
-        onChange= { this.handleChange }
+        onChange= { this.handleSurveyQuestionChange }
         checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }
       />
     </fieldset>
     );
     
     const synopsisCommentsJSX = (
-      <fieldset>
-      <legend>Synopsis</legend>
+      <div className="synopsis">
+      <h4>Synopsis</h4>
 
       <label htmlFor="extraPlayingTime">Extra Playing Time</label>
       <textarea
         name="extraPlayingTime"
-        onChange={ this.handleChange }
+        onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
       />
 
       <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
       <select
         name="mentorGrantedPlayingTime"
-        onChange={ this.handleChange }
+        onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
         >
         <option value="" disabled defaultValue>Select Playing Time</option>
@@ -242,24 +245,24 @@ class PointTrackerForm extends React.Component {
       <label htmlFor="studentActionItems">Student Action Items</label>
       <textarea
         name="studentActionItems"
-        onChange={ this.handleChange }
+        onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.studentActionItems }
       />
 
       <label htmlFor="sportsUpdate">Sports Update</label>
       <textarea
         name="sportsUpdate"
-        onChange={ this.handleChange }
+        onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.sportsUpdate }
         />
 
       <label htmlFor="additionalComments">Additional Comments</label>
       <textarea
         name="additionalComments"
-        onChange={ this.handleChange }
+        onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.additionalComments }
       />
-    </fieldset>
+    </div>
     );
 
     return (

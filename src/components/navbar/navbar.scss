@@ -21,16 +21,33 @@
     color: white;
     float: right;
 
+    .dropdown {
+      display: block;
+      position: absolute;
+      background-color: lightgray;
+      top: 4.7em;
+      right: 0;
+      width: 11em;
+    }
+
     .google-btn {
       width: 10em;
       margin: 1em;
     }
-
-    button {
-      margin: 1em;
-    }
-
-
   }
+}
 
+button {
+  background-color: transparent !important;
+  float: right;
+  padding: 1.8em 0.8em !important;
+  margin-left: 1em;
+}
+
+.login > button {
+  color: white;
+}
+
+.dropdown > button {
+  margin-right: 2em;
 }

@@ -2,12 +2,11 @@
 
 // content
 html, body {
-  position: relative; 
+  position: relative;
   font-family: $font-primary;
 }
 
 head, script, link  { display: none; }
-p { display: inline-block; }
 span,em,strong { display: inline; }
 em { font-style: italic; }
 strong { font-weight: bold; }

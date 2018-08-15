@@ -2,31 +2,66 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import * as authActions from '../../actions/auth';
 import * as routes from '../../lib/routes';
 import googleBtn from '../../assets/google-btn.png';
 import rainierBtn from '../../assets/rainier-logo-horizontal.png';
+import Whitelist from '../whitelist/whitelist';
+
 import './navbar.scss';
+
+import * as profileActions from '../../actions/profile';
 
 const mapStateToProps = state => ({
   loggedIn: !!state.token,
+  myProfile: state.myProfile,
 });
 
 const mapDispatchToProps = dispatch => ({
   doLogout: () => dispatch(authActions.logout()),
+  fetchMyProfile: profile => dispatch(profileActions.fetchMyProfileReq(profile)),
 });
 
 class Navbar extends React.Component {
-  setGoogleOAuthUrl = () => {
-    const baseUrl = 'https://accounts.google.com/o/oauth2/v2/auth?';
-    const redirect = `redirect_uri=${API_URL}/oauth/google`;
-    const scope = '&scope=openid%20email%20profile';
-    const clientId = `&client_id=${GOOGLE_OAUTH_ID.trim()}`;
-    const prompt = '&prompt=consent%20select_account';
-    const responseType = '&response_type=code';
+  constructor(props) {
+    super(props);
 
-    return [baseUrl, redirect, scope, clientId, prompt, responseType].join('');
+    this.state = {
+      dropdown: false,
+    };
+  }
+
+  setGoogleOAuthUrl = () => {
+    const baseUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+    const redirect = `redirect_uri=${API_URL}/oauth/google`;
+    const scope = 'scope=openid%20email%20profile%20https://www.googleapis.com/auth/drive';
+    const clientId = `client_id=${GOOGLE_OAUTH_ID.trim()}`;
+    const prompt = 'prompt=consent%20select_account';
+    const responseType = 'response_type=code';
+
+    return `${baseUrl}?${redirect}&${scope}&${clientId}&${prompt}&${responseType}&access_type=offline`;
+  }
+
+  componentDidMount() {
+    this.props.fetchMyProfile()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch(console.error);
+  }
+
+  handleClickOutside = () => {
+    this.setState({
+      dropdown: false,
+    });
+  }
+
+  handleDropDownToggle = () => {
+    this.setState(prevState => ({
+      dropdown: !prevState.dropdown,
+    }));
   }
 
   renderJSX = (loggedIn) => {
@@ -37,11 +72,36 @@ class Navbar extends React.Component {
       </React.Fragment>
     );
 
+    const dropdown = (
+      <div className="dropdown">
+        <button onClick={ this.props.doLogout }>Logout</button>
+      </div>
+    );
+
+    const name = this.props.myProfile ? this.props.myProfile.firstName : null;
+
+    const invite = () => {
+      if (this.props.myProfile) {
+        return this.props.myProfile.role === 'admin' ? <Whitelist /> : null;
+      }
+      return undefined;
+    };
 
     const JSXLoggedIn = (
       <React.Fragment>
         <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
-        <span className="login"><button onClick={ this.props.doLogout }>Logout</button></span>
+        <span className="login">
+          <button onClick={ this.handleDropDownToggle }>
+            Welcome, { name }
+            <FontAwesomeIcon icon="angle-down" />
+          </button>
+          {
+            this.state.dropdown ? dropdown : null
+          }
+          {
+            invite()
+          }
+        </span>
       </React.Fragment>
     );
 
@@ -63,6 +123,9 @@ class Navbar extends React.Component {
 Navbar.propTypes = {
   loggedIn: PropTypes.bool,
   doLogout: PropTypes.func,
+  fetchMyProfile: PropTypes.func,
+  myProfile: PropTypes.object,
+  fetchProfile: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

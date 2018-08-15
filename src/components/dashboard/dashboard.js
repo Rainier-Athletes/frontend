@@ -1,8 +1,10 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Iframe from '../iframe/iframe';
+import * as routes from '../../lib/routes';
+// import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 import './_dashboard.scss';
 
@@ -10,24 +12,20 @@ const mapStateToProps = state => ({
   loggedIn: !!state.token,
 });
 
-const mapDispatchToProps = dispatch => ({
-  // load
-});
-
 class Dashboard extends React.Component {
   renderJSX = (loggedIn) => {
+    // <PointTrackerForm />
     const iframe = (
       <React.Fragment>
         <Iframe />
       </React.Fragment>
     );
 
-    const dashboard = (
-      <div className="main">
-        <h1>Dashboard</h1>
-      </div>
-    );
-    return loggedIn ? dashboard : iframe;
+    const dashboard = () => {
+      return <Redirect to={routes.ADMIN_ROUTE} />;
+    };
+
+    return loggedIn ? dashboard() : iframe;
   };
 
   render() {
@@ -45,4 +43,4 @@ Dashboard.propTypes = {
   loggedIn: PropTypes.bool,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, null)(Dashboard);

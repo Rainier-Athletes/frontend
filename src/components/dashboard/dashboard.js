@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Iframe from '../iframe/iframe';
+// import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 import './_dashboard.scss';
 
@@ -10,12 +11,9 @@ const mapStateToProps = state => ({
   loggedIn: !!state.token,
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   // load
-// });
-
 class Dashboard extends React.Component {
   renderJSX = (loggedIn) => {
+    // <PointTrackerForm />
     const iframe = (
       <React.Fragment>
         <Iframe />
@@ -24,7 +22,6 @@ class Dashboard extends React.Component {
 
     const dashboard = (
       <div className="main">
-        <h1>Dashboard</h1>
       </div>
     );
     return loggedIn ? dashboard : iframe;

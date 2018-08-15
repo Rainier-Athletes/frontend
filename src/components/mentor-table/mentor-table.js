@@ -1,12 +1,14 @@
 /*eslint-disable*/
 import React from 'react';
+import PropTypes from 'prop-types';
+import { render } from 'react-dom';
+import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 // import 'bootstrap/dist/css/bootstrap.css';
 import update from 'immutability-helper';
-import classNames from 'classnames';
-import { render } from 'react-dom';
-import { makeData, Tips } from '../../lib/utils';
 import './mentor-table.scss';
+
+import * as profileActions from '../../actions/profile';
 
 const faker = require('faker');
 const { Editors, Toolbar, Formatters } = require('react-data-grid-addons');
@@ -15,14 +17,25 @@ const { ImageFormatter } = Formatters;
 
 const updateBtn = <button className="updateBtn">Save</button>
 
-export default class MentorTable extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+const mapStateToProps = state => ({
+  profile: state.profile,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchProfile: profile => dispatch(profileActions.fetchProfileReq(profile)),
+  updateProfile: profile => dispatch(profileActions.updateProfileReq(profile)),
+  createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
+});
+
+class MentorTable extends React.Component {
+  constructor(props) {
+    super(props);
+
     this._columns = [
       {
         key: 'button',
         name: '',
-        formatter: updateBtn,
+        // formatter: SaveButton,
         width: 100,
         resizable: true,
         headerRenderer: ''
@@ -32,7 +45,7 @@ export default class MentorTable extends React.Component {
         name: 'First Name',
         editable: true,
         width: 200,
-        resizable: true,
+        resizable: false,
         sortable: true,
       },
       {
@@ -40,7 +53,7 @@ export default class MentorTable extends React.Component {
         name: 'Last Name',
         editable: true,
         width: 200,
-        resizable: true,
+        resizable: false,
         sortable: true,
       },
       {
@@ -48,7 +61,16 @@ export default class MentorTable extends React.Component {
         name: 'Email',
         editable: true,
         width: 200,
-        resizable: true,
+        resizable: false,
+        sortable: true,
+      },
+      // how do we use the role field as a key to drop data into the correct object?
+      {
+        key: 'role',
+        name: 'Role',
+        editable: true,
+        width: 200,
+        resizable: false,
         sortable: true,
       },
       {
@@ -60,43 +82,36 @@ export default class MentorTable extends React.Component {
         sortable: true,
       },
       {
-        key: 'city',
-        name: 'City',
+        key: 'phone',
+        name: 'Phone',
         editable: true,
         width: 200,
-        resizable: true,
-        sortable: true,
-      },
-      {
-        key: 'zipCode',
-        name: 'ZipCode',
-        editable: true,
-        width: 200,
-        resizable: true,
-        sortable: true,
-      },
-      {
-        key: 'phoneNumber',
-        name: 'Phone Number',
-        editable: true,
-        width: 200,
-        resizable: true,
+        resizable: false,
         sortable: true,
       },
     ];
-    let originalRows = this.createRows(5);
-    let rows = originalRows.slice(0);
-    this.state = { originalRows, rows, selectedIndexes: [] };
-
-    this.deleteBtn = <button className="deleteBtn" onClick={this.deleteRow}>Delete</button>;
+    this.state = {
+      rows: [],
+    };
+  }
+  componentWillMount = () => {
+    this.createRows();
   }
 
-  createRows = (numberOfRows) => {
-    let rows = [];
-    for (let i = 0; i < numberOfRows; i++) {
-      rows[i] = this.createFakeRowObjectData(i);
-    }
-    return rows;
+  createRows = () => {
+    this.props.fetchProfile()
+      .then((res) => {
+        console.log(res);
+        let rows = [];
+        for (let i = 0; i < res.payload.length ; i++) {
+          rows[i] = this.populateData(res.payload[i], i);
+        }
+        return rows;
+      })
+      .then((rows) => {
+        console.log(rows);
+        this.setState({ rows: rows});
+      })
   };
   
   createSaveBtn = (index) => {
@@ -106,22 +121,24 @@ export default class MentorTable extends React.Component {
     };
   };
 
-  createFakeRowObjectData = (index) => {
+  populateData = (profile, index) => {
+    console.log('populate data', profile);
     return {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      email: faker.internet.email(),
-      address: faker.address.streetName(),
-      city: 'Seattle',
-      zipCode: faker.address.zipCode(),
-      phoneNumber: faker.phone.phoneNumber(),
+      id: 'id_' + index,
+      firstName: String,
+      lastName: String,
+      email: String,
+      address: String,
+      city: String,
+      zipCode: Number,
+      phoneNumber: String,
     };
   };
 
   getColumns = () => {
     let clonedColumns = this._columns.slice();
     clonedColumns[2].events = {
-      onClick: (ev, args) => {
+      onClick: (events, args) => {
         const idx = args.idx;
         const rowIdx = args.rowIdx;
         this.grid.openCellEditor(rowIdx, idx);
@@ -155,7 +172,8 @@ export default class MentorTable extends React.Component {
   };
 
   onRowsSelected = (rows) => {
-    this.setState({'selectedIndexes': this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
+    this.setState({selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
+
   };
 
   onRowsDeselected = (rows) => {
@@ -209,28 +227,41 @@ export default class MentorTable extends React.Component {
     return this.state.rows.length;
   };
 
-  // handleCreate = (profile) => {
-  //   this.props.createProfile(profile)
-  //     .then(() => {
-  //       this.props.history.push(routes.PROFILE_ROUTE);
-  //     });
-  // }
+  handleCreate = (profile) => {
+    this.props.createProfile(profile)
+      .then(() => {
+        this.props.history.push(routes.PROFILE_ROUTE);
+      });
+  }
 
   // handleUpdate = (profile) => {
   //   this.props.updateProfile(profile);
   //   this.setState({ editing: false });
   // }
 
+  // handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   return this.props.onComplete(this.state)
+  //     .then(() => {
+  //       this.setState({ rows });
+  //     })
+  //     .catch(console.error);
+  // }
+  
   render() {
+    const buttonText = this.props.profile ? 'Update' : 'Create';
     return (
+      <div className="mentor-table" onSubmit={ this.handleSubmit }>
+
       <ReactDataGrid
         ref={ node => this.grid = node }
         enableCellSelect={true}
         onGridSort={this.handleGridSort}
         columns={this.getColumns()}
         rowGetter={this.getRowAt}
-        rowsCount={this.state.rows.length} 
+        rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
+        onChange={ this.handleChange }
         toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><div className="btnGroup">{this.deleteBtn}</div></div>}
         enableRowSelect={true}
         onRowSelect={this.onRowSelect}
@@ -245,6 +276,14 @@ export default class MentorTable extends React.Component {
         }} 
         rowHeight={50}
         minHeight={600}
-        rowScrollTimeout={200} />);
+        rowScrollTimeout={200} />
+      </div>
+    );
   }
 }
+
+MentorTable.propTypes = {
+  onComplete: PropTypes.func,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MentorTable);

@@ -1,0 +1,34 @@
+.point-table {
+  
+  .labels {
+    width: 6em;
+    font-size: 12px;
+    text-align: right;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  * {
+    display: inline-block;
+    height: 4em;
+    width: 4em;
+    padding: 1em;
+    margin: .2em;
+  }
+}
+
+.column {
+  font-size: 15px;
+}
+
+.data-entry {
+  display: block;
+}
+
+.synopsis {
+  padding-top: 5em;
+}

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { convertDateToValue } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import * as pointTrackerActions from '../../actions/point-tracker';
+import './point-tracker-form.scss';
 
 const defaultState = {
   _id: '1EF12348902093DECBA908',
@@ -154,7 +155,7 @@ class PointTrackerForm extends React.Component {
     const selectOptionsJSX = (
       <React.Fragment>
         <label htmlFor="">Select Student</label>
-        <select onChange={ this.handleStudentSelect }>
+        <select onChange={ this.handleStudentSelect } >
           { this.state.students.map((student) => {
             const { _id, firstName, lastName } = student;
             return (
@@ -262,19 +263,22 @@ class PointTrackerForm extends React.Component {
     );
 
     return (
-      <React.Fragment>
-        <h4>Point Sheet and Grades</h4>
-        <form className="data-entry" onSubmit={ this.handleSubmit }>
-          { selectOptionsJSX }
-          { surveyQuestionsJSX }
-          <PointTrackerTable
-            handleChange={ this.handleChange }
-            subjects={ this.state.pointTracker.subjects }
-          />
-          { synopsisCommentsJSX }
-          <button type="submit">Submit Point Tracker</button>
-        </form>
-      </React.Fragment>
+      <div className="points-tracker">
+        <React.Fragment>
+          <form className="data-entry" onSubmit={ this.handleSubmit }>
+            <h1>POINT TRACKER TABLE</h1>
+              <h4>Point Sheet and Grades</h4>
+              { selectOptionsJSX }
+              { surveyQuestionsJSX }
+                <PointTrackerTable
+                  handleChange={ this.handleChange }
+                  subjects={ this.state.pointTracker.subjects }
+              />
+              { synopsisCommentsJSX }
+            <button type="submit">Submit Point Tracker</button>
+          </form>
+        </React.Fragment>
+      </div>
     );
   }
 }

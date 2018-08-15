@@ -2,7 +2,8 @@
 
 // content
 html, body {
-  position: relative;
+  max-width:inherit;
+  position: relative; 
   font-family: $font-primary;
 }
 
@@ -40,16 +41,16 @@ label {
 }
 
 textarea, input {
-  background: $color-brand-green;
-  border: none;
+  background: $color-input-field;
+  // border: none;
   padding: 15px;
   border-radius: 3px;
   margin-bottom: 20px;
   transition: 350ms all;
 
   &:focus {
-    background: $color-button-focus;
-    color: $color-white;
+    background: $color-input-focus;
+    color: $color-black;
   }
 
   &::placeholder {
@@ -68,7 +69,7 @@ button,input[type="submit"] {
   border-radius: 3px;
 
   &:hover {
-    background: $color-grey;
+    background: $color-darkgrey;
   }
 
   &:active {

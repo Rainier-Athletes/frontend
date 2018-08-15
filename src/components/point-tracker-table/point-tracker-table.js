@@ -7,18 +7,18 @@ import './point-tracker-table.scss';
 export default function PointTrackerTable(props) {
   const subjects = props.subjects.map(subject => (
     <SubjectColumn 
-      key={ subject.subjectName } 
-      label={ subject.subjectName }
-      subject={ subject }
-      handleChange={ props.handleChange }
+    key={ subject.subjectName } 
+    label={ subject.subjectName }
+    subject={ subject }
+    handleChange={ props.handleChange }
     />
   ));
-
+  
   return (
     <React.Fragment>
       <legend>Point Sheet and Grades</legend>
       <div className="point-table">
-        <div className="column labels">
+        <div className="row-labels">
           <label></label>
           <label>Periods Missed</label>
           <label>Num. of Stamps</label>

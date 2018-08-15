@@ -6,7 +6,7 @@ import { faAngleDown, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
 import Navbar from '../navbar/navbar';
-import Dashboard from '../dashboard/dashboard';
+// import Dashboard from '../dashboard/dashboard';
 import Whitelist from '../whitelist/whitelist';
 import Auth from '../auth/auth';
 import PointTrackerForm from '../point-tracker-form/point-tracker-form';
@@ -28,7 +28,7 @@ export default class App extends React.Component {
         <BrowserRouter>
           <div>
             {/* TODO: uncomment navbar */}
-            {/* <Navbar /> */}
+            <Navbar />
             {/* TODO: figure out why the dashboard component is preventing navigating away from the /admin.  */}
             {/* <Dashboard /> */} 
             <Route exact path="*" component={AuthRedirect} />

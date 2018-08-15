@@ -1,8 +1,8 @@
 .point-table {
   
   .labels {
-    width: 6em;
-    font-size: 12px;
+    width: 10em;
+    font-size: 14px;
     text-align: right;
   }
 
@@ -14,19 +14,21 @@
 
   * {
     display: inline-block;
-    height: 4em;
-    width: 4em;
-    padding: 1em;
+    height: 3em;
+    width: 6em;
+    padding: .5em;
     margin: .2em;
   }
 }
 
-.column {
-  font-size: 15px;
+.row-labels {
+  font-size: 12px;
 }
+
 
 .data-entry {
   display: block;
+  margin-left: 25px;
 }
 
 .synopsis {

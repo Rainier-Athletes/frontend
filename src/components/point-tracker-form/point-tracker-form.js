@@ -68,12 +68,23 @@ class PointTrackerForm extends React.Component {
     };
   }
 
-  handleRootChange = (event) => {
-    const { name, value } = event.target;
+  // YOU ARE HERE
+  handleDateChange = (event) => {
+    const { value } = event.target;
+    const [year, month, day] = value.split('-'); // 2018-08-15 VALUE
+    const date = new Date(
+      parseInt(year, 10), 
+      parseInt(month, 10) - 1, 
+      parseInt(day, 10),
+    );
+
+    console.log(year, month, day, 'YEAR MONTH DAY');
+    console.log(date.getTime(), 'DATE');
+    console.log(Date.now(), 'NOW');
+
     this.setState((prevState) => {
       const newState = { ...prevState };
-
-      newState.pointTracker[name] = value;
+      newState.pointTracker.date = date.getTime();
       return newState;
     });
   }
@@ -172,7 +183,7 @@ class PointTrackerForm extends React.Component {
         <input
           name="date"
           type="date"
-          onChange={ this.handleRootChange }
+          onChange={ this.handleDateChange }
           value={ convertDateToValue(this.state.pointTracker.date) }
         />
       </React.Fragment>

@@ -9,7 +9,7 @@ export const setPointTracker = pointTracker => ({
 export const createPointTracker = pointTracker => (store) => {
   console.log('CREATE POINT TRACKER FIRING');
   const { token } = store.getState();
-  return superagent.post(`${API_URL}${routes.PROFILE_ROUTE}`)
+  return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(pointTracker)
@@ -18,3 +18,9 @@ export const createPointTracker = pointTracker => (store) => {
       return store.dispatch(setPointTracker(res.body));
     });
 };
+
+// export const fetchStudent = studentId => (store) => {
+//   console.log('FETCH STUDENTS FIRING');
+//   const { token } = store.getState();
+//   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
+// }

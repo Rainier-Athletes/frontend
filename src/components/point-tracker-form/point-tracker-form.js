@@ -36,6 +36,51 @@ const defaultState = {
       stamps: 16,
       x: 1,
       tutorials: 2,
+    }, 
+  }, {
+    subjectName: 'Art',
+    teacher: '1EF12348902093DECBA910',
+    scoring: {
+      excusedDays: 1,
+      stamps: 14,
+      x: 3,
+      tutorials: 1,
+    },
+  }, {
+    subjectName: 'PE',
+    teacher: '1EF12348902093DECBA912',
+    scoring: {
+      excusedDays: 1,
+      stamps: 12,
+      x: 6,
+      tutorials: 0,
+    },
+  }, {
+    subjectName: 'English',
+    teacher: '1EF12348902093DECBA914',
+    scoring: {
+      excusedDays: 1,
+      stamps: 16,
+      x: 1,
+      tutorials: 2,
+    },
+  }, {
+    subjectName: 'Spanish',
+    teacher: '1EF12348902093DECBA914',
+    scoring: {
+      excusedDays: 1,
+      stamps: 16,
+      x: 1,
+      tutorials: 2,
+    },
+  }, {
+    subjectName: 'Tutorial',
+    teacher: '1EF12348902093DECBA914',
+    scoring: {
+      excusedDays: 1,
+      stamps: 16,
+      x: 1,
+      tutorials: 2,
     },
   }],
   surveyQuestions: {
@@ -78,10 +123,6 @@ class PointTrackerForm extends React.Component {
       parseInt(month, 10) - 1, 
       parseInt(day, 10),
     );
-
-    console.log(year, month, day, 'YEAR MONTH DAY');
-    console.log(date.getTime(), 'DATE');
-    console.log(Date.now(), 'NOW');
 
     this.setState((prevState) => {
       const newState = { ...prevState };

@@ -63,16 +63,16 @@ class MentorTable extends React.Component {
         sortable: true,
       },
       {
-        key: 'email',
-        name: 'Email',
+        key: 'role',
+        name: 'Role',
         editable: true,
         width: 200,
         resizable: true,
         sortable: true,
       },
       {
-        key: 'role',
-        name: 'Role',
+        key: 'email',
+        name: 'Email',
         editable: true,
         width: 200,
         resizable: true,
@@ -138,10 +138,11 @@ class MentorTable extends React.Component {
         avatar: faker.image.avatar(),
         firstName: profile.firstName,
         lastName: profile.lastName,
-        email: profile.email,
+        // email: profile.email,
         role: profile.role,
-        phone: profile.phone,
-        address: '', },
+        // phone: profile.phone,
+        // address: '', 
+      },
       ]
     };
   };

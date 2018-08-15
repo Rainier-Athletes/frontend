@@ -8,29 +8,7 @@ import { render } from 'react-dom';
 import { makeData, Tips } from '../../lib/utils';
 import './mentor-table.scss';
 
-const faker = require('faker');
-const { Editors, Toolbar, Formatters } = require('blablablab');
-const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
-const { ImageFormatter } = Formatters;
 
-const updateBtn = <button className="updateBtn">Save</button>
-
-export default class MentorTable extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this._columns = [
-      {
-        key: 'button',
-        name: '',
-        formatter: updateBtn,
-        width: 100,
-        resizable: true,
-        headerRenderer: ''
-      },
-      {
-        key: 'firstName',
-        name: 'First Name',
-        editable: true,
         width: 200,
         resizable: true,
         sortable: true,

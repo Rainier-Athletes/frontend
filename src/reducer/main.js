@@ -4,6 +4,7 @@ import role from './role';
 import profile from './profile';
 import myProfile from './myProfile';
 import whitelist from './whitelist';
+import pointTracker from './point-tracker';
 
 export default combineReducers({
   token,
@@ -11,4 +12,5 @@ export default combineReducers({
   profile,
   myProfile,
   whitelist,
+  pointTracker,
 });

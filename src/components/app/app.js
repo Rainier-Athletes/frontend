@@ -9,6 +9,10 @@ import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
 import Whitelist from '../whitelist/whitelist';
 import Auth from '../auth/auth';
+// import PointTrackerForm from '../point-tracker-form/point-tracker-form';
+// import * as routes from '../../lib/routes';
+// import Auth from '../auth/auth';
+// import AdminModal from '../admin-modal/admin-modal';
 
 import './app.scss';
 
@@ -17,6 +21,7 @@ library.add(faAngleDown, faUserPlus);
 const AdminUser = Auth(['admin']);
 
 export default class App extends React.Component {
+  // <Route exact path={routes.MENTOR_ROUTE} component={PointTrackerForm} />
   render() {
     return (
       <div className="app">

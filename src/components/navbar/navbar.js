@@ -19,7 +19,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   doLogout: () => dispatch(authActions.logout()),
-  fetchMyProfile: profile => dispatch(profileActions.fetchMyProfileReq(profile)),
+  fetchProfile: profile => dispatch(profileActions.fetchProfileReq(profile)),
 });
 
 class Navbar extends React.Component {
@@ -32,18 +32,21 @@ class Navbar extends React.Component {
   }
 
   setGoogleOAuthUrl = () => {
-    const baseUrl = 'https://accounts.google.com/o/oauth2/v2/auth?';
+    const baseUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
     const redirect = `redirect_uri=${API_URL}/oauth/google`;
-    const scope = '&scope=openid%20email%20profile';
-    const clientId = `&client_id=${GOOGLE_OAUTH_ID}`;
-    const prompt = '&prompt=consent%20select_account';
-    const responseType = '&response_type=code';
-
-    return [baseUrl, redirect, scope, clientId, prompt, responseType].join('');
+    // scope = resources your app can access on a user's behalf
+    const scope = 'scope=openid%20email%20profile%20https://www.googleapis.com/auth/drive';
+    const clientId = `client_id=${GOOGLE_OAUTH_ID.trim()}`;
+    // prompt determines if we ask the user for consent first to sign in via Google
+    const prompt = 'prompt=consent%20select_account';
+    const responseType = 'response_type=code';
+    console.log('oauthURL:', `${baseUrl}?${redirect}&${scope}&${clientId}&${prompt}&${responseType}`); // eslint-disable-line
+    return `${baseUrl}?${redirect}&${scope}&${clientId}&${prompt}&${responseType}&access_type=offline`;
+    // return [baseUrl, redirect, scope, clientId, prompt, responseType].join('');
   }
 
   componentDidMount() {
-    this.props.fetchMyProfile()
+    this.props.fetchProfile()
       .then((res) => {
         console.log(res);
       })

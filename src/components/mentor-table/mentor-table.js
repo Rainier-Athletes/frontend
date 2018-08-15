@@ -1,20 +1,19 @@
 /*eslint-disable*/
 import React from 'react';
+import PropTypes from 'prop-types';
+import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 // import 'bootstrap/dist/css/bootstrap.css';
 import update from 'immutability-helper';
-import classNames from 'classnames';
-import { render } from 'react-dom';
-import { makeData, Tips } from '../../lib/utils';
 import './mentor-table.scss';
 
 import * as profileActions from '../../actions/profile';
 
 const faker = require('faker');
 const { Editors, Toolbar, Formatters } = require('react-data-grid-addons');
-const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
-const { ImageFormatter } = Formatters;
+// const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
+// const { ImageFormatter } = Formatters;
 
 const mapStateToProps = state => ({
   profile: state.profile,
@@ -25,15 +24,16 @@ const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(profileActions.updateProfileReq(profile)),
   createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
 });
-Component
+
 class MentorTable extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
+
     this._columns = [
       {
         key: 'button',
         name: '',
-        formatter: SaveButton,
+        // formatter: SaveButton,
         width: 100,
         resizable: true,
         headerRenderer: ''
@@ -62,6 +62,7 @@ class MentorTable extends React.Component {
         resizable: false,
         sortable: true,
       },
+      // how do we use the role field as a key to drop data into the correct object?
       {
         key: 'role',
         name: 'Role',
@@ -121,13 +122,14 @@ class MentorTable extends React.Component {
   populateData = (profile, index) => {
     console.log('populate data', profile);
     return {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      email: faker.internet.email(),
-      address: faker.address.streetName(),
-      city: 'Seattle',
-      zipCode: faker.address.zipCode(),
-      phoneNumber: faker.phone.phoneNumber(),
+      id: 'id_' + index,
+      firstName: String,
+      lastName: String,
+      email: String,
+      address: String,
+      city: String,
+      zipCode: Number,
+      phoneNumber: String,
     };
   };
 
@@ -219,13 +221,25 @@ class MentorTable extends React.Component {
     this.setState({ editing: false });
   }
 
-  handleDelete = (id, event) => {
+  handleDelete = (event) => {
     event.preventDefault();
     this.props.onDelete(this.props.profiles[i].id);
   }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    return this.props.onComplete(this.state)
+      .then(() => {
+        this.setState({ rows });
+      })
+      .catch(console.error);
+  }
   
   render() {
+    const buttonText = this.props.profile ? 'Update' : 'Create';
     return (
+      <div className="mentor-table" onSubmit={ this.handleSubmit }>
+
       <ReactDataGrid
         ref={ node => this.grid = node }
         enableCellSelect={true}
@@ -234,7 +248,14 @@ class MentorTable extends React.Component {
         rowGetter={this.getRowAt}
         rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><div className="btnGroup">{this.deleteBtn}{this.updateBtn}</div></div>}
+        onChange={ this.handleChange }
+        toolbar=
+        {
+        <div>
+          <Toolbar onAddRow={this.handleAddRow}/>
+          <div className="btnGroup">{ buttonText }</div>
+        </div>
+        }
         enableRowSelect={true}
         onRowSelect={this.onRowSelect}
         rowSelection={{
@@ -248,8 +269,15 @@ class MentorTable extends React.Component {
         }} 
         rowHeight={50}
         minHeight={600}
-        rowScrollTimeout={200} />);
+        rowScrollTimeout={200} />
+      </div>
+    );
   }
+}
+
+
+MentorTable.propTypes = {
+  onComplete: PropTypes.func,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MentorTable);

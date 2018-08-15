@@ -31,7 +31,6 @@ export default class App extends React.Component {
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
             <Route expact path="/admin" component={ AdminUser(Admin) } />
-            <Route expact path="/whitelist" component={ AdminUser(Whitelist) } />
           </div>
         </BrowserRouter>
       </div>

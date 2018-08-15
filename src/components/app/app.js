@@ -28,7 +28,7 @@ export default class App extends React.Component {
         <BrowserRouter>
           <div>
             {/* TODO: uncomment navbar */}
-            {/* <Navbar /> */}
+            <Navbar />
             {/* TODO: figure out why the dashboard component is preventing navigating away from the /admin.  */}
             {/* <Dashboard /> */} 
             <Route exact path="*" component={AuthRedirect} />

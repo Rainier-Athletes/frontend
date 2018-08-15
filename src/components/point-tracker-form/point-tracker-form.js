@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { convertDateToValue } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import * as pointTrackerActions from '../../actions/point-tracker';
+import './point-tracker-form.scss';
 
 const defaultState = {
   _id: '1EF12348902093DECBA908',
@@ -161,6 +162,7 @@ class PointTrackerForm extends React.Component {
             const { _id, firstName, lastName } = student;
             return (
               <option 
+                placeholder="Select" 
                 key={ _id } 
                 value={ _id }
               >{ `${firstName} ${lastName}`}
@@ -265,6 +267,7 @@ class PointTrackerForm extends React.Component {
 
     return (
       <React.Fragment>
+        <h1>POINT TRACKER TABLE</h1>
         <h4>Point Sheet and Grades</h4>
         <form className="data-entry" onSubmit={ this.handleSubmit }>
           { selectOptionsJSX }

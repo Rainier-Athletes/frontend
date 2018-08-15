@@ -2,8 +2,10 @@
 
 // content
 html, body {
+  max-width: inherit;
   position: relative;
   font-family: $font-primary;
+  margin: 60px 20px 20px 20px;
 }
 
 head, script, link  { display: none; }

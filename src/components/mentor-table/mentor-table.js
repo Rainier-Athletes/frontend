@@ -84,7 +84,7 @@ export default class MentorTable extends React.Component {
         sortable: true,
       },
     ];
-    let originalRows = this.createRows(30);
+    let originalRows = this.createRows(5);
     let rows = originalRows.slice(0);
     this.state = { originalRows, rows, selectedIndexes: [] };
 
@@ -156,7 +156,6 @@ export default class MentorTable extends React.Component {
 
   onRowsSelected = (rows) => {
     this.setState({'selectedIndexes': this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
-    // console.log(selectedIndexes);
   };
 
   onRowsDeselected = (rows) => {
@@ -168,22 +167,18 @@ export default class MentorTable extends React.Component {
     let newRows = this.state.rows.filter((row, i) => {
      if(!this.state.selectedIndexes.includes(i)) return row
     })
-
-    console.log('new rows',newRows);
-    this.setState({rows: newRows})
     
-    // event.preventDefault();
-    // this.props.onDelete(this.props.profiles[i].id);
-    // this.setState((prevState) => {
-    //   rows: prevState.rows.filter((x, i), => i !==)
-    // })
-    // this.setState({filteredIndexes: this.state.selectedIndexes
+    console.log('new rows',newRows);
+    this.setState({rows: newRows, selectedIndexes: [] })
+    let checkboxes = document.getElementsByClassName('.react-data-grid-checkbox-label')
+    console.log(checkboxes);
   }
 
-  // handleDelete = (id, event) => {
-  //   event.preventDefault();
-  //   this.props.onDelete(this.props.profiles[i].id);
-  // }
+  handleDelete = (id, event) => {
+    event.preventDefault();
+    console.log(this.props.onDelete(this.props.profiles[i].id));
+    this.props.onDelete(this.props.profiles[i].id);
+  }
 
   handleGridSort = (sortColumn, sortDirection) => {
     const comparer = (a, b) => {

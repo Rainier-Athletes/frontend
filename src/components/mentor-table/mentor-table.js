@@ -1,14 +1,55 @@
 /*eslint-disable*/
 import React from 'react';
+import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 // import 'bootstrap/dist/css/bootstrap.css';
 import update from 'immutability-helper';
-import classNames from 'classnames';
 import { render } from 'react-dom';
 import { makeData, Tips } from '../../lib/utils';
 import './mentor-table.scss';
 
+import * as profileActions from '../../actions/profile';
 
+const faker = require('faker');
+const { Editors, Toolbar, Formatters } = require('react-data-grid-addons');
+const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
+const { ImageFormatter } = Formatters;
+
+const mapStateToProps = state => ({
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchProfile: profile => dispatch(profileActions.fetchProfileReq(profile)),
+  updateProfile: profile => dispatch(profileActions.updateProfileReq(profile)),
+  createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
+});
+
+const updateBtn = <button className="updateBtn">Save</button>
+
+class MentorTable extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this._columns = [
+      {
+        key: 'button',
+        name: '',
+        formatter: updateBtn,
+        width: 100,
+        resizable: true,
+        headerRenderer: ''
+      },
+      {
+        key: 'avatar',
+        name: 'Avatar',
+        width: 60,
+        formatter: ImageFormatter,
+        resizable: true,
+        headerRenderer: <ImageFormatter value={faker.image.cats()} />
+      },
+      {
+        key: 'firstName',
+        name: 'First Name',
+        editable: true,
         width: 200,
         resizable: true,
         sortable: true,
@@ -30,6 +71,14 @@ import './mentor-table.scss';
         sortable: true,
       },
       {
+        key: 'role',
+        name: 'Role',
+        editable: true,
+        width: 200,
+        resizable: true,
+        sortable: true,
+      },
+      {
         key: 'address',
         name: 'Address',
         editable: true,
@@ -38,61 +87,62 @@ import './mentor-table.scss';
         sortable: true,
       },
       {
-        key: 'city',
-        name: 'City',
-        editable: true,
-        width: 200,
-        resizable: true,
-        sortable: true,
-      },
-      {
-        key: 'zipCode',
-        name: 'ZipCode',
-        editable: true,
-        width: 200,
-        resizable: true,
-        sortable: true,
-      },
-      {
-        key: 'phoneNumber',
-        name: 'Phone Number',
+        key: 'phone',
+        name: 'Phone',
         editable: true,
         width: 200,
         resizable: true,
         sortable: true,
       },
     ];
-    let originalRows = this.createRows(5);
-    let rows = originalRows.slice(0);
-    this.state = { originalRows, rows, selectedIndexes: [] };
 
-    this.deleteBtn = <button className="deleteBtn" onClick={this.deleteRow}>Delete</button>;
+    this.state = {
+      rows: [],
+      selectedIndexes: [],
+      originalRows: [],
+      expanded: {},
+    };
   }
 
-  createRows = (numberOfRows) => {
-    let rows = [];
-    for (let i = 0; i < numberOfRows; i++) {
-      rows[i] = this.createFakeRowObjectData(i);
-    }
-    return rows;
+  componentWillMount = () => {
+    this.createRows();
+  }
+
+  createRows = () => {
+    this.props.fetchProfile()
+      .then((res) => {
+        let rows = [];
+        for (let i = 0; i < res.payload.length ; i++) {
+          rows[i] = this.populateData(res.payload[i], i);
+        }
+        return rows;
+      })
+      .then((rows) => {
+        this.setState({ rows: rows });
+        this.setState({ originalRows: rows });
+      })
   };
 
-  createSaveBtn = (index) => {
+  populateData = (profile, i) => {
     return {
-      id: 'id_' + index,
-      button: <button>Oopsie</button>,
-    };
-  };
-
-  createFakeRowObjectData = (index) => {
-    return {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      email: faker.internet.email(),
-      address: faker.address.streetName(),
-      city: 'Seattle',
-      zipCode: faker.address.zipCode(),
-      phoneNumber: faker.phone.phoneNumber(),
+      id: 'id_' + i,
+      avatar: profile.picture,
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      email: profile.email,
+      role: profile.role,
+      phone: profile.phone,
+      address: '',
+      children: [
+        { id: 'id_' + i + 2,
+        avatar: faker.image.avatar(),
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        email: profile.email,
+        role: profile.role,
+        phone: profile.phone,
+        address: '', },
+      ]
     };
   };
 
@@ -133,30 +183,13 @@ import './mentor-table.scss';
   };
 
   onRowsSelected = (rows) => {
-    this.setState({'selectedIndexes': this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
+    this.setState({selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
   };
 
   onRowsDeselected = (rows) => {
     let rowIndexes = rows.map(r => r.rowIdx);
     this.setState({selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1 )});
   };
-
-  deleteRow = (id, event) => {
-    let newRows = this.state.rows.filter((row, i) => {
-     if(!this.state.selectedIndexes.includes(i)) return row
-    })
-
-    console.log('new rows',newRows);
-    this.setState({rows: newRows, selectedIndexes: [] })
-    let checkboxes = document.getElementsByClassName('.react-data-grid-checkbox-label')
-    console.log(checkboxes);
-  }
-
-  handleDelete = (id, event) => {
-    event.preventDefault();
-    console.log(this.props.onDelete(this.props.profiles[i].id));
-    this.props.onDelete(this.props.profiles[i].id);
-  }
 
   handleGridSort = (sortColumn, sortDirection) => {
     const comparer = (a, b) => {
@@ -167,7 +200,6 @@ import './mentor-table.scss';
       }
     };
     const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
-    console.log(this.state)
     this.setState({ rows });
   };
 
@@ -188,17 +220,63 @@ import './mentor-table.scss';
     return this.state.rows.length;
   };
 
-  // handleCreate = (profile) => {
-  //   this.props.createProfile(profile)
-  //     .then(() => {
-  //       this.props.history.push(routes.PROFILE_ROUTE);
-  //     });
-  // }
+  handleCreate = (profile) => {
+    this.props.createProfile(profile)
+      .then(() => {
+        this.props.history.push(routes.PROFILE_ROUTE);
+      });
+  }
 
-  // handleUpdate = (profile) => {
-  //   this.props.updateProfile(profile);
-  //   this.setState({ editing: false });
-  // }
+  handleUpdate = (profile) => {
+    this.props.updateProfile(profile);
+    this.setState({ editing: false });
+  }
+
+  handleDelete = (id, event) => {
+    event.preventDefault();
+    this.props.onDelete(this.props.profiles[i].id);
+  }
+
+  getSubRowDetails = (rowItem) => {
+    let isExpanded = this.state.expanded[rowItem.name] ? this.state.expanded[rowItem.name] : false;
+    return {
+      group: rowItem.children && rowItem.children.length > 0,
+      expanded: isExpanded,
+      children: rowItem.children,
+      field: 'role',
+      treeDepth: rowItem.treeDepth || 0,
+      siblingIndex: rowItem.siblingIndex,
+      numberSiblings: rowItem.numberSiblings
+    };
+  };
+
+  onCellExpand = (args) => {
+    let rows = this.state.rows.slice(0);
+    let rowKey = args.rowData.name;
+    let rowIndex = rows.indexOf(args.rowData);
+    let subRows = args.expandArgs.children;
+
+    let expanded = Object.assign({}, this.state.expanded);
+    if (expanded && !expanded[rowKey]) {
+      expanded[rowKey] = true;
+      this.updateSubRowDetails(subRows, args.rowData.treeDepth);
+      rows.splice(rowIndex + 1, 0, ...subRows);
+    } else if (expanded[rowKey]) {
+      expanded[rowKey] = false;
+      rows.splice(rowIndex + 1, subRows.length);
+    }
+
+    this.setState({ expanded: expanded, rows: rows });
+  };
+
+  updateSubRowDetails = (subRows, parentTreeDepth) => {
+    let treeDepth = parentTreeDepth || 0;
+    subRows.forEach((sr, i) => {
+      sr.treeDepth = treeDepth + 1;
+      sr.siblingIndex = i;
+      sr.numberSiblings = subRows.length;
+    });
+  };
 
   render() {
     return (
@@ -210,7 +288,7 @@ import './mentor-table.scss';
         rowGetter={this.getRowAt}
         rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><div className="btnGroup">{this.deleteBtn}</div></div>}
+        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><button className="deleteBtn">Delete</button></div>}
         enableRowSelect={true}
         onRowSelect={this.onRowSelect}
         rowSelection={{
@@ -222,8 +300,12 @@ import './mentor-table.scss';
             indexes: this.state.selectedIndexes
           }
         }}
+        getSubRowDetails={this.getSubRowDetails}
+        onCellExpand={this.onCellExpand}
         rowHeight={50}
         minHeight={600}
         rowScrollTimeout={200} />);
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(MentorTable);

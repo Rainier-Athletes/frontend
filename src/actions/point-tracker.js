@@ -7,19 +7,17 @@ export const setPointTracker = pointTracker => ({
 });
 
 export const createPointTracker = pointTracker => (store) => {
-  console.log('CREATE POINT TRACKER FIRING');
   const { token } = store.getState();
   return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(pointTracker)
     .then((res) => {
-      console.log(res.body, 'RESPONSE AFTER CREATE POINT TRACKER');
       return store.dispatch(setPointTracker(res.body));
     });
 };
 
-export const fetchStudents = studentIds => (store) => {
+export const fetchStudents = studentIds => (store) => { // eslint-disable-line
   const { token } = store.getState();
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
@@ -29,18 +27,18 @@ export const fetchStudents = studentIds => (store) => {
       const students = profiles.filter(profile => profile.role === 'student');
       return students;
     })
-    .catch(console.error);
+    .catch(console.error); // eslint-disable-line
 };
 
 // TODO: FINISH THIS ROUTE
-export const fetchLastPointTracker = studentId => (store) => {
+export const fetchLastPointTracker = studentId => (store) => { // eslint-disable-line
   const { token } = store.getState();
 
   return superagent.get(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .then((response) => {
-      console.log(response.body, 'POINT TRACKER RESPONSE');
+      console.log(response); // eslint-disable-line
     })
-    .catch(console.error);
+    .catch(console.error); // eslint-disable-line
 };

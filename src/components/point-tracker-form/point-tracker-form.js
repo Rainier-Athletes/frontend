@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 
@@ -175,3 +175,7 @@ export default class PointTrackerForm extends React.Component {
     );
   }
 }
+
+PointTrackerForm.propTypes = {
+  handleChange: PropTypes.func,
+};

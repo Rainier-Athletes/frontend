@@ -14,7 +14,6 @@ import './app.scss';
 
 library.add(faAngleDown, faUserPlus);
 
-
 const AdminUser = Auth(['admin']);
 
 export default class App extends React.Component {

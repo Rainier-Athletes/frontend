@@ -13,23 +13,25 @@ export const setMyProfile = profile => ({
 
 export const createProfileReq = profile => (store) => {
   const { token } = store.getState();
+
   return superagent.post(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(profile)
-    .then((res) => {
-      return store.dispatch(setProfile(res.body));
+    .then((response) => {
+      return store.dispatch(setProfile(response.body));
     });
 };
 
 export const updateProfileReq = profile => (store) => {
   const { token } = store.getState();
+
   return superagent.put(`${API_URL}${routes.PROFILE_ROUTE}/${profile._id}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(profile)
-    .then((res) => {
-      return store.dispatch(setProfile(res.body));
+    .then((response) => {
+      return store.dispatch(setProfile(response.body));
     });
 };
 

@@ -34,14 +34,14 @@ class Navbar extends React.Component {
   }
 
   setGoogleOAuthUrl = () => {
-    const baseUrl = 'https://accounts.google.com/o/oauth2/v2/auth?';
+    const baseUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
     const redirect = `redirect_uri=${API_URL}/oauth/google`;
-    const scope = '&scope=openid%20email%20profile';
-    const clientId = `&client_id=${GOOGLE_OAUTH_ID}`;
-    const prompt = '&prompt=consent%20select_account';
-    const responseType = '&response_type=code';
+    const scope = 'scope=openid%20email%20profile%20https://www.googleapis.com/auth/drive';
+    const clientId = `client_id=${GOOGLE_OAUTH_ID.trim()}`;
+    const prompt = 'prompt=consent%20select_account';
+    const responseType = 'response_type=code';
 
-    return [baseUrl, redirect, scope, clientId, prompt, responseType].join('');
+    return `${baseUrl}?${redirect}&${scope}&${clientId}&${prompt}&${responseType}&access_type=offline`;
   }
 
   componentDidMount() {
@@ -125,6 +125,7 @@ Navbar.propTypes = {
   doLogout: PropTypes.func,
   fetchMyProfile: PropTypes.func,
   myProfile: PropTypes.object,
+  fetchProfile: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

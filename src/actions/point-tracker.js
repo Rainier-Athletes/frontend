@@ -20,7 +20,6 @@ export const createPointTracker = pointTracker => (store) => {
 };
 
 export const fetchStudents = studentIds => (store) => {
-  console.log('FETCH STUDENTS FIRING');
   const { token } = store.getState();
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
@@ -28,12 +27,12 @@ export const fetchStudents = studentIds => (store) => {
     .then((response) => {
       const profiles = response.body;
       const students = profiles.filter(profile => profile.role === 'student');
-      console.log(students, 'STUDENTS');
       return students;
     })
     .catch(console.error);
 };
 
+// TODO: FINISH THIS ROUTE
 export const fetchLastPointTracker = studentId => (store) => {
   const { token } = store.getState();
 
@@ -42,7 +41,6 @@ export const fetchLastPointTracker = studentId => (store) => {
     .set('Content-Type', 'application/json')
     .then((response) => {
       console.log(response.body, 'POINT TRACKER RESPONSE');
-      // return students;
     })
     .catch(console.error);
 };

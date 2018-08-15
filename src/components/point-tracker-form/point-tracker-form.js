@@ -55,6 +55,7 @@ const defaultState = {
 const mapDispatchToProps = dispatch => ({
   createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
   fetchStudents: studentIds => dispatch(pointTrackerActions.fetchStudents(studentIds)),
+  fetchLastPointTracker: studentId => dispatch(pointTrackerActions.fetchLastPointTracker(studentId)),
 });
 
 class PointTrackerForm extends React.Component {
@@ -131,129 +132,146 @@ class PointTrackerForm extends React.Component {
       .catch(console.error);
   }
 
+  // TODO: fix this event handler
   handleStudentSelect = (event) => {
     event.preventDefault();
-    const { value } = event.target;
+    const studentId = event.target.value;
+
+    this.props.fetchLastPointTracker(studentId)
+      .then((response) => {
+        console.log(response, 'RESPONSE');
+      });
 
     this.setState((prevState) => {
       const newState = { ...prevState };
-      newState.pointTracker.studentId = value;
+      newState.pointTracker.studentId = studentId;
 
       return newState;
     });
   }
 
   render() {
+    const selectOptionsJSX = (
+      <React.Fragment>
+        <label htmlFor="">Select Student</label>
+        <select onChange={ this.handleStudentSelect }>
+          { this.state.students.map((student) => {
+            const { _id, firstName, lastName } = student;
+            return (
+              <option 
+                key={ _id } 
+                value={ _id }
+              >{ `${firstName} ${lastName}`}
+              </option>
+            );
+          })}
+        </select>
+        <label htmlFor="">Select Date</label>
+        <input
+          name="date"
+          type="date"
+          onChange={ this.handleChange }
+          value={ convertDateToValue(this.state.pointTracker.date) }
+        />
+      </React.Fragment>
+    );
+    
+    const surveyQuestionsJSX = (
+      <fieldset>
+      <label htmlFor="attendedCheckin">Attended Check-In</label>
+      <input
+        type="checkbox"
+        name="attendedCheckin"
+        onChange= { this.handleChange }
+        checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }
+      />
+
+      <label htmlFor="metFaceToFace">Met Face-to-Face</label>
+      <input
+        type="checkbox"
+        name="metFaceToFace"
+        onChange= { this.handleChange }
+        checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }
+      />
+
+      <label htmlFor="hadOtherCommunication">Had Other Communication</label>
+      <input
+        type="checkbox"
+        name="hadOtherCommunication"
+        onChange= { this.handleChange }
+        checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }
+      />
+
+      <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
+      <input
+        type="checkbox"
+        name="scoreSheetTurnedIn"
+        onChange= { this.handleChange }
+        checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }
+      />
+    </fieldset>
+    );
+    
+    const synopsisCommentsJSX = (
+      <fieldset>
+      <legend>Synopsis</legend>
+
+      <label htmlFor="extraPlayingTime">Extra Playing Time</label>
+      <textarea
+        name="extraPlayingTime"
+        onChange={ this.handleChange }
+        value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
+      />
+
+      <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
+      <select
+        name="mentorGrantedPlayingTime"
+        onChange={ this.handleChange }
+        value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
+        >
+        <option value="" disabled defaultValue>Select Playing Time</option>
+        <option value="Entire Game">Entire Game</option>
+        <option value="All but start">All but start</option>
+        <option value="Three quarters">Three quarters</option>
+        <option value="Two quarters">Two quarters</option>
+        <option value="One quarter">One quarter</option>
+        <option value="None of game">None of game</option>
+      </select>
+
+      <label htmlFor="studentActionItems">Student Action Items</label>
+      <textarea
+        name="studentActionItems"
+        onChange={ this.handleChange }
+        value={ this.state.pointTracker.synopsisComments.studentActionItems }
+      />
+
+      <label htmlFor="sportsUpdate">Sports Update</label>
+      <textarea
+        name="sportsUpdate"
+        onChange={ this.handleChange }
+        value={ this.state.pointTracker.synopsisComments.sportsUpdate }
+        />
+
+      <label htmlFor="additionalComments">Additional Comments</label>
+      <textarea
+        name="additionalComments"
+        onChange={ this.handleChange }
+        value={ this.state.pointTracker.synopsisComments.additionalComments }
+      />
+    </fieldset>
+    );
+
     return (
       <React.Fragment>
         <h4>Point Sheet and Grades</h4>
         <form className="data-entry" onSubmit={ this.handleSubmit }>
-          <label htmlFor="">Select Student</label>
-          <select onChange={ this.handleStudentSelect }>
-            { this.state.students.map((student) => {
-              const { _id, firstName, lastName } = student;
-              return (
-                <option 
-                  key={ _id } 
-                  value={ _id }
-                >{ `${firstName} ${lastName}`}
-                </option>
-              );
-            })}
-          </select>
-          <label htmlFor="">Select Date</label>
-          <input
-            name="date"
-            type="date"
-            onChange={ this.handleChange }
-            value={ convertDateToValue(this.state.pointTracker.date) }
+          { selectOptionsJSX }
+          { surveyQuestionsJSX }
+          <PointTrackerTable
+            handleChange={ this.handleChange }
+            subjects={ this.state.pointTracker.subjects }
           />
-          <fieldset>
-            <label htmlFor="attendedCheckin">Attended Check-In</label>
-            <input
-              type="checkbox"
-              name="attendedCheckin"
-              onChange= { this.handleChange }
-              checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }
-            />
-
-            <label htmlFor="metFaceToFace">Met Face-to-Face</label>
-            <input
-              type="checkbox"
-              name="metFaceToFace"
-              onChange= { this.handleChange }
-              checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }
-            />
-
-            <label htmlFor="hadOtherCommunication">Had Other Communication</label>
-            <input
-              type="checkbox"
-              name="hadOtherCommunication"
-              onChange= { this.handleChange }
-              checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }
-            />
-
-            <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
-            <input
-              type="checkbox"
-              name="scoreSheetTurnedIn"
-              onChange= { this.handleChange }
-              checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }
-            />
-          </fieldset>
-          <fieldset>
-            <legend>Point Sheet and Grades</legend>
-            <PointTrackerTable
-              handleChange={ this.handleChange }
-              subjects={ this.state.pointTracker.subjects }
-            />
-          </fieldset>
-          <fieldset>
-            <legend>Synopsis</legend>
-
-            <label htmlFor="extraPlayingTime">Extra Playing Time</label>
-            <textarea
-              name="extraPlayingTime"
-              onChange={ this.handleChange }
-              value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-            />
-
-            <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
-            <select
-              name="mentorGrantedPlayingTime"
-              onChange={ this.handleChange }
-              value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
-              >
-              <option value="" disabled defaultValue>Select Playing Time</option>
-              <option value="Entire Game">Entire Game</option>
-              <option value="All but start">All but start</option>
-              <option value="Three quarters">Three quarters</option>
-              <option value="Two quarters">Two quarters</option>
-              <option value="One quarter">One quarter</option>
-              <option value="None of game">None of game</option>
-            </select>
-
-            <label htmlFor="studentActionItems">Student Action Items</label>
-            <textarea
-              name="studentActionItems"
-              onChange={ this.handleChange }
-              value={ this.state.pointTracker.synopsisComments.studentActionItems }
-            />
-
-            <label htmlFor="sportsUpdate">Sports Update</label>
-            <textarea
-              name="sportsUpdate"
-              onChange={ this.handleChange }
-              value={ this.state.pointTracker.synopsisComments.sportsUpdate }
-              />
-
-            <label htmlFor="additionalComments">Additional Comments</label>
-            <textarea
-              name="additionalComments"
-              onChange={ this.handleChange }
-              value={ this.state.pointTracker.synopsisComments.additionalComments }
-            />
-          </fieldset>
+          { synopsisCommentsJSX }
           <button type="submit">Submit Point Tracker</button>
         </form>
       </React.Fragment>
@@ -265,6 +283,7 @@ PointTrackerForm.propTypes = {
   handleChange: PropTypes.func,
   createPointTracker: PropTypes.func,
   fetchStudents: PropTypes.func,
+  fetchLastPointTracker: PropTypes.func,
 };
 
 export default connect(null, mapDispatchToProps)(PointTrackerForm);

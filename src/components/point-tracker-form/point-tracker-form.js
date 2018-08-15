@@ -54,13 +54,17 @@ const defaultState = {
 
 const mapDispatchToProps = dispatch => ({
   createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
+  fetchStudents: studentIds => dispatch(pointTrackerActions.fetchStudents(studentIds)),
 });
 
 class PointTrackerForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = defaultState;
+    this.state = {
+      students: [],
+      pointTracker: defaultState,
+    };
   }
 
   handleChange = (event) => {
@@ -116,8 +120,15 @@ class PointTrackerForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log('HANDLE SUBMIT FIRING!');
-    this.props.createPointTracker(this.state);
+    this.props.createPointTracker(this.state.pointTracker);
+  }
+
+  componentDidMount() {
+    this.props.fetchStudents()
+      .then((students) => {
+        this.setState({ students });
+      })
+      .catch(console.error);
   }
 
   render() {
@@ -127,15 +138,23 @@ class PointTrackerForm extends React.Component {
         <form className="data-entry" onSubmit={ this.handleSubmit }>
           <label htmlFor="">Select Student</label>
           <select>
-            <option value="1">example student 1</option>
-            <option value="2">example student 2</option>
+            { this.state.students.map((student) => {
+              const { _id, firstName, lastName } = student;
+              return (
+                <option 
+                  key={ _id } 
+                  value={ _id }
+                >{ `${firstName} ${lastName}`}
+                </option>
+              );
+            })}
           </select>
           <label htmlFor="">Select Date</label>
           <input
             name="date"
             type="date"
             onChange={ this.handleChange }
-            value={ convertDateToValue(this.state.date) }
+            value={ convertDateToValue(this.state.pointTracker.date) }
           />
           <fieldset>
             <label htmlFor="attendedCheckin">Attended Check-In</label>
@@ -143,7 +162,7 @@ class PointTrackerForm extends React.Component {
               type="checkbox"
               name="attendedCheckin"
               onChange= { this.handleChange }
-              checked={ this.state.surveyQuestions.attendedCheckin }
+              checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }
             />
 
             <label htmlFor="metFaceToFace">Met Face-to-Face</label>
@@ -151,7 +170,7 @@ class PointTrackerForm extends React.Component {
               type="checkbox"
               name="metFaceToFace"
               onChange= { this.handleChange }
-              checked={ this.state.surveyQuestions.metFaceToFace }
+              checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }
             />
 
             <label htmlFor="hadOtherCommunication">Had Other Communication</label>
@@ -159,7 +178,7 @@ class PointTrackerForm extends React.Component {
               type="checkbox"
               name="hadOtherCommunication"
               onChange= { this.handleChange }
-              checked={ this.state.surveyQuestions.hadOtherCommunication }
+              checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }
             />
 
             <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
@@ -167,14 +186,14 @@ class PointTrackerForm extends React.Component {
               type="checkbox"
               name="scoreSheetTurnedIn"
               onChange= { this.handleChange }
-              checked={ this.state.surveyQuestions.scoreSheetTurnedIn }
+              checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }
             />
           </fieldset>
           <fieldset>
             <legend>Point Sheet and Grades</legend>
             <PointTrackerTable
               handleChange={ this.handleChange }
-              subjects={ this.state.subjects }
+              subjects={ this.state.pointTracker.subjects }
             />
           </fieldset>
           <fieldset>
@@ -184,14 +203,14 @@ class PointTrackerForm extends React.Component {
             <textarea
               name="extraPlayingTime"
               onChange={ this.handleChange }
-              value={ this.state.synopsisComments.extraPlayingTime }
+              value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
             />
 
             <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
             <select
               name="mentorGrantedPlayingTime"
               onChange={ this.handleChange }
-              value={ this.state.synopsisComments.mentorGrantedPlayingTime }
+              value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
               >
               <option value="" disabled defaultValue>Select Playing Time</option>
               <option value="Entire Game">Entire Game</option>
@@ -206,21 +225,21 @@ class PointTrackerForm extends React.Component {
             <textarea
               name="studentActionItems"
               onChange={ this.handleChange }
-              value={ this.state.synopsisComments.studentActionItems }
+              value={ this.state.pointTracker.synopsisComments.studentActionItems }
             />
 
             <label htmlFor="sportsUpdate">Sports Update</label>
             <textarea
               name="sportsUpdate"
               onChange={ this.handleChange }
-              value={ this.state.synopsisComments.sportsUpdate }
+              value={ this.state.pointTracker.synopsisComments.sportsUpdate }
               />
 
             <label htmlFor="additionalComments">Additional Comments</label>
             <textarea
               name="additionalComments"
               onChange={ this.handleChange }
-              value={ this.state.synopsisComments.additionalComments }
+              value={ this.state.pointTracker.synopsisComments.additionalComments }
             />
           </fieldset>
           <button type="submit">Submit Point Tracker</button>
@@ -233,6 +252,7 @@ class PointTrackerForm extends React.Component {
 PointTrackerForm.propTypes = {
   handleChange: PropTypes.func,
   createPointTracker: PropTypes.func,
+  fetchStudents: PropTypes.func,
 };
 
 export default connect(null, mapDispatchToProps)(PointTrackerForm);

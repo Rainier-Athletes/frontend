@@ -19,8 +19,17 @@ export const createPointTracker = pointTracker => (store) => {
     });
 };
 
-// export const fetchStudent = studentId => (store) => {
-//   console.log('FETCH STUDENTS FIRING');
-//   const { token } = store.getState();
-//   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
-// }
+export const fetchStudents = studentIds => (store) => {
+  console.log('FETCH STUDENTS FIRING');
+  const { token } = store.getState();
+  return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
+    .set('Authorization', `Bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .then((response) => {
+      const profiles = response.body;
+      const students = profiles.filter(profile => profile.role === 'student');
+      console.log(students, 'STUDENTS');
+      return students;
+    })
+    .catch(console.error);
+};

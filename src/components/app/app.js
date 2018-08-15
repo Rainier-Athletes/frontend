@@ -9,7 +9,7 @@ import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
 import Whitelist from '../whitelist/whitelist';
 import Auth from '../auth/auth';
-// import PointTrackerForm from '../point-tracker-form/point-tracker-form';
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 // import * as routes from '../../lib/routes';
 // import Auth from '../auth/auth';
 // import AdminModal from '../admin-modal/admin-modal';
@@ -27,11 +27,14 @@ export default class App extends React.Component {
       <div className="app">
         <BrowserRouter>
           <div>
-            <Navbar />
-            <Dashboard />
+            {/* TODO: uncomment navbar */}
+            {/* <Navbar /> */}
+            {/* TODO: figure out why the dashboard component is preventing navigating away from the /admin.  */}
+            {/* <Dashboard /> */} 
             <Route exact path="*" component={AuthRedirect} />
-            <Route expact path="/admin" component={ AdminUser(Admin) } />
-            <Route expact path="/whitelist" component={ AdminUser(Whitelist) } />
+            <Route exact path="/admin" component={ AdminUser(Admin) } />
+            <Route exact path="/whitelist" component={ AdminUser(Whitelist) } />
+            <Route exact path="/mentor" component={ PointTrackerForm } />
           </div>
         </BrowserRouter>
       </div>

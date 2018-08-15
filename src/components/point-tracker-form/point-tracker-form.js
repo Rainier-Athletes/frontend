@@ -217,8 +217,8 @@ class PointTrackerForm extends React.Component {
     );
     
     const synopsisCommentsJSX = (
-      <fieldset>
-      <legend>Synopsis</legend>
+      <div className="synopsis">
+      <h4>Synopsis</h4>
 
       <label htmlFor="extraPlayingTime">Extra Playing Time</label>
       <textarea
@@ -262,7 +262,7 @@ class PointTrackerForm extends React.Component {
         onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.additionalComments }
       />
-    </fieldset>
+    </div>
     );
 
     return (

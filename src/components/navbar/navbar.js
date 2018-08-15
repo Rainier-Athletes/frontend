@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import { FontAwesomeIcon } from '@fontawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import * as authActions from '../../actions/auth';
 import * as routes from '../../lib/routes';
@@ -87,7 +87,7 @@ class Navbar extends React.Component {
         <span className="login">
           <button onClick={ this.handleDropDownToggle }>
             Welcome, { name }
-            {/* <FontAwesomeIcon icon="angle-down" /> */}
+            <FontAwesomeIcon icon="angle-down" />
           </button>
           {
             this.state.dropdown ? dropdown : null

@@ -85,10 +85,14 @@ class MentorTable extends React.Component {
         sortable: true,
       },
     ];
+
     this.state = {
       rows: [],
+      selectedIndexes: [],
+      originalRows: [],
     };
   }
+
   componentWillMount = () => {
     this.createRows();
   }
@@ -96,7 +100,6 @@ class MentorTable extends React.Component {
   createRows = () => {
     this.props.fetchProfile()
       .then((res) => {
-        console.log(res);
         let rows = [];
         for (let i = 0; i < res.payload.length ; i++) {
           rows[i] = this.populateData(res.payload[i], i);
@@ -104,13 +107,12 @@ class MentorTable extends React.Component {
         return rows;
       })
       .then((rows) => {
-        console.log(rows);
-        this.setState({ rows: rows});
+        this.setState({ rows: rows });
+        this.setState({ originalRows: rows });
       })
   };
 
   populateData = (profile, index) => {
-    console.log('populate data', profile);
     return {
       id: 'id_' + index,
       avatar: faker.image.avatar(),
@@ -157,7 +159,15 @@ class MentorTable extends React.Component {
     let rows = this.state.rows.slice();
     rows = update(rows, {$unshift: [newRow]});
     this.setState({ rows });
-    console.log(this.state);
+  };
+
+  onRowsSelected = (rows) => {
+    this.setState({selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
+  };
+
+  onRowsDeselected = (rows) => {
+    let rowIndexes = rows.map(r => r.rowIdx);
+    this.setState({selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1 )});
   };
 
   handleGridSort = (sortColumn, sortDirection) => {
@@ -169,7 +179,6 @@ class MentorTable extends React.Component {
       }
     };
     const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
-
     this.setState({ rows });
   };
 
@@ -190,6 +199,23 @@ class MentorTable extends React.Component {
     return this.state.rows.length;
   };
 
+  handleCreate = (profile) => {
+    this.props.createProfile(profile)
+      .then(() => {
+        this.props.history.push(routes.PROFILE_ROUTE);
+      });
+  }
+
+  handleUpdate = (profile) => {
+    this.props.updateProfile(profile);
+    this.setState({ editing: false });
+  }
+
+  handleDelete = (id, event) => {
+    event.preventDefault();
+    this.props.onDelete(this.props.profiles[i].id);
+  }
+
   render() {
     return (
       <ReactDataGrid
@@ -200,8 +226,18 @@ class MentorTable extends React.Component {
         rowGetter={this.getRowAt}
         rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
+        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><button className="deleteBtn">Delete</button></div>}
         enableRowSelect={true}
+        onRowSelect={this.onRowSelect}
+        rowSelection={{
+          showCheckbox: true,
+          enableShiftSelect: true,
+          onRowsSelected: this.onRowsSelected,
+          onRowsDeselected: this.onRowsDeselected,
+          selectBy: {
+            indexes: this.state.selectedIndexes
+          }
+        }}
         rowHeight={50}
         minHeight={600}
         rowScrollTimeout={200} />);

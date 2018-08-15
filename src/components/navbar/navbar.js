@@ -8,6 +8,8 @@ import * as authActions from '../../actions/auth';
 import * as routes from '../../lib/routes';
 import googleBtn from '../../assets/google-btn.png';
 import rainierBtn from '../../assets/rainier-logo-horizontal.png';
+import Whitelist from '../whitelist/whitelist';
+
 import './navbar.scss';
 
 import * as profileActions from '../../actions/profile';
@@ -34,15 +36,12 @@ class Navbar extends React.Component {
   setGoogleOAuthUrl = () => {
     const baseUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
     const redirect = `redirect_uri=${API_URL}/oauth/google`;
-    // scope = resources your app can access on a user's behalf
     const scope = 'scope=openid%20email%20profile%20https://www.googleapis.com/auth/drive';
     const clientId = `client_id=${GOOGLE_OAUTH_ID.trim()}`;
-    // prompt determines if we ask the user for consent first to sign in via Google
     const prompt = 'prompt=consent%20select_account';
     const responseType = 'response_type=code';
-    console.log('oauthURL:', `${baseUrl}?${redirect}&${scope}&${clientId}&${prompt}&${responseType}`); // eslint-disable-line
+
     return `${baseUrl}?${redirect}&${scope}&${clientId}&${prompt}&${responseType}&access_type=offline`;
-    // return [baseUrl, redirect, scope, clientId, prompt, responseType].join('');
   }
 
   componentDidMount() {
@@ -81,6 +80,13 @@ class Navbar extends React.Component {
 
     const name = this.props.myProfile ? this.props.myProfile.firstName : null;
 
+    const invite = () => {
+      if (this.props.myProfile) {
+        return this.props.myProfile.role === 'admin' ? <Whitelist /> : null;
+      }
+      return undefined;
+    };
+
     const JSXLoggedIn = (
       <React.Fragment>
         <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
@@ -91,6 +97,9 @@ class Navbar extends React.Component {
           </button>
           {
             this.state.dropdown ? dropdown : null
+          }
+          {
+            invite()
           }
         </span>
       </React.Fragment>
@@ -116,6 +125,7 @@ Navbar.propTypes = {
   doLogout: PropTypes.func,
   fetchMyProfile: PropTypes.func,
   myProfile: PropTypes.object,
+  fetchProfile: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

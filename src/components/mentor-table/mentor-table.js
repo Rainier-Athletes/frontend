@@ -171,7 +171,6 @@ export default class MentorTable extends React.Component {
     console.log('new rows',newRows);
     this.setState({rows: newRows, selectedIndexes: [] })
     let checkboxes = document.getElementsByClassName('.react-data-grid-checkbox-label')
-    console.log(checkboxes);
   }
 
   handleDelete = (id, event) => {

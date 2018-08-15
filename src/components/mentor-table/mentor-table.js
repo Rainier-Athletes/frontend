@@ -24,10 +24,20 @@ const mapDispatchToProps = dispatch => ({
   createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
 });
 
+const updateBtn = <button className="updateBtn">Save</button>
+
 class MentorTable extends React.Component {
   constructor(props, context) {
     super(props, context);
     this._columns = [
+      {
+        key: 'button',
+        name: '',
+        formatter: updateBtn,
+        width: 100,
+        resizable: true,
+        headerRenderer: ''
+      },
       {
         key: 'avatar',
         name: 'Avatar',
@@ -115,7 +125,7 @@ class MentorTable extends React.Component {
   populateData = (profile, index) => {
     return {
       id: 'id_' + index,
-      avatar: faker.image.avatar(),
+      avatar: profile.picture,
       firstName: profile.firstName,
       lastName: profile.lastName,
       email: profile.email,

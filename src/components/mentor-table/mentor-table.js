@@ -9,19 +9,13 @@ import { makeData, Tips } from '../../lib/utils';
 import './mentor-table.scss';
 
 const faker = require('faker');
-const { Editors, Toolbar, Formatters } = require('react-data-grid-addons');
+const { Editors, Toolbar, Formatters } = require('blablablab');
 const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
 const { ImageFormatter } = Formatters;
 
 const updateBtn = <button className="updateBtn">Save</button>
 
-<<<<<<< HEAD
-const updateBtn = <button className="updateBtn">Save</button>
-
-class MentorTable extends React.Component {
-=======
 export default class MentorTable extends React.Component {
->>>>>>> b69c7d4690d47948ce36c5a2fc587262375bcc9c
   constructor(props, context) {
     super(props, context);
     this._columns = [
@@ -30,17 +24,6 @@ export default class MentorTable extends React.Component {
         name: '',
         formatter: updateBtn,
         width: 100,
-<<<<<<< HEAD
-        resizable: true,
-        headerRenderer: ''
-      },
-      {
-        key: 'avatar',
-        name: 'Avatar',
-        width: 60,
-        formatter: ImageFormatter,
-=======
->>>>>>> b69c7d4690d47948ce36c5a2fc587262375bcc9c
         resizable: true,
         headerRenderer: ''
       },
@@ -119,15 +102,6 @@ export default class MentorTable extends React.Component {
   createSaveBtn = (index) => {
     return {
       id: 'id_' + index,
-<<<<<<< HEAD
-      avatar: profile.picture,
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      email: profile.email,
-      role: profile.role,
-      phone: profile.phone,
-      address: '',
-=======
       button: <button>Oopsie</button>,
     };
   };
@@ -141,7 +115,6 @@ export default class MentorTable extends React.Component {
       city: 'Seattle',
       zipCode: faker.address.zipCode(),
       phoneNumber: faker.phone.phoneNumber(),
->>>>>>> b69c7d4690d47948ce36c5a2fc587262375bcc9c
     };
   };
 

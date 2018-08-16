@@ -36,6 +36,51 @@ const defaultState = {
       stamps: 16,
       x: 1,
       tutorials: 2,
+    }, 
+  }, {
+    subjectName: 'Art',
+    teacher: '1EF12348902093DECBA910',
+    scoring: {
+      excusedDays: 1,
+      stamps: 14,
+      x: 3,
+      tutorials: 1,
+    },
+  }, {
+    subjectName: 'PE',
+    teacher: '1EF12348902093DECBA912',
+    scoring: {
+      excusedDays: 1,
+      stamps: 12,
+      x: 6,
+      tutorials: 0,
+    },
+  }, {
+    subjectName: 'English',
+    teacher: '1EF12348902093DECBA914',
+    scoring: {
+      excusedDays: 1,
+      stamps: 16,
+      x: 1,
+      tutorials: 2,
+    },
+  }, {
+    subjectName: 'Spanish',
+    teacher: '1EF12348902093DECBA914',
+    scoring: {
+      excusedDays: 1,
+      stamps: 16,
+      x: 1,
+      tutorials: 2,
+    },
+  }, {
+    subjectName: 'Tutorial',
+    teacher: '1EF12348902093DECBA914',
+    scoring: {
+      excusedDays: 1,
+      stamps: 16,
+      x: 1,
+      tutorials: 2,
     },
   }],
   surveyQuestions: {
@@ -78,7 +123,6 @@ class PointTrackerForm extends React.Component {
       parseInt(month, 10) - 1, 
       parseInt(day, 10),
     );
-
 
     this.setState((prevState) => {
       const newState = { ...prevState };
@@ -193,39 +237,44 @@ class PointTrackerForm extends React.Component {
     );
     
     const surveyQuestionsJSX = (
+      <section>
       <div className="survey-questions">
+      <ul>
+        <li>
       <label htmlFor="attendedCheckin">Attended Check-In</label>
       <input
         type="checkbox"
         name="attendedCheckin"
         onChange= { this.handleSurveyQuestionChange }
         checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }
-      />
-
+      /></li>
+      <li>
       <label htmlFor="metFaceToFace">Met Face-to-Face</label>
       <input
         type="checkbox"
         name="metFaceToFace"
         onChange= { this.handleSurveyQuestionChange }
         checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }
-      />
-
+      /></li>
+      <li>
       <label htmlFor="hadOtherCommunication">Had Other Communication</label>
       <input
         type="checkbox"
         name="hadOtherCommunication"
         onChange= { this.handleSurveyQuestionChange }
         checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }
-      />
-
+      /></li>
+      <li>
       <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
       <input
         type="checkbox"
         name="scoreSheetTurnedIn"
         onChange= { this.handleSurveyQuestionChange }
         checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }
-      />
+      /></li>
+    </ul>
     </div>
+    </section>
     );
     
     const synopsisCommentsJSX = (
@@ -237,6 +286,9 @@ class PointTrackerForm extends React.Component {
         name="extraPlayingTime"
         onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
+        rows="8"
+        cols="80"
+        wrap="hard"
       />
 
       <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
@@ -254,11 +306,14 @@ class PointTrackerForm extends React.Component {
         <option value="None of game">None of game</option>
       </select>
 
-      <label htmlFor="studentActionItems">Student Action Items</label>
+      <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
       <textarea
         name="studentActionItems"
         onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.studentActionItems }
+        rows="8"
+        cols="80"
+        wrap="hard"
       />
 
       <label htmlFor="sportsUpdate">Sports Update</label>
@@ -266,6 +321,9 @@ class PointTrackerForm extends React.Component {
         name="sportsUpdate"
         onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.sportsUpdate }
+        rows="8"
+        cols="80"
+        wrap="hard"
         />
 
       <label htmlFor="additionalComments">Additional Comments</label>
@@ -273,6 +331,9 @@ class PointTrackerForm extends React.Component {
         name="additionalComments"
         onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.additionalComments }
+        rows="8"
+        cols="80"
+        wrap="hard"
       />
     </div>
     );

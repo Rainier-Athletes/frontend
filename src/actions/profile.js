@@ -62,12 +62,13 @@ export const fetchMyProfileReq = () => (store) => {
 
 export const deleteProfileReq = profile => (store) => {
   const { token } = store.getState();
-  
+
   return superagent.delete(`${API_URL}${routes.PROFILE_ROUTE}?id=${profile._id}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(profile)
     .then((res) => {
+      console.log(res);
       return store.dispatch(deleteProfile(res.body));
     });
 };

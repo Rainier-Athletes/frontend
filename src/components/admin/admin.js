@@ -11,7 +11,6 @@ class Admin extends React.Component {
       <React.Fragment>
         <TableMenu />
         <Modal />
-        <MentorTable />
       </React.Fragment>
     );
   }

@@ -122,7 +122,6 @@ class MentorTable extends React.Component {
 
   populateData = (profile, i) => {
     return {
-
       _id: profile._id,
       avatar: profile.picture,
       firstName: profile.firstName,

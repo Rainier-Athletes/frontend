@@ -272,7 +272,7 @@ class PointTrackerForm extends React.Component {
       const { grade, subjectName } = subject;
       const { excusedDays, stamps, halfStamps } = subject.scoring;
       const pointsEarned = 2 * stamps + halfStamps;
-      const pointsPossible = subjectName === 'Tutorial' ? 10 - excusedDays * 2 : 40 - excusedDays * 8;
+      const pointsPossible = subjectName.toLowerCase === 'tutorial' ? 10 - excusedDays * 2 : 40 - excusedDays * 8;
       const pointPercentage = pointsEarned / pointsPossible;
       
       let pointScore = 0;
@@ -455,6 +455,7 @@ class PointTrackerForm extends React.Component {
                   getTeacherName={ this.getTeacherName }
                   teachers={ this.state.teachers }
                   deleteSubject= { this.deleteSubject }
+                  createSubject={ this.createSubject }
               />
               { synopsisCommentsJSX }
                 

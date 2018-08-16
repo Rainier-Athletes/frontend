@@ -4,39 +4,75 @@ import SubjectColumn from '../subject-column/subject-column';
 
 import './point-tracker-table.scss';
 
-export default function PointTrackerTable(props) {
-  const addNewSubjectJSX = (
+const defaultState = {
+  subjectName: '',
+  teacherId: '',
+};
+
+export default class PointTrackerTable extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = defaultState;
+  }
+  
+  handleChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+
+    this.setState({ [name]: value });
+  }
+
+  handleCreateSubject = () => {
+    if (this.state.subjectName && this.state.teacherId) {
+      this.props.createSubject(this.state.subjectName, this.state.teacherId);
+      this.setState(() => defaultState);
+    }
+  }
+
+  render() {
+    const addNewSubjectJSX = (
     <div>
       <h4>Add new subjects</h4>
-      <select>
-        <option disabled selected>Select Teacher</option>
+      <select 
+        name="teacherId" 
+        onChange={ this.handleChange } 
+        value={ this.state.teacherId }
+      >
+        <option disabled value="">Select Teacher</option>
         {
-          props.teachers.map(teacher => (
+          this.props.teachers.map(teacher => (
             <option 
               key={ teacher._id }
-              name={ teacher._id }
+              value={ teacher._id }
             >{ `${teacher.firstName} ${teacher.lastName}` }
           </option>
           ))
         }
       </select>
-      <input type="text" placeholder="Subject Name"/>
-      <button type="button">Add new subject</button>
+      <input 
+        type="text" 
+        placeholder="Subject Name" 
+        name="subjectName"
+        value= { this.state.subjectName }
+        onChange={ this.handleChange }
+      />
+      <button type="button" onClick={ this.handleCreateSubject }>Add new subject</button>
     </div>
-  );
+    );
   
-  const subjectsJSX = props.subjects.map(subject => (
+    const subjectsJSX = this.props.subjects.map(subject => (
     <SubjectColumn
-    key={ subject.subjectName } 
-    label={ subject.subjectName }
-    subject={ subject }
-    handleSubjectChange={ props.handleSubjectChange }
-    getTeacherName={ props.getTeacherName }
-    deleteSubject={ props.deleteSubject }
+      key={ `${subject.subjectName}-${subject.teacher}` } 
+      label={ subject.subjectName }
+      subject={ subject }
+      handleSubjectChange={ this.props.handleSubjectChange }
+      getTeacherName={ this.props.getTeacherName }
+      deleteSubject={ this.props.deleteSubject }
     />
-  ));
+    ));
 
-  return (
+    return (
     <React.Fragment>
       <h4>Point Sheet and Grades</h4>
       { addNewSubjectJSX }
@@ -51,7 +87,8 @@ export default function PointTrackerTable(props) {
         { subjectsJSX }
       </div>
       </React.Fragment>
-  );
+    );
+  }
 }
 
 PointTrackerTable.propTypes = {
@@ -59,5 +96,6 @@ PointTrackerTable.propTypes = {
   teachers: PropTypes.array,
   handleSubjectChange: PropTypes.func,
   getTeacherName: PropTypes.func,
+  createSubject: PropTypes.func,
   deleteSubject: PropTypes.func,
 };

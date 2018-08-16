@@ -250,11 +250,13 @@ class MentorTable extends React.Component {
     const selected = this.state.selectedIndexes;
     for (const index in selected) {
       const i = selected[index];
-      console.log(this.state.rows[i]);
       this.props.deleteProfile(this.state.rows[i]);
     }
-
   }
+
+  // shouldComponentUpdate = () => {
+  //   console.log('udpated');
+  // }
 
   getSubRowDetails = (rowItem) => {
     let isExpanded = this.state.expanded[rowItem.name] ? this.state.expanded[rowItem.name] : false;

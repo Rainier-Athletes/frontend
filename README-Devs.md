@@ -24,3 +24,6 @@ Client is interested in switching fonts to
 Raleway
 <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,500,500i,600,600i,700,900" rel="stylesheet">
 font-family: 'Raleway', sans-serif;
+
+##Don't delete me
+"heroku-postbuild": "webpack --progress --config webpack.prod.js"

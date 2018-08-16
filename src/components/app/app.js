@@ -7,7 +7,7 @@ import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
 import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
-import Whitelist from '../whitelist/whitelist';
+// import Whitelist from '../whitelist/whitelist';
 import Auth from '../auth/auth';
 // import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 // import * as routes from '../../lib/routes';

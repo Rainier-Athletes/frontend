@@ -1,5 +1,5 @@
 .react-grid-Toolbar {
-  border-color: black;
+  border-color: none;
 }
 
 .react-grid-Container {
@@ -7,11 +7,12 @@
   top: 5em;
 
 .btnGroup {
+  border: 1px solid white;
   display: block;
-  left: 4em;
+  margin-bottom: 1em;
   position: relative;
   float: right;
-  width: 10em;
+  width: 100%;
 }
 
 .deleteBtn {
@@ -19,11 +20,12 @@
   border: 1px solid rgb(255, 112, 112);
   color: red;
   font-size: 14px;
+  float: right;
   margin-bottom: .3em;
   position: relative;
-  padding: 6px 12px;
+  right: 1.15em;
   text-shadow: rgb(206, 206, 206);
-  width: 5.74em;
+  width: 6.09em;
 }
 
 .deleteBtn:hover {
@@ -38,7 +40,6 @@
   font-size: 14px;
   margin-bottom: 1em;
   position: relative;
-  padding: 6px 12px;
   text-shadow: rgb(206, 206, 206);
   width: 5.74em;
 }

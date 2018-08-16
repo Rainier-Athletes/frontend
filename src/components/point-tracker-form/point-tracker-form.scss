@@ -3,50 +3,91 @@
 .point-tracker-form {
 }
 .select-student, .select-date {
-
   display: inline-block;
-  padding: 10px;
-  
+  float: left;
+  padding: 5px;
+  // margin: 10px;
+  // vertical-align: middle;
+    
+    select, input {
+      display: inline-block;
+      width: 180px;
+      height: 3em;
+      padding: 10px;
+      }
 }
 
-ul {
 
-  li {
-
-  list-style-type: none;
+.survey-questions input,
+.survey-questions label {
   display: inline-block;
-  padding: 10px;
-  
-  }
-
+  margin-right: 1px;
 }
+
+.survey-questions label {
+  // display: inline-block;
+  margin-bottom: 0;
+  margin-left: 10px; 
+  vertical-align: middle; 
+}
+
 
     .points-tracker {
       padding-top: 20px;
       margin: 80px 20px 0 20px;
     }
+ 
 
     h2 {
       color: $color-brand-blue;
       padding-bottom: .5em;
     }
 
+    h4 {
+      padding-top: 1em;
+    }
+
     .submit-report{
       background: $color-button-green;
       padding: $pad;
-      border: 1px solid;
+      border: none;
       border-radius: 3px;
       font-family: $font-primary;
       font-weight: bold;
-      color: $color-black;
+      color: $color-white;
       font-size: 16px;
-
+      
       &:hover {
         background: $color-button-focus;
         color: $color-black;
-      }
-  
+      } 
+      
       &:visited {
         background: $color-button-active;
     }
+
+  }
+  
+  .synopsis {
+    padding-top: 2.5em;
+    padding-bottom: 1.6em;
+  }
+  
+ul {
+    li {
+      list-style-type: none;
+      display: inline-block;
+      padding: 10px;
+    }
+  }
+
+  h2 {
+    color: $color-brand-blue;
+    padding-bottom: .5em;
+    }
+
+
+  .synopsis h4 {
+    // padding-top: 1em;
+    padding-bottom: 1.6em;
   }

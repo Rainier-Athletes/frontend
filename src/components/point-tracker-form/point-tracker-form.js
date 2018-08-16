@@ -217,7 +217,6 @@ class PointTrackerForm extends React.Component {
     this.props.fetchTeachers()
       .then((teachers) => {
         const updatedTeachers = teachers || [];
-        console.log(updatedTeachers, 'TEACHERS');
         this.setState({ teachers: updatedTeachers });
       });
   }
@@ -281,7 +280,7 @@ class PointTrackerForm extends React.Component {
               </option>
           ))}
           </select>
-        </div>
+      </div>
       <div className="select-date">
         <label htmlFor="">Select Date</label>
         <input
@@ -291,48 +290,48 @@ class PointTrackerForm extends React.Component {
           value={ convertDateToValue(this.state.pointTracker.date) }
           />
         </div>
+        <div className="clearfix"></div>
       </section>
     );
     
     const surveyQuestionsJSX = (
-      <section>
+      <fieldset>
+        <div className="survey-questions">
+             <input
+                type="checkbox"
+                name="attendedCheckin"
+                onChange= { this.handleSurveyQuestionChange }
+                checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }/>
+              <label htmlFor="attendedCheckin">Attended Check-In</label>
+        </div>
+  
       <div className="survey-questions">
-      <ul>
-        <li>
-      <label htmlFor="attendedCheckin">Attended Check-In</label>
-      <input
-        type="checkbox"
-        name="attendedCheckin"
-        onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }
-      /></li>
-      <li>
-      <label htmlFor="metFaceToFace">Met Face-to-Face</label>
       <input
         type="checkbox"
         name="metFaceToFace"
         onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }
-      /></li>
-      <li>
-      <label htmlFor="hadOtherCommunication">Had Other Communication</label>
+        checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }/>
+      <label htmlFor="metFaceToFace">Met Face-to-Face</label>
+      </div>
+
+      <div className="survey-questions">
       <input
         type="checkbox"
         name="hadOtherCommunication"
         onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }
-      /></li>
-      <li>
-      <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
+        checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }/>
+      <label htmlFor="hadOtherCommunication">Had Other Communication</label>
+      </div>
+
+      <div className="survey-questions">
       <input
         type="checkbox"
         name="scoreSheetTurnedIn"
         onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }
-      /></li>
-    </ul>
-    </div>
-    </section>
+        checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }/>
+      <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
+      </div>
+    </fieldset>
     );
     
     const synopsisCommentsJSX = (
@@ -356,7 +355,7 @@ class PointTrackerForm extends React.Component {
         onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
         >
-        <option value="" disabled defaultValue>Select Playing Time</option>
+        <option value="" defaultValue>Select Playing Time</option>
         <option value="Entire Game">Entire Game</option>
         <option value="All but start">All but start</option>
         <option value="Three quarters">Three quarters</option>
@@ -364,6 +363,17 @@ class PointTrackerForm extends React.Component {
         <option value="One quarter">One quarter</option>
         <option value="None of game">None of game</option>
       </select>
+
+      <label htmlFor="extraPlayingTime">Extra Playing Time</label>
+      <textarea
+        name="extraPlayingTime"
+        onChange={ this.handleSynopsisCommentChange }
+        value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
+        rows="8"
+        cols="80"
+        wrap="hard"
+      />
+
 
       <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
       <textarea
@@ -397,12 +407,13 @@ class PointTrackerForm extends React.Component {
     </div>
     );
 
+
     return (
       <div className="points-tracker">
         <React.Fragment>
           <form className="data-entry" onSubmit={ this.handleSubmit }>
             <h2>POINT TRACKER TABLE</h2>
-              <h4>Point Sheet and Grades</h4>
+              {/* <h4>Point Sheet and Grades</h4> */}
               { selectOptionsJSX }
               { surveyQuestionsJSX }
                 <PointTrackerTable
@@ -411,6 +422,7 @@ class PointTrackerForm extends React.Component {
                   getTeacherName={ this.getTeacherName }
               />
               { synopsisCommentsJSX }
+                
             <button className="submit-report" type="submit">Submit Point Tracker</button>
           </form>
         </React.Fragment>

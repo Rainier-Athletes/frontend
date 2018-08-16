@@ -17,7 +17,7 @@ export default function PointTrackerTable(props) {
   
   return (
     <React.Fragment>
-      <legend>Point Sheet and Grades</legend>
+      <h4>Point Sheet and Grades</h4>
       <div className="point-table">
         <div className="row-labels">
           <label></label>
@@ -26,6 +26,7 @@ export default function PointTrackerTable(props) {
           <label>Num. of Xs</label>
           <label>Grade</label>
         </div>
+        {/* <div className="column-labels"> */}
         { subjects }
       </div>
       </React.Fragment>

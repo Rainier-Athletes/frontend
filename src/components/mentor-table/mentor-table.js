@@ -122,7 +122,8 @@ class MentorTable extends React.Component {
 
   populateData = (profile, i) => {
     return {
-      id: 'id_' + i,
+
+      _id: profile._id,
       avatar: profile.picture,
       firstName: profile.firstName,
       lastName: profile.lastName,
@@ -131,7 +132,7 @@ class MentorTable extends React.Component {
       phone: profile.phone,
       address: '',
       children: [
-        { id: 'id_' + i + 2,
+        { _id: profile._id,
         avatar: faker.image.avatar(),
         firstName: profile.firstName,
         lastName: profile.lastName,
@@ -163,7 +164,7 @@ class MentorTable extends React.Component {
       rows[i] = updatedRow;
       console.log('UPDATED', rows[i]);
 
-      if (!rows[i].id) {
+      if (!rows[i]._id) {
         const index = this.state.counter;
         newRows[index] = rows[i];
         this.setState({ newRows: newRows });
@@ -232,6 +233,7 @@ class MentorTable extends React.Component {
   };
 
   handleCreate = (profile) => {
+    console.log(profile);
     this.props.createProfile(profile)
       .then(() => {
         this.props.history.push(routes.PROFILE_ROUTE);
@@ -290,8 +292,18 @@ class MentorTable extends React.Component {
   };
 
   handleUpdateTable = () => {
-    this.setState({ newRows: newRows });
-  }
+    const { newRows, updatedRows } = this.state;
+    Object.keys(newRows).forEach((key) => {
+      console.log(newRows[key]);
+      this.handleCreate(newRows[key]);
+    });
+    Object.keys(updatedRows).forEach((key) => {
+      console.log(updatedRows[key]);
+      this.handleUpdate(updatedRows[key]);
+    });
+    // this.createRows();
+
+  };
 
   render() {
     return (

@@ -25,8 +25,8 @@ export const createProfileReq = profile => (store) => {
 
 export const updateProfileReq = profile => (store) => {
   const { token } = store.getState();
-
-  return superagent.put(`${API_URL}${routes.PROFILE_ROUTE}/${profile._id}`)
+  console.log(profile._id);
+  return superagent.put(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(profile)

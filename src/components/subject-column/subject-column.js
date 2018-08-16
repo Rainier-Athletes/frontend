@@ -4,9 +4,13 @@ import PropTypes from 'prop-types';
 import './subject-column.scss';
 
 export default function SubjectColumn(props) {
-  const { subject, handleSubjectChange, getTeacherName } = props;
+  const { subject, handleSubjectChange, getTeacherName, deleteSubject } = props;
   const { subjectName, grade, teacher } = subject;
   const { excusedDays, stamps, halfStamps } = subject.scoring;
+
+  const handleDelete = () => {
+    deleteSubject(subjectName, teacher);
+  };
   
   return (
     <div className="column data">
@@ -38,7 +42,7 @@ export default function SubjectColumn(props) {
       />
       <button 
         type="button"
-        // onClick={  } TODO ADD DELETE HANDLER
+        onClick={ handleDelete }
       >X</button> 
     </div>
   );
@@ -48,4 +52,5 @@ SubjectColumn.propTypes = {
   subject: PropTypes.object,
   handleSubjectChange: PropTypes.func,
   getTeacherName: PropTypes.func,
+  deleteSubject: PropTypes.func,
 };

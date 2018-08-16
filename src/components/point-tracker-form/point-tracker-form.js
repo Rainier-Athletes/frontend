@@ -420,6 +420,7 @@ class PointTrackerForm extends React.Component {
                   handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.pointTracker.subjects }
                   getTeacherName={ this.getTeacherName }
+                  teachers={ this.state.teachers }
               />
               { synopsisCommentsJSX }
                 

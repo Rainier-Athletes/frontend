@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-mport { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { f2ed } from '@fortawesome/free-solid-svg-icons';
 import './subject-column.scss';
+
 
 export default function SubjectColumn(props) {
   const { subject, handleSubjectChange, getTeacherName, deleteSubject } = props;
@@ -13,7 +14,7 @@ export default function SubjectColumn(props) {
   const handleDelete = () => {
     deleteSubject(subjectName, teacher);
   };
-  
+
   return (
     <div className="column data">
       <label>{ getTeacherName(teacher) }</label>
@@ -45,7 +46,7 @@ export default function SubjectColumn(props) {
       <button 
         type="button"
         onClick={ handleDelete }
-      >X</button> 
+        >X</button>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleDown, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faUserPlus, f2ed } from '@fortawesome/free-solid-svg-icons';
 
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
@@ -12,7 +12,7 @@ import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 import './app.scss';
 
-library.add(faAngleDown, faUserPlus);
+library.add(faAngleDown, faUserPlus, f2ed);
 
 const AdminUser = Auth(['admin']);
 

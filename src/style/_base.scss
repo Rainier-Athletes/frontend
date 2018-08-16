@@ -54,7 +54,7 @@ textarea, input {
   }
 
   &::placeholder {
-    color: $color-lightgrey;
+    color: $color-black;
   }
 }
 
@@ -63,18 +63,8 @@ button {
 }
 
 button,input[type="submit"] {
-  background: $color-lightgrey;
-  padding: $pad;
-  border: none;
-  border-radius: 3px;
-
-  &:hover {
-    background: $color-darkgrey;
-  }
-
-  &:active {
-    background: $color-darkgrey;
-  }
+  font-family: $font-primary;
+  font-weight: bold;
 }
 
 footer {

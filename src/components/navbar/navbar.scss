@@ -38,17 +38,17 @@
   }
 }
 
-button {
+.button {
   background-color: transparent !important;
   float: right;
   padding: 1.8em 0.8em !important;
   margin-left: 1em;
 }
 
-.login > button {
+.login > .button {
   color: white;
 }
 
-.dropdown > button {
+.dropdown > .button {
   margin-right: 2em;
 }

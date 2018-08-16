@@ -74,7 +74,7 @@ class Navbar extends React.Component {
 
     const dropdown = (
       <div className="dropdown">
-        <button onClick={ this.props.doLogout }>Logout</button>
+        <button className="button" onClick={ this.props.doLogout }>Logout</button>
       </div>
     );
 
@@ -84,7 +84,7 @@ class Navbar extends React.Component {
       <React.Fragment>
         <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
         <span className="login">
-          <button onClick={ this.handleDropDownToggle }>
+          <button className="button" onClick={ this.handleDropDownToggle }>
             Welcome, { name }
             <FontAwesomeIcon icon="angle-down" />
           </button>

@@ -4,9 +4,11 @@
   top: 0;
   position: fixed;
   width: 100%;
+  margin: 0px 0px 20px 0px;
   background-color: #1f1f1f;
   padding: 0;
   z-index: 1;
+  clear: both;
 
   .logo {
     float: left;
@@ -25,7 +27,7 @@
     .dropdown {
       display: block;
       position: absolute;
-      background-color: lightgray;
+      background-color: $color-lightgrey;
       top: 4.7em;
       right: 0;
       width: 11em;
@@ -38,17 +40,22 @@
   }
 }
 
-.navbar button {
-  background-color: transparent !important;
+
+button {
+  background-color: transparent;
   float: right;
-  padding: 1.8em 0.8em !important;
+  padding: 1em 0.8em;
   margin-left: 1em;
 }
 
 .login > button {
+  background-color: transparent;
+  float: right;
+  padding: 1em 0.8em;
+  margin-left: 1em;
   color: white;
 }
 
-.dropdown > button {
+.dropdown > button.navbar-dropdown {
   margin-right: 2em;
 }

@@ -2,7 +2,8 @@
 
 // content
 html, body {
-  position: relative;
+  max-width:inherit;
+  position: relative; 
   font-family: $font-primary;
 }
 
@@ -39,21 +40,21 @@ label {
   margin-bottom: $pad;
 }
 
-textarea, input {
-  background: $color-brand-green;
-  border: none;
+textarea, input, select {
+  background: $color-input-field;
+  // border: none;
   padding: 15px;
   border-radius: 3px;
   margin-bottom: 20px;
   transition: 350ms all;
 
   &:focus {
-    background: $color-button-focus;
-    color: $color-white;
+    background: $color-input-focus;
+    color: $color-black;
   }
 
   &::placeholder {
-    color: $color-lightgrey;
+    color: $color-black;
   }
 }
 
@@ -62,18 +63,8 @@ button {
 }
 
 button,input[type="submit"] {
-  background: $color-lightgrey;
-  padding: $pad;
-  border: none;
-  border-radius: 3px;
-
-  &:hover {
-    background: $color-grey;
-  }
-
-  &:active {
-    background: $color-darkgrey;
-  }
+  font-family: $font-primary;
+  font-weight: bold;
 }
 
 footer {

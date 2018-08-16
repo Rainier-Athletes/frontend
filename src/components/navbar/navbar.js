@@ -84,7 +84,7 @@ class Navbar extends React.Component {
       <React.Fragment>
         <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
         <span className="login">
-          <button onClick={ this.handleDropDownToggle }>
+          <button className="navbar-dropdown" onClick={ this.handleDropDownToggle }>
             Welcome, { name }
             <FontAwesomeIcon icon="angle-down" />
           </button>

@@ -30,9 +30,9 @@ const cookieDelete = (key) => {
 const convertDateToValue = (date) => {
   const dt = new Date(date);
   const year = dt.getFullYear().toString();
-  const month = dt.getMonth().toString().padStart(2, '0');
-  const day = dt.getDay().toString().padStart(2, '0');
-
+  const month = (dt.getMonth() + 1).toString().padStart(2, '0');
+  const day = dt.getDate().toString().padStart(2, '0');
+  
   return `${year}-${month}-${day}`;
 };
 

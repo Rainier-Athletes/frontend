@@ -149,6 +149,7 @@
         }
       };
       return clonedColumns;
+
     };
 
     handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {

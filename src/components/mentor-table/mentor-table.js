@@ -25,6 +25,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const updateBtn = <button className="updateBtn">Save</button>
+const newRows = {};
+const updatedRows = {};
 
 class MentorTable extends React.Component {
   constructor(props, context) {
@@ -93,6 +95,9 @@ class MentorTable extends React.Component {
       selectedIndexes: [],
       originalRows: [],
       expanded: {},
+      counter: 0,
+      newRows: [],
+      updatedRows: [],
     };
   }
 
@@ -156,9 +161,22 @@ class MentorTable extends React.Component {
       let rowToUpdate = rows[i];
       let updatedRow = update(rowToUpdate, {$merge: updated});
       rows[i] = updatedRow;
-    }
+      console.log('UPDATED', rows[i]);
 
+      if (!rows[i].id) {
+        const index = this.state.counter;
+        newRows[index] = rows[i];
+        this.setState({ newRows: newRows });
+      } else {
+        updatedRows[rows[i].id] = rows[i];
+        this.setState({ updatedRows: updatedRows });
+      }
+
+    }
+    console.log(newRows);
+    console.log(updatedRows);
     this.setState({ rows });
+    this.setState({ originalRows: rows })
   };
 
   handleAddRow = ({ newRowIndex }) => {
@@ -172,6 +190,7 @@ class MentorTable extends React.Component {
     let rows = this.state.rows.slice();
     rows = update(rows, {$unshift: [newRow]});
     this.setState({ rows });
+    this.state.counter += 1;
   };
 
   onRowsSelected = (rows) => {
@@ -270,6 +289,10 @@ class MentorTable extends React.Component {
     });
   };
 
+  handleUpdateTable = () => {
+    this.setState({ newRows: newRows });
+  }
+
   render() {
     return (
       <ReactDataGrid
@@ -282,9 +305,9 @@ class MentorTable extends React.Component {
         onGridRowsUpdated={this.handleGridRowsUpdated}
         toolbar={
           <div>
-            <Toolbar onAddRow={this.handleAddRow}>
-              <button className="updateBtn">Save</button>
-              <button className="deleteBtn">Delete</button>
+            <Toolbar onAddRow={ this.handleAddRow }>
+              <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
+              <button className="deleteBtn">Delete Row</button>
             </Toolbar>
           </div>
         }

@@ -348,8 +348,10 @@ class PointTrackerForm extends React.Component {
         wrap="hard"
       />
 
-       <p>Recommended playing time: { this.calcPlayingTime() }</p>
+      <p>Recommended playing time: { this.calcPlayingTime() }</p>
+
       <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
+      
       <select
         name="mentorGrantedPlayingTime"
         onChange={ this.handleSynopsisCommentChange }

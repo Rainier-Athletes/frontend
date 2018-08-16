@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+mport { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
 import './subject-column.scss';
 
@@ -37,9 +39,10 @@ export default function SubjectColumn(props) {
         value={ grade }
       />
       <button 
-        type="button"
-        // onClick={  } TODO ADD DELETE HANDLER
-      >X</button> 
+        type="submit"
+        // onClick={  } TODO {ADD DELETE HANDLER
+      ><FontAwesomeIcon icon={f2ed} />
+      </button> 
     </div>
   );
 }

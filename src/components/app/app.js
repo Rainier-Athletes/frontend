@@ -7,7 +7,6 @@ import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
 import Navbar from '../navbar/navbar';
 // import Dashboard from '../dashboard/dashboard';
-import Whitelist from '../whitelist/whitelist';
 import Auth from '../auth/auth';
 import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
@@ -30,16 +29,13 @@ export default class App extends React.Component {
             {/* <Dashboard /> */} 
             <Route exact path="*" component={AuthRedirect} />
             <Route exact path="/admin" component={ AdminUser(Admin) } />
-            <Route exact path="/whitelist" component={ AdminUser(Whitelist) } />
             <Route exact path="/mentor" component={ PointTrackerForm } />
           </div>
         </BrowserRouter>
-      {/* <div className="footer"> */}
         <footer className="footer">
-           <a href="https://www.rainierathletes.org" alt="link to Rainier Athletes website"> ©2018 Rainier Athletes |</a>
-          <a href="https://github.com/Rainier-Athletes" alt="link to GitHub repo">CodeFellows</a>
+           <a href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website"> ©2018 Rainier Athletes |</a>
+           <a href="https://github.com/Rainier-Athletes" alt="Link to GitHub repository">CodeFellows</a>
         </footer>
-      {/* </div> */}
       </div>
     );
   }

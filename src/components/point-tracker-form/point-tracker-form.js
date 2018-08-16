@@ -180,11 +180,11 @@ class PointTrackerForm extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchStudents()
-      .then((students) => {
-        this.setState({ students });
-      })
-      .catch(console.error); // eslint-disable-line
+    // this.props.fetchStudents()
+    //   .then((students) => {
+    //     this.setState({ students });
+    //   })
+    //   .catch(console.error); // eslint-disable-line
   }
 
   // TODO: fix this event handler
@@ -223,11 +223,6 @@ class PointTrackerForm extends React.Component {
             );
           })}
           </select>
-          {/* <select>
-              <option value="" disabled defaultValue>Select Student</option>
-              <option>Example Student 1</option>
-              <option>Example Student 2</option>
-          </select> */}
       </div>
       <div className="select-date">
         <label htmlFor="">Select Date</label>
@@ -238,6 +233,7 @@ class PointTrackerForm extends React.Component {
           value={ convertDateToValue(this.state.pointTracker.date) }
           />
         </div>
+        <div className="clearfix"></div>
       </section>
     );
     

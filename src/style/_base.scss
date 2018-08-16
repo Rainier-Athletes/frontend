@@ -81,3 +81,7 @@ ul li { list-style: disc; }
 ol li { list-style: decimal; }
 ol ol li , ul ol li { list-style: lower-alpha; }
 ol ul li , ul ul li { list-style: square; }
+
+.clearfix {
+  clear: both;
+}

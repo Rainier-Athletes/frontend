@@ -2,22 +2,21 @@
 
 .point-tracker-form {
 }
-<<<<<<< HEAD
-  .select {
-    display: inline-block;
-    width: 180px;
-    height: 3em;
-    padding: 10px;
-    clear: both;
-    }
-=======
-
 .select-student, .select-date {
   display: inline-block;
-  padding: 10px;
-  margin: 10px;
-  vertical-align: middle;
+  float: left;
+  padding: 5px;
+  // margin: 10px;
+  // vertical-align: middle;
+    
+    select, input {
+      display: inline-block;
+      width: 180px;
+      height: 3em;
+      padding: 10px;
+      }
 }
+
 
 .survey-questions input,
 .survey-questions label {
@@ -31,16 +30,13 @@
   margin-left: 10px; 
   vertical-align: middle; 
 }
->>>>>>> 5173af8e7a926c63a7780782e1920b7ba6f572a9
 
 
     .points-tracker {
       padding-top: 20px;
       margin: 80px 20px 0 20px;
     }
-<<<<<<< HEAD
  
-=======
 
     h2 {
       color: $color-brand-blue;
@@ -51,7 +47,6 @@
       padding-top: 1em;
     }
 
->>>>>>> 5173af8e7a926c63a7780782e1920b7ba6f572a9
     .submit-report{
       background: $color-button-green;
       padding: $pad;
@@ -75,7 +70,6 @@
     padding-top: 2.5em;
     padding-bottom: 1.6em;
   }
-<<<<<<< HEAD
   
 ul {
     li {
@@ -90,10 +84,8 @@ ul {
     padding-bottom: .5em;
     }
 
-=======
 
   .synopsis h4 {
     // padding-top: 1em;
     padding-bottom: 1.6em;
   }
->>>>>>> 5173af8e7a926c63a7780782e1920b7ba6f572a9

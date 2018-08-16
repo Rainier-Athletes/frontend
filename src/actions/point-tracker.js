@@ -22,7 +22,6 @@ export const createPointTracker = pointTracker => (store) => {
 };
 
 export const fetchStudents = studentIds => (store) => { // eslint-disable-line
-  console.log('INSIDE FETCH STUDENTS');
   const { token } = store.getState();
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
@@ -30,9 +29,21 @@ export const fetchStudents = studentIds => (store) => { // eslint-disable-line
     .then((response) => {
       const profiles = response.body;
       const students = profiles.filter(profile => profile.role === 'student');
-      console.log(students, 'STUDENTS');
-      console.log(students[0], 'ONE STUDENT');
       return students;
     })
     .catch(console.error); // eslint-disable-line
 };
+
+export const fetchTeachers = studentId => (store) => { // eslint-disable-line
+  const { token } = store.getState();
+
+  return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
+    .set('Authorization', `Bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .then((response) => {
+      const profiles = response.body;
+      const teachers = profiles.filter(profile => profile.role === 'teacher');
+      return teachers;
+    })
+    .catch(console.error); // eslint-disable-line
+}

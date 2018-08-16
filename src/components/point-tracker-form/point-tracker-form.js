@@ -12,7 +12,7 @@ const defaultState = {
   student: null,
   subjects: [{
     subjectName: 'Social Studies',
-    teacher: '5b75acf23c357e2349659b7f',
+    teacher: '5b75ada6b174d0246b103d63',
     scoring: {
       excusedDays: 1,
       stamps: 14,
@@ -22,7 +22,7 @@ const defaultState = {
     grade: 70,
   }, {
     subjectName: 'Math',
-    teacher: '5b75acf23c357e2349659b7f',
+    teacher: '5b75ada6b174d0246b103d68',
     scoring: {
       excusedDays: 1,
       stamps: 12,
@@ -32,7 +32,7 @@ const defaultState = {
     grade: 70,
   }, {
     subjectName: 'Biology',
-    teacher: '5b75acf23c357e2349659b7f',
+    teacher: '5b75ada6b174d0246b103d6d',
     scoring: {
       excusedDays: 1,
       stamps: 16,
@@ -42,7 +42,7 @@ const defaultState = {
     grade: 70,
   }, {
     subjectName: 'Art',
-    teacher: '5b75acf23c357e2349659b7f',
+    teacher: '5b75ada6b174d0246b103d72',
     scoring: {
       excusedDays: 1,
       stamps: 14,
@@ -52,7 +52,7 @@ const defaultState = {
     grade: 50,
   }, {
     subjectName: 'PE',
-    teacher: '5b75acf23c357e2349659b7f',
+    teacher: '5b75ada6b174d0246b103d77',
     scoring: {
       excusedDays: 1,
       stamps: 12,
@@ -62,7 +62,7 @@ const defaultState = {
     grade: 70,
   }, {
     subjectName: 'English',
-    teacher: '5b75acf23c357e2349659b7f',
+    teacher: '5b75ada6b174d0246b103d7c',
     scoring: {
       excusedDays: 1,
       stamps: 16,
@@ -72,7 +72,7 @@ const defaultState = {
     grade: 70,
   }, {
     subjectName: 'Spanish',
-    teacher: '5b75acf23c357e2349659b7f',
+    teacher: '5b75ada6b174d0246b103d86',
     scoring: {
       excusedDays: 1,
       stamps: 16,
@@ -82,7 +82,7 @@ const defaultState = {
     grade: 70,
   }, {
     subjectName: 'Tutorial',
-    teacher: '5b75acf23c357e2349659b7f',
+    teacher: '5b75ada62c7a4f246bb31ed1',
     scoring: {
       excusedDays: 1,
       stamps: 16,
@@ -116,6 +116,7 @@ const defaultState = {
 
 const mapDispatchToProps = dispatch => ({
   fetchStudents: studentIds => dispatch(pointTrackerActions.fetchStudents(studentIds)),
+  fetchTeachers: studentIds => dispatch(pointTrackerActions.fetchTeachers(studentIds)),
   createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
 });
 
@@ -125,6 +126,7 @@ class PointTrackerForm extends React.Component {
 
     this.state = {
       students: [],
+      teachers: [],
       pointTracker: defaultState,
     };
   }
@@ -205,6 +207,13 @@ class PointTrackerForm extends React.Component {
         this.setState({ students: updatedStudents });
       })
       .catch(console.error); // eslint-disable-line
+
+    this.props.fetchTeachers()
+      .then((teachers) => {
+        const updatedTeachers = teachers || [];
+        console.log(updatedTeachers, 'TEACHERS');
+        this.setState({ teachers: updatedTeachers });
+      });
   }
 
   handleStudentSelect = (event) => {
@@ -221,7 +230,6 @@ class PointTrackerForm extends React.Component {
 
   calcPlayingTime = () => {
     const { subjects } = this.state.pointTracker;
-    console.log(subjects, 'SUBJECTS');
     const totalClassScores = subjects.map((subject) => {
       const { grade, subjectName } = subject;
       const { excusedDays, stamps, halfStamps } = subject.scoring;
@@ -232,16 +240,17 @@ class PointTrackerForm extends React.Component {
       let pointScore = 0;
       if (pointPercentage >= 0.50) pointScore = 1;
       if (pointPercentage >= 0.75) pointScore = 2;
+
       let gradeScore = 0;
       if (grade >= 0.6) gradeScore = 1;
       if (grade >= 0.7) gradeScore = 2;
+
       if (subjectName === 'Tutorial') gradeScore = 0;
       const totalClassScore = pointScore + gradeScore;
       return totalClassScore;
     });
     
     const totalClassScoreSum = totalClassScores.reduce((acc, cur) => acc + cur, 0);
-    console.log(totalClassScores, 'TOTAL CLASS SCORES');
     if (totalClassScoreSum >= 30) return 'Entire game';
     if (totalClassScoreSum >= 29) return 'All but start';
     if (totalClassScoreSum >= 25) return 'Three quarters';
@@ -407,6 +416,7 @@ PointTrackerForm.propTypes = {
   handleChange: PropTypes.func,
   createPointTracker: PropTypes.func,
   fetchStudents: PropTypes.func,
+  fetchTeachers: PropTypes.func,
 };
 
 export default connect(null, mapDispatchToProps)(PointTrackerForm);

@@ -6,7 +6,9 @@
   import update from 'immutability-helper';
   import { render } from 'react-dom';
   import { makeData, Tips } from '../../lib/utils';
+
   import './mentor-table.scss';
+  import DeleteAndSave from '../buttons/buttons';
 
   import * as profileActions from '../../actions/profile';
 
@@ -24,20 +26,10 @@
     createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
   });
 
-  const updateBtn = <button className="updateBtn">Save</button>
-
   class MentorTable extends React.Component {
     constructor(props, context) {
       super(props, context);
       this._columns = [
-        {
-          key: 'button',
-          name: '',
-          formatter: updateBtn,
-          width: 100,
-          resizable: true,
-          headerRenderer: ''
-        },
         {
           key: 'avatar',
           name: 'Avatar',
@@ -289,7 +281,7 @@
           rowGetter={this.getRowAt}
           rowsCount={this.state.rows.length}
           onGridRowsUpdated={this.handleGridRowsUpdated}
-          toolbar={<div className="btnGroup"><Toolbar onAddRow={this.handleAddRow}/><button className="deleteBtn">Delete</button></div>}
+          toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><DeleteAndSave/></div>}
           enableRowSelect={true}
           onRowSelect={this.onRowSelect}
           rowSelection={{

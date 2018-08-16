@@ -1,7 +1,7 @@
 import React from 'react';
 import './buttons.scss';
 
-export default class DeleteAndSave extends React.Component {
+class DeleteAndSave extends React.Component {
   render() {
     return (
       <React.Fragment>
@@ -13,3 +13,17 @@ export default class DeleteAndSave extends React.Component {
     );
   }
 }
+
+class Modal extends React.Component {
+  render() {
+    return (
+      <React.Fragment>
+        <div>
+          <button className="modal">+ Add A Connection</button>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
+export { DeleteAndSave, Modal };

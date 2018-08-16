@@ -8,7 +8,7 @@ import { render } from 'react-dom';
 import { makeData, Tips } from '../../lib/utils';
 
 import './teacher-table.scss';
-import UpdateBtn from './buttons';
+import { DeleteAndSave } from '../buttons/buttons';
 
 import * as profileActions from '../../actions/profile';
 
@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
   createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
 });
 
-class MentorTable extends React.Component {
+class TeacherTable extends React.Component {
   constructor(props, context) {
     super(props, context);
     this._columns = [
@@ -281,7 +281,7 @@ class MentorTable extends React.Component {
         rowGetter={this.getRowAt}
         rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={<div className="btnGroup"><Toolbar onAddRow={this.handleAddRow}/><button className="deleteBtn">Delete</button></div>}
+        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><DeleteAndSave/></div>}
         enableRowSelect={true}
         onRowSelect={this.onRowSelect}
         rowSelection={{
@@ -301,4 +301,4 @@ class MentorTable extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MentorTable);
+export default connect(mapStateToProps, mapDispatchToProps)(TeacherTable);

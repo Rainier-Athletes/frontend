@@ -6,7 +6,10 @@ import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import { render } from 'react-dom';
 import { makeData, Tips } from '../../lib/utils';
-import '../mentor-table/mentor-table.scss';
+import ConnectionModal from '../connection-modal/connection-modal';
+
+import './student-table.scss';
+import { DeleteAndSave } from '../buttons/buttons';
 
 import * as profileActions from '../../actions/profile';
 
@@ -24,19 +27,17 @@ const mapDispatchToProps = dispatch => ({
   createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
 });
 
-const updateBtn = <button className="updateBtn">Save</button>
-
 class StudentTable extends React.Component {
   constructor(props, context) {
     super(props, context);
     this._columns = [
       {
-        key: 'button',
-        name: '',
-        formatter: updateBtn,
-        width: 100,
+        key: 'avatar',
+        name: 'Avatar',
+        width: 60,
+        formatter: ImageFormatter,
         resizable: true,
-        headerRenderer: ''
+        headerRenderer: <ImageFormatter value={faker.image.cats()} />
       },
       {
         key: 'firstName',
@@ -55,40 +56,32 @@ class StudentTable extends React.Component {
         sortable: true,
       },
       {
-        key: 'school',
-        name: 'School',
+        key: 'role',
+        name: 'Role',
         editable: true,
         width: 200,
         resizable: true,
         sortable: true,
       },
       {
-        key: 'roles',
-        name: 'Coaches',
+        key: 'email',
+        name: 'Email',
         editable: true,
         width: 200,
         resizable: true,
         sortable: true,
       },
       {
-        key: 'teachers',
-        name: 'Teachers',
+        key: 'address',
+        name: 'Address',
         editable: true,
         width: 200,
         resizable: true,
         sortable: true,
       },
       {
-        key: 'family',
-        name: 'Family',
-        editable: true,
-        width: 200,
-        resizable: true,
-        sortable: true,
-      },
-      {
-        key: 'gender',
-        name: 'Gender',
+        key: 'phone',
+        name: 'Phone',
         editable: true,
         width: 200,
         resizable: true,
@@ -281,6 +274,8 @@ class StudentTable extends React.Component {
 
   render() {
     return (
+      <section>
+      <ConnectionModal/>
       <ReactDataGrid
         ref={ node => this.grid = node }
         enableCellSelect={true}
@@ -289,7 +284,7 @@ class StudentTable extends React.Component {
         rowGetter={this.getRowAt}
         rowsCount={this.state.rows.length}
         onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={<div className="btnGroup"><Toolbar onAddRow={this.handleAddRow}/><button className="deleteBtn">Delete</button></div>}
+        toolbar={<div><Toolbar onAddRow={this.handleAddRow}/><DeleteAndSave/></div>}
         enableRowSelect={true}
         onRowSelect={this.onRowSelect}
         rowSelection={{
@@ -305,7 +300,9 @@ class StudentTable extends React.Component {
         onCellExpand={this.onCellExpand}
         rowHeight={50}
         minHeight={600}
-        rowScrollTimeout={200} />);
+        rowScrollTimeout={200} /> 
+        </section>
+        );
   }
 }
 

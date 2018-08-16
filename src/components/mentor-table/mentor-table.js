@@ -8,7 +8,7 @@
   import { makeData, Tips } from '../../lib/utils';
 
   import './mentor-table.scss';
-  import DeleteAndSave from '../buttons/buttons';
+  import { DeleteAndSave } from '../buttons/buttons';
 
   import * as profileActions from '../../actions/profile';
 

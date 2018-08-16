@@ -2,24 +2,26 @@
 
 .point-tracker-form {
 }
+
 .select-student, .select-date {
-
   display: inline-block;
   padding: 10px;
-  
+  margin: 10px;
 }
 
-ul {
-
-  li {
-
-  list-style-type: none;
+.survey-questions input,
+.survey-questions label {
   display: inline-block;
-  padding: 10px;
-  
-  }
-
+  margin-right: 1;
 }
+
+.survey-questions label {
+  // display: inline-block;
+  margin-bottom: 0;
+  margin-left: 10px; 
+  vertical-align: middle; 
+}
+
 
     .points-tracker {
       padding-top: 20px;

@@ -10,7 +10,6 @@ class Admin extends React.Component {
       <React.Fragment>
         <TableMenu />
         <MentorTable />
-        <StudentTable />
       </React.Fragment>
     );
   }

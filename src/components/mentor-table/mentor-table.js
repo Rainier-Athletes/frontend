@@ -22,6 +22,7 @@ const mapDispatchToProps = dispatch => ({
   fetchProfile: profile => dispatch(profileActions.fetchProfileReq(profile)),
   updateProfile: profile => dispatch(profileActions.updateProfileReq(profile)),
   createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
+  deleteProfile: profile => dispatch(profileActions.deleteProfileReq(profile)),
 });
 
 const updateBtn = <button className="updateBtn">Save</button>
@@ -89,7 +90,6 @@ class MentorTable extends React.Component {
         sortable: true,
       },
     ];
-
     this.state = {
       rows: [],
       selectedIndexes: [],
@@ -245,9 +245,15 @@ class MentorTable extends React.Component {
     this.setState({ editing: false });
   }
 
-  handleDelete = (id, event) => {
+  handleDelete = (event) => {
     event.preventDefault();
-    this.props.onDelete(this.props.profiles[i].id);
+    const selected = this.state.selectedIndexes;
+    for (const index in selected) {
+      const i = selected[index];
+      console.log(this.state.rows[i]);
+      this.props.deleteProfile(this.state.rows[i]);
+    }
+
   }
 
   getSubRowDetails = (rowItem) => {
@@ -301,8 +307,6 @@ class MentorTable extends React.Component {
       console.log(updatedRows[key]);
       this.handleUpdate(updatedRows[key]);
     });
-    // this.createRows();
-
   };
 
   render() {
@@ -319,7 +323,7 @@ class MentorTable extends React.Component {
           <div>
             <Toolbar onAddRow={ this.handleAddRow }>
               <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
-              <button className="deleteBtn">Delete Row</button>
+              <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
             </Toolbar>
           </div>
         }

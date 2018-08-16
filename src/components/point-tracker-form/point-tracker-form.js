@@ -7,87 +7,102 @@ import * as pointTrackerActions from '../../actions/point-tracker';
 import './point-tracker-form.scss';
 
 const defaultState = {
-  _id: '1EF12348902093DECBA908',
-  date: 1533761272724,
-  studentId: '1EF12348902093DECBA908',
+  _id: null,
+  date: Date.now(),
+  student: null,
   subjects: [{
     subjectName: 'Social Studies',
-    teacher: '1EF12348902093DECBA910',
+    teacher: '5b75acf23c357e2349659b7f',
     scoring: {
       excusedDays: 1,
       stamps: 14,
-      x: 3,
+      halfStamps: 3,
       tutorials: 1,
     },
+    grade: 70,
   }, {
     subjectName: 'Math',
-    teacher: '1EF12348902093DECBA912',
+    teacher: '5b75acf23c357e2349659b7f',
     scoring: {
       excusedDays: 1,
       stamps: 12,
-      x: 6,
+      halfStamps: 6,
       tutorials: 0,
     },
+    grade: 70,
   }, {
     subjectName: 'Biology',
-    teacher: '1EF12348902093DECBA914',
+    teacher: '5b75acf23c357e2349659b7f',
     scoring: {
       excusedDays: 1,
       stamps: 16,
-      x: 1,
+      halfStamps: 1,
       tutorials: 2,
-    }, 
+    },
+    grade: 70,
   }, {
     subjectName: 'Art',
-    teacher: '1EF12348902093DECBA910',
+    teacher: '5b75acf23c357e2349659b7f',
     scoring: {
       excusedDays: 1,
       stamps: 14,
-      x: 3,
+      halfStamps: 3,
       tutorials: 1,
     },
   }, {
     subjectName: 'PE',
-    teacher: '1EF12348902093DECBA912',
+    teacher: '5b75acf23c357e2349659b7f',
     scoring: {
       excusedDays: 1,
       stamps: 12,
-      x: 6,
+      halfStamps: 6,
       tutorials: 0,
     },
+    grade: 70,
   }, {
     subjectName: 'English',
-    teacher: '1EF12348902093DECBA914',
+    teacher: '5b75acf23c357e2349659b7f',
     scoring: {
       excusedDays: 1,
       stamps: 16,
-      x: 1,
+      halfStamps: 1,
       tutorials: 2,
     },
+    grade: 70,
   }, {
     subjectName: 'Spanish',
-    teacher: '1EF12348902093DECBA914',
+    teacher: '5b75acf23c357e2349659b7f',
     scoring: {
       excusedDays: 1,
       stamps: 16,
-      x: 1,
+      halfStamps: 1,
       tutorials: 2,
     },
+    grade: 70,
   }, {
     subjectName: 'Tutorial',
-    teacher: '1EF12348902093DECBA914',
+    teacher: '5b75acf23c357e2349659b7f',
     scoring: {
       excusedDays: 1,
       stamps: 16,
-      x: 1,
+      halfStamps: 1,
       tutorials: 2,
     },
+    grade: 70,
   }],
   surveyQuestions: {
-    attendedCheckin: true,
+    mentorAttendedCheckin: true,
     metFaceToFace: true,
-    hadOtherCommunication: false,
+    hadOtherCommunication: true,
+    hadNoCommunication: true,
     scoreSheetTurnedIn: true,
+    scoreSheetLostOrIncomplete: true,
+    scoreSheetWillBeLate: true,
+    scoreSheetOther: true,
+    scoreSheetOtherReason: 'other reason',
+    synopsisInformationComplete: true,
+    synopsisInformationIncomplete: true,
+    synopsisCompletedByRaStaff: true,
   },
   synopsisComments: {
     extraPlayingTime: 'Jamie is working hard toward his goals. We agreed that if he achieved a small improvement this week he would get extra playing time.',
@@ -99,9 +114,8 @@ const defaultState = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
   fetchStudents: studentIds => dispatch(pointTrackerActions.fetchStudents(studentIds)),
-  fetchLastPointTracker: studentId => dispatch(pointTrackerActions.fetchLastPointTracker(studentId)),
+  createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
 });
 
 class PointTrackerForm extends React.Component {
@@ -114,10 +128,9 @@ class PointTrackerForm extends React.Component {
     };
   }
 
-  // YOU ARE HERE
   handleDateChange = (event) => {
     const { value } = event.target;
-    const [year, month, day] = value.split('-'); // 2018-08-15 VALUE
+    const [year, month, day] = value.split('-'); 
     const date = new Date(
       parseInt(year, 10), 
       parseInt(month, 10) - 1, 
@@ -182,7 +195,9 @@ class PointTrackerForm extends React.Component {
   componentDidMount() {
     this.props.fetchStudents()
       .then((students) => {
-        this.setState({ students });
+        console.log(students, 'STUDENTS');
+        const updatedStudents = students || [];
+        this.setState({ students: updatedStudents });
       })
       .catch(console.error); // eslint-disable-line
   }
@@ -191,11 +206,6 @@ class PointTrackerForm extends React.Component {
   handleStudentSelect = (event) => {
     event.preventDefault();
     const studentId = event.target.value;
-
-    this.props.fetchLastPointTracker(studentId)
-      .then((response) => {
-        console.log(response, 'RESPONSE'); // eslint-disable-line
-      });
 
     this.setState((prevState) => {
       const newState = { ...prevState };
@@ -211,17 +221,15 @@ class PointTrackerForm extends React.Component {
         <div className="select-student">
         <label htmlFor="">Select Student</label>
           <select onChange={ this.handleStudentSelect } >
-          { this.state.students.map((student) => {
-            const { _id, firstName, lastName } = student;
-            return (
+          <option disabled selected>Select Student</option>
+          { this.state.students.map(student => (
               <option 
                 placeholder="Select" 
-                key={ _id } 
-                value={ _id }
-              >{ `${firstName} ${lastName}`}
+                key={ student._id } 
+                value={ student._id }
+              >{ `${student.firstName} ${student.lastName}`}
               </option>
-            );
-          })}
+          ))}
           </select>
         </div>
       <div className="select-date">
@@ -363,7 +371,6 @@ PointTrackerForm.propTypes = {
   handleChange: PropTypes.func,
   createPointTracker: PropTypes.func,
   fetchStudents: PropTypes.func,
-  fetchLastPointTracker: PropTypes.func,
 };
 
 export default connect(null, mapDispatchToProps)(PointTrackerForm);

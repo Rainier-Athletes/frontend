@@ -8,6 +8,10 @@ export const setPointTracker = pointTracker => ({
 
 export const createPointTracker = pointTracker => (store) => {
   const { token } = store.getState();
+
+  pointTracker.date = new Date(pointTracker.date).toISOString();
+  console.log(pointTracker, 'POINT TRACKER POST BODY');
+
   return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
@@ -18,6 +22,7 @@ export const createPointTracker = pointTracker => (store) => {
 };
 
 export const fetchStudents = studentIds => (store) => { // eslint-disable-line
+  console.log('INSIDE FETCH STUDENTS');
   const { token } = store.getState();
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
@@ -25,20 +30,9 @@ export const fetchStudents = studentIds => (store) => { // eslint-disable-line
     .then((response) => {
       const profiles = response.body;
       const students = profiles.filter(profile => profile.role === 'student');
+      console.log(students, 'STUDENTS');
+      console.log(students[0], 'ONE STUDENT');
       return students;
-    })
-    .catch(console.error); // eslint-disable-line
-};
-
-// TODO: FINISH THIS ROUTE
-export const fetchLastPointTracker = studentId => (store) => { // eslint-disable-line
-  const { token } = store.getState();
-
-  return superagent.get(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
-    .set('Authorization', `Bearer ${token}`)
-    .set('Content-Type', 'application/json')
-    .then((response) => {
-      console.log(response); // eslint-disable-line
     })
     .catch(console.error); // eslint-disable-line
 };

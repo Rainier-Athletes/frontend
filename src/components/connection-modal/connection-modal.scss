@@ -1,0 +1,93 @@
+p {
+  font-size: 30px;
+}
+
+.modalContainer {
+  background: rgba(33, 33, 33, .97);
+  border-radius: 7px;
+  box-shadow: 0px 0px 10px rgb(186, 186, 186);
+  width: 23em;
+  height: 29em;
+  color: white;
+  font-family: helvetica;
+  position: absolute;
+  z-index: 99;
+  margin: auto;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.field-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContainer h1 {
+  text-align:center;
+  text-shadow: 0px 0px 3px black;
+  color: white;
+  font-size: 36px;
+  font-weight: 300;
+  position: relative;
+  top: 1em;
+  margin-bottom: 2em;
+}
+
+.modalContainer input {
+  background: white;
+  border: none;
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 300;
+  width: 85%;
+  height: 36px;
+  margin-bottom: 1.8em;
+  padding: 10px;
+}
+
+.modalContainer input:focus {
+  background: white;
+  color: black;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+.admin-mentor-btn {
+  display: none;
+  justify-content: center;
+}
+
+.addButton-container {
+  width: 7em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.addButton {
+  background: #099544;
+  box-shadow: 0px 3px #076e32;
+  border: none;
+  border-radius: 2em;
+  color: white;
+  cursor: pointer;
+  width: 7em;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 12px;
+}
+
+input:focus, button:focus {
+  outline: 0;
+}
+
+.role-dropdown {
+  margin-bottom: 2.5em;
+}
+
+.role-dropdown select {
+  width: 7em;
+  height: 2em;
+}

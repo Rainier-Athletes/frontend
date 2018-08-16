@@ -80,13 +80,6 @@ class Navbar extends React.Component {
 
     const name = this.props.myProfile ? this.props.myProfile.firstName : null;
 
-    // const invite = () => {
-    //   if (this.props.myProfile) {
-    //     return this.props.myProfile.role === 'admin' ? <Whitelist /> : null;
-    //   }
-    //   return undefined;
-    // };
-
     const JSXLoggedIn = (
       <React.Fragment>
         <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
@@ -98,9 +91,6 @@ class Navbar extends React.Component {
           {
             this.state.dropdown ? dropdown : null
           }
-          {/* {
-            invite()
-          } */}
         </span>
       </React.Fragment>
     );

@@ -5,8 +5,8 @@ import './subject-column.scss';
 
 export default function SubjectColumn(props) {
   const { subject, handleSubjectChange } = props;
-  const { subjectName } = subject;
-  const { excusedDays, stamps, x } = subject.scoring;
+  const { subjectName, grade } = subject;
+  const { excusedDays, stamps, halfStamps } = subject.scoring;
   
   return (
     <div className="column data">
@@ -27,12 +27,13 @@ export default function SubjectColumn(props) {
         type="number" 
         onChange={ handleSubjectChange } 
         name={ `${subjectName}-x` }
-        value={ x }
+        value={ halfStamps }
       />
       <input 
-        type="number" 
+        type="number"
         onChange={ handleSubjectChange } 
         name={ `${subjectName}-grade` }
+        value={ grade }
       />
     </div>
   );

@@ -49,6 +49,7 @@ const defaultState = {
       halfStamps: 3,
       tutorials: 1,
     },
+    grade: 50,
   }, {
     subjectName: 'PE',
     teacher: '5b75acf23c357e2349659b7f',
@@ -156,9 +157,14 @@ class PointTrackerForm extends React.Component {
           if (subject.subjectName === subjectName) {
             const newSubject = { ...subject };
             newSubject.scoring[categoryName] = value;
+            if (categoryName === 'grade') {
+              newSubject.grade = value;
+            } else {
+              newSubject.scoring[categoryName] = value;
+            }
+           
             return newSubject;
           }
-
           return subject;
         });
 
@@ -195,14 +201,12 @@ class PointTrackerForm extends React.Component {
   componentDidMount() {
     this.props.fetchStudents()
       .then((students) => {
-        console.log(students, 'STUDENTS');
         const updatedStudents = students || [];
         this.setState({ students: updatedStudents });
       })
       .catch(console.error); // eslint-disable-line
   }
 
-  // TODO: fix this event handler
   handleStudentSelect = (event) => {
     event.preventDefault();
     const studentId = event.target.value;
@@ -213,6 +217,37 @@ class PointTrackerForm extends React.Component {
 
       return newState;
     });
+  }
+
+  calcPlayingTime = () => {
+    const { subjects } = this.state.pointTracker;
+    console.log(subjects, 'SUBJECTS');
+    const totalClassScores = subjects.map((subject) => {
+      const { grade, subjectName } = subject;
+      const { excusedDays, stamps, halfStamps } = subject.scoring;
+      const pointsEarned = 2 * stamps + halfStamps;
+      const pointsPossible = subjectName === 'Tutorial' ? 10 - excusedDays * 2 : 40 - excusedDays * 8;
+      const pointPercentage = pointsEarned / pointsPossible;
+      
+      let pointScore = 0;
+      if (pointPercentage >= 0.50) pointScore = 1;
+      if (pointPercentage >= 0.75) pointScore = 2;
+      let gradeScore = 0;
+      if (grade >= 0.6) gradeScore = 1;
+      if (grade >= 0.7) gradeScore = 2;
+      if (subjectName === 'Tutorial') gradeScore = 0;
+      const totalClassScore = pointScore + gradeScore;
+      return totalClassScore;
+    });
+    
+    const totalClassScoreSum = totalClassScores.reduce((acc, cur) => acc + cur, 0);
+    console.log(totalClassScores, 'TOTAL CLASS SCORES');
+    if (totalClassScoreSum >= 30) return 'Entire game';
+    if (totalClassScoreSum >= 29) return 'All but start';
+    if (totalClassScoreSum >= 25) return 'Three quarters';
+    if (totalClassScoreSum >= 21) return 'Two quarters';
+    if (totalClassScoreSum >= 29) return 'One quarter';
+    return 'None of game';
   }
 
   render() {
@@ -299,6 +334,7 @@ class PointTrackerForm extends React.Component {
         wrap="hard"
       />
 
+       <p>Recommended playing time: { this.calcPlayingTime() }</p>
       <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
       <select
         name="mentorGrantedPlayingTime"

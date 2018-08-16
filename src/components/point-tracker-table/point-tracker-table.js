@@ -26,7 +26,6 @@ export default function PointTrackerTable(props) {
           <label>Grade</label>
         </div>
         { subjects }
-        {/* <SubjectColumn label="Tutorial" /> */}
       </div>
       </React.Fragment>
   );

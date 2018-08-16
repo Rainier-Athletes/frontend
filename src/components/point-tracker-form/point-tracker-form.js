@@ -297,40 +297,108 @@ class PointTrackerForm extends React.Component {
     const surveyQuestionsJSX = (
       <fieldset>
         <div className="survey-questions">
+             <div className="survey-question-container">
+
              <input
                 type="checkbox"
                 name="attendedCheckin"
                 onChange= { this.handleSurveyQuestionChange }
                 checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }/>
               <label htmlFor="attendedCheckin">Attended Check-In</label>
+                </div>
+        
+         <div className="survey-question-container">
+
+         <input
+            type="checkbox"
+            name="metFaceToFace"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }/>
+          <label htmlFor="metFaceToFace">Met Face-to-Face</label>
+            </div>
+        
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="hadOtherCommunication"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }/>
+          <label htmlFor="hadOtherCommunication">Had Other Communication</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="hadNoCommunication"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.hadNoCommunication }/>
+          <label htmlFor="hadNoCommunication">Had No Communication</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="scoreSheetTurnedIn"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }/>
+          <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
+            </div>
         </div>
-  
-      <div className="survey-questions">
-      <input
-        type="checkbox"
-        name="metFaceToFace"
-        onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }/>
-      <label htmlFor="metFaceToFace">Met Face-to-Face</label>
-      </div>
 
-      <div className="survey-questions">
-      <input
-        type="checkbox"
-        name="hadOtherCommunication"
-        onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }/>
-      <label htmlFor="hadOtherCommunication">Had Other Communication</label>
-      </div>
+        <div className="survey-questions-2">
+          <div className="survey-question-container">
 
-      <div className="survey-questions">
-      <input
-        type="checkbox"
-        name="scoreSheetTurnedIn"
-        onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }/>
-      <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
-      </div>
+          <input
+            type="checkbox"
+            name="scoreSheetLostOrIcomplete"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.scoreSheetLostOrIncomplete }/>
+          <label htmlFor="scoreSheetLostOrIncomplete">Score Sheet Lost Or Incomplete</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="scoreSheetWillBeLate"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.scoreSheetWillBeLate }/>
+          <label htmlFor="scoreSheetWillBeLate">Score Sheet Will Be Late</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="synopsisInformationComplete"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.synopsisInformationComplete }/>
+          <label htmlFor="synopsisInformationComplete">Synopsis Information Complete</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="synopsisInformationIncomplete"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.synopsisInformationIncomplete }/>
+          <label htmlFor="synopsisInformationIncomplete">Synopsis Information Incomplete</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="synopsisCompletedByRaStaff"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.synopsisCompletedByRaStaff }/>
+          <label htmlFor="synopsisCompletedByRaStaff">Synopsis Completed By RA Staff</label>
+            </div>
+        </div>
     </fieldset>
     );
     
@@ -338,7 +406,7 @@ class PointTrackerForm extends React.Component {
       <div className="synopsis">
       <h4>Synopsis</h4>
 
-      <label htmlFor="extraPlayingTime">Extra Playing Time</label>
+      {/* <label htmlFor="extraPlayingTime">Extra Playing Time</label>
       <textarea
         name="extraPlayingTime"
         onChange={ this.handleSynopsisCommentChange }
@@ -346,7 +414,7 @@ class PointTrackerForm extends React.Component {
         rows="8"
         cols="80"
         wrap="hard"
-      />
+      /> */}
 
        <p>Recommended playing time: { this.calcPlayingTime() }</p>
       <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>

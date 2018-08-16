@@ -27,7 +27,7 @@
     .dropdown {
       display: block;
       position: absolute;
-      background-color: lightgray;
+      background-color: $color-lightgrey;
       top: 4.7em;
       right: 0;
       width: 11em;
@@ -41,16 +41,20 @@
 }
 
 button {
-  background-color: transparent !important;
+  background-color: transparent;
   float: right;
-  padding: 1.8em 0.8em !important;
+  padding: 1em 0.8em;
   margin-left: 1em;
 }
 
 .login > button {
+  background-color: transparent;
+  float: right;
+  padding: 1em 0.8em;
+  margin-left: 1em;
   color: white;
 }
 
-.dropdown > button {
+.dropdown > button.navbar-dropdown {
   margin-right: 2em;
 }

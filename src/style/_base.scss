@@ -5,7 +5,6 @@ html, body {
   max-width:inherit;
   position: relative; 
   font-family: $font-primary;
-  margin: 60px 20px 20px 20px;
 }
 
 head, script, link  { display: none; }
@@ -55,7 +54,7 @@ textarea, input, select {
   }
 
   &::placeholder {
-    color: $color-lightgrey;
+    color: $color-black;
   }
 }
 
@@ -64,18 +63,8 @@ button {
 }
 
 button,input[type="submit"] {
-  background: $color-lightgrey;
-  padding: $pad;
-  border: none;
-  border-radius: 3px;
-
-  &:hover {
-    background: $color-darkgrey;
-  }
-
-  &:active {
-    background: $color-darkgrey;
-  }
+  font-family: $font-primary;
+  font-weight: bold;
 }
 
 footer {

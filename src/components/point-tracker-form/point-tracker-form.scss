@@ -1,5 +1,7 @@
 @import '../../style/vars';
 
+.point-tracker-form {
+}
 .select-student, .select-date {
 
   display: inline-block;
@@ -19,3 +21,32 @@ ul {
 
 }
 
+    .points-tracker {
+      padding-top: 20px;
+      margin: 80px 20px 0 20px;
+    }
+
+    h2 {
+      color: $color-brand-blue;
+      padding-bottom: .5em;
+    }
+
+    .submit-report{
+      background: $color-button-green;
+      padding: $pad;
+      border: 1px solid;
+      border-radius: 3px;
+      font-family: $font-primary;
+      font-weight: bold;
+      color: $color-black;
+      font-size: 16px;
+
+      &:hover {
+        background: $color-button-focus;
+        color: $color-black;
+      }
+  
+      &:visited {
+        background: $color-button-active;
+    }
+  }

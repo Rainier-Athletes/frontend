@@ -338,6 +338,7 @@ class PointTrackerForm extends React.Component {
     </div>
     );
 
+
     return (
       <div className="points-tracker">
         <React.Fragment>
@@ -351,6 +352,7 @@ class PointTrackerForm extends React.Component {
                   subjects={ this.state.pointTracker.subjects }
               />
               { synopsisCommentsJSX }
+                
             <button className="submit-report" type="submit">Submit Point Tracker</button>
           </form>
         </React.Fragment>

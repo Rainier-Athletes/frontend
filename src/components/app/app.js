@@ -10,9 +10,8 @@ import Navbar from '../navbar/navbar';
 import Whitelist from '../whitelist/whitelist';
 import Auth from '../auth/auth';
 import PointTrackerForm from '../point-tracker-form/point-tracker-form';
-// import * as routes from '../../lib/routes';
-// import Auth from '../auth/auth';
-// import AdminModal from '../admin-modal/admin-modal';
+
+// import { Footer } from '../footer/footer';
 
 import './app.scss';
 
@@ -37,6 +36,7 @@ export default class App extends React.Component {
             <Route exact path="/mentor" component={ PointTrackerForm } />
           </div>
         </BrowserRouter>
+
       </div>
     );
   }

@@ -2,35 +2,19 @@
 
 .point-tracker-form {
 }
-.select-student, .select-date {
-
-  display: inline-block;
-  padding: 10px;
-  
-}
-
-ul {
-
-  li {
-
-  list-style-type: none;
-  display: inline-block;
-  padding: 10px;
-  
-  }
-
-}
+  .select {
+    display: inline-block;
+    width: 180px;
+    height: 3em;
+    padding: 10px;
+    clear: both;
+    }
 
     .points-tracker {
       padding-top: 20px;
       margin: 80px 20px 0 20px;
     }
-
-    h2 {
-      color: $color-brand-blue;
-      padding-bottom: .5em;
-    }
-
+ 
     .submit-report{
       background: $color-button-green;
       padding: $pad;
@@ -40,13 +24,25 @@ ul {
       font-weight: bold;
       color: $color-black;
       font-size: 16px;
-
       &:hover {
         background: $color-button-focus;
         color: $color-black;
-      }
-  
+      } 
       &:visited {
         background: $color-button-active;
     }
   }
+  
+ul {
+    li {
+      list-style-type: none;
+      display: inline-block;
+      padding: 10px;
+    }
+  }
+
+  h2 {
+    color: $color-brand-blue;
+    padding-bottom: .5em;
+    }
+

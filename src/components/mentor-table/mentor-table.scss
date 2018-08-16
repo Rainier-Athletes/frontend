@@ -15,6 +15,10 @@
   width: 100%;
 }
 
+.tools > button {
+  margin-bottom: 0.8em;
+}
+
 .deleteBtn {
   background: white;
   border: 1px solid rgb(255, 112, 112);
@@ -23,7 +27,6 @@
   float: right;
   margin-bottom: .3em;
   position: relative;
-  right: 1.15em;
   text-shadow: rgb(206, 206, 206);
   width: 6.09em;
 }
@@ -38,10 +41,9 @@
   border: 1px solid rgb(103, 133, 231);
   color: rgb(16, 62, 211);
   font-size: 14px;
-  margin-bottom: 1em;
   position: relative;
   text-shadow: rgb(206, 206, 206);
-  width: 5.74em;
+  width: 6.09em;
 }
 
 .updateBtn:hover {

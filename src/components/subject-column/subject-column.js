@@ -36,6 +36,10 @@ export default function SubjectColumn(props) {
         name={ `${subjectName}-grade` }
         value={ grade }
       />
+      <button 
+        type="button"
+        // onClick={  } TODO ADD DELETE HANDLER
+      >X</button> 
     </div>
   );
 }

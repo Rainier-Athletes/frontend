@@ -5,6 +5,17 @@ import SubjectColumn from '../subject-column/subject-column';
 import './point-tracker-table.scss';
 
 export default function PointTrackerTable(props) {
+  const addNewSubjectJSX = (
+    <div>
+      <h4>Add new subjects</h4>
+      <select>
+        <option disabled selected>Select Teacher</option>
+      </select>
+      <input type="text" placeholder="Subject Name"/>
+      <button type="button">Add new subject</button>
+    </div>
+  );
+  
   const subjects = props.subjects.map(subject => (
     <SubjectColumn 
     key={ subject.subjectName } 
@@ -14,10 +25,11 @@ export default function PointTrackerTable(props) {
     getTeacherName={ props.getTeacherName }
     />
   ));
-  
+
   return (
     <React.Fragment>
       <h4>Point Sheet and Grades</h4>
+      { addNewSubjectJSX }
       <div className="point-table">
         <div className="row-labels">
           <label></label>
@@ -26,7 +38,6 @@ export default function PointTrackerTable(props) {
           <label>Num. of Xs</label>
           <label>Grade</label>
         </div>
-        {/* <div className="column-labels"> */}
         { subjects }
       </div>
       </React.Fragment>

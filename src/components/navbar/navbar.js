@@ -91,9 +91,6 @@ class Navbar extends React.Component {
           {
             this.state.dropdown ? dropdown : null
           }
-          {/* {
-            invite()
-          } */}
         </span>
       </React.Fragment>
     );

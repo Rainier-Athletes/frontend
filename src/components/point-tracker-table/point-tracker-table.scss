@@ -4,7 +4,7 @@
   
   .labels {
     width: 10em;
-    font-size: 14px;
+    font-size: 12px;
     text-align: right;
   }
 
@@ -17,14 +17,16 @@
   * {
     display: inline-block;
     height: 3em;
-    width: 4em;
+    width: 5em;
     padding: .5em;
     margin: .2em;
   }
 }
 
 .row-labels {
-  font-size: 12px;
+  font-size: 14px;
+  padding-left: .1em;
+  text-align: center;
 }
 
 

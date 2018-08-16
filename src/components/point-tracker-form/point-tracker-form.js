@@ -223,7 +223,12 @@ class PointTrackerForm extends React.Component {
             );
           })}
           </select>
-        </div>
+          {/* <select>
+              <option value="" disabled defaultValue>Select Student</option>
+              <option>Example Student 1</option>
+              <option>Example Student 2</option>
+          </select> */}
+      </div>
       <div className="select-date">
         <label htmlFor="">Select Date</label>
         <input
@@ -237,60 +242,48 @@ class PointTrackerForm extends React.Component {
     );
     
     const surveyQuestionsJSX = (
-      <section>
+      <fieldset>
+        <div className="survey-questions">
+             <input
+                type="checkbox"
+                name="attendedCheckin"
+                onChange= { this.handleSurveyQuestionChange }
+                checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }/>
+              <label htmlFor="attendedCheckin">Attended Check-In</label>
+        </div>
+  
       <div className="survey-questions">
-      <ul>
-        <li>
-      <label htmlFor="attendedCheckin">Attended Check-In</label>
-      <input
-        type="checkbox"
-        name="attendedCheckin"
-        onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }
-      /></li>
-      <li>
-      <label htmlFor="metFaceToFace">Met Face-to-Face</label>
       <input
         type="checkbox"
         name="metFaceToFace"
         onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }
-      /></li>
-      <li>
-      <label htmlFor="hadOtherCommunication">Had Other Communication</label>
+        checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }/>
+      <label htmlFor="metFaceToFace">Met Face-to-Face</label>
+      </div>
+
+      <div className="survey-questions">
       <input
         type="checkbox"
         name="hadOtherCommunication"
         onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }
-      /></li>
-      <li>
-      <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
+        checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }/>
+      <label htmlFor="hadOtherCommunication">Had Other Communication</label>
+      </div>
+
+      <div className="survey-questions">
       <input
         type="checkbox"
         name="scoreSheetTurnedIn"
         onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }
-      /></li>
-    </ul>
-    </div>
-    </section>
+        checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }/>
+      <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
+      </div>
+    </fieldset>
     );
     
     const synopsisCommentsJSX = (
       <div className="synopsis">
       <h4>Synopsis</h4>
-
-      <label htmlFor="extraPlayingTime">Extra Playing Time</label>
-      <textarea
-        name="extraPlayingTime"
-        onChange={ this.handleSynopsisCommentChange }
-        value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-        rows="8"
-        cols="80"
-        wrap="hard"
-      />
-
       <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
       <select
         name="mentorGrantedPlayingTime"
@@ -305,6 +298,17 @@ class PointTrackerForm extends React.Component {
         <option value="One quarter">One quarter</option>
         <option value="None of game">None of game</option>
       </select>
+
+      <label htmlFor="extraPlayingTime">Extra Playing Time</label>
+      <textarea
+        name="extraPlayingTime"
+        onChange={ this.handleSynopsisCommentChange }
+        value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
+        rows="8"
+        cols="80"
+        wrap="hard"
+      />
+
 
       <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
       <textarea
@@ -344,7 +348,7 @@ class PointTrackerForm extends React.Component {
         <React.Fragment>
           <form className="data-entry" onSubmit={ this.handleSubmit }>
             <h2>POINT TRACKER TABLE</h2>
-              <h4>Point Sheet and Grades</h4>
+              {/* <h4>Point Sheet and Grades</h4> */}
               { selectOptionsJSX }
               { surveyQuestionsJSX }
                 <PointTrackerTable

@@ -6,6 +6,7 @@ require('dotenv').config();
 const app = express();
 
 const build = `${__dirname}/app/build`;
+console.log('this is ' + __dirname);
 
 app.use(express.static(build));
 

@@ -12,8 +12,10 @@ export default class TableMenu extends React.Component {
     return (
   <React.Fragment>
   <form className="table-menu">
-    <button className="table-menu-btn">Mentors</button>
     <button className="table-menu-btn">Students</button>
+    <button className="table-menu-btn">Mentors</button>
+    <button className="table-menu-btn">Teachers</button>
+    <button className="table-menu-btn">Coaches</button>
   </form>
   </React.Fragment>
     );

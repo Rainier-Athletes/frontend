@@ -6,9 +6,8 @@ import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import { render } from 'react-dom';
 import { makeData, Tips } from '../../lib/utils';
-import ConnectionModal from '../connection-modal/connection-modal';
 
-import './student-table.scss';
+import './teacher-table.scss';
 import { DeleteAndSave } from '../buttons/buttons';
 
 import * as profileActions from '../../actions/profile';
@@ -27,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
   createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
 });
 
-class StudentTable extends React.Component {
+class TeacherTable extends React.Component {
   constructor(props, context) {
     super(props, context);
     this._columns = [
@@ -274,8 +273,6 @@ class StudentTable extends React.Component {
 
   render() {
     return (
-      <section>
-      <ConnectionModal/>
       <ReactDataGrid
         ref={ node => this.grid = node }
         enableCellSelect={true}
@@ -300,10 +297,8 @@ class StudentTable extends React.Component {
         onCellExpand={this.onCellExpand}
         rowHeight={50}
         minHeight={600}
-        rowScrollTimeout={200} /> 
-        </section>
-        );
+        rowScrollTimeout={200} />);
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudentTable);
+export default connect(mapStateToProps, mapDispatchToProps)(TeacherTable);

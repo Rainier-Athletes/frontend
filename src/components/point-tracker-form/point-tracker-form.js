@@ -286,7 +286,7 @@ class PointTrackerForm extends React.Component {
         onChange={ this.handleSynopsisCommentChange }
         value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
         >
-        <option value="" disabled defaultValue>Select Playing Time</option>
+        <option value="" defaultValue>Select Playing Time</option>
         <option value="Entire Game">Entire Game</option>
         <option value="All but start">All but start</option>
         <option value="Three quarters">Three quarters</option>

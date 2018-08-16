@@ -11,8 +11,6 @@ import Whitelist from '../whitelist/whitelist';
 import Auth from '../auth/auth';
 import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
-// import { Footer } from '../footer/footer';
-
 import './app.scss';
 
 library.add(faAngleDown, faUserPlus);
@@ -36,7 +34,12 @@ export default class App extends React.Component {
             <Route exact path="/mentor" component={ PointTrackerForm } />
           </div>
         </BrowserRouter>
-
+      {/* <div className="footer"> */}
+        <footer className="footer">
+           <a href="https://www.rainierathletes.org" alt="link to Rainier Athletes website"> ©2018 Rainier Athletes |</a>
+          <a href="https://github.com/Rainier-Athletes" alt="link to GitHub repo">CodeFellows</a>
+        </footer>
+      {/* </div> */}
       </div>
     );
   }

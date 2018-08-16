@@ -50,16 +50,18 @@
     .submit-report{
       background: $color-button-green;
       padding: $pad;
-      border: 1px solid;
+      border: none;
       border-radius: 3px;
       font-family: $font-primary;
       font-weight: bold;
-      color: $color-black;
+      color: $color-white;
       font-size: 16px;
+      
       &:hover {
         background: $color-button-focus;
         color: $color-black;
       } 
+      
       &:visited {
         background: $color-button-active;
     }

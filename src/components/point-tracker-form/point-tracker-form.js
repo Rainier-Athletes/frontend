@@ -200,6 +200,12 @@ class PointTrackerForm extends React.Component {
     this.props.createPointTracker(this.state.pointTracker);
   }
 
+  getTeacherName = (teacherId) => {
+    return this.state.teachers
+      .filter(teacher => teacher._id === teacherId)
+      .map(teacher => `${teacher.firstName} ${teacher.lastName}`)[0] || '';
+  } 
+
   componentDidMount() {
     this.props.fetchStudents()
       .then((students) => {
@@ -402,6 +408,7 @@ class PointTrackerForm extends React.Component {
                 <PointTrackerTable
                   handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.pointTracker.subjects }
+                  getTeacherName={ this.getTeacherName }
               />
               { synopsisCommentsJSX }
             <button className="submit-report" type="submit">Submit Point Tracker</button>

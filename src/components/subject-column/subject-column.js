@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import './subject-column.scss';
 
 export default function SubjectColumn(props) {
-  const { subject, handleSubjectChange } = props;
-  const { subjectName, grade } = subject;
+  const { subject, handleSubjectChange, getTeacherName } = props;
+  const { subjectName, grade, teacher } = subject;
   const { excusedDays, stamps, halfStamps } = subject.scoring;
   
   return (
     <div className="column data">
-      <label>{ subject.subjectName }</label>
+      <label>{ getTeacherName(teacher) }</label>
+      <label>{ subjectName }</label>
       <input 
         type="number" 
         onChange={ handleSubjectChange } 
@@ -42,4 +43,5 @@ export default function SubjectColumn(props) {
 SubjectColumn.propTypes = {
   subject: PropTypes.object,
   handleSubjectChange: PropTypes.func,
+  getTeacherName: PropTypes.func,
 };

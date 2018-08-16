@@ -228,6 +228,7 @@ class PointTrackerForm extends React.Component {
               <option>Example Student 1</option>
               <option>Example Student 2</option>
           </select> */}
+      </div>
       <div className="select-date">
         <label htmlFor="">Select Date</label>
         <input
@@ -237,7 +238,6 @@ class PointTrackerForm extends React.Component {
           value={ convertDateToValue(this.state.pointTracker.date) }
           />
         </div>
-      </div>
       </section>
     );
     

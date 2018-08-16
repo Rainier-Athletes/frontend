@@ -10,7 +10,7 @@ export default function SubjectColumn(props) {
   
   return (
     <div className="column data">
-      <label>{ subject.subjectName }</label>
+      <label className="column-rows">{ subject.subjectName }</label>
       <input 
         type="number" 
         onChange={ handleSubjectChange } 

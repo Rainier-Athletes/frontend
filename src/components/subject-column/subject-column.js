@@ -6,9 +6,13 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import './subject-column.scss';
 
 export default function SubjectColumn(props) {
-  const { subject, handleSubjectChange, getTeacherName } = props;
+  const { subject, handleSubjectChange, getTeacherName, deleteSubject } = props;
   const { subjectName, grade, teacher } = subject;
   const { excusedDays, stamps, halfStamps } = subject.scoring;
+
+  const handleDelete = () => {
+    deleteSubject(subjectName, teacher);
+  };
   
   return (
     <div className="column data">
@@ -39,10 +43,9 @@ export default function SubjectColumn(props) {
         value={ grade }
       />
       <button 
-        type="submit"
-        // onClick={  } TODO {ADD DELETE HANDLER
-      ><FontAwesomeIcon icon={f2ed} />
-      </button> 
+        type="button"
+        onClick={ handleDelete }
+      >X</button> 
     </div>
   );
 }
@@ -51,4 +54,5 @@ SubjectColumn.propTypes = {
   subject: PropTypes.object,
   handleSubjectChange: PropTypes.func,
   getTeacherName: PropTypes.func,
+  deleteSubject: PropTypes.func,
 };

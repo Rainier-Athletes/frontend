@@ -204,7 +204,40 @@ class PointTrackerForm extends React.Component {
     return this.state.teachers
       .filter(teacher => teacher._id === teacherId)
       .map(teacher => `${teacher.firstName} ${teacher.lastName}`)[0] || '';
-  } 
+  }
+
+  deleteSubject = (subjectName, teacherId) => {
+    this.setState((prevState) => {
+      const newState = { ...prevState };
+
+      newState.pointTracker.subjects = newState.pointTracker.subjects.filter((subject) => {
+        return subject.subjectName !== subjectName && subject.teacher !== teacherId;
+      });
+
+      return newState;
+    });
+  }
+
+  createSubject = (subjectName, teacherId) => {
+    this.setState((prevState) => {
+      const newState = { ...prevState };
+      const newSubject = {
+        subjectName,
+        teacher: teacherId,
+        scoring: {
+          excusedDays: null,
+          stamps: null,
+          halfStamps: null,
+          tutorials: null,
+        },
+        grade: null,
+      };
+
+      newState.pointTracker.subjects.push(newSubject);
+
+      return newState;
+    });
+  }
 
   componentDidMount() {
     this.props.fetchStudents()
@@ -422,6 +455,8 @@ class PointTrackerForm extends React.Component {
                   handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.pointTracker.subjects }
                   getTeacherName={ this.getTeacherName }
+                  teachers={ this.state.teachers }
+                  deleteSubject= { this.deleteSubject }
               />
               { synopsisCommentsJSX }
                 

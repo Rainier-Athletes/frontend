@@ -16,19 +16,29 @@ export default function PointTrackerTable(props) {
       <h4>Add new subjects</h4>
       <select>
         <option disabled selected>Select Teacher</option>
+        {
+          props.teachers.map(teacher => (
+            <option 
+              key={ teacher._id }
+              name={ teacher._id }
+            >{ `${teacher.firstName} ${teacher.lastName}` }
+          </option>
+          ))
+        }
       </select>
       <input type="text" placeholder="Subject Name"/>
       <button type="button">Add new subject</button>
     </div>
   );
   
-  const subjects = props.subjects.map(subject => (
-    <SubjectColumn 
+  const subjectsJSX = props.subjects.map(subject => (
+    <SubjectColumn
     key={ subject.subjectName } 
     label={ subject.subjectName }
     subject={ subject }
     handleSubjectChange={ props.handleSubjectChange }
     getTeacherName={ props.getTeacherName }
+    deleteSubject={ props.deleteSubject }
     />
   ));
 
@@ -44,7 +54,7 @@ export default function PointTrackerTable(props) {
           <label>Num. of Xs</label>
           <label>Grade</label>
         </div>
-        { subjects }
+        { subjectsJSX }
       </div>
       <button type="submit">
         <FontAwesomeIcon icon={f2ed} />
@@ -54,7 +64,9 @@ export default function PointTrackerTable(props) {
 }
 
 PointTrackerTable.propTypes = {
-  handleSubjectChange: PropTypes.func,
   subjects: PropTypes.array,
+  teachers: PropTypes.array,
+  handleSubjectChange: PropTypes.func,
   getTeacherName: PropTypes.func,
+  deleteSubject: PropTypes.func,
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Iframe from '../iframe/iframe';
 
 import './_dashboard.scss';
 
@@ -27,18 +28,28 @@ class Dashboard extends React.Component {
     return <div className="nav"><Link to="/mentor">Mentor</Link><Link to="/admin">Admin</Link></div>;
   }
 
-  renderJSX = () => {
+  determineRole = () => {
     if (this.props.myProfile) {
       return this.props.myProfile.role === 'mentor' ? this.renderMentor() : this.renderAdmin();
     }
     return null;
   }
 
+  renderJSX = (loggedIn) => {
+    const iframe = (
+      <React.Fragment>
+        <Iframe />
+      </React.Fragment>
+    );
+
+    return loggedIn ? this.determineRole() : iframe;
+  };
+
   render() {
     return (
       <React.Fragment>
         {
-          this.renderJSX()
+          this.renderJSX(this.props.loggedIn)
         }
       </React.Fragment>
     );

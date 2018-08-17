@@ -68,10 +68,23 @@ button,input[type="submit"] {
 }
 
 footer {
-  height: 40px;
+  text-align: center;
+  height: 60px;
   background: #000;
-  border-top: solid 5px #fff;
+  border-top: none;
   margin-top: 100px;
+
+  a {
+    padding-top: 10px;
+    padding-left: 3px;
+    display: inline-block;
+    color: $color-white;
+    list-style-type: none;
+
+    &:hover {
+      color: $color-input-focus;
+    }
+  }
 }
 
 // lists
@@ -81,3 +94,7 @@ ul li { list-style: disc; }
 ol li { list-style: decimal; }
 ol ol li , ul ol li { list-style: lower-alpha; }
 ol ul li , ul ul li { list-style: square; }
+
+.clearfix {
+  clear: both;
+}

@@ -6,8 +6,11 @@
 .nav {
   z-index: 2;
   color: white;
-  float: right;
   margin-right: 30em;
+  top: 0;
+  right: 0;
+  margin-right: 30em;
+  position: fixed;
 }
 .nav > a {
   position: absolute;

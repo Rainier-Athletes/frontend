@@ -32,6 +32,10 @@ export default class App extends React.Component {
             <Route expact path="/mentor" component={ MentorUser(PointTrackerForm) } />
           </div>
         </BrowserRouter>
+        <footer className="footer">
+           <a href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website"> ©2018 Rainier Athletes |</a>
+           <a href="https://github.com/Rainier-Athletes" alt="Link to GitHub repository">CodeFellows</a>
+        </footer>
       </div>
     );
   }

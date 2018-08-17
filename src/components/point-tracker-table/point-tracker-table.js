@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SubjectColumn from '../subject-column/subject-column';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { f2ed } from '@fortawesome/free-solid-svg-icons';
-
 import './point-tracker-table.scss';
 
 // const icon = <FontAwesomeIcon icon={f2ed} />;
@@ -56,9 +53,6 @@ export default function PointTrackerTable(props) {
         </div>
         { subjectsJSX }
       </div>
-      <button type="submit">
-        <FontAwesomeIcon icon={f2ed} />
-      </button> 
       </React.Fragment>
   );
 }

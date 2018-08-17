@@ -115,7 +115,7 @@ import './point-tracker-form.scss';
 //   },
 // };
 
-const defaultState = {
+const emptyPointTracker = {
   _id: null,
   date: Date.now(),
   student: null,
@@ -166,7 +166,7 @@ class PointTrackerForm extends React.Component {
     this.state = {
       students: [],
       teachers: [],
-      pointTracker: defaultState,
+      pointTracker: emptyPointTracker,
     };
   }
 
@@ -237,6 +237,7 @@ class PointTrackerForm extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.createPointTracker(this.state.pointTracker);
+    this.setState({ pointTracker: emptyPointTracker });
   }
 
   getTeacherName = (teacherId) => {
@@ -250,7 +251,10 @@ class PointTrackerForm extends React.Component {
       const newState = { ...prevState };
 
       newState.pointTracker.subjects = newState.pointTracker.subjects.filter((subject) => {
-        return subject.subjectName !== subjectName && subject.teacher !== teacherId;
+        if (subjectName && teacherId) {
+          return subject.subjectName !== subjectName && subject.teacher !== teacherId;
+        }
+        return subject.subjectName !== subjectName;
       });
 
       return newState;
@@ -301,7 +305,7 @@ class PointTrackerForm extends React.Component {
 
     this.setState((prevState) => {
       const newState = { ...prevState };
-      newState.pointTracker = lastPointTracker || defaultState;
+      newState.pointTracker = lastPointTracker || emptyPointTracker;
       return newState;
     });
   }
@@ -425,7 +429,7 @@ class PointTrackerForm extends React.Component {
 
           <input
             type="checkbox"
-            name="scoreSheetLostOrIcomplete"
+            name="scoreSheetLostOrIncomplete"
             onChange= { this.handleSurveyQuestionChange }
             checked={ this.state.pointTracker.surveyQuestions.scoreSheetLostOrIncomplete }/>
           <label htmlFor="scoreSheetLostOrIncomplete">Score Sheet Lost Or Incomplete</label>

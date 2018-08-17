@@ -10,6 +10,7 @@ const emptyPointTracker = {
   _id: '',
   date: Date.now(),
   student: '',
+  studentName: '',
   subjects: [{
     subjectName: 'Tutorial',
     teacher: '',
@@ -36,11 +37,11 @@ const emptyPointTracker = {
     synopsisCompletedByRaStaff: false,
   },
   synopsisComments: {
-    extraPlayingTime: 'Reason for extra playing time...',
-    mentorGrantedPlayingTime: 'Reason for granted playing time...',
-    studentActionItems: 'Student action items...',
-    sportsUpdate: 'Sports update...',
-    additionalComments: 'Additional Comments...',
+    extraPlayingTime: '',
+    mentorGrantedPlayingTime: '',
+    studentActionItems: '',
+    sportsUpdate: '',
+    additionalComments: '',
   },
 };
 
@@ -48,6 +49,7 @@ const mapDispatchToProps = dispatch => ({
   fetchStudents: studentIds => dispatch(pointTrackerActions.fetchStudents(studentIds)),
   fetchTeachers: studentIds => dispatch(pointTrackerActions.fetchTeachers(studentIds)),
   createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
+  createSynopsisReport: pointTracker => dispatch(pointTrackerActions.createSynopsisReport(pointTracker)),
 });
 
 class PointTrackerForm extends React.Component {
@@ -78,7 +80,8 @@ class PointTrackerForm extends React.Component {
   }
 
   handleSubjectChange = (event) => {
-    const { name, value } = event.target;
+    const { name } = event.target;
+    const value = parseInt(event.target.value, 10);
     
     this.setState((prevState) => {
       const newState = { ...prevState };
@@ -128,9 +131,11 @@ class PointTrackerForm extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { pointTracker } = this.state;
-    console.log(pointTracker, 'POINT TRACKER');
     delete pointTracker._id;
+
     this.props.createPointTracker(pointTracker);
+    this.props.createSynopsisReport(pointTracker);
+
     this.setState({ pointTracker: emptyPointTracker });
   }
 
@@ -195,12 +200,12 @@ class PointTrackerForm extends React.Component {
     const studentId = event.target.value;
     const selectedStudent = this.state.students.filter(student => student._id === studentId)[0];
     const { lastPointTracker } = selectedStudent.studentData;
-    console.log(selectedStudent, 'SELECTED STUDENT');
 
     this.setState((prevState) => {
       const newState = { ...prevState };
       newState.pointTracker = lastPointTracker || emptyPointTracker;
       newState.pointTracker.student = studentId;
+      newState.pointTracker.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
       return newState;
     });
   }
@@ -238,11 +243,11 @@ class PointTrackerForm extends React.Component {
 
   render() {
     const selectOptionsJSX = (
-      <section>
+      <section required>
         <div className="select-student">
         <label htmlFor="">Select Student</label>
           <select onChange={ this.handleStudentSelect } >
-          <option disabled selected>Select Student</option>
+          <option disabled selected value="">Select Student</option>
           { this.state.students.map(student => (
               <option 
                 placeholder="Select" 
@@ -260,6 +265,7 @@ class PointTrackerForm extends React.Component {
           type="date"
           onChange={ this.handleDateChange }
           value={ convertDateToValue(this.state.pointTracker.date) }
+          required
           />
         </div>
         <div className="clearfix"></div>
@@ -383,6 +389,7 @@ class PointTrackerForm extends React.Component {
           name="mentorGrantedPlayingTime"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
+          required
           >
           <option value="" defaultValue>Select Playing Time</option>
           <option value="Entire Game">Entire Game</option>
@@ -398,9 +405,10 @@ class PointTrackerForm extends React.Component {
           name="extraPlayingTime"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
+          placeholder="Extra playing time..."
         />
 
         <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
@@ -408,9 +416,10 @@ class PointTrackerForm extends React.Component {
           name="studentActionItems"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.studentActionItems }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
+          placeholder="Student action items..."
         />
 
         <label htmlFor="sportsUpdate">Sports Update</label>
@@ -418,9 +427,10 @@ class PointTrackerForm extends React.Component {
           name="sportsUpdate"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.sportsUpdate }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
+          placeholder="Sports update..."
           />
 
         <label htmlFor="additionalComments">Additional Comments</label>
@@ -428,9 +438,10 @@ class PointTrackerForm extends React.Component {
           name="additionalComments"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.additionalComments }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
+          placeholder="Additional comments..."
         />
       </div>
     );
@@ -451,7 +462,8 @@ class PointTrackerForm extends React.Component {
             />
             { synopsisCommentsJSX }
               
-          <button className="submit-report" type="submit">Submit Point Tracker</button>
+          <button className="submit-report" type="submit">Submit 
+          Point Tracker</button>
         </form>
       </div>
     );
@@ -461,6 +473,7 @@ class PointTrackerForm extends React.Component {
 PointTrackerForm.propTypes = {
   handleChange: PropTypes.func,
   createPointTracker: PropTypes.func,
+  createSynopsisReport: PropTypes.func,
   fetchStudents: PropTypes.func,
   fetchTeachers: PropTypes.func,
 };

@@ -13,8 +13,6 @@ Once you have the required prerequisites installed:
 
 If you have any questions, feel free to reach out to any one of the original team members.
 
-### 
-
 ### COLLABORATORS
 This was the final project of the Code Fellows JS-401d25 cohort, August 2018. The code was developed by two teams, working on the frontend and backend code.
 

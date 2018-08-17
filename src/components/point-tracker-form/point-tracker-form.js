@@ -398,17 +398,19 @@ class PointTrackerForm extends React.Component {
           name="extraPlayingTime"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
         />
+
+      <p>Recommended playing time: { this.calcPlayingTime() }</p>
 
         <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
         <textarea
           name="studentActionItems"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.studentActionItems }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
         />
@@ -418,7 +420,7 @@ class PointTrackerForm extends React.Component {
           name="sportsUpdate"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.sportsUpdate }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
           />
@@ -428,7 +430,7 @@ class PointTrackerForm extends React.Component {
           name="additionalComments"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.additionalComments }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
         />

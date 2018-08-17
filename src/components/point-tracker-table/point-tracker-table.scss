@@ -1,9 +1,11 @@
 @import '../../style/vars';
 
 .point-table {
+  border: 1px solid black;
+  width: 60%;
   
   .labels {
-    width: 10em;
+    width: 20em;
     font-size: 12px;
     text-align: right;
   }
@@ -16,17 +18,26 @@
 
   * {
     display: inline-block;
-    height: 3em;
+    height: 70%;
     width: 5em;
     padding: .5em;
     margin: .2em;
+    font-weight: bold;
   }
 }
 
+.new-subject {
+  // float: center;
+  display: inline-block;
+}
+
 .row-labels {
-  font-size: 14px;
+  font-size: 9.7px;
   padding-left: .1em;
   text-align: center;
+  // margin: 80px 0px;
+  border: black;
+  
 }
 
 
@@ -40,4 +51,23 @@
   padding-bottom: 5em;
 }
 
+.add-subject-btn {
+  background-color: $color-white;
+  color: $color-brand-blue;
+  border: 1px solid #59AACE;
+  padding: 10px;
+  border-radius: 4px;
+  margin-right: 5px;
+  margin-bottom: 20px;
+  transition: 350ms all;
 
+  &:hover {
+    background: $color-brand-blue;
+    border: 1px solid #59AACE;
+    color: $color-white;
+  }
+
+  &::placeholder {
+    color: $color-black;
+  }
+}

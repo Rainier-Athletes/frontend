@@ -33,7 +33,7 @@ export default class PointTrackerTable extends React.Component {
   render() {
     const addNewSubjectJSX = (
     <div>
-      <h4>Add new subjects</h4>
+      <h4>Subjects</h4>
       <select 
         name="teacherId" 
         onChange={ this.handleChange } 
@@ -58,7 +58,13 @@ export default class PointTrackerTable extends React.Component {
         value= { this.state.subjectName }
         onChange={ this.handleChange }
       />
+
+      <div className="new-subject">
       <button type="button" onClick={ this.handleCreateSubject }>Add new subject</button>
+      </div>
+
+      <button type="button" className="add-subject-btn" onClick={ this.handleCreateSubject }>Add new subject</button>
+
     </div>
     );
   

@@ -6,6 +6,8 @@
   width: 100%;
   background-color: #1f1f1f;
   padding: 0;
+  z-index: 1;
+  clear: both;
 
   .logo {
     float: left;
@@ -24,10 +26,9 @@
     .dropdown {
       display: block;
       position: absolute;
-      background-color: lightgray;
-      top: 4.7em;
+      background-color: #929292;
+      top: 4.8em;
       right: 0;
-      width: 11em;
     }
 
     .google-btn {
@@ -37,17 +38,17 @@
   }
 }
 
-button {
-  background-color: transparent !important;
-  float: right;
-  padding: 1.8em 0.8em !important;
-  margin-left: 1em;
+.login button {
+  color: white;
+  background-color: transparent;
+  padding: 1.8em 1em !important;
 }
 
-.login > button {
-  color: white;
+.login button:hover {
+  background-color: #4a4a4a;
 }
 
 .dropdown > button {
-  margin-right: 2em;
+  width: 11.9em;
+  color: black;
 }

@@ -7,21 +7,19 @@ import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
 import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
-import Whitelist from '../whitelist/whitelist';
+
 import Auth from '../auth/auth';
-// import PointTrackerForm from '../point-tracker-form/point-tracker-form';
-// import * as routes from '../../lib/routes';
-// import Auth from '../auth/auth';
-// import AdminModal from '../admin-modal/admin-modal';
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
+
 
 import './app.scss';
 
 library.add(faAngleDown, faUserPlus);
 
 const AdminUser = Auth(['admin']);
+const MentorUser = Auth(['mentor', 'admin']);
 
 export default class App extends React.Component {
-  // <Route exact path={routes.MENTOR_ROUTE} component={PointTrackerForm} />
   render() {
     return (
       <div className="app">
@@ -31,9 +29,13 @@ export default class App extends React.Component {
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
             <Route expact path="/admin" component={ AdminUser(Admin) } />
-            <Route expact path="/whitelist" component={ AdminUser(Whitelist) } />
+            <Route expact path="/mentor" component={ MentorUser(PointTrackerForm) } />
           </div>
         </BrowserRouter>
+        <footer className="footer">
+           <a href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website"> ©2018 Rainier Athletes |</a>
+           <a href="https://github.com/Rainier-Athletes" alt="Link to GitHub repository">CodeFellows</a>
+        </footer>
       </div>
     );
   }

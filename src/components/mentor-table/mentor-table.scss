@@ -1,53 +1,20 @@
 .react-grid-Toolbar {
-  border-color: black;
+  border-color: none;
+}
+
+.react-grid-Toolbar .tools {
+  float: left !important;
+  width: 100%;
+  margin: 1em 0 !important;
+}
+
+.react-grid-Canvas, .react-grid-Grid {
+  height: 100vh !important;
 }
 
 .react-grid-Container {
-  position: relative !important;
-  z-index: -1;
-  top: 5em;
-
-.btnGroup {
-  display: block;
-  left: 4em;
   position: relative;
-  float: right;
-  width: 10em;
-}
-
-.deleteBtn {
-  background: white;
-  border: 1px solid rgb(255, 112, 112);
-  color: red;
-  font-size: 14px;
-  margin-bottom: .3em;
-  position: relative;
-  padding: 6px 12px;
-  text-shadow: rgb(206, 206, 206);
-  width: 5.74em;
-}
-
-.deleteBtn:hover {
-  background: white;
-  border: 1px solid red;
-}
-
-.updateBtn {
-  background: white;
-  border: 1px solid rgb(103, 133, 231);
-  color: rgb(16, 62, 211);
-  font-size: 14px;
-  margin-bottom: 1em;
-  position: relative;
-  padding: 6px 12px;
-  text-shadow: rgb(206, 206, 206);
-  width: 5.74em;
-}
-
-.updateBtn:hover {
-  background: white;
-  border: 1px solid rgb(16, 62, 211);
-}
+  top: 3.5em;
 
 .ReactTable {
   position: relative;
@@ -555,4 +522,54 @@
   -ms-user-select: none;
   user-select: none
   }
+}
+
+.btnGroup {
+  border: 1px solid white;
+  display: block;
+  margin-bottom: 1em;
+  position: relative;
+  float: right;
+  left: .6em;
+  width: 7em;
+}
+
+.deleteBtn {
+  background: white;
+  border: 1px solid #b13636;
+  color: #b13636;
+  font-size: 14px;
+  margin-bottom: .3em;
+  position: relative;
+  text-shadow: rgb(206, 206, 206);
+  width: 8em;
+  float: right;
+}
+
+.deleteBtn:hover {
+  background-color: #b13636;
+  color: white;
+  border: 1px solid #b13636;
+}
+
+.updateBtn {
+  background: white;
+  border: 1px solid rgb(118, 144, 233);
+  color: rgb(16, 62, 211);
+  font-size: 14px;
+  position: relative;
+  text-shadow: rgb(206, 206, 206);
+  width: 7em;
+}
+
+.updateBtn:hover {
+  background-color: rgb(16, 62, 211);
+  color: white;
+  border: 1px solid rgb(16, 62, 211);
+}
+
+.tools > button {
+  padding: 0.5em;
+  border-radius: 0.5em;
+  margin-right: 1em;
 }

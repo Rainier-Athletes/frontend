@@ -4,41 +4,59 @@ import PropTypes from 'prop-types';
 import './subject-column.scss';
 
 export default function SubjectColumn(props) {
-  const { subject, handleChange } = props;
-  const { subjectName } = subject;
-  const { excusedDays, stamps, x } = subject.scoring;
-  
+  const { 
+    subject, 
+    handleSubjectChange, 
+    getTeacherName, 
+    deleteSubject, 
+  } = props;
+  const { subjectName, grade, teacher } = subject;
+  const { excusedDays, stamps, halfStamps } = subject.scoring;
+
+  const handleDelete = () => {
+    deleteSubject(subjectName, teacher);
+  };
+
   return (
     <div className="column data">
-      <label>{ subject.subjectName }</label>
+      <label>{ getTeacherName(teacher) }</label>
+      <label>{ subjectName }</label>
       <input 
         type="number" 
-        onChange={ handleChange } 
+        onChange={ handleSubjectChange } 
         name={ `${subjectName}-excusedDays` }
-        value={ excusedDays }
+        value={ excusedDays || 0 }
       />
       <input 
         type="number" 
-        onChange={ handleChange } 
+        onChange={ handleSubjectChange } 
         name={ `${subjectName}-stamps` }
-        value={ stamps }
+        value={ stamps || 0 }
       />
       <input 
         type="number" 
-        onChange={ handleChange } 
+        onChange={ handleSubjectChange } 
         name={ `${subjectName}-x` }
-        value={ x }
+        value={ halfStamps || 0}
       />
       <input 
-        type="number" 
-        onChange={ handleChange } 
+        type="number"
+        onChange={ handleSubjectChange } 
         name={ `${subjectName}-grade` }
+        value={ grade || 0 }
       />
+      <button 
+        type="button"
+        onClick={ handleDelete }
+      >X</button> 
+
     </div>
   );
 }
 
 SubjectColumn.propTypes = {
   subject: PropTypes.object,
-  handleChange: PropTypes.func,
+  handleSubjectChange: PropTypes.func,
+  getTeacherName: PropTypes.func,
+  deleteSubject: PropTypes.func,
 };

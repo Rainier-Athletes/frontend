@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import './subject-column.scss';
 
 export default function SubjectColumn(props) {
+
   const { 
     subject, handleSubjectChange, getTeacherName, deleteSubject, 
   } = props;
@@ -46,8 +47,8 @@ export default function SubjectColumn(props) {
       <button 
         type="button"
         onClick={ handleDelete }
-        >X
-        </button>
+      >X</button> 
+
     </div>
   );
 }

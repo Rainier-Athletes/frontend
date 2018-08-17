@@ -6,9 +6,9 @@ import { faAngleDown, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
 import Navbar from '../navbar/navbar';
+import Auth from '../auth/auth';
 import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
-import Auth from '../auth/auth';
 
 import './app.scss';
 
@@ -24,6 +24,7 @@ export default class App extends React.Component {
           <div>
             <Navbar />
             <Route exact path="*" component={AuthRedirect} />
+
             <Route exact path="/admin" component={ AdminUser(Admin) } />
             <Route exact path="/mentor" component={ PointTrackerForm } />
           </div>

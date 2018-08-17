@@ -6,113 +6,114 @@ import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import * as pointTrackerActions from '../../actions/point-tracker';
 import './point-tracker-form.scss';
 
-const mockPointTracker = {
-  _id: null,
-  date: Date.now(),
-  student: null,
-  subjects: [{
-    subjectName: 'Social Studies',
-    teacher: '5b75ada6b174d0246b103d63',
-    scoring: {
-      excusedDays: 1,
-      stamps: 14,
-      halfStamps: 3,
-      tutorials: 1,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'Math',
-    teacher: '5b75ada6b174d0246b103d68',
-    scoring: {
-      excusedDays: 1,
-      stamps: 12,
-      halfStamps: 6,
-      tutorials: 0,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'Biology',
-    teacher: '5b75ada6b174d0246b103d6d',
-    scoring: {
-      excusedDays: 1,
-      stamps: 16,
-      halfStamps: 1,
-      tutorials: 2,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'Art',
-    teacher: '5b75ada6b174d0246b103d72',
-    scoring: {
-      excusedDays: 1,
-      stamps: 14,
-      halfStamps: 3,
-      tutorials: 1,
-    },
-    grade: 50,
-  }, {
-    subjectName: 'PE',
-    teacher: '5b75ada6b174d0246b103d77',
-    scoring: {
-      excusedDays: 1,
-      stamps: 12,
-      halfStamps: 6,
-      tutorials: 0,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'English',
-    teacher: '5b75ada6b174d0246b103d7c',
-    scoring: {
-      excusedDays: 1,
-      stamps: 16,
-      halfStamps: 1,
-      tutorials: 2,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'Spanish',
-    teacher: '5b75ada6b174d0246b103d86',
-    scoring: {
-      excusedDays: 1,
-      stamps: 16,
-      halfStamps: 1,
-      tutorials: 2,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'Tutorial',
-    teacher: '5b75ada62c7a4f246bb31ed1',
-    scoring: {
-      excusedDays: 1,
-      stamps: 16,
-      halfStamps: 1,
-      tutorials: 2,
-    },
-    grade: null,
-  }],
-  surveyQuestions: {
-    mentorAttendedCheckin: true,
-    metFaceToFace: true,
-    hadOtherCommunication: true,
-    hadNoCommunication: true,
-    scoreSheetTurnedIn: true,
-    scoreSheetLostOrIncomplete: true,
-    scoreSheetWillBeLate: true,
-    scoreSheetOther: true,
-    scoreSheetOtherReason: 'other reason',
-    synopsisInformationComplete: true,
-    synopsisInformationIncomplete: true,
-    synopsisCompletedByRaStaff: true,
-  },
-  synopsisComments: {
-    extraPlayingTime: 'Jamie is working hard toward his goals. We agreed that if he achieved a small improvement this week he would get extra playing time.',
-    mentorGrantedPlayingTime: 'Three Quarters',
-    studentActionItems: 'Jamie agreed to attend 1 more tutorial in each of his classes this coming week',
-    sportsUpdate: 'Last week Jamie had a great game against the Cardinals. Had two hits and caught three fly balls!',
-    additionalComments: '',
-  },
-};
+// const mockPointTracker = {
+//   _id: null,
+//   date: Date.now(),
+//   student: null,
+//   subjects: [{
+//     subjectName: 'Social Studies',
+//     teacher: '5b75ada6b174d0246b103d63',
+//     scoring: {
+//       excusedDays: 1,
+//       stamps: 14,
+//       halfStamps: 3,
+//       tutorials: 1,
+//     },
+//     grade: 70,
+//   }, {
+//     subjectName: 'Math',
+//     teacher: '5b75ada6b174d0246b103d68',
+//     scoring: {
+//       excusedDays: 1,
+//       stamps: 12,
+//       halfStamps: 6,
+//       tutorials: 0,
+//     },
+//     grade: 70,
+//   }, {
+//     subjectName: 'Biology',
+//     teacher: '5b75ada6b174d0246b103d6d',
+//     scoring: {
+//       excusedDays: 1,
+//       stamps: 16,
+//       halfStamps: 1,
+//       tutorials: 2,
+//     },
+//     grade: 70,
+//   }, {
+//     subjectName: 'Art',
+//     teacher: '5b75ada6b174d0246b103d72',
+//     scoring: {
+//       excusedDays: 1,
+//       stamps: 14,
+//       halfStamps: 3,
+//       tutorials: 1,
+//     },
+//     grade: 50,
+//   }, {
+//     subjectName: 'PE',
+//     teacher: '5b75ada6b174d0246b103d77',
+//     scoring: {
+//       excusedDays: 1,
+//       stamps: 12,
+//       halfStamps: 6,
+//       tutorials: 0,
+//     },
+//     grade: 70,
+//   }, {
+//     subjectName: 'English',
+//     teacher: '5b75ada6b174d0246b103d7c',
+//     scoring: {
+//       excusedDays: 1,
+//       stamps: 16,
+//       halfStamps: 1,
+//       tutorials: 2,
+//     },
+//     grade: 70,
+//   }, {
+//     subjectName: 'Spanish',
+//     teacher: '5b75ada6b174d0246b103d86',
+//     scoring: {
+//       excusedDays: 1,
+//       stamps: 16,
+//       halfStamps: 1,
+//       tutorials: 2,
+//     },
+//     grade: 70,
+//   }, {
+//     subjectName: 'Tutorial',
+//     teacher: '5b75ada62c7a4f246bb31ed1',
+//     scoring: {
+//       excusedDays: 1,
+//       stamps: 16,
+//       halfStamps: 1,
+//       tutorials: 2,
+//     },
+//     grade: null,
+
+//   }],
+//   surveyQuestions: {
+//     mentorAttendedCheckin: true,
+//     metFaceToFace: true,
+//     hadOtherCommunication: true,
+//     hadNoCommunication: true,
+//     scoreSheetTurnedIn: true,
+//     scoreSheetLostOrIncomplete: true,
+//     scoreSheetWillBeLate: true,
+//     scoreSheetOther: true,
+//     scoreSheetOtherReason: 'other reason',
+//     synopsisInformationComplete: true,
+//     synopsisInformationIncomplete: true,
+//     synopsisCompletedByRaStaff: true,
+//   },
+//   synopsisComments: {
+//     extraPlayingTime: 'Jamie is working hard toward his goals. We agreed that if he achieved a small improvement this week he would get extra playing time.',
+//     mentorGrantedPlayingTime: 'Three Quarters',
+//     studentActionItems: 'Jamie agreed to attend 1 more tutorial in each of his classes this coming week',
+//     sportsUpdate: 'Last week Jamie had a great game against the Cardinals. Had two hits and caught three fly balls!',
+//     additionalComments: '',
+//   },
+// };
 
 const defaultState = {
   _id: null,
@@ -296,10 +297,7 @@ class PointTrackerForm extends React.Component {
     event.preventDefault();
     const studentId = event.target.value;
     const selectedStudent = this.state.students.filter(student => student._id === studentId)[0];
-
     const { lastPointTracker } = selectedStudent.studentData;
-    console.log(selectedStudent, 'SELECTED STUDENT');
-    console.log(lastPointTracker, 'LAST POINT TRACKER');
 
     this.setState((prevState) => {
       const newState = { ...prevState };
@@ -372,40 +370,108 @@ class PointTrackerForm extends React.Component {
     const surveyQuestionsJSX = (
       <fieldset>
         <div className="survey-questions">
+            <div className="survey-question-container">
              <input
                 type="checkbox"
                 name="attendedCheckin"
                 onChange= { this.handleSurveyQuestionChange }
                 checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }/>
               <label htmlFor="attendedCheckin">Attended Check-In</label>
+             </div>
+        
+         <div className="survey-question-container">
+
+         <input
+            type="checkbox"
+            name="metFaceToFace"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }/>
+          <label htmlFor="metFaceToFace">Met Face-to-Face</label>
+            </div>
+        
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="hadOtherCommunication"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }/>
+          <label htmlFor="hadOtherCommunication">Had Other Communication</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="hadNoCommunication"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.hadNoCommunication }/>
+          <label htmlFor="hadNoCommunication">Had No Communication</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="scoreSheetTurnedIn"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }/>
+          <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
+            </div>
         </div>
-  
-      <div className="survey-questions">
-      <input
-        type="checkbox"
-        name="metFaceToFace"
-        onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }/>
-      <label htmlFor="metFaceToFace">Met Face-to-Face</label>
-      </div>
 
-      <div className="survey-questions">
-      <input
-        type="checkbox"
-        name="hadOtherCommunication"
-        onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }/>
-      <label htmlFor="hadOtherCommunication">Had Other Communication</label>
-      </div>
+        <div className="survey-questions-2">
+          <div className="survey-question-container">
 
-      <div className="survey-questions">
-      <input
-        type="checkbox"
-        name="scoreSheetTurnedIn"
-        onChange= { this.handleSurveyQuestionChange }
-        checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }/>
-      <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
-      </div>
+          <input
+            type="checkbox"
+            name="scoreSheetLostOrIcomplete"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.scoreSheetLostOrIncomplete }/>
+          <label htmlFor="scoreSheetLostOrIncomplete">Score Sheet Lost Or Incomplete</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="scoreSheetWillBeLate"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.scoreSheetWillBeLate }/>
+          <label htmlFor="scoreSheetWillBeLate">Score Sheet Will Be Late</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="synopsisInformationComplete"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.synopsisInformationComplete }/>
+          <label htmlFor="synopsisInformationComplete">Synopsis Information Complete</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="synopsisInformationIncomplete"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.synopsisInformationIncomplete }/>
+          <label htmlFor="synopsisInformationIncomplete">Synopsis Information Incomplete</label>
+            </div>
+
+          <div className="survey-question-container">
+
+          <input
+            type="checkbox"
+            name="synopsisCompletedByRaStaff"
+            onChange= { this.handleSurveyQuestionChange }
+            checked={ this.state.pointTracker.surveyQuestions.synopsisCompletedByRaStaff }/>
+          <label htmlFor="synopsisCompletedByRaStaff">Synopsis Completed By RA Staff</label>
+            </div>
+        </div>
+===
     </fieldset>
     );
     

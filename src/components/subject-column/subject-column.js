@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import './subject-column.scss';
 
 export default function SubjectColumn(props) {
-  const { 
-    subject, 
-    handleSubjectChange, 
-    getTeacherName, 
-    deleteSubject, 
+  const {
+    subject,
+    handleSubjectChange,
+    getTeacherName,
+    deleteSubject,
   } = props;
   const { subjectName, grade, teacher } = subject;
   const { excusedDays, stamps, halfStamps } = subject.scoring;
@@ -21,34 +21,34 @@ export default function SubjectColumn(props) {
     <div className="column data">
       <label>{ getTeacherName(teacher) }</label>
       <label>{ subjectName }</label>
-      <input 
-        type="number" 
-        onChange={ handleSubjectChange } 
-        name={ `${subjectName}-excusedDays` }
-        value={ excusedDays || 0 }
-      />
-      <input 
-        type="number" 
-        onChange={ handleSubjectChange } 
-        name={ `${subjectName}-stamps` }
-        value={ stamps || 0 }
-      />
-      <input 
-        type="number" 
-        onChange={ handleSubjectChange } 
-        name={ `${subjectName}-x` }
-        value={ halfStamps || 0}
-      />
-      <input 
+      <input
         type="number"
-        onChange={ handleSubjectChange } 
-        name={ `${subjectName}-grade` }
-        value={ grade || 0 }
+        onChange={ handleSubjectChange }
+        name={ `${subjectName}-excusedDays` }
+        value={ excusedDays }
       />
-      <button 
+      <input
+        type="number"
+        onChange={ handleSubjectChange }
+        name={ `${subjectName}-stamps` }
+        value={ stamps }
+      />
+      <input
+        type="number"
+        onChange={ handleSubjectChange }
+        name={ `${subjectName}-halfStamps` }
+        value={ halfStamps }
+      />
+      <input
+        type="number"
+        onChange={ handleSubjectChange }
+        name={ `${subjectName}-grade` }
+        value={ grade }
+      />
+      <button
         type="button"
         onClick={ handleDelete }
-      >x</button> 
+      >x</button>
 
     </div>
   );

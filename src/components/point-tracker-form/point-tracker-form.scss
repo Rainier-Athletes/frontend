@@ -26,7 +26,7 @@
 .survey-questions-2 {
   display: inline-block;
   width: 50%;
-  // margin-left: 2px;
+  // margin-right: 4px;
   // float: left;
 }
 
@@ -41,7 +41,7 @@
 .survey-questions-2 label, {
   float: left;
   display: inline-block;
-  // margin-right: 4px;
+  margin-right: 4px;
 }
 
 .survey-questions label {
@@ -99,16 +99,6 @@ ul {
       display: inline-block;
       padding: 10px;
     }
-
-    // .survey-quesitons {
-    //     -moz-column-count: 5;
-    //     -moz-column-gap: 20px;
-    //     -webkit-column-count: 5;
-    //     -webkit-column-gap: 20px;
-    //     column-count: 5;
-    //     column-gap: 20px;
-    
-    // }
     
   }
 

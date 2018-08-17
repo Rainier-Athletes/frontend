@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Iframe from '../iframe/iframe';
 import * as routes from '../../lib/routes';
@@ -9,29 +9,40 @@ import * as routes from '../../lib/routes';
 import './_dashboard.scss';
 
 const mapStateToProps = state => ({
+  myProfile: state.myProfile,
   loggedIn: !!state.token,
 });
 
 class Dashboard extends React.Component {
-  renderJSX = (loggedIn) => {
-    // <PointTrackerForm />
-    const iframe = (
-      <React.Fragment>
-        <Iframe />
-      </React.Fragment>
-    );
+  constructor(props) {
+    super(props);
 
-    const dashboard = () => {
-      return <Redirect to={routes.ADMIN_ROUTE} />;
+    this.state = {
+      selected: 'mentor',
     };
+  }
 
-    return loggedIn ? dashboard() : iframe;
-  };
+  renderMentor = () => {
+    return <div className="nav"><Link to="/mentor">Mentor</Link></div>;
+  }
+
+  renderAdmin = () => {
+    return <div className="nav"><Link to="/mentor">Mentor</Link><Link to="/admin">Admin</Link></div>;
+  }
+
+  renderJSX = () => {
+    if (this.props.myProfile) {
+      return this.props.myProfile.role === 'mentor' ? this.renderMentor() : this.renderAdmin();
+    }
+    return null;
+  }
 
   render() {
     return (
       <React.Fragment>
-
+        {
+          this.renderJSX()
+        }
       </React.Fragment>
     );
   }
@@ -39,6 +50,7 @@ class Dashboard extends React.Component {
 
 Dashboard.propTypes = {
   loggedIn: PropTypes.bool,
+  myProfile: PropTypes.object,
 };
 
 export default connect(mapStateToProps, null)(Dashboard);

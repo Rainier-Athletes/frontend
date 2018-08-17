@@ -6,7 +6,7 @@
 
   display: inline-block;
   padding: 10px;
-  
+
 }
 
 ul {
@@ -16,14 +16,13 @@ ul {
   list-style-type: none;
   display: inline-block;
   padding: 10px;
-  
+
   }
 
 }
 
     .points-tracker {
-      padding-top: 20px;
-      margin: 80px 20px 0 20px;
+      padding-top: 40px;
     }
 
     h2 {
@@ -45,7 +44,7 @@ ul {
         background: $color-button-focus;
         color: $color-black;
       }
-  
+
       &:visited {
         background: $color-button-active;
     }

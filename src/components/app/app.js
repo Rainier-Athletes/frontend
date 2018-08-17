@@ -17,7 +17,7 @@ import './app.scss';
 library.add(faAngleDown, faUserPlus);
 
 const AdminUser = Auth(['admin']);
-const MentorUser = Auth(['mentor']);
+const MentorUser = Auth(['mentor', 'admin']);
 
 export default class App extends React.Component {
   render() {

@@ -1,9 +1,22 @@
 @import '../../style/vars';
 
+<<<<<<< HEAD
+=======
+.point-tracker-form {
+  
+}
+>>>>>>> 2ebc348e87f887dbc8ac7637d04b7303ec6d733c
 .select-student, .select-date {
   display: inline-block;
   padding: 5px;
+<<<<<<< HEAD
 
+=======
+  
+  // margin: 10px;
+  // vertical-align: middle;
+    
+>>>>>>> 2ebc348e87f887dbc8ac7637d04b7303ec6d733c
     select, input {
       background-color: $color-input-focus;
       display: inline-block;
@@ -25,6 +38,7 @@
 }
 
 .survey-questions-2 {
+  margin: 5px 0px;
   display: inline-block;
   width: 50%;
   // margin-right: 4px;
@@ -36,8 +50,13 @@
 .survey-questions-2 input,
 .survey-questions-2 label, {
   float: left;
+<<<<<<< HEAD
   // display: inline;
   margin-right: 4px;
+=======
+  display: inline-block;
+  margin-right: 8px;
+>>>>>>> 2ebc348e87f887dbc8ac7637d04b7303ec6d733c
 }
 
 .survey-questions label {
@@ -50,6 +69,7 @@
 .points-tracker {
       padding-top: 20px;
       margin: 80px 20px 0 20px;
+ 
 }
 
     h2 {

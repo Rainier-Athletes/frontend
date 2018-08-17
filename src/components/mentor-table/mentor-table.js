@@ -97,7 +97,6 @@ class MentorTable extends React.Component {
         width: 200,
         resizable: true,
         sortable: true,
-        filterable: true,
       },
     ];
     this.state = {
@@ -131,7 +130,7 @@ class MentorTable extends React.Component {
       })
   };
 
-  populateChildren = (profile) => {
+  populateMentorChildren = (profile) => {
     let childArr = [];
     for (const i in profile.students) {
       childArr.push(profile.students[i]);
@@ -139,12 +138,36 @@ class MentorTable extends React.Component {
     return childArr;
   };
 
+  populateStudentChildren = (profile) => {
+    let childArr = [];
+    if (profile.studentData.mentor) {
+      childArr.push(profile.studentData.mentor);
+    }
+    for (const i in profile.studentData.coaches) {
+      console.log('coaches', profile.studentData.coaches[i]);
+      childArr.push(profile.studentData.coaches[i]);
+    }
+    for (const i in profile.studentData.family) {
+      console.log('family', profile.studentData.family[i]);
+      childArr.push(profile.studentData.family[i]);
+    }
+    for (const i in profile.studentData.teachers) {
+      console.log('teachers', profile.studentData.teachers[i]);
+      childArr.push(profile.studentData.teachers[i]);
+    }
+    return childArr;
+  };
+
   populateData = (profile, i) => {
     let childArr;
     if (profile.role === 'mentor' && profile.students.length > 0) {
-      childArr = this.populateChildren(profile);
+      childArr = this.populateMentorChildren(profile);
       console.log(childArr);
-    };
+    }
+    if (profile.role === 'student') {
+      childArr = this.populateStudentChildren(profile);
+      console.log(childArr);
+    }
 
     return {
       _id: profile._id,

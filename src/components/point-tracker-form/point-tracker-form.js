@@ -442,6 +442,7 @@ class PointTrackerForm extends React.Component {
     </div>
     );
 
+    console.log(this.state.teacher, 'TEACHERS');
 
     return (
       <div className="points-tracker">

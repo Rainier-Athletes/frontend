@@ -6,7 +6,7 @@ import { faAngleDown, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
 import Navbar from '../navbar/navbar';
-import PointTrackerTable from '../point-tracker-table/point-tracker-table';
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 import Auth from '../auth/auth';
 
@@ -21,10 +21,12 @@ export default class App extends React.Component {
     return (
       <div className="app">
         <BrowserRouter>
-          <Navbar />
-          <Route exact path="*" component={AuthRedirect} />
-          <Route exact path="/admin" component={ AdminUser(Admin) } />
-          <Route exact path="/mentor" component={ PointTrackerTable } />
+          <div>
+            <Navbar />
+            <Route exact path="*" component={AuthRedirect} />
+            <Route exact path="/admin" component={ AdminUser(Admin) } />
+            <Route exact path="/mentor" component={ PointTrackerForm } />
+          </div>
         </BrowserRouter>
         <footer className="footer">
            <a href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website"> ©2018 Rainier Athletes |</a>

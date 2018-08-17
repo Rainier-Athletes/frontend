@@ -1,8 +1,9 @@
 @import '../../style/vars';
 
 .point-table {
-  border: 1px solid black;
-  width: 60%;
+  border: 2px solid #e8e8e8;
+  width: 92%;
+  border-radius: 1em;
   
   .labels {
     width: 20em;
@@ -40,7 +41,7 @@
   text-align: center;
   // margin: 80px 0px;
   border: black;
-  
+
 }
 
 .row-labels label {
@@ -82,4 +83,3 @@
     color: $color-black;
   }
 }
-

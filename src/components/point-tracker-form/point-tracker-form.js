@@ -403,6 +403,8 @@ class PointTrackerForm extends React.Component {
           wrap="hard"
         />
 
+      <p>Recommended playing time: { this.calcPlayingTime() }</p>
+
         <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
         <textarea
           name="studentActionItems"

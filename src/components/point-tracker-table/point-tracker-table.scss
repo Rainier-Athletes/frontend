@@ -1,6 +1,8 @@
 @import '../../style/vars';
 
 .point-table {
+  border: 1px solid black;
+  width: 60%;
   
   .labels {
     width: 20em;
@@ -24,10 +26,18 @@
   }
 }
 
+.new-subject {
+  // float: center;
+  display: inline-block;
+}
+
 .row-labels {
-  font-size: 14px;
+  font-size: 9.7px;
   padding-left: .1em;
   text-align: center;
+  // margin: 80px 0px;
+  border: black;
+  
 }
 
 

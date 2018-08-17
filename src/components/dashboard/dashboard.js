@@ -1,10 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Iframe from '../iframe/iframe';
-import * as routes from '../../lib/routes';
-// import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 import './_dashboard.scss';
 

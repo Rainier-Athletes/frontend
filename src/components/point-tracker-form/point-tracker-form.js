@@ -257,11 +257,15 @@ class PointTrackerForm extends React.Component {
   handleStudentSelect = (event) => {
     event.preventDefault();
     const studentId = event.target.value;
+    const selectedStudent = this.state.students.filter(student => student._id === studentId)[0];
+
+    const { lastPointTracker } = selectedStudent.studentData;
+    console.log(selectedStudent, 'SELECTED STUDENT');
+    console.log(lastPointTracker, 'LAST POINT TRACKER');
 
     this.setState((prevState) => {
       const newState = { ...prevState };
-      newState.pointTracker.studentId = studentId;
-
+      newState.pointTracker = lastPointTracker || defaultState;
       return newState;
     });
   }
@@ -441,8 +445,6 @@ class PointTrackerForm extends React.Component {
       />
     </div>
     );
-
-    console.log(this.state.teacher, 'TEACHERS');
 
     return (
       <div className="points-tracker">

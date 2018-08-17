@@ -46,4 +46,4 @@ export const fetchTeachers = studentId => (store) => { // eslint-disable-line
       return teachers;
     })
     .catch(console.error); // eslint-disable-line
-}
+};

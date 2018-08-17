@@ -6,112 +6,41 @@ import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import * as pointTrackerActions from '../../actions/point-tracker';
 import './point-tracker-form.scss';
 
-const defaultState = {
-  _id: null,
+const emptyPointTracker = {
+  _id: '',
   date: Date.now(),
-  student: null,
+  student: '',
   subjects: [{
-    subjectName: 'Social Studies',
-    teacher: '5b75ada6b174d0246b103d63',
-    scoring: {
-      excusedDays: 1,
-      stamps: 14,
-      halfStamps: 3,
-      tutorials: 1,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'Math',
-    teacher: '5b75ada6b174d0246b103d68',
-    scoring: {
-      excusedDays: 1,
-      stamps: 12,
-      halfStamps: 6,
-      tutorials: 0,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'Biology',
-    teacher: '5b75ada6b174d0246b103d6d',
-    scoring: {
-      excusedDays: 1,
-      stamps: 16,
-      halfStamps: 1,
-      tutorials: 2,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'Art',
-    teacher: '5b75ada6b174d0246b103d72',
-    scoring: {
-      excusedDays: 1,
-      stamps: 14,
-      halfStamps: 3,
-      tutorials: 1,
-    },
-    grade: 50,
-  }, {
-    subjectName: 'PE',
-    teacher: '5b75ada6b174d0246b103d77',
-    scoring: {
-      excusedDays: 1,
-      stamps: 12,
-      halfStamps: 6,
-      tutorials: 0,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'English',
-    teacher: '5b75ada6b174d0246b103d7c',
-    scoring: {
-      excusedDays: 1,
-      stamps: 16,
-      halfStamps: 1,
-      tutorials: 2,
-    },
-    grade: 70,
-  }, {
-    subjectName: 'Spanish',
-    teacher: '5b75ada6b174d0246b103d86',
-    scoring: {
-      excusedDays: 1,
-      stamps: 16,
-      halfStamps: 1,
-      tutorials: 2,
-    },
-    grade: 70,
-  }, {
     subjectName: 'Tutorial',
-    teacher: '5b75ada62c7a4f246bb31ed1',
+    teacher: '',
     scoring: {
-      excusedDays: 1,
-      stamps: 16,
-      halfStamps: 1,
-      tutorials: 2,
+      excusedDays: 0,
+      stamps: 0,
+      halfStamps: 0,
+      tutorials: 0,
     },
-    grade: null,
-
+    grade: 0,
   }],
   surveyQuestions: {
-    mentorAttendedCheckin: true,
-    metFaceToFace: true,
-    hadOtherCommunication: true,
-    hadNoCommunication: true,
-    scoreSheetTurnedIn: true,
-    scoreSheetLostOrIncomplete: true,
-    scoreSheetWillBeLate: true,
-    scoreSheetOther: true,
-    scoreSheetOtherReason: 'other reason',
-    synopsisInformationComplete: true,
-    synopsisInformationIncomplete: true,
-    synopsisCompletedByRaStaff: true,
+    mentorAttendedCheckin: false,
+    metFaceToFace: false,
+    hadOtherCommunication: false,
+    hadNoCommunication: false,
+    scoreSheetTurnedIn: false,
+    scoreSheetLostOrIncomplete: false,
+    scoreSheetWillBeLate: false,
+    scoreSheetOther: false,
+    scoreSheetOtherReason: '',
+    synopsisInformationComplete: false,
+    synopsisInformationIncomplete: false,
+    synopsisCompletedByRaStaff: false,
   },
   synopsisComments: {
-    extraPlayingTime: 'Jamie is working hard toward his goals. We agreed that if he achieved a small improvement this week he would get extra playing time.',
-    mentorGrantedPlayingTime: 'Three Quarters',
-    studentActionItems: 'Jamie agreed to attend 1 more tutorial in each of his classes this coming week',
-    sportsUpdate: 'Last week Jamie had a great game against the Cardinals. Had two hits and caught three fly balls!',
-    additionalComments: '',
+    extraPlayingTime: 'Reason for extra playing time...',
+    mentorGrantedPlayingTime: 'Reason for granted playing time...',
+    studentActionItems: 'Student action items...',
+    sportsUpdate: 'Sports update...',
+    additionalComments: 'Additional Comments...',
   },
 };
 
@@ -128,7 +57,7 @@ class PointTrackerForm extends React.Component {
     this.state = {
       students: [],
       teachers: [],
-      pointTracker: defaultState,
+      pointTracker: emptyPointTracker,
     };
   }
 
@@ -198,7 +127,11 @@ class PointTrackerForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.createPointTracker(this.state.pointTracker);
+    const { pointTracker } = this.state;
+    console.log(pointTracker, 'POINT TRACKER');
+    delete pointTracker._id;
+    this.props.createPointTracker(pointTracker);
+    this.setState({ pointTracker: emptyPointTracker });
   }
 
   getTeacherName = (teacherId) => {
@@ -212,7 +145,10 @@ class PointTrackerForm extends React.Component {
       const newState = { ...prevState };
 
       newState.pointTracker.subjects = newState.pointTracker.subjects.filter((subject) => {
-        return subject.subjectName !== subjectName && subject.teacher !== teacherId;
+        if (subjectName && teacherId) {
+          return subject.subjectName !== subjectName && subject.teacher !== teacherId;
+        }
+        return subject.subjectName !== subjectName;
       });
 
       return newState;
@@ -245,8 +181,7 @@ class PointTrackerForm extends React.Component {
       .then((students) => {
         const updatedStudents = students || [];
         this.setState({ students: updatedStudents });
-      })
-      .catch(console.error); // eslint-disable-line
+      });
 
     this.props.fetchTeachers()
       .then((teachers) => {
@@ -258,11 +193,14 @@ class PointTrackerForm extends React.Component {
   handleStudentSelect = (event) => {
     event.preventDefault();
     const studentId = event.target.value;
+    const selectedStudent = this.state.students.filter(student => student._id === studentId)[0];
+    const { lastPointTracker } = selectedStudent.studentData;
+    console.log(selectedStudent, 'SELECTED STUDENT');
 
     this.setState((prevState) => {
       const newState = { ...prevState };
-      newState.pointTracker.studentId = studentId;
-
+      newState.pointTracker = lastPointTracker || emptyPointTracker;
+      newState.pointTracker.student = studentId;
       return newState;
     });
   }
@@ -284,7 +222,7 @@ class PointTrackerForm extends React.Component {
       if (grade >= 0.6) gradeScore = 1;
       if (grade >= 0.7) gradeScore = 2;
 
-      if (subjectName === 'Tutorial') gradeScore = 0;
+      if (subjectName.toLowerCase() === 'tutorial') gradeScore = 0;
       const totalClassScore = pointScore + gradeScore;
       return totalClassScore;
     });
@@ -386,7 +324,7 @@ class PointTrackerForm extends React.Component {
 
           <input
             type="checkbox"
-            name="scoreSheetLostOrIcomplete"
+            name="scoreSheetLostOrIncomplete"
             onChange= { this.handleSurveyQuestionChange }
             checked={ this.state.pointTracker.surveyQuestions.scoreSheetLostOrIncomplete }/>
           <label htmlFor="scoreSheetLostOrIncomplete">Score Sheet Lost Or Incomplete</label>
@@ -432,106 +370,89 @@ class PointTrackerForm extends React.Component {
           <label htmlFor="synopsisCompletedByRaStaff">Synopsis Completed By RA Staff</label>
             </div>
         </div>
-===
     </fieldset>
     );
     
     const synopsisCommentsJSX = (
       <div className="synopsis">
-      <h4>Synopsis</h4>
+        <h4>Synopsis</h4>
+        <p>Recommended playing time: { this.calcPlayingTime() }</p>
 
-      {/* <label htmlFor="extraPlayingTime">Extra Playing Time</label>
-      <textarea
-        name="extraPlayingTime"
-        onChange={ this.handleSynopsisCommentChange }
-        value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-        rows="8"
-        cols="80"
-        wrap="hard"
-      /> */}
+        <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
+        <select
+          name="mentorGrantedPlayingTime"
+          onChange={ this.handleSynopsisCommentChange }
+          value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
+          >
+          <option value="" defaultValue>Select Playing Time</option>
+          <option value="Entire Game">Entire Game</option>
+          <option value="All but start">All but start</option>
+          <option value="Three quarters">Three quarters</option>
+          <option value="Two quarters">Two quarters</option>
+          <option value="One quarter">One quarter</option>
+          <option value="None of game">None of game</option>
+        </select>
 
-      <p>Recommended playing time: { this.calcPlayingTime() }</p>
-
-      <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
-      
-      <select
-        name="mentorGrantedPlayingTime"
-        onChange={ this.handleSynopsisCommentChange }
-        value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
-        >
-        <option value="" defaultValue>Select Playing Time</option>
-        <option value="Entire Game">Entire Game</option>
-        <option value="All but start">All but start</option>
-        <option value="Three quarters">Three quarters</option>
-        <option value="Two quarters">Two quarters</option>
-        <option value="One quarter">One quarter</option>
-        <option value="None of game">None of game</option>
-      </select>
-
-      <label htmlFor="extraPlayingTime">Extra Playing Time</label>
-      <textarea
-        name="extraPlayingTime"
-        onChange={ this.handleSynopsisCommentChange }
-        value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-        rows="8"
-        cols="80"
-        wrap="hard"
-      />
-
-
-      <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
-      <textarea
-        name="studentActionItems"
-        onChange={ this.handleSynopsisCommentChange }
-        value={ this.state.pointTracker.synopsisComments.studentActionItems }
-        rows="8"
-        cols="80"
-        wrap="hard"
-      />
-
-      <label htmlFor="sportsUpdate">Sports Update</label>
-      <textarea
-        name="sportsUpdate"
-        onChange={ this.handleSynopsisCommentChange }
-        value={ this.state.pointTracker.synopsisComments.sportsUpdate }
-        rows="8"
-        cols="80"
-        wrap="hard"
+        <label htmlFor="extraPlayingTime">Extra Playing Time</label>
+        <textarea
+          name="extraPlayingTime"
+          onChange={ this.handleSynopsisCommentChange }
+          value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
+          rows="8"
+          cols="80"
+          wrap="hard"
         />
 
-      <label htmlFor="additionalComments">Additional Comments</label>
-      <textarea
-        name="additionalComments"
-        onChange={ this.handleSynopsisCommentChange }
-        value={ this.state.pointTracker.synopsisComments.additionalComments }
-        rows="8"
-        cols="80"
-        wrap="hard"
-      />
-    </div>
+        <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
+        <textarea
+          name="studentActionItems"
+          onChange={ this.handleSynopsisCommentChange }
+          value={ this.state.pointTracker.synopsisComments.studentActionItems }
+          rows="8"
+          cols="80"
+          wrap="hard"
+        />
+
+        <label htmlFor="sportsUpdate">Sports Update</label>
+        <textarea
+          name="sportsUpdate"
+          onChange={ this.handleSynopsisCommentChange }
+          value={ this.state.pointTracker.synopsisComments.sportsUpdate }
+          rows="8"
+          cols="80"
+          wrap="hard"
+          />
+
+        <label htmlFor="additionalComments">Additional Comments</label>
+        <textarea
+          name="additionalComments"
+          onChange={ this.handleSynopsisCommentChange }
+          value={ this.state.pointTracker.synopsisComments.additionalComments }
+          rows="8"
+          cols="80"
+          wrap="hard"
+        />
+      </div>
     );
 
     return (
       <div className="points-tracker">
-        <React.Fragment>
-          <form className="data-entry" onSubmit={ this.handleSubmit }>
-            <h2>POINT TRACKER TABLE</h2>
-              {/* <h4>Point Sheet and Grades</h4> */}
-              { selectOptionsJSX }
-              { surveyQuestionsJSX }
-                <PointTrackerTable
-                  handleSubjectChange={ this.handleSubjectChange }
-                  subjects={ this.state.pointTracker.subjects }
-                  getTeacherName={ this.getTeacherName }
-                  teachers={ this.state.teachers }
-                  deleteSubject= { this.deleteSubject }
-                  createSubject={ this.createSubject }
-              />
-              { synopsisCommentsJSX }
-                
-            <button className="submit-report" type="submit">Submit Point Tracker</button>
-          </form>
-        </React.Fragment>
+        <form className="data-entry" onSubmit={ this.handleSubmit }>
+          <h2>POINT TRACKER TABLE</h2>
+            { selectOptionsJSX }
+            { surveyQuestionsJSX }
+              <PointTrackerTable
+                handleSubjectChange={ this.handleSubjectChange }
+                subjects={ this.state.pointTracker.subjects }
+                getTeacherName={ this.getTeacherName }
+                teachers={ this.state.teachers }
+                deleteSubject= { this.deleteSubject }
+                createSubject={ this.createSubject }
+            />
+            { synopsisCommentsJSX }
+              
+          <button className="submit-report" type="submit">Submit Point Tracker</button>
+        </form>
       </div>
     );
   }

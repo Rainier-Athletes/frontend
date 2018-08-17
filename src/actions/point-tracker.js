@@ -10,7 +10,6 @@ export const createPointTracker = pointTracker => (store) => {
   const { token } = store.getState();
 
   pointTracker.date = new Date(pointTracker.date).toISOString();
-  console.log(pointTracker, 'POINT TRACKER POST BODY');
 
   return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
@@ -30,8 +29,7 @@ export const fetchStudents = studentIds => (store) => { // eslint-disable-line
       const profiles = response.body;
       const students = profiles.filter(profile => profile.role === 'student');
       return students;
-    })
-    .catch(console.error); // eslint-disable-line
+    });
 };
 
 export const fetchTeachers = studentId => (store) => { // eslint-disable-line
@@ -44,6 +42,5 @@ export const fetchTeachers = studentId => (store) => { // eslint-disable-line
       const profiles = response.body;
       const teachers = profiles.filter(profile => profile.role === 'teacher');
       return teachers;
-    })
-    .catch(console.error); // eslint-disable-line
-}
+    });
+};

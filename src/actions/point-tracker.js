@@ -24,13 +24,45 @@ export const createSynopsisReport = pointTracker => (store) => {
   const { token } = store.getState();
 
   const pointTrackerHTML = `
-    <div>
+  <style>
+    img{  
+    width: 200px;
+    }
+    .image{  
+    padding-left:10px;
+    padding-top: 10px;
+    padding-bottom:10px;
+    height: 20px;
+    background: #1f1f1f;
+    width: 500px;
+    border-radius: 30px;
+    }
+    body {
+        padding: 20px;
+        margin: 20px;
+        border-radius: 30px;
+        border: 2px solid #e8e8e8;
+
+    }
+    h1, h2, h3, p {
+        font-style:bold;
+        font-family: helvetica;
+        color:#089444;
+    ;
+    }
+    p {
+        font-family: Arial;
+        color:#1186B4;
+    }
+    </style>
+    <body>
+      <h1>${pointTracker.studentName}</h1>
       <p>${pointTracker.synopsisComments.extraPlayingTime}</p>
       <p>${pointTracker.synopsisComments.mentorGrantedPlayingTime}</p>
       <p>${pointTracker.synopsisComments.studentActionItems}</p>
       <p>${pointTracker.synopsisComments.sportsUpdate}</p>
       <p>${pointTracker.synopsisComments.additionalComments}</p>
-    </div>
+    </body>
   `;
 
   const body = {

@@ -34,7 +34,7 @@ export default class PointTrackerTable extends React.Component {
     const addNewSubjectJSX = (
     <div>
       <h4>Subjects</h4>
-      <select 
+      <select className="choose-teacher"
         name="teacherId" 
         onChange={ this.handleChange } 
         value={ this.state.teacherId }

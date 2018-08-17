@@ -120,17 +120,7 @@ class MentorTable extends React.Component {
       })
   };
 
-  populateChildren = (profile) => {
-    for (child in profile.students) {
-      console.log(child);
-    }
-  }
-
   populateData = (profile, i) => {
-    // let 
-    // if (profile.role === 'mentor') {
-    //
-    // }
     return {
       _id: profile._id,
       avatar: profile.picture,

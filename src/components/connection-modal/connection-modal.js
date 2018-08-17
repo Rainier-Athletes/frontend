@@ -4,7 +4,24 @@ import * as routes from '../../lib/routes';//eslint-disable-line
 
 import './connection-modal.scss';
 
+// const mapStateToProps = state => ({
+//   profile: state.profile,
+// });
+//
+// const mapDispatchToProps = dispatch => ({
+//
+// });
+
 export default class ConnectionModal extends React.Component {
+  // ComponentWillMount = () => {
+  //   this.populateStudent();
+  // }
+
+  // populateStudent = () => {
+  //   const { profile } = this.props.state;
+  //   const studentProfiles = profile.filter(profile => )
+  // };
+
   render() {
     // Render nothing if the "show" prop is false
     if (!this.props.show) {

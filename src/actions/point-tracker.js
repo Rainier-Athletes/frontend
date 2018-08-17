@@ -20,6 +20,33 @@ export const createPointTracker = pointTracker => (store) => {
     });
 };
 
+export const createSynopsisReport = pointTracker => (store) => {
+  const { token } = store.getState();
+
+  const pointTrackerHTML = `
+    <div>
+      <p>${pointTracker.synopsisComments.extraPlayingTime}</p>
+      <p>${pointTracker.synopsisComments.mentorGrantedPlayingTime}</p>
+      <p>${pointTracker.synopsisComments.studentActionItems}</p>
+      <p>${pointTracker.synopsisComments.sportsUpdate}</p>
+      <p>${pointTracker.synopsisComments.additionalComments}</p>
+    </div>
+  `;
+
+  const body = {
+    name: pointTracker.studentName,
+    html: pointTrackerHTML,
+  };
+
+  return superagent.post(`${API_URL}${routes.SYNOPSIS_REPORT}`)
+    .set('Authorization', `Bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .send(body)
+    .then((res) => {
+      return store.dispatch(setPointTracker(res.body));
+    });
+};
+
 export const fetchStudents = studentIds => (store) => { // eslint-disable-line
   const { token } = store.getState();
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)

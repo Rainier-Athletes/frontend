@@ -11,7 +11,6 @@ import Dashboard from '../dashboard/dashboard';
 import Auth from '../auth/auth';
 import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
-
 import './app.scss';
 
 library.add(faAngleDown, faUserPlus);

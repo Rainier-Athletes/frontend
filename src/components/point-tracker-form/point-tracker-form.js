@@ -10,6 +10,7 @@ const emptyPointTracker = {
   _id: '',
   date: Date.now(),
   student: '',
+  studentName: '',
   subjects: [{
     subjectName: 'Tutorial',
     teacher: '',
@@ -42,12 +43,14 @@ const emptyPointTracker = {
     sportsUpdate: 'Sports update...',
     additionalComments: 'Additional Comments...',
   },
+  htmlToRender: '',
 };
 
 const mapDispatchToProps = dispatch => ({
   fetchStudents: studentIds => dispatch(pointTrackerActions.fetchStudents(studentIds)),
   fetchTeachers: studentIds => dispatch(pointTrackerActions.fetchTeachers(studentIds)),
   createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
+  createSynopsisReport: pointTracker => dispatch(pointTrackerActions.createSynopsisReport(pointTracker)),
 });
 
 class PointTrackerForm extends React.Component {
@@ -130,7 +133,10 @@ class PointTrackerForm extends React.Component {
     const { pointTracker } = this.state;
     console.log(pointTracker, 'POINT TRACKER');
     delete pointTracker._id;
+
     this.props.createPointTracker(pointTracker);
+    this.props.createSynopsisReport(pointTracker);
+
     this.setState({ pointTracker: emptyPointTracker });
   }
 
@@ -201,6 +207,7 @@ class PointTrackerForm extends React.Component {
       const newState = { ...prevState };
       newState.pointTracker = lastPointTracker || emptyPointTracker;
       newState.pointTracker.student = studentId;
+      newState.pointTracker.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
       return newState;
     });
   }
@@ -461,6 +468,7 @@ class PointTrackerForm extends React.Component {
 PointTrackerForm.propTypes = {
   handleChange: PropTypes.func,
   createPointTracker: PropTypes.func,
+  createSynopsisReport: PropTypes.func,
   fetchStudents: PropTypes.func,
   fetchTeachers: PropTypes.func,
 };

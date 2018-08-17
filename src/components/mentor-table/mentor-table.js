@@ -5,6 +5,7 @@ import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import * as routes from '../../lib/routes';
 import './mentor-table.scss';
+import ConnectionModal from '../connection-modal/connection-modal';
 
 import * as profileActions from '../../actions/profile';
 
@@ -103,6 +104,7 @@ class MentorTable extends React.Component {
       counter: 0,
       newRows: [],
       updatedRows: [],
+      isOpen: false, // for the modal
     };
   }
 
@@ -189,7 +191,6 @@ class MentorTable extends React.Component {
       const rowToUpdate = rows[i];
       const updatedRow = update(rowToUpdate, { $merge: updated });
       rows[i] = updatedRow;
-      console.log('UPDATED', rows[i]);
 
       if (!rows[i]._id) {
         const index = this.state.counter;
@@ -362,43 +363,56 @@ class MentorTable extends React.Component {
     return rows[rowIdx];
   };
 
+  toggleModal = () => {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
+
   /*eslint-disable*/
   render() {
     return (
-      <ReactDataGrid
-        ref={ node => this.grid = node }
-        enableCellSelect={true}
-        onGridSort={this.handleGridSort}
-        columns={this.getColumns()}
-        rowGetter={ this.rowGetter }
-        rowsCount={this.getSize()}
-        onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={
-          <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
-            <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
-            <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
-          </Toolbar>
-        }
-        enableRowSelect={true}
-        onRowSelect={this.onRowSelect}
-        rowSelection={{
-          showCheckbox: true,
-          enableShiftSelect: true,
-          onRowsSelected: this.onRowsSelected,
-          onRowsDeselected: this.onRowsDeselected,
-          selectBy: {
-            indexes: this.state.selectedIndexes,
-          },
-        }}
-        getSubRowDetails={this.getSubRowDetails}
-        onCellExpand={this.onCellExpand}
-        rowHeight={50}
-        minHeight={600}
-        rowScrollTimeout={200}
-        onAddFilter={this.handleFilterChange}
-        getValidFilterValues={this.getValidFilterValues}
-        onClearFilters={this.handleOnClearFilters}
-        />
+      <React.Fragment>
+        <ConnectionModal
+          show={this.state.isOpen}
+          onClose={this.toggleModal}>
+        </ConnectionModal>
+        <ReactDataGrid
+          ref={ node => this.grid = node }
+          enableCellSelect={true}
+          onGridSort={this.handleGridSort}
+          columns={this.getColumns()}
+          rowGetter={ this.rowGetter }
+          rowsCount={this.getSize()}
+          onGridRowsUpdated={this.handleGridRowsUpdated}
+          toolbar={
+            <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
+              <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
+              <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
+              <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
+            </Toolbar>
+          }
+          enableRowSelect={true}
+          onRowSelect={this.onRowSelect}
+          rowSelection={{
+            showCheckbox: true,
+            enableShiftSelect: true,
+            onRowsSelected: this.onRowsSelected,
+            onRowsDeselected: this.onRowsDeselected,
+            selectBy: {
+              indexes: this.state.selectedIndexes,
+            },
+          }}
+          getSubRowDetails={this.getSubRowDetails}
+          onCellExpand={this.onCellExpand}
+          rowHeight={50}
+          minHeight={600}
+          rowScrollTimeout={200}
+          onAddFilter={this.handleFilterChange}
+          getValidFilterValues={this.getValidFilterValues}
+          onClearFilters={this.handleOnClearFilters}
+          />
+      </React.Fragment>
     );
   }
 }

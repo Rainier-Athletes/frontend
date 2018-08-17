@@ -9,7 +9,7 @@
 }
 
 .react-grid-Canvas, .react-grid-Grid {
-  height: 100vh !important;
+  height: 77vh !important;
 }
 
 .react-grid-Container {
@@ -544,6 +544,23 @@
   text-shadow: rgb(206, 206, 206);
   width: 8em;
   float: right;
+}
+
+.modalBtn {
+  background: white;
+  border: 1px solid #089444;
+  color: #089444;
+  font-size: 14px;
+  margin-bottom: .3em;
+  position: relative;
+  text-shadow: rgb(206, 206, 206);
+  width: 12em;
+}
+
+.modalBtn:hover {
+  background-color: #089444;
+  color: white;
+  border: 1px solid #089444;
 }
 
 .deleteBtn:hover {

@@ -8,6 +8,10 @@ export const setPointTracker = pointTracker => ({
 
 export const createPointTracker = pointTracker => (store) => {
   const { token } = store.getState();
+
+  pointTracker.date = new Date(pointTracker.date).toISOString();
+  console.log(pointTracker, 'POINT TRACKER POST BODY');
+
   return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
@@ -30,15 +34,16 @@ export const fetchStudents = studentIds => (store) => { // eslint-disable-line
     .catch(console.error); // eslint-disable-line
 };
 
-// TODO: FINISH THIS ROUTE
-export const fetchLastPointTracker = studentId => (store) => { // eslint-disable-line
+export const fetchTeachers = studentId => (store) => { // eslint-disable-line
   const { token } = store.getState();
 
-  return superagent.get(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
+  return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .then((response) => {
-      console.log(response); // eslint-disable-line
+      const profiles = response.body;
+      const teachers = profiles.filter(profile => profile.role === 'teacher');
+      return teachers;
     })
     .catch(console.error); // eslint-disable-line
-};
+}

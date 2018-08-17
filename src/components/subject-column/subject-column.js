@@ -25,25 +25,25 @@ export default function SubjectColumn(props) {
         type="number" 
         onChange={ handleSubjectChange } 
         name={ `${subjectName}-excusedDays` }
-        value={ excusedDays || 0 }
+        value={ excusedDays }
       />
       <input 
         type="number" 
         onChange={ handleSubjectChange } 
         name={ `${subjectName}-stamps` }
-        value={ stamps || 0 }
+        value={ stamps }
       />
       <input 
         type="number" 
         onChange={ handleSubjectChange } 
         name={ `${subjectName}-x` }
-        value={ halfStamps || 0}
+        value={ halfStamps }
       />
       <input 
         type="number"
         onChange={ handleSubjectChange } 
         name={ `${subjectName}-grade` }
-        value={ grade || 0 }
+        value={ grade }
       />
       <button 
         type="button"

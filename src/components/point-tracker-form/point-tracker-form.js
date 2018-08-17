@@ -37,13 +37,12 @@ const emptyPointTracker = {
     synopsisCompletedByRaStaff: false,
   },
   synopsisComments: {
-    extraPlayingTime: 'Reason for extra playing time...',
-    mentorGrantedPlayingTime: 'Reason for granted playing time...',
-    studentActionItems: 'Student action items...',
-    sportsUpdate: 'Sports update...',
-    additionalComments: 'Additional Comments...',
+    extraPlayingTime: '',
+    mentorGrantedPlayingTime: '',
+    studentActionItems: '',
+    sportsUpdate: '',
+    additionalComments: '',
   },
-  htmlToRender: '',
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -81,7 +80,8 @@ class PointTrackerForm extends React.Component {
   }
 
   handleSubjectChange = (event) => {
-    const { name, value } = event.target;
+    const { name } = event.target;
+    const value = parseInt(event.target.value, 10);
     
     this.setState((prevState) => {
       const newState = { ...prevState };
@@ -243,11 +243,11 @@ class PointTrackerForm extends React.Component {
 
   render() {
     const selectOptionsJSX = (
-      <section>
+      <section required>
         <div className="select-student">
         <label htmlFor="">Select Student</label>
           <select onChange={ this.handleStudentSelect } >
-          <option disabled selected>Select Student</option>
+          <option disabled selected value="">Select Student</option>
           { this.state.students.map(student => (
               <option 
                 placeholder="Select" 
@@ -265,6 +265,7 @@ class PointTrackerForm extends React.Component {
           type="date"
           onChange={ this.handleDateChange }
           value={ convertDateToValue(this.state.pointTracker.date) }
+          required
           />
         </div>
         <div className="clearfix"></div>
@@ -388,6 +389,7 @@ class PointTrackerForm extends React.Component {
           name="mentorGrantedPlayingTime"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
+          required
           >
           <option value="" defaultValue>Select Playing Time</option>
           <option value="Entire Game">Entire Game</option>
@@ -406,9 +408,8 @@ class PointTrackerForm extends React.Component {
           rows="6"
           cols="80"
           wrap="hard"
+          placeholder="Extra playing time..."
         />
-
-      <p>Recommended playing time: { this.calcPlayingTime() }</p>
 
         <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
         <textarea
@@ -418,6 +419,7 @@ class PointTrackerForm extends React.Component {
           rows="6"
           cols="80"
           wrap="hard"
+          placeholder="Student action items..."
         />
 
         <label htmlFor="sportsUpdate">Sports Update</label>
@@ -428,9 +430,8 @@ class PointTrackerForm extends React.Component {
           rows="6"
           cols="80"
           wrap="hard"
+          placeholder="Sports update..."
           />
-
-      <p>Recommended playing time: { this.calcPlayingTime() }</p>
 
         <label htmlFor="additionalComments">Additional Comments</label>
         <textarea
@@ -440,6 +441,7 @@ class PointTrackerForm extends React.Component {
           rows="6"
           cols="80"
           wrap="hard"
+          placeholder="Additional comments..."
         />
       </div>
     );
@@ -460,7 +462,8 @@ class PointTrackerForm extends React.Component {
             />
             { synopsisCommentsJSX }
               
-          <button className="submit-report" type="submit">Submit Point Tracker</button>
+          <button className="submit-report" type="submit">Submit 
+          Point Tracker</button>
         </form>
       </div>
     );

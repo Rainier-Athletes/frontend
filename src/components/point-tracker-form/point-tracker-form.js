@@ -6,7 +6,7 @@ import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import * as pointTrackerActions from '../../actions/point-tracker';
 import './point-tracker-form.scss';
 
-const defaultState = {
+const mockPointTracker = {
   _id: null,
   date: Date.now(),
   student: null,
@@ -111,6 +111,44 @@ const defaultState = {
     studentActionItems: 'Jamie agreed to attend 1 more tutorial in each of his classes this coming week',
     sportsUpdate: 'Last week Jamie had a great game against the Cardinals. Had two hits and caught three fly balls!',
     additionalComments: '',
+  },
+};
+
+const defaultState = {
+  _id: null,
+  date: Date.now(),
+  student: null,
+  subjects: [{
+    subjectName: 'Tutorial',
+    teacher: '5b75ada62c7a4f246bb31ed1',
+    scoring: {
+      excusedDays: 0,
+      stamps: 0,
+      halfStamps: 0,
+      tutorials: 0,
+    },
+    grade: null,
+  }],
+  surveyQuestions: {
+    mentorAttendedCheckin: false,
+    metFaceToFace: false,
+    hadOtherCommunication: false,
+    hadNoCommunication: false,
+    scoreSheetTurnedIn: false,
+    scoreSheetLostOrIncomplete: false,
+    scoreSheetWillBeLate: false,
+    scoreSheetOther: false,
+    scoreSheetOtherReason: '',
+    synopsisInformationComplete: false,
+    synopsisInformationIncomplete: false,
+    synopsisCompletedByRaStaff: false,
+  },
+  synopsisComments: {
+    extraPlayingTime: 'Reason for extra playing time...',
+    mentorGrantedPlayingTime: 'Reason for granted playing time...',
+    studentActionItems: 'Student action items...',
+    sportsUpdate: 'Sports update...',
+    additionalComments: 'Additional Comments...',
   },
 };
 
@@ -374,17 +412,7 @@ class PointTrackerForm extends React.Component {
     const synopsisCommentsJSX = (
       <div className="synopsis">
       <h4>Synopsis</h4>
-
-      <label htmlFor="extraPlayingTime">Extra Playing Time</label>
-      <textarea
-        name="extraPlayingTime"
-        onChange={ this.handleSynopsisCommentChange }
-        value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-        rows="8"
-        cols="80"
-        wrap="hard"
-      />
-
+      
       <p>Recommended playing time: { this.calcPlayingTime() }</p>
 
       <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>

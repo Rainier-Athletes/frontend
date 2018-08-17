@@ -2,9 +2,19 @@
   border-color: none;
 }
 
+.react-grid-Toolbar .tools {
+  float: left !important;
+  width: 100%;
+  margin: 1em 0 !important;
+}
+
+.react-grid-Canvas, .react-grid-Grid {
+  height: 100vh !important;
+}
+
 .react-grid-Container {
   position: relative;
-  top: 5em;
+  top: 3.5em;
 
 .ReactTable {
   position: relative;
@@ -526,18 +536,20 @@
 
 .deleteBtn {
   background: white;
-  border: 1px solid rgb(255, 131, 131);
-  color: red;
+  border: 1px solid #b13636;
+  color: #b13636;
   font-size: 14px;
   margin-bottom: .3em;
   position: relative;
   text-shadow: rgb(206, 206, 206);
-  width: 6.09em;
+  width: 8em;
+  float: right;
 }
 
 .deleteBtn:hover {
-  background: white;
-  border: 1px solid red;
+  background-color: #b13636;
+  color: white;
+  border: 1px solid #b13636;
 }
 
 .updateBtn {
@@ -547,10 +559,17 @@
   font-size: 14px;
   position: relative;
   text-shadow: rgb(206, 206, 206);
-  width: 6.09em;
+  width: 7em;
 }
 
 .updateBtn:hover {
-  background: white;
+  background-color: rgb(16, 62, 211);
+  color: white;
   border: 1px solid rgb(16, 62, 211);
+}
+
+.tools > button {
+  padding: 0.5em;
+  border-radius: 0.5em;
+  margin-right: 1em;
 }

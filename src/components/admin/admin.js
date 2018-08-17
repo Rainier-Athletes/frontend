@@ -1,14 +1,11 @@
 import React from 'react';
-import TableMenu from '../table-menu/table-menu';
-// import Whitelist from '../whitelist/whitelist';
-import { Modal } from '../buttons/buttons';
+import MentorTable from '../mentor-table/mentor-table';
 
 class Admin extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <TableMenu />
-        <Modal />
+        <MentorTable />
       </React.Fragment>
     );
   }

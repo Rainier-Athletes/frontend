@@ -1,12 +1,14 @@
 @import '../../style/vars';
 
 .point-tracker-form {
+  
 }
 .select-student, .select-date {
 
   display: inline-block;
   float: left;
   padding: 5px;
+  
   // margin: 10px;
   // vertical-align: middle;
     
@@ -25,6 +27,7 @@
 }
 
 .survey-questions-2 {
+  margin: 5px 0px;
   display: inline-block;
   width: 50%;
   // margin-right: 4px;
@@ -42,7 +45,7 @@
 .survey-questions-2 label, {
   float: left;
   display: inline-block;
-  margin-right: 4px;
+  margin-right: 8px;
 }
 
 .survey-questions label {
@@ -55,6 +58,7 @@
 .points-tracker {
       padding-top: 20px;
       margin: 80px 20px 0 20px;
+ 
 }
 
     h2 {

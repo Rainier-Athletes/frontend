@@ -432,23 +432,12 @@ class PointTrackerForm extends React.Component {
           <label htmlFor="synopsisCompletedByRaStaff">Synopsis Completed By RA Staff</label>
             </div>
         </div>
-===
     </fieldset>
     );
     
     const synopsisCommentsJSX = (
       <div className="synopsis">
       <h4>Synopsis</h4>
-
-      {/* <label htmlFor="extraPlayingTime">Extra Playing Time</label>
-      <textarea
-        name="extraPlayingTime"
-        onChange={ this.handleSynopsisCommentChange }
-        value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-        rows="8"
-        cols="80"
-        wrap="hard"
-      /> */}
 
       <p>Recommended playing time: { this.calcPlayingTime() }</p>
 

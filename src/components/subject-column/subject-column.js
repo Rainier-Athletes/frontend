@@ -47,7 +47,7 @@ export default function SubjectColumn(props) {
       <button 
         type="button"
         onClick={ handleDelete }
-      >X</button> 
+      >x</button> 
 
     </div>
   );

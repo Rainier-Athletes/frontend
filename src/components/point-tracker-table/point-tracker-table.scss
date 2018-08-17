@@ -3,7 +3,7 @@
 .point-table {
   
   .labels {
-    width: 10em;
+    width: 20em;
     font-size: 12px;
     text-align: right;
   }
@@ -16,10 +16,11 @@
 
   * {
     display: inline-block;
-    height: 3em;
+    height: 70%;
     width: 5em;
     padding: .5em;
     margin: .2em;
+    font-weight: bold;
   }
 }
 
@@ -40,4 +41,23 @@
   padding-bottom: 5em;
 }
 
+.add-subject-btn {
+  background-color: $color-white;
+  color: $color-brand-blue;
+  border: 1px solid #59AACE;
+  padding: 10px;
+  border-radius: 4px;
+  margin-right: 5px;
+  margin-bottom: 20px;
+  transition: 350ms all;
 
+  &:hover {
+    background: $color-brand-blue;
+    border: 1px solid #59AACE;
+    color: $color-white;
+  }
+
+  &::placeholder {
+    color: $color-black;
+  }
+}

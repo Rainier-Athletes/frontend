@@ -58,7 +58,7 @@ export default class PointTrackerTable extends React.Component {
         value= { this.state.subjectName }
         onChange={ this.handleChange }
       />
-      <button type="button" onClick={ this.handleCreateSubject }>Add new subject</button>
+      <button type="button" className="add-subject-btn" onClick={ this.handleCreateSubject }>Add new subject</button>
     </div>
     );
   

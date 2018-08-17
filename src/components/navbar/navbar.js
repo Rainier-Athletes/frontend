@@ -8,7 +8,6 @@ import * as authActions from '../../actions/auth';
 import * as routes from '../../lib/routes';
 import googleBtn from '../../assets/google-btn.png';
 import rainierBtn from '../../assets/rainier-logo-horizontal.png';
-// import Whitelist from '../whitelist/whitelist';
 
 import './navbar.scss';
 
@@ -74,7 +73,7 @@ class Navbar extends React.Component {
 
     const dropdown = (
       <div className="dropdown">
-        <button onClick={ this.props.doLogout }>Logout</button>
+        <button className="button" onClick={ this.props.doLogout }>Logout</button>
       </div>
     );
 
@@ -85,6 +84,7 @@ class Navbar extends React.Component {
         <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
         <span className="login">
           <button className="navbar-dropdown" onClick={ this.handleDropDownToggle }>
+
             Welcome, { name }
             <FontAwesomeIcon icon="angle-down" />
           </button>

@@ -9,7 +9,7 @@
   padding: 5px;
   // margin: 10px;
   // vertical-align: middle;
-    
+
     select, input {
       display: inline-block;
       width: 180px;
@@ -48,8 +48,8 @@
 .survey-questions label {
   display: inline-block;
   margin-bottom: 0;
-  margin-left: 10px; 
-  vertical-align: middle; 
+  margin-left: 10px;
+  vertical-align: middle;
 }
 
 .points-tracker {
@@ -75,23 +75,23 @@
       font-weight: bold;
       color: $color-white;
       font-size: 16px;
-      
+
       &:hover {
         background: $color-button-focus;
         color: $color-black;
-      } 
-      
+      }
+
       &:visited {
         background: $color-button-active;
     }
 
   }
-  
+
   .synopsis {
     padding-top: 2.5em;
     padding-bottom: 1.6em;
   }
-  
+
 ul {
     li {
       list-style-type: none;

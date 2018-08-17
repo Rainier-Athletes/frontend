@@ -121,16 +121,20 @@ class MentorTable extends React.Component {
   };
 
   populateChildren = (profile) => {
-    for (child in profile.students) {
-      console.log(child);
+    let childArr = [];
+    for (const i in profile.students) {
+      childArr.push(profile.students[i]);
     }
-  }
+    return childArr;
+  };
 
   populateData = (profile, i) => {
-    // let 
-    // if (profile.role === 'mentor') {
-    //
-    // }
+    let childArr;
+    if (profile.role === 'mentor' && profile.students.length > 0) {
+      childArr = this.populateChildren(profile);
+      console.log(childArr);
+    };
+
     return {
       _id: profile._id,
       avatar: profile.picture,
@@ -140,16 +144,7 @@ class MentorTable extends React.Component {
       role: profile.role,
       phone: profile.phone,
       address: '',
-      children: [
-        { _id: profile._id,
-        avatar: faker.image.avatar(),
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        email: profile.email,
-        role: profile.role,
-        phone: profile.phone,
-        address: '', },
-      ]
+      children: childArr,
     };
   };
 

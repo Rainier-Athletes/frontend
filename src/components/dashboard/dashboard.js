@@ -31,7 +31,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Redirect to={routes.ADMIN_ROUTE} />;
+
       </React.Fragment>
     );
   }

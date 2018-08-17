@@ -4,7 +4,6 @@
   top: 0;
   position: fixed;
   width: 100%;
-  margin: 0px 0px 20px 0px;
   background-color: #1f1f1f;
   padding: 0;
   z-index: 1;
@@ -27,10 +26,9 @@
     .dropdown {
       display: block;
       position: absolute;
-      background-color: $color-lightgrey;
-      top: 4.7em;
+      background-color: #929292;
+      top: 4.8em;
       right: 0;
-      width: 11em;
     }
 
     .google-btn {
@@ -40,22 +38,17 @@
   }
 }
 
-
-button {
-  background-color: transparent;
-  float: right;
-  padding: 1em 0.8em;
-  margin-left: 1em;
-}
-
-.login > button {
-  background-color: transparent;
-  float: right;
-  padding: 1em 0.8em;
-  margin-left: 1em;
+.login button {
   color: white;
+  background-color: transparent;
+  padding: 1.8em 1em !important;
 }
 
-.dropdown > button.navbar-dropdown {
-  margin-right: 2em;
+.login button:hover {
+  background-color: #4a4a4a;
+}
+
+.dropdown > button {
+  width: 11.9em;
+  color: black;
 }

@@ -3,7 +3,6 @@
 * {
   // box model
   position: static;
-  display: block; 
   margin: 0;
   padding: 0;
   border: none;
@@ -16,7 +15,6 @@
   font-weight: normal;
   font-style: normal;
   text-decoration: none;
-  white-space: normal;
 
   // color
   color: $color-black;
@@ -27,7 +25,7 @@
 
 form *:focus {
   border: none;
-  outline: none;
+  outline: 1px solid #59AACE;
 }
 
 body {

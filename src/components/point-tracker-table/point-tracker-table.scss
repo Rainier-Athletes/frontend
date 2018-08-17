@@ -22,6 +22,7 @@
     width: 5em;
     padding: .5em;
     margin: .2em;
+    font-weight: bold;
   }
 }
 
@@ -50,4 +51,23 @@
   padding-bottom: 5em;
 }
 
+.add-subject-btn {
+  background-color: $color-white;
+  color: $color-brand-blue;
+  border: 1px solid #59AACE;
+  padding: 10px;
+  border-radius: 4px;
+  margin-right: 5px;
+  margin-bottom: 20px;
+  transition: 350ms all;
 
+  &:hover {
+    background: $color-brand-blue;
+    border: 1px solid #59AACE;
+    color: $color-white;
+  }
+
+  &::placeholder {
+    color: $color-black;
+  }
+}

@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { FaTrash } from 'react-icons/fa';
 
 import './subject-column.scss';
 
 export default function SubjectColumn(props) {
-
   const { 
-    subject, handleSubjectChange, getTeacherName, deleteSubject, 
+    subject, 
+    handleSubjectChange, 
+    getTeacherName, 
+    deleteSubject, 
   } = props;
   const { subjectName, grade, teacher } = subject;
   const { excusedDays, stamps, halfStamps } = subject.scoring;
@@ -24,25 +25,25 @@ export default function SubjectColumn(props) {
         type="number" 
         onChange={ handleSubjectChange } 
         name={ `${subjectName}-excusedDays` }
-        value={ excusedDays }
+        value={ excusedDays || 0 }
       />
       <input 
         type="number" 
         onChange={ handleSubjectChange } 
         name={ `${subjectName}-stamps` }
-        value={ stamps }
+        value={ stamps || 0 }
       />
       <input 
         type="number" 
         onChange={ handleSubjectChange } 
         name={ `${subjectName}-x` }
-        value={ halfStamps }
+        value={ halfStamps || 0}
       />
       <input 
         type="number"
         onChange={ handleSubjectChange } 
         name={ `${subjectName}-grade` }
-        value={ grade }
+        value={ grade || 0 }
       />
       <button 
         type="button"

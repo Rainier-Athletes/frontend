@@ -38,8 +38,9 @@ export default class PointTrackerTable extends React.Component {
         name="teacherId" 
         onChange={ this.handleChange } 
         value={ this.state.teacherId }
+        default=""
       >
-        <option disabled value="">Select Teacher</option>
+        <option disabled defaultValue value="">Select Teacher</option>
         {
           this.props.teachers.map(teacher => (
             <option 
@@ -57,9 +58,13 @@ export default class PointTrackerTable extends React.Component {
         value= { this.state.subjectName }
         onChange={ this.handleChange }
       />
+
       <div className="new-subject">
       <button type="button" onClick={ this.handleCreateSubject }>Add new subject</button>
       </div>
+
+      <button type="button" className="add-subject-btn" onClick={ this.handleCreateSubject }>Add new subject</button>
+
     </div>
     );
   

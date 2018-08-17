@@ -7,6 +7,7 @@
   background-color: #1f1f1f;
   padding: 0;
   z-index: 1;
+  clear: both;
 
   .logo {
     float: left;
@@ -38,8 +39,8 @@
   }
 }
 
-.button {
-  background-color: transparent !important;
+button {
+  background-color: transparent;
   float: right;
   padding: 1.8em 0.8em !important;
   margin-left: 1em;

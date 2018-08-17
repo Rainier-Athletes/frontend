@@ -11,7 +11,8 @@
     "build": "webpack --config webpack.prod.js",
     "lint": "eslint --fix .",
     "start": "npm run build && node index.js",
-    "heroku-prebuild": "npm uninstall cypress"
+    "heroku-prebuild": "npm uninstall cypress",
+    "heroku-postbuild": "webpack --progress --config webpack.prod.js"
   },
   "repository": {
     "type": "git",

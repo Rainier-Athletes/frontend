@@ -11,7 +11,7 @@ import './mentor-table.scss';
 import * as profileActions from '../../actions/profile';
 
 const faker = require('faker');
-const { Editors, Toolbar, Formatters } = require('react-data-grid-addons');
+const { Editors, Formatters, Toolbar, Filters: { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter }, Data: { Selectors } } = require('react-data-grid-addons');
 const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
 const { ImageFormatter } = Formatters;
 
@@ -25,7 +25,6 @@ const mapDispatchToProps = dispatch => ({
   deleteProfile: profile => dispatch(profileActions.deleteProfileReq(profile)),
 });
 
-const updateBtn = <button className="updateBtn">Save</button>
 const newRows = {};
 const updatedRows = {};
 
@@ -39,7 +38,7 @@ class MentorTable extends React.Component {
         width: 60,
         formatter: ImageFormatter,
         resizable: true,
-        headerRenderer: <ImageFormatter value={faker.image.cats()} />
+        headerRenderer: <ImageFormatter value={faker.image.cats()} />,
       },
       {
         key: 'firstName',
@@ -48,6 +47,8 @@ class MentorTable extends React.Component {
         width: 200,
         resizable: true,
         sortable: true,
+        filterable: true,
+        filterRenderer: AutoCompleteFilter,
       },
       {
         key: 'lastName',
@@ -56,6 +57,8 @@ class MentorTable extends React.Component {
         width: 200,
         resizable: true,
         sortable: true,
+        filterable: true,
+        filterRenderer: AutoCompleteFilter,
       },
       {
         key: 'email',
@@ -64,6 +67,8 @@ class MentorTable extends React.Component {
         width: 200,
         resizable: true,
         sortable: true,
+        filterable: true,
+        filterRenderer: AutoCompleteFilter,
       },
       {
         key: 'role',
@@ -72,6 +77,8 @@ class MentorTable extends React.Component {
         width: 200,
         resizable: true,
         sortable: true,
+        filterable: true,
+        filterRenderer: MultiSelectFilter,
       },
       {
         key: 'address',
@@ -80,6 +87,8 @@ class MentorTable extends React.Component {
         width: 200,
         resizable: true,
         sortable: true,
+        filterable: true,
+        filterRenderer: AutoCompleteFilter,
       },
       {
         key: 'phone',
@@ -88,6 +97,7 @@ class MentorTable extends React.Component {
         width: 200,
         resizable: true,
         sortable: true,
+        filterable: true,
       },
     ];
     this.state = {
@@ -95,6 +105,7 @@ class MentorTable extends React.Component {
       selectedIndexes: [],
       originalRows: [],
       expanded: {},
+      filters: {},
       counter: 0,
       newRows: [],
       updatedRows: [],
@@ -309,6 +320,39 @@ class MentorTable extends React.Component {
     });
   };
 
+  handleFilterChange = (filter) => {
+    let newFilters = Object.assign({}, this.state.filters);
+    if (filter.filterTerm) {
+      newFilters[filter.column.key] = filter;
+    } else {
+      delete newFilters[filter.column.key];
+    }
+    this.setState({ filters: newFilters });
+  };
+
+  getValidFilterValues = (columnId) => {
+    let values = this.state.rows.map(r => r[columnId]);
+    return values.filter((item, i, a) => { return i === a.indexOf(item); });
+    c
+  };
+
+  handleOnClearFilters = () => {
+    this.setState({ filters: {} });
+  };
+
+  getRows = () => {
+    return Selectors.getRows(this.state);
+  };
+
+  getSize = () => {
+    return this.getRows().length;
+  };
+
+  rowGetter = (rowIdx) => {
+    let rows = this.getRows();
+    return rows[rowIdx];
+  };
+
   render() {
     return (
       <ReactDataGrid
@@ -316,16 +360,14 @@ class MentorTable extends React.Component {
         enableCellSelect={true}
         onGridSort={this.handleGridSort}
         columns={this.getColumns()}
-        rowGetter={this.getRowAt}
-        rowsCount={this.state.rows.length}
+        rowGetter={ this.rowGetter }
+        rowsCount={this.getSize()}
         onGridRowsUpdated={this.handleGridRowsUpdated}
         toolbar={
-          <div>
-            <Toolbar onAddRow={ this.handleAddRow }>
-              <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
-              <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
-            </Toolbar>
-          </div>
+          <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
+            <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
+            <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
+          </Toolbar>
         }
         enableRowSelect={true}
         onRowSelect={this.onRowSelect}
@@ -342,7 +384,12 @@ class MentorTable extends React.Component {
         onCellExpand={this.onCellExpand}
         rowHeight={50}
         minHeight={600}
-        rowScrollTimeout={200} />);
+        rowScrollTimeout={200}
+        onAddFilter={this.handleFilterChange}
+        getValidFilterValues={this.getValidFilterValues}
+        onClearFilters={this.handleOnClearFilters}
+        />
+    );
   }
 }
 

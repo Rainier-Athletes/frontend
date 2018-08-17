@@ -3,6 +3,7 @@
 .point-tracker-form {
 }
 .select-student, .select-date {
+
   display: inline-block;
   float: left;
   padding: 5px;
@@ -17,25 +18,44 @@
       }
 }
 
-.survey-questions input,
-.survey-questions label {
+.survey-questions {
   display: inline-block;
-  margin-right: 1px;
+  width: 50%;
+
+}
+
+.survey-questions-2 {
+  display: inline-block;
+  width: 50%;
+  // margin-right: 4px;
+  // float: left;
+}
+
+.survey-question-container {
+  width: 100%;
+  clear: both;
+}
+
+.survey-questions input,
+.survey-questions label,
+.survey-questions-2 input,
+.survey-questions-2 label, {
+  float: left;
+  display: inline-block;
+  margin-right: 4px;
 }
 
 .survey-questions label {
-  // display: inline-block;
+  display: inline-block;
   margin-bottom: 0;
   margin-left: 10px; 
   vertical-align: middle; 
 }
 
-
-    .points-tracker {
+.points-tracker {
       padding-top: 20px;
       margin: 80px 20px 0 20px;
-    }
- 
+}
 
     h2 {
       color: $color-brand-blue;

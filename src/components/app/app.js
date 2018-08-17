@@ -20,7 +20,6 @@ library.add(faAngleDown, faUserPlus);
 const AdminUser = Auth(['admin']);
 
 export default class App extends React.Component {
-  // <Route exact path={routes.MENTOR_ROUTE} component={PointTrackerForm} />
   render() {
     return (
       <div className="app">
@@ -32,7 +31,7 @@ export default class App extends React.Component {
             {/* <Dashboard /> */} 
             <Route exact path="*" component={AuthRedirect} />
             <Route expact path="/admin" component={ AdminUser(Admin) } />
-
+            <Route exact path="/mentor" component={PointTrackerForm} />
           </div>
         </BrowserRouter>
       {/* <div className="footer"> */}

@@ -89,7 +89,7 @@ const defaultState = {
       halfStamps: 1,
       tutorials: 2,
     },
-    grade: 70,
+    grade: null,
   }],
   surveyQuestions: {
     mentorAttendedCheckin: true,
@@ -293,7 +293,7 @@ class PointTrackerForm extends React.Component {
     if (totalClassScoreSum >= 29) return 'All but start';
     if (totalClassScoreSum >= 25) return 'Three quarters';
     if (totalClassScoreSum >= 21) return 'Two quarters';
-    if (totalClassScoreSum >= 29) return 'One quarter';
+    if (totalClassScoreSum >= 16) return 'One quarter';
     return 'None of game';
   }
 
@@ -370,16 +370,6 @@ class PointTrackerForm extends React.Component {
     const synopsisCommentsJSX = (
       <div className="synopsis">
       <h4>Synopsis</h4>
-
-      <label htmlFor="extraPlayingTime">Extra Playing Time</label>
-      <textarea
-        name="extraPlayingTime"
-        onChange={ this.handleSynopsisCommentChange }
-        value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-        rows="8"
-        cols="80"
-        wrap="hard"
-      />
 
        <p>Recommended playing time: { this.calcPlayingTime() }</p>
       <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>

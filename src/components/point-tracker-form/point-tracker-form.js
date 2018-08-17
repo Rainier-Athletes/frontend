@@ -204,7 +204,40 @@ class PointTrackerForm extends React.Component {
     return this.state.teachers
       .filter(teacher => teacher._id === teacherId)
       .map(teacher => `${teacher.firstName} ${teacher.lastName}`)[0] || '';
-  } 
+  }
+
+  deleteSubject = (subjectName, teacherId) => {
+    this.setState((prevState) => {
+      const newState = { ...prevState };
+
+      newState.pointTracker.subjects = newState.pointTracker.subjects.filter((subject) => {
+        return subject.subjectName !== subjectName && subject.teacher !== teacherId;
+      });
+
+      return newState;
+    });
+  }
+
+  createSubject = (subjectName, teacherId) => {
+    this.setState((prevState) => {
+      const newState = { ...prevState };
+      const newSubject = {
+        subjectName,
+        teacher: teacherId,
+        scoring: {
+          excusedDays: null,
+          stamps: null,
+          halfStamps: null,
+          tutorials: null,
+        },
+        grade: null,
+      };
+
+      newState.pointTracker.subjects.push(newSubject);
+
+      return newState;
+    });
+  }
 
   componentDidMount() {
     this.props.fetchStudents()
@@ -239,7 +272,7 @@ class PointTrackerForm extends React.Component {
       const { grade, subjectName } = subject;
       const { excusedDays, stamps, halfStamps } = subject.scoring;
       const pointsEarned = 2 * stamps + halfStamps;
-      const pointsPossible = subjectName === 'Tutorial' ? 10 - excusedDays * 2 : 40 - excusedDays * 8;
+      const pointsPossible = subjectName.toLowerCase === 'tutorial' ? 10 - excusedDays * 2 : 40 - excusedDays * 8;
       const pointPercentage = pointsEarned / pointsPossible;
       
       let pointScore = 0;
@@ -488,6 +521,9 @@ class PointTrackerForm extends React.Component {
                   handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.pointTracker.subjects }
                   getTeacherName={ this.getTeacherName }
+                  teachers={ this.state.teachers }
+                  deleteSubject= { this.deleteSubject }
+                  createSubject={ this.createSubject }
               />
               { synopsisCommentsJSX }
                 

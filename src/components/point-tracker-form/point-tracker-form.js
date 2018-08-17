@@ -128,7 +128,6 @@ class PointTrackerForm extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { pointTracker } = this.state;
-    console.log(pointTracker, 'POINT TRACKER');
     delete pointTracker._id;
     this.props.createPointTracker(pointTracker);
     this.setState({ pointTracker: emptyPointTracker });
@@ -195,7 +194,6 @@ class PointTrackerForm extends React.Component {
     const studentId = event.target.value;
     const selectedStudent = this.state.students.filter(student => student._id === studentId)[0];
     const { lastPointTracker } = selectedStudent.studentData;
-    console.log(selectedStudent, 'SELECTED STUDENT');
 
     this.setState((prevState) => {
       const newState = { ...prevState };
@@ -403,7 +401,8 @@ class PointTrackerForm extends React.Component {
           wrap="hard"
         />
 
-<<<<<<< HEAD
+      <p>Recommended playing time: { this.calcPlayingTime() }</p>
+
         <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
         <textarea
           name="studentActionItems"
@@ -423,9 +422,8 @@ class PointTrackerForm extends React.Component {
           cols="80"
           wrap="hard"
           />
-=======
+
       <p>Recommended playing time: { this.calcPlayingTime() }</p>
->>>>>>> 2ebc348e87f887dbc8ac7637d04b7303ec6d733c
 
         <label htmlFor="additionalComments">Additional Comments</label>
         <textarea

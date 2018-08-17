@@ -35,20 +35,22 @@ blockquote {
 
 // form
 label {
-  font-size: 1.25em;
-  font-weight: bolder;
+  display: flex;
+  font-size: 1em;
+  font-weight: bold;
   margin-bottom: $pad;
 }
 
 textarea, input, select {
   background: $color-input-field;
-  // border: none;
-  padding: 15px;
-  border-radius: 3px;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  margin-right: 5px;
   margin-bottom: 20px;
   transition: 350ms all;
 
-  &:focus {
+  &:hover {
     background: $color-input-focus;
     color: $color-black;
   }

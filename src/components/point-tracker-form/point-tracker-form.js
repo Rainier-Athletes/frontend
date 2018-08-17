@@ -131,7 +131,6 @@ class PointTrackerForm extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { pointTracker } = this.state;
-    console.log(pointTracker, 'POINT TRACKER');
     delete pointTracker._id;
 
     this.props.createPointTracker(pointTracker);
@@ -201,7 +200,6 @@ class PointTrackerForm extends React.Component {
     const studentId = event.target.value;
     const selectedStudent = this.state.students.filter(student => student._id === studentId)[0];
     const { lastPointTracker } = selectedStudent.studentData;
-    console.log(selectedStudent, 'SELECTED STUDENT');
 
     this.setState((prevState) => {
       const newState = { ...prevState };
@@ -405,17 +403,19 @@ class PointTrackerForm extends React.Component {
           name="extraPlayingTime"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
         />
+
+      <p>Recommended playing time: { this.calcPlayingTime() }</p>
 
         <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
         <textarea
           name="studentActionItems"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.studentActionItems }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
         />
@@ -425,17 +425,19 @@ class PointTrackerForm extends React.Component {
           name="sportsUpdate"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.sportsUpdate }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
           />
+
+      <p>Recommended playing time: { this.calcPlayingTime() }</p>
 
         <label htmlFor="additionalComments">Additional Comments</label>
         <textarea
           name="additionalComments"
           onChange={ this.handleSynopsisCommentChange }
           value={ this.state.pointTracker.synopsisComments.additionalComments }
-          rows="8"
+          rows="6"
           cols="80"
           wrap="hard"
         />

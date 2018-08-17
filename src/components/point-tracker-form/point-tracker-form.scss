@@ -3,6 +3,7 @@
 .point-tracker-form {
 }
 .select-student, .select-date {
+
   display: inline-block;
   float: left;
   padding: 5px;
@@ -51,12 +52,10 @@
   vertical-align: middle; 
 }
 
-
 .points-tracker {
       padding-top: 20px;
       margin: 80px 20px 0 20px;
 }
- 
 
     h2 {
       color: $color-brand-blue;
@@ -99,7 +98,6 @@ ul {
       display: inline-block;
       padding: 10px;
     }
-    
   }
 
   h2 {

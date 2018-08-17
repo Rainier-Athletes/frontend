@@ -89,7 +89,8 @@ const defaultState = {
       halfStamps: 1,
       tutorials: 2,
     },
-    grade: 70,
+    grade: null,
+
   }],
   surveyQuestions: {
     mentorAttendedCheckin: true,
@@ -293,7 +294,7 @@ class PointTrackerForm extends React.Component {
     if (totalClassScoreSum >= 29) return 'All but start';
     if (totalClassScoreSum >= 25) return 'Three quarters';
     if (totalClassScoreSum >= 21) return 'Two quarters';
-    if (totalClassScoreSum >= 29) return 'One quarter';
+    if (totalClassScoreSum >= 16) return 'One quarter';
     return 'None of game';
   }
 
@@ -330,15 +331,14 @@ class PointTrackerForm extends React.Component {
     const surveyQuestionsJSX = (
       <fieldset>
         <div className="survey-questions">
-             <div className="survey-question-container">
-
+            <div className="survey-question-container">
              <input
                 type="checkbox"
                 name="attendedCheckin"
                 onChange= { this.handleSurveyQuestionChange }
                 checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }/>
               <label htmlFor="attendedCheckin">Attended Check-In</label>
-                </div>
+             </div>
         
          <div className="survey-question-container">
 
@@ -432,6 +432,7 @@ class PointTrackerForm extends React.Component {
           <label htmlFor="synopsisCompletedByRaStaff">Synopsis Completed By RA Staff</label>
             </div>
         </div>
+===
     </fieldset>
     );
     
@@ -449,8 +450,10 @@ class PointTrackerForm extends React.Component {
         wrap="hard"
       /> */}
 
-       <p>Recommended playing time: { this.calcPlayingTime() }</p>
+      <p>Recommended playing time: { this.calcPlayingTime() }</p>
+
       <label htmlFor="mentorGrantedPlayingTime">Playing Time Earned</label>
+      
       <select
         name="mentorGrantedPlayingTime"
         onChange={ this.handleSynopsisCommentChange }
@@ -507,7 +510,6 @@ class PointTrackerForm extends React.Component {
       />
     </div>
     );
-
 
     return (
       <div className="points-tracker">

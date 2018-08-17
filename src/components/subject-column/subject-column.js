@@ -1,17 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// import { FaTrash } from 'react-icons/fa';
 
 import './subject-column.scss';
 
 export default function SubjectColumn(props) {
-  const { subject, handleSubjectChange, getTeacherName, deleteSubject } = props;
+
+  const { 
+    subject, handleSubjectChange, getTeacherName, deleteSubject, 
+  } = props;
   const { subjectName, grade, teacher } = subject;
   const { excusedDays, stamps, halfStamps } = subject.scoring;
 
   const handleDelete = () => {
     deleteSubject(subjectName, teacher);
   };
-  
+
   return (
     <div className="column data">
       <label>{ getTeacherName(teacher) }</label>
@@ -44,6 +48,7 @@ export default function SubjectColumn(props) {
         type="button"
         onClick={ handleDelete }
       >X</button> 
+
     </div>
   );
 }

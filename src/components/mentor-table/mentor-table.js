@@ -1,22 +1,17 @@
-/*eslint-disable*/
 import React from 'react';
 import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
-// import 'bootstrap/dist/css/bootstrap.css';
 import update from 'immutability-helper';
-import { render } from 'react-dom';
-import { makeData, Tips } from '../../lib/utils';
+import PropTypes from 'prop-types';
+import * as routes from '../../lib/routes';
 import './mentor-table.scss';
 
 import * as profileActions from '../../actions/profile';
 
 const faker = require('faker');
-const { Editors, Formatters, Toolbar, Filters: { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter }, Data: { Selectors } } = require('react-data-grid-addons');
-const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors;
+const { Editors, Formatters, Toolbar, Filters: { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter }, Data: { Selectors } } = require('react-data-grid-addons'); // eslint-disable-line
+const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors; // eslint-disable-line
 const { ImageFormatter } = Formatters;
-
-const mapStateToProps = state => ({
-});
 
 const mapDispatchToProps = dispatch => ({
   fetchProfile: profile => dispatch(profileActions.fetchProfileReq(profile)),
@@ -111,62 +106,57 @@ class MentorTable extends React.Component {
     };
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.createRows();
   }
 
   createRows = () => {
     this.props.fetchProfile()
       .then((res) => {
-        let rows = [];
-        for (let i = 0; i < res.payload.length ; i++) {
+        const rows = [];
+        for (let i = 0; i < res.payload.length; i++) {
           rows[i] = this.populateData(res.payload[i], i);
         }
         return rows;
       })
       .then((rows) => {
-        this.setState({ rows: rows });
+        this.setState({ rows });
         this.setState({ originalRows: rows });
-      })
+      });
   };
 
   populateMentorChildren = (profile) => {
-    let childArr = [];
-    for (const i in profile.students) {
+    const childArr = [];
+    for (const i in profile.students) { // eslint-disable-line
       childArr.push(profile.students[i]);
     }
     return childArr;
   };
 
   populateStudentChildren = (profile) => {
-    let childArr = [];
+    const childArr = [];
     if (profile.studentData.mentor) {
       childArr.push(profile.studentData.mentor);
     }
-    for (const i in profile.studentData.coaches) {
-      console.log('coaches', profile.studentData.coaches[i]);
+    for (const i in profile.studentData.coaches) { // eslint-disable-line
       childArr.push(profile.studentData.coaches[i]);
     }
-    for (const i in profile.studentData.family) {
-      console.log('family', profile.studentData.family[i]);
+    for (const i in profile.studentData.family) { // eslint-disable-line
       childArr.push(profile.studentData.family[i]);
     }
-    for (const i in profile.studentData.teachers) {
-      console.log('teachers', profile.studentData.teachers[i]);
+    for (const i in profile.studentData.teachers) { // eslint-disable-line
       childArr.push(profile.studentData.teachers[i]);
     }
     return childArr;
   };
 
-  populateData = (profile, i) => {
+  populateData = (profile) => {
     let childArr;
     if (profile.role === 'mentor' && profile.students.length > 0) {
       childArr = this.populateMentorChildren(profile);
-      console.log(childArr);
     }
     if (profile.role === 'student') {
       childArr = this.populateStudentChildren(profile);
-      console.log(childArr);
     }
 
     return {
@@ -183,67 +173,67 @@ class MentorTable extends React.Component {
   };
 
   getColumns = () => {
-    let clonedColumns = this._columns.slice();
+    const clonedColumns = this._columns.slice();
     clonedColumns[2].events = {
       onClick: (ev, args) => {
-        const idx = args.idx;
-        const rowIdx = args.rowIdx;
+        const { idx, rowIdx } = args;
         this.grid.openCellEditor(rowIdx, idx);
-      }
+      },
     };
     return clonedColumns;
   };
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    let rows = this.state.rows.slice();
+    const rows = this.state.rows.slice();
     for (let i = fromRow; i <= toRow; i++) {
-      let rowToUpdate = rows[i];
-      let updatedRow = update(rowToUpdate, {$merge: updated});
+      const rowToUpdate = rows[i];
+      const updatedRow = update(rowToUpdate, { $merge: updated });
       rows[i] = updatedRow;
       console.log('UPDATED', rows[i]);
 
       if (!rows[i]._id) {
         const index = this.state.counter;
         newRows[index] = rows[i];
-        this.setState({ newRows: newRows });
+        this.setState({ newRows });
       } else {
         updatedRows[rows[i].id] = rows[i];
-        this.setState({ updatedRows: updatedRows });
+        this.setState({ updatedRows });
       }
-
     }
     this.setState({ rows });
-    this.setState({ originalRows: rows })
-  };
+    this.setState({ originalRows: rows });
+  }
 
   handleAddRow = ({ newRowIndex }) => {
     const newRow = {
       value: newRowIndex,
       userStory: '',
       developer: '',
-      epic: ''
+      epic: '',
     };
 
     let rows = this.state.rows.slice();
-    rows = update(rows, {$unshift: [newRow]});
+    rows = update(rows, { $unshift: [newRow] });
     this.setState({ rows });
-    this.state.counter += 1;
+    const num = this.state.counter + 1;
+    this.setState({ counter: num });
   };
 
   onRowsSelected = (rows) => {
-    this.setState({selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))});
+    this.setState({ selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx)) });
   };
 
   onRowsDeselected = (rows) => {
-    let rowIndexes = rows.map(r => r.rowIdx);
-    this.setState({selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1 )});
+    const rowIndexes = rows.map(r => r.rowIdx);
+    this.setState({ selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1) });
   };
 
   handleGridSort = (sortColumn, sortDirection) => {
-    const comparer = (a, b) => {
+    const comparer = (a, b) => { // eslint-disable-line
       if (sortDirection === 'ASC') {
         return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
-      } else if (sortDirection === 'DESC') {
+      }
+      if (sortDirection === 'DESC') {
         return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
       }
     };
@@ -269,7 +259,6 @@ class MentorTable extends React.Component {
   };
 
   handleCreate = (profile) => {
-    console.log(profile);
     this.props.createProfile(profile)
       .then(() => {
         this.props.history.push(routes.PROFILE_ROUTE);
@@ -284,14 +273,14 @@ class MentorTable extends React.Component {
   handleDelete = (event) => {
     event.preventDefault();
     const selected = this.state.selectedIndexes;
-    for (const index in selected) {
+    for (const index in selected) { // eslint-disable-line
       const i = selected[index];
       this.props.deleteProfile(this.state.rows[i]);
     }
   }
 
   getSubRowDetails = (rowItem) => {
-    let isExpanded = this.state.expanded[rowItem.name] ? this.state.expanded[rowItem.name] : false;
+    const isExpanded = this.state.expanded[rowItem.name] ? this.state.expanded[rowItem.name] : false;
     return {
       group: rowItem.children && rowItem.children.length > 0,
       expanded: isExpanded,
@@ -299,17 +288,17 @@ class MentorTable extends React.Component {
       field: 'role',
       treeDepth: rowItem.treeDepth || 0,
       siblingIndex: rowItem.siblingIndex,
-      numberSiblings: rowItem.numberSiblings
+      numberSiblings: rowItem.numberSiblings,
     };
   };
 
   onCellExpand = (args) => {
-    let rows = this.state.rows.slice(0);
-    let rowKey = args.rowData.name;
-    let rowIndex = rows.indexOf(args.rowData);
-    let subRows = args.expandArgs.children;
+    const rows = this.state.rows.slice(0);
+    const rowKey = args.rowData.name;
+    const rowIndex = rows.indexOf(args.rowData);
+    const subRows = args.expandArgs.children;
 
-    let expanded = Object.assign({}, this.state.expanded);
+    const expanded = Object.assign({}, this.state.expanded);
     if (expanded && !expanded[rowKey]) {
       expanded[rowKey] = true;
       this.updateSubRowDetails(subRows, args.rowData.treeDepth);
@@ -319,11 +308,11 @@ class MentorTable extends React.Component {
       rows.splice(rowIndex + 1, subRows.length);
     }
 
-    this.setState({ expanded: expanded, rows: rows });
+    this.setState({ expanded, rows });
   };
 
   updateSubRowDetails = (subRows, parentTreeDepth) => {
-    let treeDepth = parentTreeDepth || 0;
+    const treeDepth = parentTreeDepth || 0;
     subRows.forEach((sr, i) => {
       sr.treeDepth = treeDepth + 1;
       sr.siblingIndex = i;
@@ -332,19 +321,17 @@ class MentorTable extends React.Component {
   };
 
   handleUpdateTable = () => {
-    const { newRows, updatedRows } = this.state;
+    const { newRows, updatedRows } = this.state; // eslint-disable-line
     Object.keys(newRows).forEach((key) => {
-      console.log(newRows[key]);
       this.handleCreate(newRows[key]);
     });
     Object.keys(updatedRows).forEach((key) => {
-      console.log(updatedRows[key]);
       this.handleUpdate(updatedRows[key]);
     });
   };
 
   handleFilterChange = (filter) => {
-    let newFilters = Object.assign({}, this.state.filters);
+    const newFilters = Object.assign({}, this.state.filters);
     if (filter.filterTerm) {
       newFilters[filter.column.key] = filter;
     } else {
@@ -354,9 +341,8 @@ class MentorTable extends React.Component {
   };
 
   getValidFilterValues = (columnId) => {
-    let values = this.state.rows.map(r => r[columnId]);
+    const values = this.state.rows.map(r => r[columnId]);
     return values.filter((item, i, a) => { return i === a.indexOf(item); });
-    c
   };
 
   handleOnClearFilters = () => {
@@ -372,10 +358,11 @@ class MentorTable extends React.Component {
   };
 
   rowGetter = (rowIdx) => {
-    let rows = this.getRows();
+    const rows = this.getRows();
     return rows[rowIdx];
   };
 
+  /*eslint-disable*/
   render() {
     return (
       <ReactDataGrid
@@ -400,8 +387,8 @@ class MentorTable extends React.Component {
           onRowsSelected: this.onRowsSelected,
           onRowsDeselected: this.onRowsDeselected,
           selectBy: {
-            indexes: this.state.selectedIndexes
-          }
+            indexes: this.state.selectedIndexes,
+          },
         }}
         getSubRowDetails={this.getSubRowDetails}
         onCellExpand={this.onCellExpand}
@@ -416,4 +403,12 @@ class MentorTable extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MentorTable);
+MentorTable.propTypes = {
+  fetchProfile: PropTypes.func,
+  updateProfile: PropTypes.func,
+  createProfile: PropTypes.func,
+  deleteProfile: PropTypes.func,
+  history: PropTypes.array,
+}
+
+export default connect(null, mapDispatchToProps)(MentorTable);

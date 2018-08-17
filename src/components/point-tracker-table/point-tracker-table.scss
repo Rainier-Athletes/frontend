@@ -32,7 +32,10 @@
 }
 
 .row-labels {
-  font-size: 9.7px;
+  position: relative;
+  bottom: 2.75em;
+  font-size: 14px;
+  line-height: 1;
   padding-left: .1em;
   text-align: center;
   // margin: 80px 0px;
@@ -40,6 +43,9 @@
   
 }
 
+.row-labels label {
+  margin-bottom: 0px;
+}
 
 .data-entry {
   display: block;
@@ -53,7 +59,7 @@
 
 .choose-teacher {
   width: 180px;
-  height: 3em;
+  height: 2.5em;
 }
 
 .add-subject-btn {
@@ -76,3 +82,4 @@
     color: $color-black;
   }
 }
+

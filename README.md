@@ -35,8 +35,10 @@ Once you have the required prerequisites installed:
 - Fork the frontend and backend repos at https://github.com/Rainier-Athletes. You will need both if you are making updates related to the state and database.
 - Clone to your local machine (git clone)
 - Install Node dependencies:
-``` npm init y ```
-``` npm i ```
+
+    ``` npm init y ```
+    ``` npm i ```
+
 - Work on a branch that is not **master** or **staging**; these are protected branches and will require administrative approval for any changes. 
 - Submit a pull request back to the source repo. Include a complete description of your contributions. An administrator will review your code and either approve or request changes.
 - If you have any questions, feel free to reach out to any one of the original team members.
@@ -50,11 +52,11 @@ Once you have the required prerequisites installed:
 - UUID
 - Validator
 - Font-Awesome
-- Jest
-- Cypress
+- Jest (linting/testing)
+- Cypress (testing)
 
 
-##Don't delete me
+## DON'T DELETE ME......
 "heroku-postbuild": "webpack --progress --config webpack.prod.js"
 
 ## Mock Point Tracker Data
@@ -187,4 +189,4 @@ This was the final project of the Code Fellows JS-401d25 cohort, August 2018. Th
 - Tracy Williams
 
 ### THANKS
-Without the outreach of Rainier Athletes, this project would not have been in our hands. Thanks to Code Fellows (role?) Brian Nations and Instructor Judy Vue for believing in us and allowing us to partner with the client for a real-world final project. Thanks also to Teaching Assistants Noah Gribbin and Christina Thomas.
+Without the outreach of Rainier Athletes, this project would not have been in our hands. Thanks to Code Fellows Principal Instructor Brian Nations and Lead Instructor Judy Vue for believing in us and allowing us to partner with the client for a real-world final project. Thanks also to Teaching Assistants Noah Gribbin, Christina Thomas, and Seth Donohue.

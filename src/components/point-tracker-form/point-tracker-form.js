@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { convertDateToValue } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import * as pointTrackerActions from '../../actions/point-tracker';
+import * as profileActions from '../../actions/profile';
 import './point-tracker-form.scss';
 
 const emptyPointTracker = {
@@ -46,8 +47,8 @@ const emptyPointTracker = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  fetchStudents: studentIds => dispatch(pointTrackerActions.fetchStudents(studentIds)),
-  fetchTeachers: studentIds => dispatch(pointTrackerActions.fetchTeachers(studentIds)),
+  fetchStudents: studentIds => dispatch(profileActions.fetchStudents(studentIds)),
+  fetchTeachers: studentIds => dispatch(profileActions.fetchTeachers(studentIds)),
   createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
   createSynopsisReport: pointTracker => dispatch(pointTrackerActions.createSynopsisReport(pointTracker)),
 });
@@ -72,6 +73,12 @@ class PointTrackerForm extends React.Component {
       parseInt(day, 10),
     );
 
+    this.props.fetchStudents()
+      .then(console.log);
+
+    this.props.fetchTeachers()
+      .then(console.log);
+    
     this.setState((prevState) => {
       const newState = { ...prevState };
       newState.pointTracker.date = date.getTime();
@@ -181,19 +188,19 @@ class PointTrackerForm extends React.Component {
     });
   }
 
-  componentDidMount() {
-    this.props.fetchStudents()
-      .then((students) => {
-        const updatedStudents = students || [];
-        this.setState({ students: updatedStudents });
-      });
+  // componentDidMount() {
+  //   this.props.fetchStudents()
+  //     .then((students) => {
+  //       const updatedStudents = students || [];
+  //       this.setState({ students: updatedStudents });
+  //     });
 
-    this.props.fetchTeachers()
-      .then((teachers) => {
-        const updatedTeachers = teachers || [];
-        this.setState({ teachers: updatedTeachers });
-      });
-  }
+  //   this.props.fetchTeachers()
+  //     .then((teachers) => {
+  //       const updatedTeachers = teachers || [];
+  //       this.setState({ teachers: updatedTeachers });
+  //     });
+  // }
 
   handleStudentSelect = (event) => {
     event.preventDefault();

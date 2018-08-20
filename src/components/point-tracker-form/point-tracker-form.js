@@ -46,18 +46,13 @@ const emptyPointTracker = {
   },
 };
 
-const mapDispatchToProps = dispatch => ({
-  createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
-  createSynopsisReport: pointTracker => dispatch(pointTrackerActions.createSynopsisReport(pointTracker)),
-});
-
 class PointTrackerForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      students: [],
-      teachers: [],
+      // students: [],
+      // teachers: [],
       pointTracker: emptyPointTracker,
     };
   }
@@ -139,7 +134,7 @@ class PointTrackerForm extends React.Component {
   }
 
   getTeacherName = (teacherId) => {
-    return this.state.teachers
+    return this.props.teachers
       .filter(teacher => teacher._id === teacherId)
       .map(teacher => `${teacher.firstName} ${teacher.lastName}`)[0] || '';
   }
@@ -197,7 +192,8 @@ class PointTrackerForm extends React.Component {
   handleStudentSelect = (event) => {
     event.preventDefault();
     const studentId = event.target.value;
-    const selectedStudent = this.state.students.filter(student => student._id === studentId)[0];
+    // const selectedStudent = this.state.students.filter(student => student._id === studentId)[0];
+    const selectedStudent = this.props.students.filter(student => student._id === studentId)[0];
     const { lastPointTracker } = selectedStudent.studentData;
 
     this.setState((prevState) => {
@@ -241,13 +237,16 @@ class PointTrackerForm extends React.Component {
   }
 
   render() {
+    console.log(this.props, 'PROPS');
+    
+
     const selectOptionsJSX = (
       <section required>
         <div className="select-student">
         <label htmlFor="">Select Student</label>
           <select onChange={ this.handleStudentSelect } >
           <option disabled selected value="">Select Student</option>
-          { this.state.students.map(student => (
+          { this.props.students.map(student => (
               <option 
                 placeholder="Select" 
                 key={ student._id } 
@@ -455,7 +454,7 @@ class PointTrackerForm extends React.Component {
                 handleSubjectChange={ this.handleSubjectChange }
                 subjects={ this.state.pointTracker.subjects }
                 getTeacherName={ this.getTeacherName }
-                teachers={ this.state.teachers }
+                teachers={ this.props.teachers }
                 deleteSubject= { this.deleteSubject }
                 createSubject={ this.createSubject }
             />
@@ -469,7 +468,19 @@ class PointTrackerForm extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  students: state.students,
+  teachers: state.teachers,
+});
+
+const mapDispatchToProps = dispatch => ({
+  createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
+  createSynopsisReport: pointTracker => dispatch(pointTrackerActions.createSynopsisReport(pointTracker)),
+});
+
 PointTrackerForm.propTypes = {
+  students: PropTypes.array,
+  teachers: PropTypes.array,
   handleChange: PropTypes.func,
   createPointTracker: PropTypes.func,
   createSynopsisReport: PropTypes.func,
@@ -477,4 +488,4 @@ PointTrackerForm.propTypes = {
   fetchTeachers: PropTypes.func,
 };
 
-export default connect(null, mapDispatchToProps)(PointTrackerForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PointTrackerForm);

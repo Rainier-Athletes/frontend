@@ -47,8 +47,6 @@ const emptyPointTracker = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  fetchStudents: studentIds => dispatch(profileActions.fetchStudents(studentIds)),
-  fetchTeachers: studentIds => dispatch(profileActions.fetchTeachers(studentIds)),
   createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
   createSynopsisReport: pointTracker => dispatch(pointTrackerActions.createSynopsisReport(pointTracker)),
 });
@@ -72,12 +70,6 @@ class PointTrackerForm extends React.Component {
       parseInt(month, 10) - 1, 
       parseInt(day, 10),
     );
-
-    this.props.fetchStudents()
-      .then(console.log);
-
-    this.props.fetchTeachers()
-      .then(console.log);
     
     this.setState((prevState) => {
       const newState = { ...prevState };

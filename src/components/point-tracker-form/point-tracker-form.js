@@ -239,8 +239,8 @@ class PointTrackerForm extends React.Component {
       <section required>
         <div className="select-student">
         <label htmlFor="">Select Student</label>
-          <select onChange={ this.handleStudentSelect } >
-          <option disabled selected value="">Select Student</option>
+          <select onChange={ this.handleStudentSelect } defaultValue="">
+          <option disabled value="">Select Student</option>
           { this.props.students.map(student => (
               <option 
                 placeholder="Select" 

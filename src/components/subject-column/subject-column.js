@@ -7,7 +7,7 @@ export default function SubjectColumn(props) {
   const handleDelete = () => {
     props.deleteSubject(props.subject.subjectName, props.subject.teacher);
   };
-
+  
   return (
     <div className="column data">
       <label>{ props.getTeacherName(props.subject.teacher) }</label>

@@ -15,12 +15,12 @@ const emptyPointTracker = {
     subjectName: 'Tutorial',
     teacher: '',
     scoring: {
-      excusedDays: 0,
-      stamps: 0,
-      halfStamps: 0,
-      tutorials: 0,
+      excusedDays: '',
+      stamps: '',
+      halfStamps: '',
+      tutorials: '',
     },
-    grade: 0,
+    grade: '',
   }],
   surveyQuestions: {
     mentorAttendedCheckin: false,
@@ -94,16 +94,15 @@ class PointTrackerForm extends React.Component {
     this.setState((prevState) => {
       const newState = { ...prevState };
       const [subjectName, categoryName] = name.split('-');
-      
+
       const newSubjects = newState.subjects
         .map((subject) => {
           if (subject.subjectName === subjectName) {
             const newSubject = { ...subject };
-            newSubject.scoring[categoryName] = value;
             if (categoryName === 'grade') {
-              newSubject.grade = value;
+              newSubject.grade = Math.min(Math.max(value, 0), 100);
             } else {
-              newSubject.scoring[categoryName] = value;
+              newSubject.scoring[categoryName] = Math.min(Math.max(value, 0), 8);
             }
            
             return newSubject;

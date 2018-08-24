@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import SynopsisReport from '../components/synopsis-report/synopsis-report';
 import * as routes from '../lib/routes';
+import { Script } from 'vm';
 
 export const setPointTracker = pointTracker => ({
   type: 'POINT_TRACKER_SET',
@@ -25,8 +26,51 @@ export const createPointTracker = pointTracker => (store) => {
   
 const pointTrackerToHTML = (pointTracker) => {
   const synopsisReport = <SynopsisReport pointTracker={pointTracker}/>;
-  console.log(ReactDOMServer.renderToString(synopsisReport), 'RENDERED SYNOPSIS REPORT');
-  return (ReactDOMServer.renderToString(synopsisReport));
+
+  const html = (
+    `<style>
+
+      img {  
+        width: 200px;
+      }
+
+      .image {  
+        padding-left:10px;
+        padding-top: 10px;
+        padding-bottom:10px;
+        height: 20px;
+        background: #1f1f1f;
+        width: 500px;
+        border-radius: 30px;
+      }
+
+      body {
+        padding: 20px;
+        margin: 20px;
+        border-radius: 30px;
+        border: 2px solid #e8e8e8;
+      }
+
+      h1, h2, h3, p {
+        font-style:bold;
+        font-family: helvetica;
+        color:#089444;
+      }
+
+      p {
+        font-family: Arial;
+        color:#1186B4;
+      }
+
+    </style>
+    <div>
+      ${ReactDOMServer.renderToString(synopsisReport)}
+    </div>`
+  );
+
+  console.log(html, 'HTML');
+
+  return html;
 };
 
 export const createSynopsisReport = pointTracker => (store) => {

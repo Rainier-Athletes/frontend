@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { convertDateToValue } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
+import SynopsisReport from '../synopsis-report/synopsis-report';
 import * as pointTrackerActions from '../../actions/point-tracker';
 import './point-tracker-form.scss';
 
@@ -137,7 +138,8 @@ class PointTrackerForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { pointTracker } = this.state;
+    console.log('FIRING');
+    const pointTracker = this.state;
     delete pointTracker._id;
 
     this.props.createPointTracker(pointTracker);
@@ -236,10 +238,13 @@ class PointTrackerForm extends React.Component {
 
   render() {
     const selectOptionsJSX = (
-      <section required>
+      <section>
         <div className="select-student">
         <label htmlFor="">Select Student</label>
-          <select onChange={ this.handleStudentSelect } defaultValue="">
+          <select 
+            required 
+            onChange={ this.handleStudentSelect } 
+            defaultValue="">
           <option disabled value="">Select Student</option>
           { this.props.students.map(student => (
               <option 
@@ -340,9 +345,12 @@ class PointTrackerForm extends React.Component {
                 deleteSubject= { this.deleteSubject }
                 createSubject={ this.createSubject }
             />
+            <SynopsisReport pointTracker={ this.state }/>
             { synopsisCommentsJSX }
           <button className="submit-report" type="submit">Submit Point Tracker</button>
         </form>
+
+
       </div>
     );
   }

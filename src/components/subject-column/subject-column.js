@@ -5,7 +5,8 @@ import './subject-column.scss';
 
 export default function SubjectColumn(props) {
   const handleDelete = () => {
-    props.deleteSubject(props.subject.subjectName, props.subject.teacher);
+    const { subjectName, teacher } = props.subject;
+    props.deleteSubject(subjectName, teacher);
   };
   
   return (
@@ -15,13 +16,13 @@ export default function SubjectColumn(props) {
       {
         Object.keys(props.subject.scoring)
           .filter(keyName => keyName !== 'tutorials')
-          .map(markType => (
+          .map((markType, i) => (
             <input
-              key={ markType }
+              key={ i }
               type="number"
               onChange={ props.handleSubjectChange }
               name={ `${props.subject.subjectName}-${markType}` }
-              value={ props.subject.scoring[markType] }
+              value={ props.subject.scoring[markType] === null ? '' : props.subject.scoring[markType]}
             />
           ))
       }

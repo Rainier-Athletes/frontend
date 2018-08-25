@@ -6,7 +6,7 @@ export default function SynopsisReport(props) {
   const { pointTracker } = props;
   return (
     <div className="synopsis-report">
-      <h1>Rainier Athletes { pointTracker.studentName } Weekly Synopsis. { pointTracker.date.toString() }</h1>
+      <h1>Rainier Athletes { pointTracker.studentName } Weekly Synopsis. { pointTracker.date.toString().substring(0, 10) }</h1>
 
       <h2>Point Sheet Summary</h2>
       <p>

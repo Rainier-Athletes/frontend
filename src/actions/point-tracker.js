@@ -9,6 +9,11 @@ export const setPointTracker = pointTracker => ({
   payload: pointTracker,
 });
 
+export const setPointTrackers = pointTrackers => ({
+  type: 'POINT_TRACKERS_SET',
+  payload: pointTrackers,
+});
+
 export const createPointTracker = pointTracker => (store) => {
   const { token } = store.getState();
 
@@ -20,6 +25,18 @@ export const createPointTracker = pointTracker => (store) => {
     .send(pointTracker)
     .then((res) => {
       return store.dispatch(setPointTracker(res.body));
+    });
+};
+
+export const fetchPointTrackers = studentIds => (store) => { // eslint-disable-line
+  const { token } = store.getState();
+
+  return superagent.get(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
+    .set('Authorization', `Bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .then((res) => {
+      const pointTrackers = res.body;
+      return store.dispatch(setPointTrackers(pointTrackers));
     });
 };
   

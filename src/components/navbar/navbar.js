@@ -12,6 +12,7 @@ import rainierBtn from '../../assets/rainier-logo-horizontal.png';
 import './navbar.scss';
 
 import * as profileActions from '../../actions/profile';
+import * as pointTrackerActions from '../../actions/point-tracker';
 
 const mapStateToProps = state => ({
   loggedIn: !!state.token,
@@ -23,6 +24,7 @@ const mapDispatchToProps = dispatch => ({
   fetchMyProfile: profile => dispatch(profileActions.fetchMyProfileReq(profile)),
   fetchStudents: studentIds => dispatch(profileActions.fetchStudents(studentIds)),
   fetchTeachers: studentIds => dispatch(profileActions.fetchTeachers(studentIds)),
+  fetchPointTrackers: studentIds => dispatch(pointTrackerActions.fetchPointTrackers(studentIds)),
 });
 
 class Navbar extends React.Component {
@@ -50,6 +52,7 @@ class Navbar extends React.Component {
       this.props.fetchMyProfile(),
       this.props.fetchStudents(),
       this.props.fetchTeachers(),
+      this.props.fetchPointTrackers(),
     ])
       .then(console.log)
       .catch(console.error);
@@ -122,6 +125,7 @@ Navbar.propTypes = {
   fetchProfile: PropTypes.func,
   fetchStudents: PropTypes.func,
   fetchTeachers: PropTypes.func,
+  fetchPointTrackers: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

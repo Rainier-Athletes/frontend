@@ -138,7 +138,6 @@ class PointTrackerForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log('FIRING');
     const pointTracker = this.state;
     delete pointTracker._id;
 

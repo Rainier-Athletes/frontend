@@ -14,12 +14,10 @@ const emptyPointTracker = {
   subjects: [{
     subjectName: 'Tutorial',
     teacher: '',
-    scoring: {
-      excusedDays: 0,
-      stamps: 0,
-      halfStamps: 0,
-      tutorials: 0,
-    },
+    excusedDays: 0,
+    stamps: 0,
+    halfStamps: 0,
+    tutorials: 0,
     grade: 0,
   }],
   surveyQuestions: {
@@ -91,11 +89,11 @@ class PointTrackerForm extends React.Component {
         .map((subject) => {
           if (subject.subjectName === subjectName) {
             const newSubject = { ...subject };
-            newSubject.scoring[categoryName] = value;
+            newSubject[categoryName] = value;
             if (categoryName === 'grade') {
               newSubject.grade = value;
             } else {
-              newSubject.scoring[categoryName] = value;
+              newSubject[categoryName] = value;
             }
            
             return newSubject;
@@ -214,7 +212,7 @@ class PointTrackerForm extends React.Component {
     const { subjects } = this.state.pointTracker;
     const totalClassScores = subjects.map((subject) => {
       const { grade, subjectName } = subject;
-      const { excusedDays, stamps, halfStamps } = subject.scoring;
+      const { excusedDays, stamps, halfStamps } = subject;
       const pointsEarned = 2 * stamps + halfStamps;
       const pointsPossible = subjectName.toLowerCase === 'tutorial' ? 10 - excusedDays * 2 : 40 - excusedDays * 8;
       const pointPercentage = pointsEarned / pointsPossible;

@@ -11,7 +11,7 @@ export default function SubjectColumn(props) {
     deleteSubject,
   } = props;
   const { subjectName, grade, teacher } = subject;
-  const { excusedDays, stamps, halfStamps } = subject.scoring;
+  const { excusedDays, stamps, halfStamps } = subject;
 
   const handleDelete = () => {
     deleteSubject(subjectName, teacher);

@@ -1,33 +1,28 @@
 import React from 'react';
-import PropTypes from 'prop-types';//eslint-disable-line
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import * as routes from '../../lib/routes';//eslint-disable-line
 
 import './connection-modal.scss';
 
-// const mapStateToProps = state => ({
-//   profile: state.profile,
-// });
-//
-// const mapDispatchToProps = dispatch => ({
-//
-// });
+const mapStateToProps = state => ({
+  profile: state.profile,
+});
 
-export default class ConnectionModal extends React.Component {
+const mapDispatchToProps = dispatch => ({
+});
+
+class ConnectionModal extends React.Component {
   // ComponentWillMount = () => {
   //   this.populateStudent();
   // }
-
-  // populateStudent = () => {
-  //   const { profile } = this.props.state;
-  //   const studentProfiles = profile.filter(profile => )
-  // };
 
   render() {
     // Render nothing if the "show" prop is false
     if (!this.props.show) {
       return null;
     }
-
+    // console.log('sfda', this.props.profile);
     return (
       <div className="modalContainer">
         <form className="modal">
@@ -36,6 +31,13 @@ export default class ConnectionModal extends React.Component {
           <div className="field-wrap dropdown">
             <label htmlFor="student">Student Name:</label>
               <select type="student" required>
+                {
+                  this.props.profile.filter(p => p.role === 'student').map((p) => {
+                    return <option key={p._id} value={p._id}>
+                        {p.firstName} {p.lastName}
+                      </option>;
+                  })
+                }
               </select>
           </div>
           <div className="field-wrap dropdown">
@@ -49,6 +51,13 @@ export default class ConnectionModal extends React.Component {
           <div className="field-wrap dropdown">
             <label htmlFor="connection-name">Name Of Connection:</label>
               <select type="connection-name" required>
+                {
+                  this.props.profile.filter(p => p.role !== 'student').map((p) => {
+                    return <option key={p._id} value={p._id}>
+                        {p.firstName} {p.lastName} - {p.role}
+                      </option>;
+                  })
+                }
               </select>
           </div>
         <div className="addButton-container">
@@ -64,4 +73,7 @@ ConnectionModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   show: PropTypes.bool,
   children: PropTypes.node,
+  profile: PropTypes.array,
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectionModal);

@@ -8,6 +8,7 @@ import './mentor-table.scss';
 import ConnectionModal from '../connection-modal/connection-modal';
 
 import * as profileActions from '../../actions/profile';
+import * as relationshipActions from '../../actions/relationship';
 
 const faker = require('faker');
 const { Editors, Formatters, Toolbar, Filters: { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter }, Data: { Selectors } } = require('react-data-grid-addons'); // eslint-disable-line
@@ -19,6 +20,7 @@ const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(profileActions.updateProfileReq(profile)),
   createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
   deleteProfile: profile => dispatch(profileActions.deleteProfileReq(profile)),
+  deleteRelationship: profiles => dispatch(relationshipActions.deleteRelationshipReq(profiles)),
 });
 
 const newRows = {};
@@ -369,6 +371,17 @@ class MentorTable extends React.Component {
     });
   }
 
+  handleDetach = () => {
+    const selected = this.state.selectedIndexes;
+    const query = {};
+    for (const index in selected) { // eslint-disable-line
+      const i = selected[index];
+      const r = this.state.rows[i];
+      query[r.role] = r._id;
+    }
+    this.props.deleteRelationship(query);
+  }
+
   /*eslint-disable*/
   render() {
     return (
@@ -390,6 +403,7 @@ class MentorTable extends React.Component {
               <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
               <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
+              <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
             </Toolbar>
           }
           enableRowSelect={true}
@@ -423,6 +437,7 @@ MentorTable.propTypes = {
   createProfile: PropTypes.func,
   deleteProfile: PropTypes.func,
   history: PropTypes.array,
+  deleteRelationship: PropTypes.func,
 }
 
 export default connect(null, mapDispatchToProps)(MentorTable);

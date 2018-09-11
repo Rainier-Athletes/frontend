@@ -26,10 +26,6 @@ class ConnectionModal extends React.Component {
     };
   }
 
-  // ComponentWillMount = () => {
-  //   this.populateStudent();
-  // }
-
   handleSubmit = () => {
     this.props.setRelationship(this.state.query);
   }

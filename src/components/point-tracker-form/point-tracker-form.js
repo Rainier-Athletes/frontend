@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { convertDateToValue } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
+import SynopsisReport from '../synopsis-report/synopsis-report';
 import * as pointTrackerActions from '../../actions/point-tracker';
 import './point-tracker-form.scss';
 
@@ -15,12 +16,12 @@ const emptyPointTracker = {
     subjectName: 'Tutorial',
     teacher: '',
     scoring: {
-      excusedDays: 0,
-      stamps: 0,
-      halfStamps: 0,
-      tutorials: 0,
+      excusedDays: '',
+      stamps: '',
+      halfStamps: '',
+      tutorials: '',
     },
-    grade: 0,
+    grade: '',
   }],
   surveyQuestions: {
     mentorAttendedCheckin: false,
@@ -45,22 +46,30 @@ const emptyPointTracker = {
   },
 };
 
-const mapDispatchToProps = dispatch => ({
-  fetchStudents: studentIds => dispatch(pointTrackerActions.fetchStudents(studentIds)),
-  fetchTeachers: studentIds => dispatch(pointTrackerActions.fetchTeachers(studentIds)),
-  createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
-  createSynopsisReport: pointTracker => dispatch(pointTrackerActions.createSynopsisReport(pointTracker)),
-});
+const names = {
+  mentorAttendedCheckin: 'Mentor Attended Checkin',
+  metFaceToFace: 'Met Face-to-Face',
+  hadOtherCommunication: 'Had Other Communication',
+  hadNoCommunication: 'Had No Communication',
+  scoreSheetTurnedIn: 'Score Sheet Turned In',
+  scoreSheetLostOrIncomplete: 'Score Sheet Lost or Incomplete',
+  scoreSheetWillBeLate: 'Score Sheet will be Late',
+  scoreSheetOther: 'Score Sheet Other',
+  synopsisInformationComplete: 'Synopsis Information Complete',
+  synopsisInformationIncomplete: 'Synopsis Information Incomplete',
+  synopsisCompletedByRaStaff: 'Synopsis Completed by RA Staff',
+  extraPlayingTime: 'Extra Playing Time',
+  mentorGrantedPlayingTime: 'Mentor Granted Playing Time',
+  studentActionItems: 'Student Action Items',
+  sportsUpdate: 'Sports Update',
+  additionalComments: 'Additional Comments',
+};
 
 class PointTrackerForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      students: [],
-      teachers: [],
-      pointTracker: emptyPointTracker,
-    };
+    this.state = emptyPointTracker;
   }
 
   handleDateChange = (event) => {
@@ -71,10 +80,10 @@ class PointTrackerForm extends React.Component {
       parseInt(month, 10) - 1, 
       parseInt(day, 10),
     );
-
+    
     this.setState((prevState) => {
       const newState = { ...prevState };
-      newState.pointTracker.date = date.getTime();
+      newState.date = date.getTime();
       return newState;
     });
   }
@@ -86,16 +95,15 @@ class PointTrackerForm extends React.Component {
     this.setState((prevState) => {
       const newState = { ...prevState };
       const [subjectName, categoryName] = name.split('-');
-      
-      const newSubjects = newState.pointTracker.subjects
+
+      const newSubjects = newState.subjects
         .map((subject) => {
           if (subject.subjectName === subjectName) {
             const newSubject = { ...subject };
-            newSubject.scoring[categoryName] = value;
             if (categoryName === 'grade') {
-              newSubject.grade = value;
+              newSubject.grade = Math.min(Math.max(value, 0), 100);
             } else {
-              newSubject.scoring[categoryName] = value;
+              newSubject.scoring[categoryName] = Math.min(Math.max(value, 0), 8);
             }
            
             return newSubject;
@@ -103,7 +111,7 @@ class PointTrackerForm extends React.Component {
           return subject;
         });
 
-      newState.pointTracker.subjects = newSubjects;
+      newState.subjects = newSubjects;
       return newState;
     });
   }
@@ -113,7 +121,7 @@ class PointTrackerForm extends React.Component {
 
     this.setState((prevState) => {
       const newState = { ...prevState };
-      newState.pointTracker.surveyQuestions[name] = checked;
+      newState.surveyQuestions[name] = checked;
       return newState;
     });
   }
@@ -123,14 +131,14 @@ class PointTrackerForm extends React.Component {
 
     this.setState((prevState) => {
       const newState = { ...prevState };
-      newState.pointTracker.synopsisComments[name] = value;
+      newState.synopsisComments[name] = value;
       return newState;
     });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { pointTracker } = this.state;
+    const pointTracker = this.state;
     delete pointTracker._id;
 
     this.props.createPointTracker(pointTracker);
@@ -140,7 +148,7 @@ class PointTrackerForm extends React.Component {
   }
 
   getTeacherName = (teacherId) => {
-    return this.state.teachers
+    return this.props.teachers
       .filter(teacher => teacher._id === teacherId)
       .map(teacher => `${teacher.firstName} ${teacher.lastName}`)[0] || '';
   }
@@ -149,7 +157,7 @@ class PointTrackerForm extends React.Component {
     this.setState((prevState) => {
       const newState = { ...prevState };
 
-      newState.pointTracker.subjects = newState.pointTracker.subjects.filter((subject) => {
+      newState.subjects = newState.subjects.filter((subject) => {
         if (subjectName && teacherId) {
           return subject.subjectName !== subjectName && subject.teacher !== teacherId;
         }
@@ -175,43 +183,29 @@ class PointTrackerForm extends React.Component {
         grade: null,
       };
 
-      newState.pointTracker.subjects.push(newSubject);
+      newState.subjects.push(newSubject);
 
       return newState;
     });
-  }
-
-  componentDidMount() {
-    this.props.fetchStudents()
-      .then((students) => {
-        const updatedStudents = students || [];
-        this.setState({ students: updatedStudents });
-      });
-
-    this.props.fetchTeachers()
-      .then((teachers) => {
-        const updatedTeachers = teachers || [];
-        this.setState({ teachers: updatedTeachers });
-      });
   }
 
   handleStudentSelect = (event) => {
     event.preventDefault();
     const studentId = event.target.value;
-    const selectedStudent = this.state.students.filter(student => student._id === studentId)[0];
+    const selectedStudent = this.props.students.filter(student => student._id === studentId)[0];
     const { lastPointTracker } = selectedStudent.studentData;
 
     this.setState((prevState) => {
-      const newState = { ...prevState };
-      newState.pointTracker = lastPointTracker || emptyPointTracker;
-      newState.pointTracker.student = studentId;
-      newState.pointTracker.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
+      let newState = { ...prevState };
+      newState = lastPointTracker || emptyPointTracker;
+      newState.student = studentId;
+      newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
       return newState;
     });
   }
 
   calcPlayingTime = () => {
-    const { subjects } = this.state.pointTracker;
+    const { subjects } = this.state;
     const totalClassScores = subjects.map((subject) => {
       const { grade, subjectName } = subject;
       const { excusedDays, stamps, halfStamps } = subject.scoring;
@@ -243,12 +237,15 @@ class PointTrackerForm extends React.Component {
 
   render() {
     const selectOptionsJSX = (
-      <section required>
+      <section>
         <div className="select-student">
         <label htmlFor="">Select Student</label>
-          <select onChange={ this.handleStudentSelect } >
-          <option disabled selected value="">Select Student</option>
-          { this.state.students.map(student => (
+          <select 
+            required 
+            onChange={ this.handleStudentSelect } 
+            defaultValue="">
+          <option disabled value="">Select Student</option>
+          { this.props.students.map(student => (
               <option 
                 placeholder="Select" 
                 key={ student._id } 
@@ -264,117 +261,29 @@ class PointTrackerForm extends React.Component {
           name="date"
           type="date"
           onChange={ this.handleDateChange }
-          value={ convertDateToValue(this.state.pointTracker.date) }
+          value={ convertDateToValue(this.state.date) }
           required
           />
         </div>
         <div className="clearfix"></div>
       </section>
     );
-    
+
     const surveyQuestionsJSX = (
       <fieldset>
         <div className="survey-questions">
-            <div className="survey-question-container">
-             <input
+        {Object.keys(this.state.surveyQuestions)
+          .filter(keyName => names[keyName])
+          .map((surveyQuestion, i) => (
+            <div className="survey-question-container" key={ i }>
+              <input
                 type="checkbox"
-                name="attendedCheckin"
+                name={ surveyQuestion }
                 onChange= { this.handleSurveyQuestionChange }
-                checked={ this.state.pointTracker.surveyQuestions.attendedCheckin }/>
-              <label htmlFor="attendedCheckin">Attended Check-In</label>
-             </div>
-        
-         <div className="survey-question-container">
-
-         <input
-            type="checkbox"
-            name="metFaceToFace"
-            onChange= { this.handleSurveyQuestionChange }
-            checked={ this.state.pointTracker.surveyQuestions.metFaceToFace }/>
-          <label htmlFor="metFaceToFace">Met Face-to-Face</label>
+                checked={ this.state.surveyQuestions.surveyQuestion }/>
+              <label htmlFor={ surveyQuestion }>{ names[surveyQuestion] }</label>
             </div>
-        
-          <div className="survey-question-container">
-
-          <input
-            type="checkbox"
-            name="hadOtherCommunication"
-            onChange= { this.handleSurveyQuestionChange }
-            checked={ this.state.pointTracker.surveyQuestions.hadOtherCommunication }/>
-          <label htmlFor="hadOtherCommunication">Had Other Communication</label>
-            </div>
-
-          <div className="survey-question-container">
-
-          <input
-            type="checkbox"
-            name="hadNoCommunication"
-            onChange= { this.handleSurveyQuestionChange }
-            checked={ this.state.pointTracker.surveyQuestions.hadNoCommunication }/>
-          <label htmlFor="hadNoCommunication">Had No Communication</label>
-            </div>
-
-          <div className="survey-question-container">
-
-          <input
-            type="checkbox"
-            name="scoreSheetTurnedIn"
-            onChange= { this.handleSurveyQuestionChange }
-            checked={ this.state.pointTracker.surveyQuestions.scoreSheetTurnedIn }/>
-          <label htmlFor="scoreSheetTurnedIn">Score Sheet Turned In</label>
-            </div>
-        </div>
-
-        <div className="survey-questions-2">
-          <div className="survey-question-container">
-
-          <input
-            type="checkbox"
-            name="scoreSheetLostOrIncomplete"
-            onChange= { this.handleSurveyQuestionChange }
-            checked={ this.state.pointTracker.surveyQuestions.scoreSheetLostOrIncomplete }/>
-          <label htmlFor="scoreSheetLostOrIncomplete">Score Sheet Lost Or Incomplete</label>
-            </div>
-
-          <div className="survey-question-container">
-
-          <input
-            type="checkbox"
-            name="scoreSheetWillBeLate"
-            onChange= { this.handleSurveyQuestionChange }
-            checked={ this.state.pointTracker.surveyQuestions.scoreSheetWillBeLate }/>
-          <label htmlFor="scoreSheetWillBeLate">Score Sheet Will Be Late</label>
-            </div>
-
-          <div className="survey-question-container">
-
-          <input
-            type="checkbox"
-            name="synopsisInformationComplete"
-            onChange= { this.handleSurveyQuestionChange }
-            checked={ this.state.pointTracker.surveyQuestions.synopsisInformationComplete }/>
-          <label htmlFor="synopsisInformationComplete">Synopsis Information Complete</label>
-            </div>
-
-          <div className="survey-question-container">
-
-          <input
-            type="checkbox"
-            name="synopsisInformationIncomplete"
-            onChange= { this.handleSurveyQuestionChange }
-            checked={ this.state.pointTracker.surveyQuestions.synopsisInformationIncomplete }/>
-          <label htmlFor="synopsisInformationIncomplete">Synopsis Information Incomplete</label>
-            </div>
-
-          <div className="survey-question-container">
-
-          <input
-            type="checkbox"
-            name="synopsisCompletedByRaStaff"
-            onChange= { this.handleSurveyQuestionChange }
-            checked={ this.state.pointTracker.surveyQuestions.synopsisCompletedByRaStaff }/>
-          <label htmlFor="synopsisCompletedByRaStaff">Synopsis Completed By RA Staff</label>
-            </div>
+          ))}
         </div>
     </fieldset>
     );
@@ -388,7 +297,7 @@ class PointTrackerForm extends React.Component {
         <select
           name="mentorGrantedPlayingTime"
           onChange={ this.handleSynopsisCommentChange }
-          value={ this.state.pointTracker.synopsisComments.mentorGrantedPlayingTime }
+          value={ this.state.synopsisComments.mentorGrantedPlayingTime }
           required
           >
           <option value="" defaultValue>Select Playing Time</option>
@@ -400,49 +309,24 @@ class PointTrackerForm extends React.Component {
           <option value="None of game">None of game</option>
         </select>
 
-        <label htmlFor="extraPlayingTime">Extra Playing Time</label>
-        <textarea
-          name="extraPlayingTime"
-          onChange={ this.handleSynopsisCommentChange }
-          value={ this.state.pointTracker.synopsisComments.extraPlayingTime }
-          rows="6"
-          cols="80"
-          wrap="hard"
-          placeholder="Extra playing time..."
-        />
-
-        <label htmlFor="studentActionItems">Student Action Items/Academic Update</label>
-        <textarea
-          name="studentActionItems"
-          onChange={ this.handleSynopsisCommentChange }
-          value={ this.state.pointTracker.synopsisComments.studentActionItems }
-          rows="6"
-          cols="80"
-          wrap="hard"
-          placeholder="Student action items..."
-        />
-
-        <label htmlFor="sportsUpdate">Sports Update</label>
-        <textarea
-          name="sportsUpdate"
-          onChange={ this.handleSynopsisCommentChange }
-          value={ this.state.pointTracker.synopsisComments.sportsUpdate }
-          rows="6"
-          cols="80"
-          wrap="hard"
-          placeholder="Sports update..."
-          />
-
-        <label htmlFor="additionalComments">Additional Comments</label>
-        <textarea
-          name="additionalComments"
-          onChange={ this.handleSynopsisCommentChange }
-          value={ this.state.pointTracker.synopsisComments.additionalComments }
-          rows="6"
-          cols="80"
-          wrap="hard"
-          placeholder="Additional comments..."
-        />
+        { 
+          Object.keys(this.state.synopsisComments)
+            .filter(keyName => names[keyName])
+            .map((synopsisComment, i) => (
+              <div key={ i }>
+                <label htmlFor={ synopsisComment }>{ names[synopsisComment] }</label>
+                <textarea
+                  name={ synopsisComment }
+                  onChange={ this.handleSynopsisCommentChange }
+                  value={ this.state.synopsisComments[synopsisComment] }
+                  rows="6"
+                  cols="80"
+                  wrap="hard"
+                  placeholder={ names[synopsisComment] }
+                />
+              </div>
+            ))
+        }
       </div>
     );
 
@@ -454,23 +338,36 @@ class PointTrackerForm extends React.Component {
             { surveyQuestionsJSX }
               <PointTrackerTable
                 handleSubjectChange={ this.handleSubjectChange }
-                subjects={ this.state.pointTracker.subjects }
+                subjects={ this.state.subjects }
                 getTeacherName={ this.getTeacherName }
-                teachers={ this.state.teachers }
+                teachers={ this.props.teachers }
                 deleteSubject= { this.deleteSubject }
                 createSubject={ this.createSubject }
             />
+            <SynopsisReport pointTracker={ this.state }/>
             { synopsisCommentsJSX }
-              
-          <button className="submit-report" type="submit">Submit 
-          Point Tracker</button>
+          <button className="submit-report" type="submit">Submit Point Tracker</button>
         </form>
+
+
       </div>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  students: state.students,
+  teachers: state.teachers,
+});
+
+const mapDispatchToProps = dispatch => ({
+  createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
+  createSynopsisReport: pointTracker => dispatch(pointTrackerActions.createSynopsisReport(pointTracker)),
+});
+
 PointTrackerForm.propTypes = {
+  students: PropTypes.array,
+  teachers: PropTypes.array,
   handleChange: PropTypes.func,
   createPointTracker: PropTypes.func,
   createSynopsisReport: PropTypes.func,
@@ -478,4 +375,4 @@ PointTrackerForm.propTypes = {
   fetchTeachers: PropTypes.func,
 };
 
-export default connect(null, mapDispatchToProps)(PointTrackerForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PointTrackerForm);

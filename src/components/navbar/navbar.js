@@ -71,11 +71,11 @@ class Navbar extends React.Component {
   }
 
   renderMentor = () => {
-    return <div className="nav"><Link to="/mentor">Mentor</Link></div>;
+    return <li className="nav-item"><Link to="/mentor" className="nav-link">Mentor</Link></li>;
   }
 
   renderAdmin = () => {
-    return <div className="nav"><Link to="/mentor">Mentor</Link><Link to="/admin">Admin</Link></div>;
+    return <React.Fragment><li className="nav-item"><Link to="/mentor" className="nav-link">Mentor</Link></li><li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li></React.Fragment>;
   }
 
   determineRole = () => {
@@ -88,37 +88,39 @@ class Navbar extends React.Component {
 
   renderJSX = (loggedIn) => {
     const JSXNotLoggedIn = (
-      <div className="nav-content">
-        <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
-        <span className="login"><a href={ this.setGoogleOAuthUrl() }><img className="google-btn" src={ googleBtn } /></a></span>
-      </div>
-    );
-
-    const dropdown = (
-      <div className="dropdown">
-        <button className="button" onClick={ this.props.doLogout }>Logout</button>
-      </div>
+      <React.Fragment>
+        <a className="navbar-brand"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></a>
+        <span className="login nav-content"><a href={ this.setGoogleOAuthUrl() }><img className="google-btn" src={ googleBtn } /></a></span>
+      </React.Fragment>
     );
 
     const name = this.props.myProfile ? this.props.myProfile.firstName : null;
 
     const JSXLoggedIn = (
-      <div className="nav-content">
-        <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
-        {
-          this.props.myProfile ? this.determineRole() : null
-        }
-        <span className="login">
-          <button className="navbar-dropdown" onClick={ this.handleDropDownToggle }>
-
-            Welcome, { name }
-            <FontAwesomeIcon icon="angle-down" />
-          </button>
-          {
-            this.state.dropdown ? dropdown : null
-          }
-        </span>
-      </div>
+      <React.Fragment>
+        <a className="navbar-brand"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></a>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav mr-auto nav-content">
+            {
+              this.props.myProfile ? this.determineRole() : null
+            }
+            <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Welcome, { name }
+              </a>
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a className="dropdown-item" onClick={ this.props.doLogout }>Logout</a>
+                <a className="dropdown-item" href="#">Another action</a>
+                <div className="dropdown-divider"></div>
+                <a className="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </React.Fragment>
     );
 
     return loggedIn ? JSXLoggedIn : JSXNotLoggedIn;
@@ -128,7 +130,7 @@ class Navbar extends React.Component {
     const { loggedIn } = this.props;
     return (
       <header className="header">
-        <nav className="navbar">
+        <nav className="navbar navbar-expand-lg navbar-dark">
           {this.renderJSX(loggedIn)}
         </nav>
       </header>

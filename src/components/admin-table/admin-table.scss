@@ -9,7 +9,7 @@
 }
 
 .react-grid-Canvas, .react-grid-Grid {
-  height: 100vh !important;
+  height: 77vh !important;
 }
 
 .react-grid-Container {
@@ -546,10 +546,45 @@
   float: right;
 }
 
+.deleteConnectionBtn {
+  background: white;
+  border: 1px solid #e6eaec;
+  color: #464040;
+  font-size: 14px;
+  margin-bottom: .3em;
+  position: relative;
+  text-shadow: rgb(206, 206, 206);
+  width: 12.5em;
+  float: right;
+}
+
+.modalBtn {
+  background: white;
+  border: 1px solid #089444;
+  color: #089444;
+  font-size: 14px;
+  margin-bottom: .3em;
+  position: relative;
+  text-shadow: rgb(206, 206, 206);
+  width: 12em;
+}
+
+.modalBtn:hover {
+  background-color: #089444;
+  color: white;
+  border: 1px solid #089444;
+}
+
 .deleteBtn:hover {
   background-color: #b13636;
   color: white;
   border: 1px solid #b13636;
+}
+
+.deleteConnectionBtn:hover {
+  background-color: #464040;
+  color: white;
+  border: 1px solid #464040;
 }
 
 .updateBtn {

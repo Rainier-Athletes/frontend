@@ -4,9 +4,12 @@ import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import * as routes from '../../lib/routes';
-import './mentor-table.scss';
+import ConnectionModal from '../connection-modal/connection-modal';
+import './admin-table.scss';
+
 
 import * as profileActions from '../../actions/profile';
+import * as relationshipActions from '../../actions/relationship';
 
 const faker = require('faker');
 const { Editors, Formatters, Toolbar, Filters: { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter }, Data: { Selectors } } = require('react-data-grid-addons'); // eslint-disable-line
@@ -18,12 +21,13 @@ const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(profileActions.updateProfileReq(profile)),
   createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
   deleteProfile: profile => dispatch(profileActions.deleteProfileReq(profile)),
+  deleteRelationship: profiles => dispatch(relationshipActions.deleteRelationshipReq(profiles)),
 });
 
 const newRows = {};
 const updatedRows = {};
 
-class MentorTable extends React.Component {
+class AdminTable extends React.Component {
   constructor(props, context) {
     super(props, context);
     this._columns = [
@@ -103,6 +107,7 @@ class MentorTable extends React.Component {
       counter: 0,
       newRows: [],
       updatedRows: [],
+      isOpen: false, // for the modal
     };
   }
 
@@ -189,7 +194,6 @@ class MentorTable extends React.Component {
       const rowToUpdate = rows[i];
       const updatedRow = update(rowToUpdate, { $merge: updated });
       rows[i] = updatedRow;
-      console.log('UPDATED', rows[i]);
 
       if (!rows[i]._id) {
         const index = this.state.counter;
@@ -362,53 +366,79 @@ class MentorTable extends React.Component {
     return rows[rowIdx];
   };
 
+  toggleModal = () => {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
+
+  handleDetach = () => {
+    const selected = this.state.selectedIndexes;
+    const query = {};
+    for (const index in selected) { // eslint-disable-line
+      const i = selected[index];
+      const r = this.state.rows[i];
+      query[r.role] = r._id;
+    }
+    this.props.deleteRelationship(query);
+  }
+
   /*eslint-disable*/
   render() {
     return (
-      <ReactDataGrid
-        ref={ node => this.grid = node }
-        enableCellSelect={true}
-        onGridSort={this.handleGridSort}
-        columns={this.getColumns()}
-        rowGetter={ this.rowGetter }
-        rowsCount={this.getSize()}
-        onGridRowsUpdated={this.handleGridRowsUpdated}
-        toolbar={
-          <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
-            <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
-            <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
-          </Toolbar>
-        }
-        enableRowSelect={true}
-        onRowSelect={this.onRowSelect}
-        rowSelection={{
-          showCheckbox: true,
-          enableShiftSelect: true,
-          onRowsSelected: this.onRowsSelected,
-          onRowsDeselected: this.onRowsDeselected,
-          selectBy: {
-            indexes: this.state.selectedIndexes,
-          },
-        }}
-        getSubRowDetails={this.getSubRowDetails}
-        onCellExpand={this.onCellExpand}
-        rowHeight={50}
-        minHeight={600}
-        rowScrollTimeout={200}
-        onAddFilter={this.handleFilterChange}
-        getValidFilterValues={this.getValidFilterValues}
-        onClearFilters={this.handleOnClearFilters}
-        />
+      <React.Fragment>
+        <ConnectionModal
+          show={this.state.isOpen}
+          onClose={this.toggleModal}>
+        </ConnectionModal>
+        <ReactDataGrid
+          ref={ node => this.grid = node }
+          enableCellSelect={true}
+          onGridSort={this.handleGridSort}
+          columns={this.getColumns()}
+          rowGetter={ this.rowGetter }
+          rowsCount={this.getSize()}
+          onGridRowsUpdated={this.handleGridRowsUpdated}
+          toolbar={
+            <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
+              <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
+              <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
+              <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
+              <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
+            </Toolbar>
+          }
+          enableRowSelect={true}
+          onRowSelect={this.onRowSelect}
+          rowSelection={{
+            showCheckbox: true,
+            enableShiftSelect: true,
+            onRowsSelected: this.onRowsSelected,
+            onRowsDeselected: this.onRowsDeselected,
+            selectBy: {
+              indexes: this.state.selectedIndexes,
+            },
+          }}
+          getSubRowDetails={this.getSubRowDetails}
+          onCellExpand={this.onCellExpand}
+          rowHeight={50}
+          minHeight={600}
+          rowScrollTimeout={200}
+          onAddFilter={this.handleFilterChange}
+          getValidFilterValues={this.getValidFilterValues}
+          onClearFilters={this.handleOnClearFilters}
+          />
+      </React.Fragment>
     );
   }
 }
 
-MentorTable.propTypes = {
+AdminTable.propTypes = {
   fetchProfile: PropTypes.func,
   updateProfile: PropTypes.func,
   createProfile: PropTypes.func,
   deleteProfile: PropTypes.func,
   history: PropTypes.array,
+  deleteRelationship: PropTypes.func,
 }
 
-export default connect(null, mapDispatchToProps)(MentorTable);
+export default connect(null, mapDispatchToProps)(AdminTable);

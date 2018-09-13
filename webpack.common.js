@@ -2,7 +2,7 @@
 
 require('dotenv').config();
 
-const { DefinePlugin } = require('webpack');
+const { DefinePlugin, ProvidePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const webpackConfig = module.exports = {};
@@ -23,6 +23,11 @@ webpackConfig.plugins = [
     API_URL: JSON.stringify(process.env.API_URL),
     GOOGLE_OAUTH_ID: JSON.stringify(process.env.GOOGLE_OAUTH_ID),
   }),
+  new ProvidePlugin({
+    jQuery: 'jquery',
+    $: 'jquery',
+    jquery: 'jquery',
+  }),
 ];
 
 webpackConfig.module = {};
@@ -30,7 +35,7 @@ webpackConfig.module = {};
 webpackConfig.module.rules = [
   {
     test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: 'url-loader?limit=10000&mimetype=application/font-woff', 
+    loader: 'url-loader?limit=10000&mimetype=application/font-woff',
   },
   {
     test: /\.(png|svg|jpg|gif)$/i,

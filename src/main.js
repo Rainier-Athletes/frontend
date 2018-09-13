@@ -13,6 +13,7 @@ import 'popper.js';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 import thunk from './lib/middleware/redux-thunk';
 // import reporter from './lib/middleware/redux-reporter';
 // import session from './lib/middleware/redux-session';

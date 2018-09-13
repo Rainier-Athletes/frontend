@@ -113,9 +113,6 @@ class Navbar extends React.Component {
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a className="dropdown-item" onClick={ this.props.doLogout }>Logout</a>
-                <a className="dropdown-item" href="#">Another action</a>
-                <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="#">Something else here</a>
               </div>
             </li>
           </ul>

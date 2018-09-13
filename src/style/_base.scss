@@ -72,7 +72,6 @@ button,input[type="submit"] {
 footer {
   text-align: center;
   height: 60px;
-  background: #000;
   border-top: none;
   margin-top: 100px;
 
@@ -90,9 +89,7 @@ footer {
 }
 
 // lists
-ul,ol,li { margin-left: $pad * 2; }
 li { display: list-item; }
-ul li { list-style: disc; }
 ol li { list-style: decimal; }
 ol ol li , ul ol li { list-style: lower-alpha; }
 ol ul li , ul ul li { list-style: square; }

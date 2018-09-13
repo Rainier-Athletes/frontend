@@ -70,12 +70,28 @@ class Navbar extends React.Component {
     }));
   }
 
+  renderMentor = () => {
+    return <div className="nav"><Link to="/mentor">Mentor</Link></div>;
+  }
+
+  renderAdmin = () => {
+    return <div className="nav"><Link to="/mentor">Mentor</Link><Link to="/admin">Admin</Link></div>;
+  }
+
+  determineRole = () => {
+    if (this.props.myProfile) {
+      console.log(this.props.myProfile.role);
+      return this.props.myProfile.role === 'mentor' ? this.renderMentor() : this.renderAdmin();
+    }
+    return null;
+  }
+
   renderJSX = (loggedIn) => {
     const JSXNotLoggedIn = (
-      <React.Fragment>
+      <div className="nav-content">
         <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
         <span className="login"><a href={ this.setGoogleOAuthUrl() }><img className="google-btn" src={ googleBtn } /></a></span>
-      </React.Fragment>
+      </div>
     );
 
     const dropdown = (
@@ -87,8 +103,11 @@ class Navbar extends React.Component {
     const name = this.props.myProfile ? this.props.myProfile.firstName : null;
 
     const JSXLoggedIn = (
-      <React.Fragment>
+      <div className="nav-content">
         <span className="logo"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></span>
+        {
+          this.props.myProfile ? this.determineRole() : null
+        }
         <span className="login">
           <button className="navbar-dropdown" onClick={ this.handleDropDownToggle }>
 
@@ -99,7 +118,7 @@ class Navbar extends React.Component {
             this.state.dropdown ? dropdown : null
           }
         </span>
-      </React.Fragment>
+      </div>
     );
 
     return loggedIn ? JSXLoggedIn : JSXNotLoggedIn;

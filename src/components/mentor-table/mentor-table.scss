@@ -546,6 +546,18 @@
   float: right;
 }
 
+.deleteConnectionBtn {
+  background: white;
+  border: 1px solid #e6eaec;
+  color: #464040;
+  font-size: 14px;
+  margin-bottom: .3em;
+  position: relative;
+  text-shadow: rgb(206, 206, 206);
+  width: 12.5em;
+  float: right;
+}
+
 .modalBtn {
   background: white;
   border: 1px solid #089444;
@@ -567,6 +579,12 @@
   background-color: #b13636;
   color: white;
   border: 1px solid #b13636;
+}
+
+.deleteConnectionBtn:hover {
+  background-color: #464040;
+  color: white;
+  border: 1px solid #464040;
 }
 
 .updateBtn {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Iframe from '../iframe/iframe';
 
@@ -20,21 +19,6 @@ class Dashboard extends React.Component {
     };
   }
 
-  renderMentor = () => {
-    return <div className="nav"><Link to="/mentor">Mentor</Link></div>;
-  }
-
-  renderAdmin = () => {
-    return <div className="nav"><Link to="/mentor">Mentor</Link><Link to="/admin">Admin</Link></div>;
-  }
-
-  determineRole = () => {
-    if (this.props.myProfile) {
-      return this.props.myProfile.role === 'mentor' ? this.renderMentor() : this.renderAdmin();
-    }
-    return null;
-  }
-
   renderJSX = (loggedIn) => {
     const iframe = (
       <React.Fragment>
@@ -42,7 +26,7 @@ class Dashboard extends React.Component {
       </React.Fragment>
     );
 
-    return loggedIn ? this.determineRole() : iframe;
+    return loggedIn ? null : iframe;
   };
 
   render() {

@@ -1,4 +1,4 @@
-# Rainier Athletes Mentor Portal
+# RAINIER ATHLETES MENTOR PORTAL
 
 ## Mentor Instructions:
 Rainier Athletes will set up an account for you, based on your assigned Gmail account. If you do not have an account with Rainier Athletes, please contact Rainier Athletes to add you as a verified user.
@@ -32,5 +32,3 @@ Sign into your account from the home page: Click the "Sign in with Google" butto
 6. Your form will reset upon Submit. If you are meeting with another student, start the process again.
 
 7. Logout.
-
-

@@ -12,6 +12,10 @@
   height: 77vh !important;
 }
 
+.react-grid-Cell.rdg-child-cell {
+  background-color: lightgrey;
+}
+
 .react-grid-Container {
   position: relative;
   top: 3.5em;

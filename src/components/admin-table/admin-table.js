@@ -140,24 +140,31 @@ class AdminTable extends React.Component {
 
   populateStudentChildren = (profile) => {
     const childArr = [];
-    if (profile.studentData.mentor) {
-      childArr.push(profile.studentData.mentor);
-    }
-    for (const i in profile.studentData.coaches) { // eslint-disable-line
-      childArr.push(profile.studentData.coaches[i]);
-    }
-    for (const i in profile.studentData.family) { // eslint-disable-line
-      childArr.push(profile.studentData.family[i]);
-    }
-    for (const i in profile.studentData.teachers) { // eslint-disable-line
-      childArr.push(profile.studentData.teachers[i]);
-    }
+
+    if (!profile.studentData) return childArr;
+
+    profile.studentData.mentors.forEach((mentor) => {
+      if (mentor.mentor.active && mentor.currentMentor) childArr.push(mentor.mentor);
+    });
+    
+    profile.studentData.coaches.forEach((coach) => {
+      if (coach.coach.active && coach.currentCoach) childArr.push(coach.coach);
+    });
+    
+    profile.studentData.family.forEach((member) => {
+      if (member.member.active) childArr.push(member.member);
+    });
+    
+    profile.studentData.teachers.forEach((teacher) => {
+      if (teacher.teacher.active && teacher.currentTeacher) childArr.push(teacher.teacher);
+    });
+    
     return childArr;
   };
 
   populateData = (profile) => {
     let childArr;
-    if (profile.role === 'mentor' && profile.students.length > 0) {
+    if (profile.role !== 'student' && profile.students.length > 0) {
       childArr = this.populateMentorChildren(profile);
     }
     if (profile.role === 'student') {
@@ -298,12 +305,13 @@ class AdminTable extends React.Component {
 
   onCellExpand = (args) => {
     const rows = this.state.rows.slice(0);
-    const rowKey = args.rowData.name;
-    const rowIndex = rows.indexOf(args.rowData);
+    const rowKey = args.rowData._id;
+    const rowIndex = args.rowIdx; 
     const subRows = args.expandArgs.children;
 
     const expanded = Object.assign({}, this.state.expanded);
-    if (expanded && !expanded[rowKey]) {
+
+    if (!expanded[rowKey]) {
       expanded[rowKey] = true;
       this.updateSubRowDetails(subRows, args.rowData.treeDepth);
       rows.splice(rowIndex + 1, 0, ...subRows);

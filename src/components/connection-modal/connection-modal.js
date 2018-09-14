@@ -54,13 +54,13 @@ class ConnectionModal extends React.Component {
 
     return (
       <div className="modalContainer">
-        <form className="modal" onChange={this.handleChange}>
-          <button className="close-modal" onClick={this.props.onClose}>x</button>
+        <form onChange={this.handleChange}>
+          <button className="close-modal" onClick={this.props.onClose}>X</button>
           <h1>Add A Connection</h1>
           <div className="field-wrap dropdown">
             <label htmlFor="student">Student Name:</label>
               <select type="student" required>
-                <option disabled selected value> -- select an option -- </option>
+                <option defaultValue> -- select an option -- </option>
                 {
                   this.props.profile.filter(p => p.role === 'student').map((p) => {
                     return <option key={p._id} value={p._id}>
@@ -73,7 +73,7 @@ class ConnectionModal extends React.Component {
           <div className="field-wrap dropdown">
             <label htmlFor="connection-name">Name Of Connection:</label>
               <select type="connection-name" required>
-                <option disabled selected value> -- select an option -- </option>
+                <option defaultValue> -- select an option -- </option>
                 {
                   this.props.profile.filter(p => p.role !== 'student').map((p) => {
                     return <option key={p._id} value={p._id} role={p.role}>
@@ -84,7 +84,7 @@ class ConnectionModal extends React.Component {
               </select>
           </div>
         <div className="addButton-container">
-          <button type="submit" className="addButton" onClick={this.handleSubmit}>Add Person</button>
+          <button type="submit" className="addButton" onClick={this.handleSubmit}>Add Connection</button>
         </div>
         </form>
       </div>

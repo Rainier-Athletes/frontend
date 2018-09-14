@@ -27,8 +27,8 @@ export default class App extends React.Component {
             <Navbar />
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
-            <Route expact path="/admin" component={ AdminUser(Admin) } />
-            <Route expact path="/mentor" component={ MentorUser(PointTrackerForm) } />
+            <Route exact path="/admin" component={ AdminUser(Admin) } />
+            <Route exact path="/mentor" component={ MentorUser(PointTrackerForm) } />
           </div>
         </BrowserRouter>
         <footer className="footer">

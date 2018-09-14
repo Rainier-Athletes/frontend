@@ -48,6 +48,7 @@ class ConnectionModal extends React.Component {
 
   render() {
     // Render nothing if the "show" prop is false
+    debugger;
     if (!this.props.show) {
       return null;
     }
@@ -84,7 +85,7 @@ class ConnectionModal extends React.Component {
               </select>
           </div>
         <div className="addButton-container">
-          <button type="submit" className="addButton" onClick={this.handleSubmit}>Add Person</button>
+          <button type="submit" className="addButton" onClick={this.handleSubmit}>Add Connection</button>
         </div>
         </form>
       </div>

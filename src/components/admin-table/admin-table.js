@@ -164,7 +164,7 @@ class AdminTable extends React.Component {
 
   populateData = (profile) => {
     let childArr;
-    if (profile.role === 'mentor' && profile.students.length > 0) {
+    if (profile.role !== 'student' && profile.students.length > 0) {
       childArr = this.populateMentorChildren(profile);
     }
     if (profile.role === 'student') {

@@ -48,15 +48,14 @@ class ConnectionModal extends React.Component {
 
   render() {
     // Render nothing if the "show" prop is false
-    debugger;
     if (!this.props.show) {
       return null;
     }
 
     return (
       <div className="modalContainer">
-        <form className="modal" onChange={this.handleChange}>
-          <button className="close-modal" onClick={this.props.onClose}>x</button>
+        <form onChange={this.handleChange}>
+          <button className="close-modal" onClick={this.props.onClose}>X</button>
           <h1>Add A Connection</h1>
           <div className="field-wrap dropdown">
             <label htmlFor="student">Student Name:</label>

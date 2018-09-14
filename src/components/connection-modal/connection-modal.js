@@ -84,7 +84,7 @@ class ConnectionModal extends React.Component {
               </select>
           </div>
         <div className="addButton-container">
-          <button type="submit" className="addButton" onClick={this.handleSubmit}>Add Person</button>
+          <button type="submit" className="addButton" onClick={this.handleSubmit}>Add Connection</button>
         </div>
         </form>
       </div>

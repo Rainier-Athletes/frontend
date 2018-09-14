@@ -4,8 +4,9 @@ import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import * as routes from '../../lib/routes';
-import './mentor-table.scss';
 import ConnectionModal from '../connection-modal/connection-modal';
+import './admin-table.scss';
+
 
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';
@@ -26,7 +27,7 @@ const mapDispatchToProps = dispatch => ({
 const newRows = {};
 const updatedRows = {};
 
-class MentorTable extends React.Component {
+class AdminTable extends React.Component {
   constructor(props, context) {
     super(props, context);
     this._columns = [
@@ -439,7 +440,7 @@ class MentorTable extends React.Component {
   }
 }
 
-MentorTable.propTypes = {
+AdminTable.propTypes = {
   fetchProfile: PropTypes.func,
   updateProfile: PropTypes.func,
   createProfile: PropTypes.func,
@@ -448,4 +449,4 @@ MentorTable.propTypes = {
   deleteRelationship: PropTypes.func,
 }
 
-export default connect(null, mapDispatchToProps)(MentorTable);
+export default connect(null, mapDispatchToProps)(AdminTable);

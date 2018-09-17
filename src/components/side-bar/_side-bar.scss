@@ -26,9 +26,7 @@
 .sidebar-sticky {
   position: relative;
   top: 0;
-  padding-top: .5rem;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  padding-top: 1.5rem;
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
@@ -51,12 +49,5 @@
   text-transform: uppercase;
   color: #D8D8D8 !important;
   font-weight: 600;
-}
-
-/*
- * Content
- */
-
-[role="main"] {
-  padding-top: 48px; /* Space for fixed navbar */
+  display: inline !important;
 }

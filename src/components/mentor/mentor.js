@@ -8,6 +8,7 @@ import * as profileActions from '../../actions/profile';
 import './_mentor.scss';
 
 const mapStateToProps = state => ({
+  myStudents: state.myStudents,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -15,8 +16,46 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Mentor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: 0,
+    };
+  }
+
+  static getDerivedStateFromProps = (nextProps) => {
+    if (nextProps.myStudents) {
+      return { myStudents: nextProps.myStudents };
+    }
+
+    return null;
+  }
+
   componentDidMount = () => {
     this.props.fetchMyStudents();
+  }
+
+  handleSidebarClick(e) {
+    const i = e.currentTarget.dataset.index;
+
+    if (this.props.myStudents[i].role === 'student') {
+      this.setState({ content: i });
+    }
+  }
+
+  fetchStudents() {
+    if (this.props.myStudents) {
+      return this.props.myStudents.map((student, i) => {
+        return (
+          <li className="nav-item" key={student._id} data-index={i} onClick={ this.handleSidebarClick.bind(this) }><a className="nav-link">
+              { student.firstName } { student.lastName }
+            </a>
+          </li>
+        );
+      });
+    }
+
+    return 'loading';
   }
 
   render() {
@@ -24,8 +63,8 @@ class Mentor extends React.Component {
       <React.Fragment>
         <div className="container-fluid">
           <div className="row">
-          <Sidebar />
-          <MentorContent />
+          <Sidebar content={ this.fetchStudents() }/>
+          <MentorContent content={ this.state.content } title={ 'Student Profile' } btnClick={ this.handleClick }/>
           </div>
         </div>
       </React.Fragment>
@@ -35,7 +74,8 @@ class Mentor extends React.Component {
 
 Mentor.propTypes = {
   fetchMyStudents: PropTypes.func,
+  myStudents: PropTypes.array,
 };
 
 
-export default connect(null, mapDispatchToProps)(Mentor);
+export default connect(mapStateToProps, mapDispatchToProps)(Mentor);

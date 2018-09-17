@@ -376,3 +376,80 @@ PointTrackerForm.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointTrackerForm);
+
+/*
+const pointTrackerHTML = `
+  <style>
+    img{  
+    width: 200px;
+  }
+  .image{  
+    padding-left:20px;
+    padding-top: 10px;
+    padding-bottom:12px;
+    height: 20px;
+    background: #1f1f1f;
+    width: 500px;
+    border-radius: 30px;
+  }
+  body {
+    padding: 20px;
+    margin: 20px;
+    border-radius: 30px;
+    border: 2px solid #e8e8e8;
+  
+  }
+  h1, h2, h3 {
+    font-style:bold;
+    font-family: "Raleway", Helvetica;
+    color:#089444;
+  }
+  p {
+    font-family: "Raleway", Helvetica;
+    color:#1186B4;
+  }
+  </style>
+  <body>
+    <div class=image>
+      <img style="-webkit-user-select: none;" src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png"> 
+    </div> 
+  <body>
+  <table></table>
+    <h1>${pointTracker.studentName}</h1>
+    <h3>Playing Time Earned</h3>
+    <p>${pointTracker.synopsisComments.mentorGrantedPlayingTime}</p>
+    <h3>Extra Playing Time Earned</h3>      
+    <p>${pointTracker.synopsisComments.extraPlayingTime}</p>
+    <h3>Student Action Items</h3>      
+    <p>${pointTracker.synopsisComments.studentActionItems}</p>
+    <h3>Sports Update</h3>      
+    <p>${pointTracker.synopsisComments.sportsUpdate}</p>
+    <h3>Additional Comments</h3>      
+    <p>${pointTracker.synopsisComments.additionalComments}</p>
+    <br>
+    <br>
+    <p>Sincerely,<br>${myProfile.firstName} ${myProfile.lastName}</p>
+    <p>${pointTracker.subjects}</p>      
+  </body>
+  <script>
+    var table = document.createElement('table');
+    for (var i = 0; i < 4; i++){
+        var tr = document.createElement('tr');   
+    
+        var td1 = document.createElement('td');
+        var td2 = document.createElement('td');
+    
+        var text1 = document.createTextNode('${pointTracker.subjects[0].subjectName}');
+        var text2 = document.createTextNode('Text2');
+    
+        td1.appendChild(text1);
+        td2.appendChild(text2);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+    
+        table.appendChild(tr);
+    }
+    document.body.appendChild(table);
+  </script>
+  `;
+  */

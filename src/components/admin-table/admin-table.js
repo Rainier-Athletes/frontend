@@ -439,6 +439,6 @@ AdminTable.propTypes = {
   deleteProfile: PropTypes.func,
   history: PropTypes.array,
   deleteRelationship: PropTypes.func,
-}
+};
 
 export default connect(null, mapDispatchToProps)(AdminTable);

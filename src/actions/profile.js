@@ -21,6 +21,11 @@ const setStudents = students => ({
   payload: students,
 });
 
+const setMyStudents = students => ({
+  type: 'MY_STUDENTS_SET',
+  payload: students,
+});
+
 const setTeachers = teachers => ({
   type: 'TEACHERS_SET',
   payload: teachers,
@@ -78,12 +83,11 @@ export const deleteProfileReq = profile => (store) => {
     .set('Content-Type', 'application/json')
     .send(profile)
     .then((res) => {
-      console.log(res);
       return store.dispatch(deleteProfile(res.body));
     });
 };
 
-export const fetchStudents = studentIds => (store) => { // eslint-disable-line
+export const fetchStudentsReq = studentIds => (store) => { // eslint-disable-line
   const { token } = store.getState();
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
@@ -95,7 +99,19 @@ export const fetchStudents = studentIds => (store) => { // eslint-disable-line
     });
 };
 
-export const fetchTeachers = studentId => (store) => { // eslint-disable-line
+export const fetchMyStudentsReq = studentIds => (store) => { // eslint-disable-line
+  const { token } = store.getState();
+  return superagent.get(`${API_URL}${routes.MYSTUDENTS_ROUTE}`)
+    .set('Authorization', `Bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .then((res) => {
+      const students = res.body;
+
+      return store.dispatch(setMyStudents(students));
+    });
+};
+
+export const fetchTeachersReq = studentId => (store) => { // eslint-disable-line
   const { token } = store.getState();
 
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)

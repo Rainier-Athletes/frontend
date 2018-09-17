@@ -7,6 +7,7 @@ import pointTracker from './point-tracker';
 import pointTrackers from './point-trackers';
 import students from './students';
 import teachers from './teachers';
+import myStudents from './myStudents';
 
 export default combineReducers({
   token,
@@ -17,4 +18,5 @@ export default combineReducers({
   teachers,
   pointTracker,
   pointTrackers,
+  myStudents,
 });

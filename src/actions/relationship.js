@@ -25,7 +25,7 @@ export const setRelationshipReq = profiles => (store) => {
 
 export const deleteRelationshipReq = profiles => (store) => {
   const { token } = store.getState();
-
+  console.log(profiles);
   return superagent.get(`${API_URL}${routes.DETACH_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')

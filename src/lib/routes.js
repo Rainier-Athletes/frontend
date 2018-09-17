@@ -8,3 +8,6 @@ export const POINTS_TRACKER_ROUTE = '/pointstracker';
 export const SYNOPSIS_REPORT = '/synopsis';
 export const ATTACH_ROUTE = '/attach';
 export const DETACH_ROUTE = '/detach';
+export const EXTRACT_CSV = '/extract';
+export const STUDENT_DATA_ROUTE = '/studentdata';
+export const MYSTUDENTS_ROUTE = '/profiles/myStudents';

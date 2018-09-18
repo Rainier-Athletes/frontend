@@ -130,11 +130,14 @@ class AdminTable extends React.Component {
       });
   };
 
-  populateMentorChildren = (profile) => {
+  populateNonStudentChildren = (profile) => {
     const childArr = [];
-    for (const i in profile.students) { // eslint-disable-line
-      childArr.push(profile.students[i]);
-    }
+    profile.students.forEach((student) => {
+      if (student.active) childArr.push(student);
+    });
+    // for (const i in profile.students) { // eslint-disable-line
+    //   childArr.push(profile.students[i]);
+    // }
     return childArr;
   };
 
@@ -165,7 +168,7 @@ class AdminTable extends React.Component {
   populateData = (profile) => {
     let childArr;
     if (profile.role !== 'student' && profile.students.length > 0) {
-      childArr = this.populateMentorChildren(profile);
+      childArr = this.populateNonStudentChildren(profile);
     }
     if (profile.role === 'student') {
       childArr = this.populateStudentChildren(profile);

@@ -17,14 +17,20 @@ export const setPointTrackers = pointTrackers => ({
 export const createPointTracker = pointTracker => (store) => {
   const { token } = store.getState();
 
-  pointTracker.date = new Date(pointTracker.date).toISOString();
+  // pointTracker.date = new Date(pointTracker.date).toISOString();
+  pointTracker.title = `Point Tracker for ${pointTracker.date}`;
 
+  console.log('createPointTracker sending', JSON.stringify(pointTracker, null, 4));
+  
   return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(pointTracker)
     .then((res) => {
       return store.dispatch(setPointTracker(res.body));
+    })
+    .catch((err) => {
+      console.error('createPointTracker error:', err);
     });
 };
 

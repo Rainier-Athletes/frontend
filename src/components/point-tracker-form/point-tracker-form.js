@@ -8,8 +8,8 @@ import * as pointTrackerActions from '../../actions/point-tracker';
 import './point-tracker-form.scss';
 
 const emptyPointTracker = {
-  _id: '',
-  date: Date.now(),
+  date: convertDateToValue(Date.now()),
+  title: `Default title ${convertDateToValue(Date.now())}`,
   student: '',
   studentName: '',
   subjects: [{
@@ -140,9 +140,9 @@ class PointTrackerForm extends React.Component {
     event.preventDefault();
     const pointTracker = this.state;
     delete pointTracker._id;
-
+    console.log('handleSubmit', JSON.stringify(pointTracker, null, 4));
     this.props.createPointTracker(pointTracker);
-    this.props.createSynopsisReport(pointTracker);
+    // this.props.createSynopsisReport(pointTracker);
 
     this.setState({ pointTracker: emptyPointTracker });
   }
@@ -205,34 +205,65 @@ class PointTrackerForm extends React.Component {
   }
 
   calcPlayingTime = () => {
+    if (!this.state.student) return null;
+
     const { subjects } = this.state;
-    const totalClassScores = subjects.map((subject) => {
+
+    const studentsFiltered = this.props.students.filter(s => s._id.toString() === this.state.student.toString());
+    const student = studentsFiltered[0];
+    console.log(student);
+
+    const { isElementarySchool } = student.studentData.school.filter(s => s.currentSchool)[0];
+
+    const numberOfPeriods = subjects.length;
+    const totalClassTokens = numberOfPeriods * 2;
+    const totalTutorialTokens = !isElementarySchool ? 4 : 0;
+    const totalGradeTokens = !isElementarySchool ? numberOfPeriods : 0;
+    const totalTokensPossible = totalClassTokens + totalGradeTokens + totalTutorialTokens;
+    console.log('token data:', totalClassTokens, totalTutorialTokens, totalGradeTokens, totalTokensPossible);
+
+    const totalEarnedTokens = subjects.map((subject) => {
       const { grade, subjectName } = subject;
+      // halfStamps are "X"s from the scoring sheet
       const { excusedDays, stamps, halfStamps } = subject.scoring;
-      const pointsEarned = 2 * stamps + halfStamps;
-      const pointsPossible = subjectName.toLowerCase === 'tutorial' ? 10 - excusedDays * 2 : 40 - excusedDays * 8;
-      const pointPercentage = pointsEarned / pointsPossible;
+      console.log('form data:', isElementarySchool, subjectName, excusedDays, stamps, halfStamps, grade);
+
+      let pointsPossible = 40 - (excusedDays * 8);
+      if (isElementarySchool && subjectName.toLowerCase() === 'tutorial') pointsPossible = 0;
+      if (subjectName.toLowerCase() === 'tutorial') pointsPossible = 8 - (excusedDays * 2);
+      console.log('pointsPossible', pointsPossible);
+
+      const totalClassPointsEarned = (2 * stamps) + halfStamps;
+      const classPointPercentage = totalClassPointsEarned / pointsPossible;
+      console.log('totalClassPointsEarned', totalClassPointsEarned, 'classPointPercentage', classPointPercentage);
       
-      let pointScore = 0;
-      if (pointPercentage >= 0.50) pointScore = 1;
-      if (pointPercentage >= 0.75) pointScore = 2;
+      let classTokensEarned = 0;
+      if (classPointPercentage >= 0.50) classTokensEarned = 1;
+      if (classPointPercentage >= 0.75) classTokensEarned = 2;
 
-      let gradeScore = 0;
-      if (grade >= 0.6) gradeScore = 1;
-      if (grade >= 0.7) gradeScore = 2;
+      let gradeTokensEarned = 0;
+      if (!isElementarySchool && grade >= 60) gradeTokensEarned = 1;
+      if (!isElementarySchool && grade >= 70) gradeTokensEarned = 2;
 
-      if (subjectName.toLowerCase() === 'tutorial') gradeScore = 0;
-      const totalClassScore = pointScore + gradeScore;
-      return totalClassScore;
+      if (subjectName.toLowerCase() === 'tutorial') gradeTokensEarned = 0;
+
+      const totalTokensEarned = classTokensEarned + gradeTokensEarned;
+      console.log('classTokens', classTokensEarned, 'gradeTokens', gradeTokensEarned, 'totalTokens', totalTokensEarned);
+
+      return totalTokensEarned;
     });
     
-    const totalClassScoreSum = totalClassScores.reduce((acc, cur) => acc + cur, 0);
-    if (totalClassScoreSum >= 30) return 'Entire game';
-    if (totalClassScoreSum >= 29) return 'All but start';
-    if (totalClassScoreSum >= 25) return 'Three quarters';
-    if (totalClassScoreSum >= 21) return 'Two quarters';
-    if (totalClassScoreSum >= 16) return 'One quarter';
-    return 'None of game';
+    const totalWeeklyTokensEarned = totalEarnedTokens.reduce((acc, cur) => acc + cur, 0);
+    const tokenPercentage = totalWeeklyTokensEarned / totalTokensPossible;
+
+    let calculatedPlayingTime = 'No playing time';
+    if (tokenPercentage >= 0.35) calculatedPlayingTime = 'One quarter';
+    if (tokenPercentage >= 0.55) calculatedPlayingTime = 'Two quarters';
+    if (tokenPercentage >= 0.65) calculatedPlayingTime = 'Three quarters';
+    if (tokenPercentage >= 0.75) calculatedPlayingTime = 'All but start';
+    if (tokenPercentage >= 0.80) calculatedPlayingTime = 'Whole game';
+
+    return calculatedPlayingTime;
   }
 
   render() {
@@ -344,7 +375,7 @@ class PointTrackerForm extends React.Component {
                 deleteSubject= { this.deleteSubject }
                 createSubject={ this.createSubject }
             />
-            <SynopsisReport pointTracker={ this.state }/>
+            {/* <SynopsisReport pointTracker={ this.state }/> */}
             { synopsisCommentsJSX }
           <button className="submit-report" type="submit">Submit Point Tracker</button>
         </form>

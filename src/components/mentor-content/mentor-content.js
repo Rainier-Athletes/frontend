@@ -17,15 +17,14 @@ class MentorContent extends React.Component {
               Point Tracker
             </Link>
           </span>
+          {
+            this.props.children
+          }
           <div style={{ width: 'auto', overflow: 'auto', padding: '20px' }}>
           {
             JSON.stringify(this.props.content)
           }
           </div>
-          {
-            this.props.children
-          }
-
         </div>
       </div>
     );

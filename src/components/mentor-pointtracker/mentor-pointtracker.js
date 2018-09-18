@@ -44,19 +44,8 @@ class Mentor extends React.Component {
     }
   }
 
-  fetchStudents() {
-    if (this.props.myStudents) {
-      return this.props.myStudents.map((student, i) => {
-        return (
-          <li className="nav-item" key={student._id} data-index={i} onClick={ this.handleSidebarClick.bind(this) }><a className="nav-link">
-              { student.firstName } { student.lastName }
-            </a>
-          </li>
-        );
-      });
-    }
-
-    return 'loading';
+  fetchPointTrackers() {
+    return 'Forms...';
   }
 
   render() {
@@ -64,7 +53,7 @@ class Mentor extends React.Component {
       <React.Fragment>
         <div className="container-fluid">
           <div className="row">
-          <Sidebar content={ this.fetchStudents() }/>
+          <Sidebar content={ this.fetchPointTrackers() }/>
           <MentorContent content={ this.state.content }>
             <PointTrackerForm />
           </MentorContent>

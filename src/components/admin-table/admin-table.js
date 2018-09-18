@@ -11,6 +11,8 @@ import './admin-table.scss';
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';
 
+import StudentDataForm from '../student-data-form/student-data-form';
+
 const faker = require('faker');
 const { Editors, Formatters, Toolbar, Filters: { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter }, Data: { Selectors } } = require('react-data-grid-addons'); // eslint-disable-line
 const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors; // eslint-disable-line
@@ -395,6 +397,7 @@ class AdminTable extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <StudentDataForm studentId='5ba03baf40c67d2a28e458ec'></StudentDataForm>
         <ConnectionModal
           show={this.state.isOpen}
           onClose={this.toggleModal}>

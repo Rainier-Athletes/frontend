@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Sidebar from '../side-bar/side-bar';
 import MentorContent from '../mentor-content/mentor-content';
-
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 import * as profileActions from '../../actions/profile';
-import './_mentor.scss';
+import './_mentor-pointtracker.scss';
 
 const mapStateToProps = state => ({
   myStudents: state.myStudents,
@@ -32,9 +32,9 @@ class Mentor extends React.Component {
     return null;
   }
 
-  componentDidMount = () => {
-    this.props.fetchMyStudents();
-  }
+  // componentDidMount = () => {
+  //   this.props.fetchMyStudents();
+  // }
 
   handleSidebarClick(e) {
     const i = e.currentTarget.dataset.index;
@@ -65,7 +65,9 @@ class Mentor extends React.Component {
         <div className="container-fluid">
           <div className="row">
           <Sidebar content={ this.fetchStudents() }/>
-          <MentorContent content={ this.state.content }/>
+          <MentorContent content={ this.state.content }>
+            <PointTrackerForm />
+          </MentorContent>
           </div>
         </div>
       </React.Fragment>

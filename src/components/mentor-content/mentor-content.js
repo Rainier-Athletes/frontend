@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import './_mentor-content.scss';
 
@@ -9,14 +10,22 @@ class MentorContent extends React.Component {
       <div role="main" className="col-md-8 panel">
         <div className="sidebar-sticky">
           <a className="nav-link disabled sidebar-heading">
-            {
-              this.props.title
-            }
+            Student Profile
           </a>
-          <span className="mentor-btn" onClick={this.props.btnClick}>Point Tracker</span>
+          <span className="mentor-btn">
+            <Link to="/mentor/pointtracker">
+              Point Tracker
+            </Link>
+          </span>
+          <div style={{ width: 'auto', overflow: 'auto', padding: '20px' }}>
           {
-            this.props.content
+            JSON.stringify(this.props.content)
           }
+          </div>
+          {
+            this.props.children
+          }
+
         </div>
       </div>
     );
@@ -27,6 +36,7 @@ MentorContent.propTypes = {
   content: PropTypes.node,
   title: PropTypes.string,
   btnClick: PropTypes.func,
+  children: PropTypes.node,
 };
 
 export default MentorContent;

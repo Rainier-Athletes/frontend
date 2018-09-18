@@ -96,7 +96,8 @@ class Navbar extends React.Component {
 
     const JSXLoggedIn = (
       <React.Fragment>
-        <a className="navbar-brand"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></a>
+        {/* <a className="navbar-brand"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></a> */}
+        <Link to={routes.ROOT_ROUTE}><img className="rainier-logo navbar-brand" src={ rainierBtn } /></Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
         </button>

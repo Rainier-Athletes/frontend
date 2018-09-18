@@ -54,7 +54,7 @@ class ConnectionModal extends React.Component {
 
     return (
       <div className="modalContainer">
-        <form className="modal" onChange={this.handleChange}>
+        <form className="" onChange={this.handleChange}>
           <button className="close-modal" onClick={this.props.onClose}>x</button>
           <h1>Add A Connection</h1>
           <div className="field-wrap dropdown">

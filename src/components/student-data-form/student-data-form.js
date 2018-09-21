@@ -32,7 +32,7 @@ class StudentDataForm extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = props.student ? props.student : null;
+    this.state = props.student ? props.student.studentData : null;
   }
 
   IsActiveCheckboxJsx = () => {
@@ -41,7 +41,13 @@ class StudentDataForm extends React.Component {
       <div>
         {active ? <Checkbox checked>Active</Checkbox> : <Checkbox>Active</Checkbox>}
       </div>
-    )
+    );
+  }
+
+  handleChange = (e) => {
+    console.log(e.target);
+    console.log(e.target.checked);
+    this.setState({ ...this.state, [e.target.id]: !e.target.checked });
   }
 
   render() {
@@ -64,20 +70,28 @@ class StudentDataForm extends React.Component {
 
     return (
     <form>
-      { this.IsActiveCheckboxJsx() }
       <FieldGroup
         id="formControlsText"
         type="text"
         label="Text"
         placeholder="Enter text"
-      />
+        />
       <FieldGroup
         id="formControlsEmail"
         type="email"
         label="Email address"
         placeholder="Enter email"
-      />
+        />
       <FieldGroup id="formControlsPassword" label="Password" type="password" />
+      <FieldGroup
+        id="active"
+        type="checkbox"
+        label="Active"
+        key="active"
+        help="Check if student is an active RA participant."
+        checked={this.props.student.active}
+        onChange={this.handleChange}
+      />
       <FieldGroup
         id="formControlsFile"
         type="file"

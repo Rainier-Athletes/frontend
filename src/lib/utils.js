@@ -36,10 +36,24 @@ const convertDateToValue = (date) => {
   return `${year}-${month}-${day}`;
 };
 
+const getNextFridayDateString = (date) => {
+  // find the friday following the given date
+  let workingDate = date;
+  if (!(date instanceof Date)) workingDate = new Date(date);
+  
+  const day = workingDate.getDay();
+  const today = workingDate.getDate();
+  const delta = day > 5 ? 7 + 5 - day : 5 - day;
+  workingDate.setDate(today + delta);
+
+  return convertDateToValue(workingDate);
+};
+
 export { 
   renderIf, 
   devLogger, 
   cookieFetch, 
   cookieDelete,
   convertDateToValue,
+  getNextFridayDateString,
 }; 

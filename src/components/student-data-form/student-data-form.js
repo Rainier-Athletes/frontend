@@ -41,14 +41,14 @@ const mapStateToProps = (state, ownProps) => {
   const mentors = state.profile.filter(p => p.role === 'mentor');
   const coaches = state.profile.filter(p => p.role === 'coach');
   const teachers = state.profile.filter(p => p.role === 'teacher');
-  const familyMembers = state.profile.filter(p => p.role === 'family');
+  const family = state.profile.filter(p => p.role === 'family');
 
   return ({ 
     student, 
     mentors, 
     coaches, 
     teachers, 
-    familyMembers,
+    family,
   });
 };
 
@@ -87,7 +87,7 @@ class StudentDataForm extends React.Component {
     if (!newState.mentors.map(m => m.mentor._id.toString()).includes(e.target.value.toString())) {
       newState.mentors.push({ mentor: this.props.mentors.find(m => m._id === e.target.value.toString()), currentMentor: true });
     } else {
-      // make selected mentor c(urrent
+      // make selected mentor current
       newState.mentors.forEach((m) => { 
         m.currentMentor = m.mentor._id.toString() === e.target.value.toString();
         return undefined;
@@ -98,25 +98,40 @@ class StudentDataForm extends React.Component {
     // can this be done in post save studentData hook on backend?
   }
 
-  handleCoachesSelect = (e) => {
-    console.log('handleCoachesSelect', e.target.options);
+  handleMultiSelect = (e) => {
+    const currentProperty = e.target.getAttribute('currentprop');
+    const dataProperty = e.target.getAttribute('dataprop');
+    const dataSubProp = e.target.getAttribute('datasubprop');
+
+    const selectedIds = [];
     for (let i = 0; i < e.target.options.length; i++) {
-      if (e.target.options[i].selected) console.log(e.target.options[i].value);
+      if (e.target.options[i].selected) selectedIds.push(e.target.options[i].value.toString());
     }
-    debugger;
+    const selectedData = this.props[dataProperty].filter(d => selectedIds.includes(d._id.toString()));
+
     const newState = { ...this.state };
-    // clear all currentCoach flags
-    newState.coaches.forEach((m) => { m.currentCoach = false; return undefined; });
-    // add new mentor to mentors array if not already present and make it currentMentor
-    if (!newState.coaches.map(m => m.coach._id.toString()).includes(e.target.value.toString())) {
-      newState.mentors.push({ mentor: this.props.mentors.find(m => m._id === e.target.value.toString()), currentMentor: true });
+    // clear all current flags
+    if (currentProperty) {
+      newState[dataProperty].forEach((d) => { d[currentProperty] = false; return undefined; });
     } else {
-      // make selected mentor c(urrent
-      newState.mentors.forEach((m) => { 
-        m.currentMentor = m.mentor._id.toString() === e.target.value.toString();
-        return undefined;
-      });
+      newState[dataProperty] = []; // in case of family dataProp. not keeping past family, tho this may change
     }
+    // add new data to dataProp array if not already present and make current
+    selectedData.forEach((selected) => {
+      if (!newState[dataProperty].map(d => d[dataSubProp]._id.toString()).includes(selected._id.toString())) {
+        if (currentProperty) {
+          newState[dataProperty].push({ [dataSubProp]: selected, [currentProperty]: true });
+        } else {
+          newState[dataProperty].push({ [dataSubProp]: selected });
+        }
+      } else if (currentProperty) {
+        // make selected items current
+        newState[dataProperty].forEach((d) => { 
+          if (d[dataSubProp]._id.toString() === selected._id.toString()) d[currentProperty] = true;
+          return undefined;
+        });
+      }
+    });
     this.setState(newState);
     // @TODO: need to manage connections between student and mentor (and coach, etc)
     // can this be done in post save studentData hook on backend?
@@ -139,19 +154,6 @@ class StudentDataForm extends React.Component {
         </FormGroup>
       );
     };
-
-    const currentMentor = this.state.mentors.length ? this.state.mentors.find(m => m.currentMentor).mentor : null;
-    const currentMentorId = currentMentor ? currentMentor._id : '';
-    const currentMentorName = currentMentorId
-      ? `${currentMentor.firstName} ${currentMentor.lastName}` : 'Select a mentor';
-
-    const currentCoaches = this.state.coaches.length
-      ? this.state.coaches.filter(c => c.currentCoach) : null;
-    const currentCoachIds = currentCoaches 
-      ? currentCoaches.map(c => c.coach._id.toString()) : null;
-    const currentCoachNames = currentCoaches 
-      ? currentCoaches.map(c => `${c.coach.firstName} ${c.coach.lastName}`) : null;
-    console.log(currentCoaches, currentCoachIds, currentCoachNames);
 
     return (
       <div className="student-data-form">
@@ -199,35 +201,61 @@ class StudentDataForm extends React.Component {
             <FormControl 
               componentClass="select" 
               placeholder="Select mentor"
-              onChange={this.handleMentorSelect}>
+              onChange={this.handleMentorSelect}
+              value={this.state.mentors.length ? this.state.mentors.find(m => m.currentMentor).mentor._id.toString() : 'selectMentor'}>
               <option
-                value={currentMentorId} key={currentMentorId}>
-                {currentMentorName}
+                value="selectMentor" key="selectMentor" disabled>
+                Select a mentor
               </option>
-              {this.props.mentors.filter(m => m._id !== currentMentorId).map(m => (
+              {this.props.mentors.map(m => (
                 <option value={m._id} key={m._id}>{m.firstName} {m.lastName}</option>
               ))}
             </FormControl>
           </FormGroup>
           <FormGroup controlId="select-coaches">         
-            <ControlLabel>Select Coaches</ControlLabel>
+            <ControlLabel>Select Coaches ({this.state.coaches.filter(t => t.currentCoach).length})</ControlLabel>
             <FormControl 
               componentClass="select"
               multiple
-              placeholder="Select coaches"
-              onChange={this.handleCoachesSelect}>
-              {currentCoaches.map((c, i) => (
-              <option
-                value={currentCoachIds[i]} key={currentCoachIds[i]}>
-                {currentCoachNames[i]}
-              </option>
-              ))}
-              {this.props.coaches.filter(c => !currentCoachIds.includes(c._id.toString())).map(c => (
+              onChange={this.handleMultiSelect}
+              currentprop="currentCoach"
+              dataprop="coaches"
+              datasubprop="coach"
+              value={this.state.coaches.filter(c => c.currentCoach).map(c => c.coach._id)}>
+              {this.props.coaches.map(c => (
                 <option value={c._id} key={c._id}>{c.firstName} {c.lastName}</option>
               ))}
             </FormControl>
           </FormGroup>
-          
+          <FormGroup controlId="select-teachers">         
+            <ControlLabel>Select Teachers ({this.state.teachers.filter(t => t.currentTeacher).length})</ControlLabel>
+            <FormControl 
+              componentClass="select"
+              multiple
+              onChange={this.handleMultiSelect}
+              currentprop="currentTeacher"
+              dataprop="teachers"
+              datasubprop="teacher"
+              value={this.state.teachers.filter(c => c.currentTeacher).map(c => c.teacher._id)}>
+              {this.props.teachers.map(c => (
+                <option value={c._id} key={c._id}>{c.firstName} {c.lastName}</option>
+              ))}
+            </FormControl>
+          </FormGroup> 
+          <FormGroup controlId="select-family">         
+            <ControlLabel>Select Family Members ({this.state.family.length})</ControlLabel>
+            <FormControl 
+              componentClass="select"
+              multiple
+              onChange={this.handleMultiSelect}
+              dataprop="family"
+              datasubprop="member"
+              value={this.state.family.map(c => c.member._id)}>
+              {this.props.family.map(c => (
+                <option value={c._id} key={c._id}>{c.firstName} {c.lastName}</option>
+              ))}
+            </FormControl>
+          </FormGroup>           
           <FieldGroup
             id="formControlsEmail"
             type="email"

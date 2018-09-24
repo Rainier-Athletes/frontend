@@ -79,8 +79,15 @@ class StudentDataForm extends React.Component {
     this.setState({ ...this.state, [e.target.id]: !e.target.checked });
   }
 
+  handleIsElementarySchool = () => {
+    const newState = Object.assign({}, this.state);
+    const currentIsElemState = newState.school.find(s => s.currentSchool).isElementarySchool;
+    newState.school.filter(s => s.currentSchool)[0].isElementarySchool = !currentIsElemState;
+    this.setState(newState);
+  }
+
   handleMentorSelect = (e) => {
-    const newState = { ...this.state };
+    const newState = Object.assign({}, this.state);
     // clear all currentMentor flags
     newState.mentors.forEach((m) => { m.currentMentor = false; return undefined; });
     // add new mentor to mentors array if not already present and make it currentMentor
@@ -109,7 +116,7 @@ class StudentDataForm extends React.Component {
     }
     const selectedData = this.props[dataProperty].filter(d => selectedIds.includes(d._id.toString()));
 
-    const newState = { ...this.state };
+    const newState = Object.assign({}, this.state);
     // clear all current flags
     if (currentProperty) {
       newState[dataProperty].forEach((d) => { d[currentProperty] = false; return undefined; });
@@ -187,6 +194,7 @@ class StudentDataForm extends React.Component {
               type="checkbox"
               label="Elementary school (check if it is)"
               checked={this.state.school.length ? this.state.school.find(s => s.currentSchool).isElementarySchool : false }
+              onChange={this.handleIsElementarySchool}
             />
             <FieldGroup
               id="grade"
@@ -255,7 +263,15 @@ class StudentDataForm extends React.Component {
                 <option value={c._id} key={c._id}>{c.firstName} {c.lastName}</option>
               ))}
             </FormControl>
-          </FormGroup>           
+          </FormGroup> 
+          <FormGroup>
+            <FieldGroup
+                id="is-elementary"
+                type="checkbox"
+                label="Elementary school (check if it is)"
+                checked={this.state.school.length ? this.state.school.find(s => s.currentSchool).isElementarySchool : false }
+              />
+          </FormGroup>
           <FieldGroup
             id="formControlsEmail"
             type="email"
@@ -341,7 +357,7 @@ StudentDataForm.propTypes = {
   mentors: PropTypes.array,
   coaches: PropTypes.array,
   teachers: PropTypes.array,
-  familyMembers: PropTypes.array,
+  family: PropTypes.array,
 };
 
 export default connect(mapStateToProps)(StudentDataForm);

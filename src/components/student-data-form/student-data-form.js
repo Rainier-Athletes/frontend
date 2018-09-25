@@ -64,21 +64,6 @@ class StudentDataForm extends React.Component {
     }
   }
 
-  IsActiveCheckboxJsx = () => {
-    const { active } = this.props.student;
-    return (
-      <div>
-        {active ? <Checkbox checked>Active</Checkbox> : <Checkbox>Active</Checkbox>}
-      </div>
-    );
-  }
-
-  handleChange = (e) => {
-    console.log(e.target);
-    console.log(e.target.checked);
-    this.setState({ ...this.state, [e.target.id]: !e.target.checked });
-  }
-
   handleIsElementarySchool = () => {
     const newState = Object.assign({}, this.state);
     const currentIsElemState = newState.school.find(s => s.currentSchool).isElementarySchool;
@@ -144,64 +129,73 @@ class StudentDataForm extends React.Component {
     // can this be done in post save studentData hook on backend?
   }
 
+  handleTextFieldChange = (e) => {
+    // e.preventDefault();
+    console.log(e.target.id, e.target.value);
+    this.setState({ ...this.state, [e.target.id]: e.target.value });
+  }
+
+  FieldGroup = ({
+    id, 
+    label, 
+    help, 
+    ...props 
+  }) => {
+    return (
+      <FormGroup controlId={id}>
+        <ControlLabel>{label}</ControlLabel>
+        <FormControl {...props} />
+        {help && <HelpBlock>{help}</HelpBlock>}
+      </FormGroup>
+    );
+  };
+
   render() {
     if (!this.state) return null;
-
-    const FieldGroup = ({
-      id, 
-      label, 
-      help, 
-      ...props 
-    }) => {
-      return (
-        <FormGroup controlId={id}>
-          <ControlLabel>{label}</ControlLabel>
-          <FormControl {...props} />
-          {help && <HelpBlock>{help}</HelpBlock>}
-        </FormGroup>
-      );
-    };
 
     return (
       <div className="student-data-form">
         <h1>Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h1>
         <form>
           <FormGroup controlId="gender-dob">
-            <FieldGroup
+            <this.FieldGroup
               id="gender"
               type="text"
               label="Gender"
               placeholder="Enter student's gender"
               value={this.state.gender ? this.state.gender : ''}
+              onChange={this.handleTextFieldChange}
             />
-            <FieldGroup
-              id="dob"
+            <this.FieldGroup
+              id="dateOfBirth"
               type="date"
               label="Date of Birth"
               value={this.state.dateOfBirth ? this.state.dateOfBirth : ''}
             />
           </FormGroup> 
           <FormGroup controlId="school-info">
-            <FieldGroup
+            <this.FieldGroup
               id="current-school"
               type="text"
               label="Current school"
               placeholder="Enter student's current school"
               value={this.state.school.length ? this.state.school.find(s => s.currentSchool).schoolName : ''}
+              onChange={this.handleSchoolChange}
             />
-            <FieldGroup
+            <this.FieldGroup
               id="is-elementary"
               type="checkbox"
               label="Elementary school (check if it is)"
               checked={this.state.school.length ? this.state.school.find(s => s.currentSchool).isElementarySchool : false }
               onChange={this.handleIsElementarySchool}
             />
-            <FieldGroup
+            <this.FieldGroup
               id="grade"
               type="text"
               label="Grade"
               placeholder="Enter student's grade in school"
               value={this.state.grade ? this.state.grade : ''}
+              onChange={this.handleTextFieldChange}
             />         
           </FormGroup>
           <FormGroup controlId="select-mentor">         
@@ -264,15 +258,44 @@ class StudentDataForm extends React.Component {
               ))}
             </FormControl>
           </FormGroup> 
-          <FormGroup>
-            <FieldGroup
+          {/* <FormGroup> // figure out how to handle weekday/weekend residence booleans
+            <this.FieldGroup
                 id="is-elementary"
                 type="checkbox"
                 label="Elementary school (check if it is)"
                 checked={this.state.school.length ? this.state.school.find(s => s.currentSchool).isElementarySchool : false }
               />
+          </FormGroup> */}
+          <FormGroup controlId="urls">
+            <this.FieldGroup
+              id="synopsisReportArchiveUrl"
+              key="synopsisReportArchiveUrl"
+              type="text"
+              label="Synopsis Reports Archive URL"
+              placeholder="Enter student's synopsis report archive url"
+              value={this.state.synopsisReportArchiveUrl ? this.state.synopsisReportArchiveUrl : ''}
+              onChange={this.handleTextFieldChange}
+            />
+            <this.FieldGroup
+              id="googleCalendarUrl"
+              key="googleCalendarUrl"
+              type="text"
+              label="Google Calendar URL"
+              placeholder="Enter student's google calendar url"
+              value={this.state.googleCalendarUrl ? this.state.googleCalendarUrl : ''}
+              onChange={this.handleTextFieldChange}
+            />
+            <this.FieldGroup
+              id="googleDocsUrl"
+              key="googleDocsUrl"
+              type="text"
+              label="Google Docs URL"
+              placeholder="Enter student's google documents url"
+              value={this.state.googleDocsUrl ? this.state.googleDocsUrl : ''}
+              onChange={this.handleTextFieldChange}
+            />
           </FormGroup>
-          <FieldGroup
+          {/* <FieldGroup
             id="formControlsEmail"
             type="email"
             label="Email address"
@@ -298,7 +321,7 @@ class StudentDataForm extends React.Component {
           <Checkbox checked readOnly>
             Checkbox
           </Checkbox>
-          <Radio checked readOnly>
+          <Radio checked readOnly> 
             Radio
           </Radio>
 
@@ -343,7 +366,7 @@ class StudentDataForm extends React.Component {
           <FormGroup>
             <ControlLabel>Static text</ControlLabel>
             <FormControl.Static>email@example.com</FormControl.Static>
-          </FormGroup>
+          </FormGroup> */}
 
           <Button type="submit">Submit</Button>
         </form>

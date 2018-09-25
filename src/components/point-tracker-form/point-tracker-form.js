@@ -146,9 +146,9 @@ class PointTrackerForm extends React.Component {
     event.preventDefault();
     const pointTracker = this.state;
     delete pointTracker._id;
-
+    console.log('handleSubmit', JSON.stringify(pointTracker, null, 4));
     this.props.createPointTracker(pointTracker);
-    this.props.createSynopsisReport(pointTracker);
+    // this.props.createSynopsisReport(pointTracker);
 
     this.setState({ pointTracker: emptyPointTracker });
   }
@@ -211,34 +211,60 @@ class PointTrackerForm extends React.Component {
   }
 
   calcPlayingTime = () => {
+    if (!this.state.student) return null;
+
     const { subjects } = this.state;
-    const totalClassScores = subjects.map((subject) => {
+
+    const studentsFiltered = this.props.students.filter(s => s._id.toString() === this.state.student.toString());
+    const student = studentsFiltered[0];
+    console.log(student);
+
+    const { isElementarySchool } = student.studentData.school.filter(s => s.currentSchool)[0];
+
+    const numberOfPeriods = subjects.length;
+    const totalClassTokens = numberOfPeriods * 2;
+    const totalTutorialTokens = !isElementarySchool ? 4 : 0;
+    const totalGradeTokens = !isElementarySchool ? numberOfPeriods : 0;
+    const totalTokensPossible = totalClassTokens + totalGradeTokens + totalTutorialTokens;
+    console.log('token data:', totalClassTokens, totalTutorialTokens, totalGradeTokens, totalTokensPossible);
+
+    const totalEarnedTokens = subjects.map((subject) => {
       const { grade, subjectName } = subject;
+      // halfStamps are "X"s from the scoring sheet
       const { excusedDays, stamps, halfStamps } = subject.scoring;
-      const pointsEarned = 2 * stamps + halfStamps;
-      const pointsPossible = subjectName.toLowerCase === 'tutorial' ? 10 - excusedDays * 2 : 40 - excusedDays * 8;
-      const pointPercentage = pointsEarned / pointsPossible;
+      console.log('form data:', isElementarySchool, subjectName, excusedDays, stamps, halfStamps, grade);
+
+      let pointsPossible = 40 - (excusedDays * 8);
+      if (isElementarySchool && subjectName.toLowerCase() === 'tutorial') pointsPossible = 0;
+      if (subjectName.toLowerCase() === 'tutorial') pointsPossible = 8 - (excusedDays * 2);
+      console.log('pointsPossible', pointsPossible);
+
+      const totalClassPointsEarned = (2 * stamps) + halfStamps;
+      const classPointPercentage = totalClassPointsEarned / pointsPossible;
+      console.log('totalClassPointsEarned', totalClassPointsEarned, 'classPointPercentage', classPointPercentage);
       
-      let pointScore = 0;
-      if (pointPercentage >= 0.50) pointScore = 1;
-      if (pointPercentage >= 0.75) pointScore = 2;
+      let classTokensEarned = 0;
+      if (classPointPercentage >= 0.50) classTokensEarned = 1;
+      if (classPointPercentage >= 0.75) classTokensEarned = 2;
 
-      let gradeScore = 0;
-      if (['A', 'B'].includes(grade)) gradeScore = 2;
-      if (grade === 'C') gradeScore = 1;
+      let gradeTokensEarned = 0;
+      if (!isElementarySchool && ['A', 'B'].includes(grade)) gradeTokensEarned = 2;
+      if (!isElementarySchool && grade === 'C') gradeTokensEarned = 1;
 
-      if (subjectName.toLowerCase() === 'tutorial') gradeScore = 0;
-      const totalClassScore = pointScore + gradeScore;
-      return totalClassScore;
+      const totalTokensEarned = classTokensEarned + gradeTokensEarned;
+      console.log('classTokens', classTokensEarned, 'gradeTokens', gradeTokensEarned, 'totalTokens', totalTokensEarned);
+
+      return totalTokensEarned;
     });
     
-    const totalClassScoreSum = totalClassScores.reduce((acc, cur) => acc + cur, 0);
+    const totalClassScoreSum = totalEarnedTokens.reduce((acc, cur) => acc + cur, 0);
+
     let earnedPlayingTime = 'None of game';
-    if (totalClassScoreSum >= 30) earnedPlayingTime = 'Entire game';
-    if (totalClassScoreSum >= 29) earnedPlayingTime = 'All but start';
-    if (totalClassScoreSum >= 25) earnedPlayingTime = 'Three quarters';
-    if (totalClassScoreSum >= 21) earnedPlayingTime = 'Two quarters';
     if (totalClassScoreSum >= 16) earnedPlayingTime = 'One quarter';
+    if (totalClassScoreSum >= 21) earnedPlayingTime = 'Two quarters';
+    if (totalClassScoreSum >= 25) earnedPlayingTime = 'Three quarters';
+    if (totalClassScoreSum >= 29) earnedPlayingTime = 'All but start';
+    if (totalClassScoreSum >= 30) earnedPlayingTime = 'Entire game';
     if (earnedPlayingTime !== this.state.earnedPlayingTime) this.setState({ ...this.state, earnedPlayingTime });
     return earnedPlayingTime;
   }
@@ -321,7 +347,6 @@ class PointTrackerForm extends React.Component {
           Object.keys(this.state.synopsisComments)
             .filter(keyName => names[keyName])
             .map((synopsisComment, i) => {
-              console.log(' picking comments', synopsisComment, this.state.earnedPlayingTime, this.state.mentorGrantedPlayingTime);
               if (synopsisComment === 'mentorGrantedPlayingTimeComments') {
                 if (this.state.mentorGrantedPlayingTime === '' // '' => none selected
                   || this.state.mentorGrantedPlayingTime === this.state.earnedPlayingTime) {

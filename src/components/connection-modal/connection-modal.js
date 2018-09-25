@@ -60,7 +60,7 @@ class ConnectionModal extends React.Component {
           <div className="field-wrap dropdown">
             <label htmlFor="student">Student Name:</label>
               <select type="student" required>
-                <option defaultValue> -- select an option -- </option>
+                <option defaultValue> -- select a student -- </option>
                 {
                   this.props.profile.filter(p => p.role === 'student').map((p) => {
                     return <option key={p._id} value={p._id}>
@@ -73,7 +73,7 @@ class ConnectionModal extends React.Component {
           <div className="field-wrap dropdown">
             <label htmlFor="connection-name">Name Of Connection:</label>
               <select type="connection-name" required>
-                <option defaultValue> -- select an option -- </option>
+                <option defaultValue> -- select a connection -- </option>
                 {
                   this.props.profile.filter(p => p.role !== 'student').map((p) => {
                     return <option key={p._id} value={p._id} role={p.role}>

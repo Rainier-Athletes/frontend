@@ -71,68 +71,21 @@ class StudentDataForm extends React.Component {
     this.setState(newState);
   }
 
-  handleMentorSelect = (e) => {
-    const newState = Object.assign({}, this.state);
-    // clear all currentMentor flags
-    newState.mentors.forEach((m) => { m.currentMentor = false; return undefined; });
-    // add new mentor to mentors array if not already present and make it currentMentor
-    if (!newState.mentors.map(m => m.mentor._id.toString()).includes(e.target.value.toString())) {
-      newState.mentors.push({ mentor: this.props.mentors.find(m => m._id === e.target.value.toString()), currentMentor: true });
-    } else {
-      // make selected mentor current
-      newState.mentors.forEach((m) => { 
-        m.currentMentor = m.mentor._id.toString() === e.target.value.toString();
-        return undefined;
-      });
-    }
-    this.setState(newState);
-    // @TODO: need to manage connections between student and mentor (and coach, etc)
-    // can this be done in post save studentData hook on backend?
-  }
-
-  handleMultiSelect = (e) => {
-    const currentProperty = e.target.getAttribute('currentprop');
-    const dataProperty = e.target.getAttribute('dataprop');
-    const dataSubProp = e.target.getAttribute('datasubprop');
-
-    const selectedIds = [];
-    for (let i = 0; i < e.target.options.length; i++) {
-      if (e.target.options[i].selected) selectedIds.push(e.target.options[i].value.toString());
-    }
-    const selectedData = this.props[dataProperty].filter(d => selectedIds.includes(d._id.toString()));
-
-    const newState = Object.assign({}, this.state);
-    // clear all current flags
-    if (currentProperty) {
-      newState[dataProperty].forEach((d) => { d[currentProperty] = false; return undefined; });
-    } else {
-      newState[dataProperty] = []; // in case of family dataProp. not keeping past family, tho this may change
-    }
-    // add new data to dataProp array if not already present and make current
-    selectedData.forEach((selected) => {
-      if (!newState[dataProperty].map(d => d[dataSubProp]._id.toString()).includes(selected._id.toString())) {
-        if (currentProperty) {
-          newState[dataProperty].push({ [dataSubProp]: selected, [currentProperty]: true });
-        } else {
-          newState[dataProperty].push({ [dataSubProp]: selected });
-        }
-      } else if (currentProperty) {
-        // make selected items current
-        newState[dataProperty].forEach((d) => { 
-          if (d[dataSubProp]._id.toString() === selected._id.toString()) d[currentProperty] = true;
-          return undefined;
-        });
-      }
-    });
-    this.setState(newState);
-    // @TODO: need to manage connections between student and mentor (and coach, etc)
-    // can this be done in post save studentData hook on backend?
-  }
-
   handleTextFieldChange = (e) => {
     // e.preventDefault();
     console.log(e.target.id, e.target.value);
     this.setState({ ...this.state, [e.target.id]: e.target.value });
+  }
+
+  handleGuardianChange = (e) => {
+    const { id } = e.target;
+    const prop = e.target.getAttribute('prop');
+    console.log(id, prop);
+    const newState = Object.assign({}, this.state);
+    const { family } = newState;
+    const memberIdx = family.map(m => m.member._id).indexOf(id);
+    family[memberIdx][prop] = !family[memberIdx][prop];
+    this.setState(newState);
   }
 
   FieldGroup = ({
@@ -198,74 +151,27 @@ class StudentDataForm extends React.Component {
               onChange={this.handleTextFieldChange}
             />         
           </FormGroup>
-          <FormGroup controlId="select-mentor">         
-            <ControlLabel>Select Mentor</ControlLabel>
-            <FormControl 
-              componentClass="select" 
-              placeholder="Select mentor"
-              onChange={this.handleMentorSelect}
-              value={this.state.mentors.length ? this.state.mentors.find(m => m.currentMentor).mentor._id.toString() : 'selectMentor'}>
-              <option
-                value="selectMentor" key="selectMentor" disabled>
-                Select a mentor
-              </option>
-              {this.props.mentors.map(m => (
-                <option value={m._id} key={m._id}>{m.firstName} {m.lastName}</option>
-              ))}
-            </FormControl>
-          </FormGroup>
-          <FormGroup controlId="select-coaches">         
-            <ControlLabel>Select Coaches ({this.state.coaches.filter(t => t.currentCoach).length})</ControlLabel>
-            <FormControl 
-              componentClass="select"
-              multiple
-              onChange={this.handleMultiSelect}
-              currentprop="currentCoach"
-              dataprop="coaches"
-              datasubprop="coach"
-              value={this.state.coaches.filter(c => c.currentCoach).map(c => c.coach._id)}>
-              {this.props.coaches.map(c => (
-                <option value={c._id} key={c._id}>{c.firstName} {c.lastName}</option>
-              ))}
-            </FormControl>
-          </FormGroup>
-          <FormGroup controlId="select-teachers">         
-            <ControlLabel>Select Teachers ({this.state.teachers.filter(t => t.currentTeacher).length})</ControlLabel>
-            <FormControl 
-              componentClass="select"
-              multiple
-              onChange={this.handleMultiSelect}
-              currentprop="currentTeacher"
-              dataprop="teachers"
-              datasubprop="teacher"
-              value={this.state.teachers.filter(c => c.currentTeacher).map(c => c.teacher._id)}>
-              {this.props.teachers.map(c => (
-                <option value={c._id} key={c._id}>{c.firstName} {c.lastName}</option>
-              ))}
-            </FormControl>
-          </FormGroup> 
-          <FormGroup controlId="select-family">         
-            <ControlLabel>Select Family Members ({this.state.family.length})</ControlLabel>
-            <FormControl 
-              componentClass="select"
-              multiple
-              onChange={this.handleMultiSelect}
-              dataprop="family"
-              datasubprop="member"
-              value={this.state.family.map(c => c.member._id)}>
-              {this.props.family.map(c => (
-                <option value={c._id} key={c._id}>{c.firstName} {c.lastName}</option>
-              ))}
-            </FormControl>
-          </FormGroup> 
-          {/* <FormGroup> // figure out how to handle weekday/weekend residence booleans
-            <this.FieldGroup
-                id="is-elementary"
-                type="checkbox"
-                label="Elementary school (check if it is)"
-                checked={this.state.school.length ? this.state.school.find(s => s.currentSchool).isElementarySchool : false }
-              />
-          </FormGroup> */}
+          <h4>Guardians</h4>
+          {this.state.family.length 
+            ? this.state.family.map((f, i) => (
+              <FormGroup controlId={`guardians-${i}`} key={f.member._id} onChange={this.handleGuardianChange}>
+                {`${f.member.firstName} ${f.member.lastName}:`}
+                <Checkbox 
+                  inline 
+                  checked={f.weekdayGuardian}
+                  id={f.member._id.toString()}
+                  prop="weekdayGuardian"
+                  >Weekday guardian</Checkbox> 
+                <Checkbox 
+                  inline 
+                  checked={f.weekendGuardian}
+                  id={f.member._id.toString()}
+                  prop="weekendGuardian"
+                  >Weekend guardian</Checkbox>
+              </FormGroup>
+            )) 
+            : null 
+          }
           <FormGroup controlId="urls">
             <this.FieldGroup
               id="synopsisReportArchiveUrl"
@@ -295,79 +201,6 @@ class StudentDataForm extends React.Component {
               onChange={this.handleTextFieldChange}
             />
           </FormGroup>
-          {/* <FieldGroup
-            id="formControlsEmail"
-            type="email"
-            label="Email address"
-            placeholder="Enter email"
-            />
-          <FieldGroup id="formControlsPassword" label="Password" type="password" />
-          <FieldGroup
-            id="active"
-            type="checkbox"
-            label="Active"
-            key="active"
-            help="Check if student is an active RA participant."
-            checked={this.props.student.active}
-            onChange={this.handleChange}
-          />
-          <FieldGroup
-            id="formControlsFile"
-            type="file"
-            label="File"
-            help="Example block-level help text here."
-          />
-
-          <Checkbox checked readOnly>
-            Checkbox
-          </Checkbox>
-          <Radio checked readOnly> 
-            Radio
-          </Radio>
-
-          <FormGroup>
-            <Checkbox inline>1</Checkbox> <Checkbox inline>2</Checkbox>{' '}
-            <Checkbox inline>3</Checkbox>
-          </FormGroup>
-          
-          <FormGroup>
-            <Radio name="radioGroup" inline>
-              1
-            </Radio>{' '}
-            <Radio name="radioGroup" inline>
-              2
-            </Radio>{' '}
-            <Radio name="radioGroup" inline>
-              3
-            </Radio>
-          </FormGroup>
-
-          <FormGroup controlId="formControlsSelect">
-            <ControlLabel>Select</ControlLabel>
-            <FormControl componentClass="select" placeholder="select">
-              <option value="select">select</option>
-              <option value="other">...</option>
-            </FormControl>
-          </FormGroup>
-
-          <FormGroup controlId="formControlsSelectMultiple">
-            <ControlLabel>Multiple select</ControlLabel>
-            <FormControl componentClass="select" multiple>
-              <option value="select">select (multiple)</option>
-              <option value="other">...</option>
-            </FormControl>
-          </FormGroup>
-
-          <FormGroup controlId="formControlsTextarea">
-            <ControlLabel>Textarea</ControlLabel>
-            <FormControl componentClass="textarea" placeholder="textarea" />
-          </FormGroup>
-
-          <FormGroup>
-            <ControlLabel>Static text</ControlLabel>
-            <FormControl.Static>email@example.com</FormControl.Static>
-          </FormGroup> */}
-
           <Button type="submit">Submit</Button>
         </form>
     </div>

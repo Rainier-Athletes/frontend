@@ -5,17 +5,17 @@ import {
   FormControl,
   HelpBlock,
   Checkbox,
-  Radio,
   Button,
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import * as studentDataActions from '../../actions/student-data';
 
 import './student-data-form.scss';
 
 const emptyStudentData = {
   student: '',
-  lastPointTracker: '',
+  // lastPointTracker: '',
   coaches: [],
   sports: [],
   mentors: [],
@@ -52,6 +52,13 @@ const mapStateToProps = (state, ownProps) => {
   });
 };
 
+const mapDispatchToProps = dispatch => ({
+  fetchStudentData: id => dispatch(studentDataActions.fetchStudentData(id)),
+  fetchAllStudentData: () => dispatch(studentDataActions.fetchBulkStudentData()),
+  createStudentData: studentData => dispatch(studentDataActions.createStudentData(studentData)),
+  updateStudentData: studentData => dispatch(studentDataActions.updateStudentData(studentData)),
+});
+
 class StudentDataForm extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -62,6 +69,15 @@ class StudentDataForm extends React.Component {
       newStudentData.student = props.student;
       this.state = newStudentData;
     }
+  }
+
+  handleSchoolChange = (e) => {
+    // overwrite school[0] for now. need to figure way to create new school...
+    const newState = Object.assign({}, this.state);
+    if (newState.school.length === 0) newState.school.push({});
+    newState.school[0].schoolName = e.target.value;
+    newState.school[0].currentSchool = true;
+    this.setState(newState);
   }
 
   handleIsElementarySchool = () => {
@@ -80,12 +96,27 @@ class StudentDataForm extends React.Component {
   handleGuardianChange = (e) => {
     const { id } = e.target;
     const prop = e.target.getAttribute('prop');
-    console.log(id, prop);
     const newState = Object.assign({}, this.state);
     const { family } = newState;
     const memberIdx = family.map(m => m.member._id).indexOf(id);
     family[memberIdx][prop] = !family[memberIdx][prop];
     this.setState(newState);
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (this.state._id) { // existing doc, update it
+      console.log('calling updateStudentData');
+      return this.props.updateStudentData(this.state)
+        .then(() => {
+          console.log('back from update successfully');
+        });
+    }
+    console.log('calling createStudentData');
+    return this.props.createStudentData(this.state)
+      .then(() => {
+        console.log('back from create successfully');
+      });
   }
 
   FieldGroup = ({
@@ -109,7 +140,7 @@ class StudentDataForm extends React.Component {
     return (
       <div className="student-data-form">
         <h1>Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h1>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="gender-dob">
             <this.FieldGroup
               id="gender"
@@ -214,6 +245,9 @@ StudentDataForm.propTypes = {
   coaches: PropTypes.array,
   teachers: PropTypes.array,
   family: PropTypes.array,
+  history: PropTypes.array,
+  updateStudentData: PropTypes.func,
+  createStudentData: PropTypes.func,
 };
 
-export default connect(mapStateToProps)(StudentDataForm);
+export default connect(mapStateToProps, mapDispatchToProps)(StudentDataForm);

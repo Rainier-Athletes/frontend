@@ -14,12 +14,10 @@ const emptyPointTracker = {
   studentName: '',
   subjects: [{
     subjectName: 'Tutorial',
-    teacher: '',
     scoring: {
       excusedDays: '',
       stamps: '',
       halfStamps: '',
-      tutorials: '',
     },
     grade: '',
   }],
@@ -90,6 +88,8 @@ class PointTrackerForm extends React.Component {
   }
 
   handleSubjectChange = (event) => {
+    event.persist();
+
     const validGrades = ['A', 'B', 'C', 'D', 'F', ''];
 
     const { name } = event.target;
@@ -103,7 +103,7 @@ class PointTrackerForm extends React.Component {
           if (subject.subjectName === subjectName) {
             const newSubject = { ...subject };
             if (categoryName === 'grade') {
-              newSubject.grade = validGrades.includes(event.target.value) ? event.target.value : '';
+              newSubject.grade = validGrades.includes(event.target.value.toUpperCase()) ? event.target.value.toUpperCase() : '';
             } else {
               newSubject.scoring[categoryName] = Math.min(Math.max(parseInt(event.target.value, 10), 0), 8);
             }
@@ -148,7 +148,7 @@ class PointTrackerForm extends React.Component {
     delete pointTracker._id;
     console.log('handleSubmit', JSON.stringify(pointTracker, null, 4));
     this.props.createPointTracker(pointTracker);
-    // this.props.createSynopsisReport(pointTracker);
+    this.props.createSynopsisReport(pointTracker);
 
     this.setState({ pointTracker: emptyPointTracker });
   }
@@ -181,12 +181,11 @@ class PointTrackerForm extends React.Component {
         subjectName,
         teacher: teacherId,
         scoring: {
-          excusedDays: null,
-          stamps: null,
-          halfStamps: null,
-          tutorials: null,
+          excusedDays: '',
+          stamps: '',
+          halfStamps: '',
         },
-        grade: null,
+        grade: '',
       };
 
       newState.subjects.push(newSubject);
@@ -223,8 +222,8 @@ class PointTrackerForm extends React.Component {
 
     const numberOfPeriods = subjects.length;
     const totalClassTokens = numberOfPeriods * 2;
-    const totalTutorialTokens = !isElementarySchool ? 4 : 0;
-    const totalGradeTokens = !isElementarySchool ? numberOfPeriods : 0;
+    const totalTutorialTokens = isElementarySchool ? 0 : 4;
+    const totalGradeTokens = isElementarySchool ? 0 : numberOfPeriods;
     const totalTokensPossible = totalClassTokens + totalGradeTokens + totalTutorialTokens;
     console.log('token data:', totalClassTokens, totalTutorialTokens, totalGradeTokens, totalTokensPossible);
 
@@ -290,7 +289,7 @@ class PointTrackerForm extends React.Component {
           </select>
         </div>
         <div className="select-date">
-          <label htmlFor="">Select Date (forced to next the Friday)</label>
+          <label htmlFor="">Select Date (forced to next Friday)</label>
           <input
             name="date"
             type="date"
@@ -387,8 +386,8 @@ class PointTrackerForm extends React.Component {
                 createSubject={ this.createSubject }
             />
             { synopsisCommentsJSX }
-            <SynopsisReport pointTracker={ this.state }/>
           <button className="submit-report" type="submit">Submit Point Tracker</button>
+          <SynopsisReport pointTracker={ this.state }/>
         </form>
 
 

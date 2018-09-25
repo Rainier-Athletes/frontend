@@ -5,6 +5,7 @@ import profile from './profile';
 import myProfile from './myProfile';
 import pointTracker from './point-tracker';
 import pointTrackers from './point-trackers';
+import studentData from './student-data';
 import students from './students';
 import teachers from './teachers';
 
@@ -17,4 +18,5 @@ export default combineReducers({
   teachers,
   pointTracker,
   pointTrackers,
+  studentData,
 });

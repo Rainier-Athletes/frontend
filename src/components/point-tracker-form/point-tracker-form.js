@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getNextFridayDateString, getReportingPeriods } from '../../lib/utils';
+import { getReportingPeriods } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
-import SynopsisReport from '../synopsis-report/synopsis-report';
+import PointTrackerSummary from '../point-tracker-summary/point-tracker-summary';
 import * as pointTrackerActions from '../../actions/point-tracker';
 import './point-tracker-form.scss';
 
 const emptyPointTracker = {
-  _id: '',
-  date: getNextFridayDateString(Date.now()),
+  date: new Date(Date.now()).toDateString(),
+  title: '',
   student: '',
   studentName: '',
   subjects: [{
@@ -68,23 +68,22 @@ class PointTrackerForm extends React.Component {
     super(props);
 
     this.state = emptyPointTracker;
+
+    this.state.synopsisSaved = false;
   }
 
-  handleDateChange = (event) => {
-    const { value } = event.target;
-    const [year, month, day] = value.split('-'); 
-    const date = new Date(
-      parseInt(year, 10), 
-      parseInt(month, 10) - 1, 
-      parseInt(day, 10),
-    );
-    
-    this.setState((prevState) => {
-      const newState = { ...prevState };
-      newState.date = date.getTime();
-      newState.title = `Point Tracker for ${newState.studentName} for Friday ${getNextFridayDateString(value)}`;
-      return newState;
-    });
+  componentDidUpdate = (prevProps) => {
+    console.log('componentDidUpdate link was', prevProps.synopsisReportLink);
+    console.log('componentDidUpdate link now', this.props.synopsisReportLink);
+    if (this.props.synopsisReportLink !== prevProps.synopsisReportLink) {
+      this.setState({ ...this.state, synopsisSaved: true, synopsisLink: this.props.synopsisReportLink });
+    }
+  }
+
+  handleTitleChange = (event) => {
+    const newState = { ...this.state };
+    newState.title = `${newState.studentName} ${event.target.value}`;
+    this.setState(newState);
   }
 
   handleSubjectChange = (event) => {
@@ -146,7 +145,7 @@ class PointTrackerForm extends React.Component {
     event.preventDefault();
     const pointTracker = this.state;
     delete pointTracker._id;
-    console.log('handleSubmit', JSON.stringify(pointTracker, null, 4));
+    console.log('handleSubmit', pointTracker.title);
     this.props.createPointTracker(pointTracker);
     this.props.createSynopsisReport(pointTracker);
 
@@ -205,13 +204,14 @@ class PointTrackerForm extends React.Component {
       newState = lastPointTracker || emptyPointTracker;
       newState.student = studentId;
       newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
+      newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
       return newState;
     });
   }
 
   calcPlayingTime = () => {
     if (!this.state.student) return null;
-
+    console.groupCollapsed('calcPlayingTime');
     const { subjects } = this.state;
 
     const studentsFiltered = this.props.students.filter(s => s._id.toString() === this.state.student.toString());
@@ -257,7 +257,7 @@ class PointTrackerForm extends React.Component {
     });
     
     const totalClassScoreSum = totalEarnedTokens.reduce((acc, cur) => acc + cur, 0);
-
+    
     let earnedPlayingTime = 'None of game';
     if (totalClassScoreSum >= 16) earnedPlayingTime = 'One quarter';
     if (totalClassScoreSum >= 21) earnedPlayingTime = 'Two quarters';
@@ -265,6 +265,7 @@ class PointTrackerForm extends React.Component {
     if (totalClassScoreSum >= 29) earnedPlayingTime = 'All but start';
     if (totalClassScoreSum >= 30) earnedPlayingTime = 'Entire game';
     if (earnedPlayingTime !== this.state.earnedPlayingTime) this.setState({ ...this.state, earnedPlayingTime });
+    console.groupEnd('calcPlayingTime');
     return earnedPlayingTime;
   }
 
@@ -378,6 +379,18 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
+    const displaySummaryJSX = () => {
+      // let link;
+      console.log('displaySummaryJSX saved:', this.state.synopsisSaved);
+      if (this.state.synopsisSaved) {
+        console.log('this.state.title', this.state.title);
+        // link = this.props.synopsisReportLink;
+        // this.setState({ ...this.state, synopsisSaved: false, synopsisLink: link });
+        return (<PointTrackerSummary pointTracker={this.state}/>);
+      }
+      return null;
+    };
+
     return (
       <div className="points-tracker">
         <form className="data-entry" onSubmit={ this.handleSubmit }>
@@ -394,7 +407,7 @@ class PointTrackerForm extends React.Component {
             />
             { synopsisCommentsJSX }
           <button className="submit-report" type="submit">Submit Point Tracker</button>
-          <SynopsisReport pointTracker={ this.state }/>
+          { displaySummaryJSX() }
         </form>
 
 
@@ -406,19 +419,23 @@ class PointTrackerForm extends React.Component {
 const mapStateToProps = state => ({
   students: state.students,
   teachers: state.teachers,
+  synopsisReportLink: state.synopsisReportLink,
 });
 
 const mapDispatchToProps = dispatch => ({
   createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
   createSynopsisReport: pointTracker => dispatch(pointTrackerActions.createSynopsisReport(pointTracker)),
+  clearSynopsisReportLink: () => dispatch(pointTrackerActions.clearSynopsisReportLink()),
 });
 
 PointTrackerForm.propTypes = {
   students: PropTypes.array,
   teachers: PropTypes.array,
+  synopsisReportLink: PropTypes.string,
   handleChange: PropTypes.func,
   createPointTracker: PropTypes.func,
   createSynopsisReport: PropTypes.func,
+  clearSynopsisReportLink: PropTypes.func,
   fetchStudents: PropTypes.func,
   fetchTeachers: PropTypes.func,
 };

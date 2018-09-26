@@ -14,13 +14,19 @@ export const setPointTrackers = pointTrackers => ({
   payload: pointTrackers,
 });
 
+export const setSynopsisReportLink = link => ({
+  type: 'SYNOPSIS_REPORT_LINK_SET',
+  payload: link,
+});
+
+export const clearSynopsisReportLink = () => ({
+  type: 'SYNOPSIS_REPORT_LINK_CLEAR',
+});
+
 export const createPointTracker = pointTracker => (store) => {
   const { token } = store.getState();
 
-  // pointTracker.date = new Date(pointTracker.date).toISOString();
-  pointTracker.title = `Point Tracker for ${pointTracker.date}`;
-
-  console.log('createPointTracker sending', JSON.stringify(pointTracker, null, 4));
+  console.log('createPointTracker sending report', pointTracker.title);
   
   return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
@@ -88,6 +94,6 @@ export const createSynopsisReport = pointTracker => (store) => {
     .set('Content-Type', 'application/json')
     .send(data)
     .then((res) => {
-      return store.dispatch(setPointTracker(res.body));
+      return store.dispatch(setSynopsisReportLink(res.body.webViewLink));
     });
 };

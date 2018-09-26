@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getNextFridayDateString } from '../../lib/utils';
+import { getNextFridayDateString, getReportingPeriods } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import SynopsisReport from '../synopsis-report/synopsis-report';
 import * as pointTrackerActions from '../../actions/point-tracker';
@@ -269,6 +269,8 @@ class PointTrackerForm extends React.Component {
   }
 
   render() {
+    const reportingPeriods = getReportingPeriods();
+
     const selectOptionsJSX = (
       <section>
         <div className="select-student">
@@ -289,14 +291,19 @@ class PointTrackerForm extends React.Component {
           </select>
         </div>
         <div className="select-date">
-          <label htmlFor="">Select Date (forced to next Friday)</label>
-          <input
-            name="date"
-            type="date"
-            onChange={ this.handleDateChange }
-            value={ getNextFridayDateString(this.state.date) }
+          <label htmlFor="">Select Reporting Period</label>
+          <select
             required
-            />
+            onChange={ this.handleTitleChange }
+            defaultValue={reportingPeriods[1]}>
+            {reportingPeriods.map(p => (
+              <option
+                key={p}
+                value={p}>
+              {p}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="clearfix"></div>
       </section>

@@ -171,21 +171,21 @@ class StudentDataForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('target.id:', e.target.id);
+  
     if (e.target.id.indexOf('new-school') > -1) return this.handleNewSchool(e);
 
     if (this.state._id) { // existing doc, update it
-      console.log('calling updateStudentData');
-      return this.props.updateStudentData(this.state)
+      this.props.updateStudentData(this.state)
         .then(() => {
           console.log('back from update successfully');
         });
+    } else {
+      return this.props.createStudentData(this.state)
+        .then(() => {
+          console.log('back from create successfully');
+        });
     }
-    console.log('calling createStudentData');
-    return this.props.createStudentData(this.state)
-      .then(() => {
-        console.log('back from create successfully');
-      });
+    return this.props.onClose();
   }
 
   FieldGroup = ({

@@ -6,8 +6,8 @@ p {
   background: rgba(33, 33, 33, .97);
   border-radius: 7px;
   box-shadow: 0px 0px 10px rgb(186, 186, 186);
-  width: 26em;
-  height: 29em;
+  width: 30em;
+  height: 32em;
   color: white;
   font-family: helvetica;
   position: absolute;
@@ -23,8 +23,8 @@ p {
 .field-wrap {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 5px;
+  justify-content: flex-end;
+  margin: 5px 20px;
   padding: 5px;
 }
 
@@ -90,7 +90,7 @@ input:focus, button:focus {
 }
 
 .dropdown select {
-  width: 13em;
+  width: 15em;
   height: 2em;
   background-color: white !important;
 }

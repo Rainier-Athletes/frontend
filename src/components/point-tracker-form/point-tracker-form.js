@@ -5,6 +5,8 @@ import { getReportingPeriods } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import PointTrackerSummary from '../point-tracker-summary/point-tracker-summary';
 import * as pointTrackerActions from '../../actions/point-tracker';
+import waitingGif from '../../assets/loading_icon.gif';
+
 import './point-tracker-form.scss';
 
 const emptyPointTracker = {
@@ -73,15 +75,18 @@ class PointTrackerForm extends React.Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    console.log('componentDidUpdate link was', prevProps.synopsisReportLink);
-    console.log('componentDidUpdate link now', this.props.synopsisReportLink);
     if (this.props.synopsisReportLink !== prevProps.synopsisReportLink) {
-      this.setState({ ...this.state, synopsisSaved: true, synopsisLink: this.props.synopsisReportLink });
+      this.setState({ 
+        ...this.state, 
+        synopsisSaved: true,
+        waitingOnSaves: false,
+        synopsisLink: this.props.synopsisReportLink 
+      });
     }
   }
 
   handleTitleChange = (event) => {
-    const newState = { ...this.state };
+    const newState = { ...this.state, synopsisSaved: false };
     newState.title = `${newState.studentName} ${event.target.value}`;
     this.setState(newState);
   }
@@ -146,6 +151,7 @@ class PointTrackerForm extends React.Component {
     const pointTracker = this.state;
     delete pointTracker._id;
     console.log('handleSubmit', pointTracker.title);
+    this.setState({ ...this.state, waitingOnSaves: true });
     this.props.createPointTracker(pointTracker);
     this.props.createSynopsisReport(pointTracker);
 
@@ -205,6 +211,7 @@ class PointTrackerForm extends React.Component {
       newState.student = studentId;
       newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
       newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
+      newState.synopsisSaved = false;
       return newState;
     });
   }
@@ -395,18 +402,18 @@ class PointTrackerForm extends React.Component {
       <div className="points-tracker">
         <form className="data-entry" onSubmit={ this.handleSubmit }>
           <h2>POINT TRACKER TABLE</h2>
-            { selectOptionsJSX }
-            { surveyQuestionsJSX }
-              <PointTrackerTable
-                handleSubjectChange={ this.handleSubjectChange }
-                subjects={ this.state.subjects }
-                getTeacherName={ this.getTeacherName }
-                teachers={ this.props.teachers }
-                deleteSubject= { this.deleteSubject }
-                createSubject={ this.createSubject }
-            />
-            { synopsisCommentsJSX }
-          <button className="submit-report" type="submit">Submit Point Tracker</button>
+          { selectOptionsJSX }
+          { surveyQuestionsJSX }
+            <PointTrackerTable
+              handleSubjectChange={ this.handleSubjectChange }
+              subjects={ this.state.subjects }
+              getTeacherName={ this.getTeacherName }
+              teachers={ this.props.teachers }
+              deleteSubject= { this.deleteSubject }
+              createSubject={ this.createSubject }
+          />
+          { synopsisCommentsJSX }
+          { this.state.waitingOnSaves ? <img src={waitingGif} alt="waiting" /> : <button className="submit-report" type="submit">Submit Point Tracker</button> }
           { displaySummaryJSX() }
         </form>
 

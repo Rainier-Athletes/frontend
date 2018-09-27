@@ -496,7 +496,7 @@ class AdminTable extends React.Component {
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
               <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
               <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
-              <button className="modalBtn" onClick={this.toggleSdModal}>Access Student Data</button>
+              <button className="modalBtn" onClick={this.toggleSdModal}>Access Selected Student Data</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
               <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
             </Toolbar>
@@ -521,7 +521,6 @@ class AdminTable extends React.Component {
           getValidFilterValues={this.getValidFilterValues}
           onClearFilters={this.handleOnClearFilters}
           />
-          {/* { this.state.studentSelected ? <StudentDataForm studentId={ this.state.studentSelected }></StudentDataForm> : null } */}
       </React.Fragment>
     );
   }

@@ -67,16 +67,18 @@ export default class PointTrackerTable extends React.Component {
     </div>
     );
   
-    const subjectsJSX = this.props.subjects.map(subject => (
-    <SubjectColumn
-      key={ `${subject.subjectName}-${subject.teacher}` } 
-      label={ subject.subjectName }
-      subject={ subject }
-      handleSubjectChange={ this.props.handleSubjectChange }
-      getTeacherName={ this.props.getTeacherName }
-      deleteSubject={ this.props.deleteSubject }
-    />
-    ));
+    const subjectsJSX = this.props.subjects.map((subject) => {
+      return (
+        <SubjectColumn
+          key={ `${subject.subjectName}-${subject.teacher}` } 
+          label={ subject.subjectName }
+          subject={ subject }
+          handleSubjectChange={ this.props.handleSubjectChange }
+          getTeacherName={ this.props.getTeacherName }
+          deleteSubject={ this.props.deleteSubject }
+        />
+      );
+    });
 
     return (
     <React.Fragment>
@@ -84,7 +86,7 @@ export default class PointTrackerTable extends React.Component {
       { addNewSubjectJSX }
       <div className="point-table">
         <div className="row-labels">
-          <label></label>
+          <label>Subject</label>
           <label>Periods Missed</label>
           <label>Num. of Stamps</label>
           <label>Num. of Xs</label>

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import * as routes from '../../lib/routes';
 import ConnectionModal from '../connection-modal/connection-modal';
 import './admin-table.scss';
-
+import StudentDataForm from '../student-data-form/student-data-form';
 
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';
@@ -101,6 +101,7 @@ class AdminTable extends React.Component {
     this.state = {
       rows: [],
       selectedIndexes: [],
+      studentSelected: null,
       originalRows: [],
       expanded: {},
       filters: {},
@@ -130,11 +131,14 @@ class AdminTable extends React.Component {
       });
   };
 
-  populateMentorChildren = (profile) => {
+  populateNonStudentChildren = (profile) => {
     const childArr = [];
-    for (const i in profile.students) { // eslint-disable-line
-      childArr.push(profile.students[i]);
-    }
+    profile.students.forEach((student) => {
+      if (student.active) childArr.push(student);
+    });
+    // for (const i in profile.students) { // eslint-disable-line
+    //   childArr.push(profile.students[i]);
+    // }
     return childArr;
   };
 
@@ -165,7 +169,7 @@ class AdminTable extends React.Component {
   populateData = (profile) => {
     let childArr;
     if (profile.role !== 'student' && profile.students.length > 0) {
-      childArr = this.populateMentorChildren(profile);
+      childArr = this.populateNonStudentChildren(profile);
     }
     if (profile.role === 'student') {
       childArr = this.populateStudentChildren(profile);
@@ -231,12 +235,20 @@ class AdminTable extends React.Component {
   };
 
   onRowsSelected = (rows) => {
-    this.setState({ selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx)) });
+    console.log('onRowsSelected is the last row selected', rows);
+    console.log('onRowsSelected rows[0].role', rows[0].row.role);
+    this.setState({ 
+      selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx)),
+      studentSelected: rows[0].row.role === 'student' ? rows[0].row._id.toString() : null,
+    });
   };
 
   onRowsDeselected = (rows) => {
     const rowIndexes = rows.map(r => r.rowIdx);
-    this.setState({ selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1) });
+    this.setState({ 
+      selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1),
+      studentSelected: null,
+    });
   };
 
   handleGridSort = (sortColumn, sortDirection) => {
@@ -435,6 +447,7 @@ class AdminTable extends React.Component {
           getValidFilterValues={this.getValidFilterValues}
           onClearFilters={this.handleOnClearFilters}
           />
+          {/* { this.state.studentSelected ? <StudentDataForm studentId={ this.state.studentSelected }></StudentDataForm> : null } */}
       </React.Fragment>
     );
   }

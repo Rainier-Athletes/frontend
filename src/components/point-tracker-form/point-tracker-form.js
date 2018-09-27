@@ -80,7 +80,7 @@ class PointTrackerForm extends React.Component {
         ...this.state, 
         synopsisSaved: true,
         waitingOnSaves: false,
-        synopsisLink: this.props.synopsisReportLink 
+        synopsisLink: this.props.synopsisReportLink,
       });
     }
   }

@@ -167,6 +167,7 @@ class AdminTable extends React.Component {
       newRows: [],
       updatedRows: [],
       isOpen: false, // for the modal
+      sdIsOpen: false, // for student data form modal
     };
   }
 
@@ -299,8 +300,6 @@ class AdminTable extends React.Component {
   };
 
   onRowsSelected = (rows) => {
-    console.log('onRowsSelected is the last row selected', rows);
-    console.log('onRowsSelected rows[0].role', rows[0].row.role);
     this.setState({ 
       selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx)),
       studentSelected: rows[0].row.role === 'student' ? rows[0].row._id.toString() : null,
@@ -456,6 +455,14 @@ class AdminTable extends React.Component {
     });
   }
 
+  toggleSdModal = () => {
+    if (!this.state.studentSelected) return undefined;
+
+    return this.setState({
+      sdIsOpen: !this.state.sdIsOpen,
+    });
+  }
+
   handleDetach = () => {
     const selected = this.state.selectedIndexes;
     const query = {};
@@ -475,6 +482,8 @@ class AdminTable extends React.Component {
           show={this.state.isOpen}
           onClose={this.toggleModal}>
         </ConnectionModal>
+        {this.state.sdIsOpen 
+          ? <StudentDataForm onClose={this.toggleSdModal} studentId={this.state.studentSelected}></StudentDataForm> : null}
         <ReactDataGrid
           ref={ node => this.grid = node }
           enableCellSelect={true}
@@ -487,6 +496,7 @@ class AdminTable extends React.Component {
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
               <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
               <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
+              <button className="modalBtn" onClick={this.toggleSdModal}>Access Student Data</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
               <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
             </Toolbar>

@@ -74,7 +74,7 @@
 
 .ReactTable .rt-thead.-headerGroups {
   background: rgba(0, 0, 0, 0.03);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05)
+  border-bottom: px solid rgba(0, 0, 0, 0.05)
 }
 
 .ReactTable .rt-thead.-filters {
@@ -90,7 +90,7 @@
 }
 
 .ReactTable .rt-thead .rt-tr {
-  text-align: center
+  text-align: center;
 }
 
 .ReactTable .rt-thead .rt-th,
@@ -198,7 +198,7 @@
 }
 
 .ReactTable .rt-tbody .rt-expandable {
-  cursor: pointer
+  cursor: pointer;
 }
 
 .ReactTable .rt-tr-group {
@@ -426,7 +426,7 @@
   transition: all .3s ease;
   z-index: 1;
   pointer-events: none;
-  padding: 20px;
+  padding: 10px;
   color: rgba(0, 0, 0, 0.5)
 }
 
@@ -479,7 +479,7 @@
   font-size: inherit;
   border-radius: 3px;
   font-weight: normal;
-  outline: none
+  outline: none;
 }
 
 .ReactTable input:not([type="checkbox"]):not([type="radio"]),
@@ -491,7 +491,7 @@
 
 .ReactTable input:not([type="checkbox"]):not([type="radio"])::-ms-expand,
 .ReactTable select::-ms-expand {
-  display: none
+  display: none;
 }
 
 .ReactTable .select-wrap {
@@ -543,6 +543,7 @@
   border: 1px solid #b13636;
   color: #b13636;
   font-size: 14px;
+  font-weight: bold;
   margin-bottom: .3em;
   position: relative;
   text-shadow: rgb(206, 206, 206);

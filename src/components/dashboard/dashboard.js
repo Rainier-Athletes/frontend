@@ -34,10 +34,10 @@ class Dashboard extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {/* {
+        {
           this.renderJSX(this.props.loggedIn)
-        } */}
-        <PointTrackerForm></PointTrackerForm>
+        }
+        {/* <PointTrackerForm></PointTrackerForm> */}
       </React.Fragment>
     );
   }

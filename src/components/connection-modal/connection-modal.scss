@@ -69,9 +69,10 @@ p {
 }
 
 .addButton {
-  display: flex;
+  // display: flex;
+  text-align: center;
   background-color: #0B9444;
-  // box-shadow: 2px 3px 2px #83CBA3;
+  // box-shadow: 2px 3px 5px #83CBA3;
   border: none;
   border-radius: .3em;
   color: white;
@@ -79,7 +80,7 @@ p {
   width: 10em;
   font-size: 16px;
   font-weight: 300;
-  margin: 5px 20px;
+  margin: 20px 20px;
   padding: 8px;
 }
 

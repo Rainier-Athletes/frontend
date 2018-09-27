@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Iframe from '../iframe/iframe';
 
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
+
 import './_dashboard.scss';
 
 const mapStateToProps = state => ({
@@ -35,6 +37,7 @@ class Dashboard extends React.Component {
         {
           this.renderJSX(this.props.loggedIn)
         }
+        {/* <PointTrackerForm></PointTrackerForm> */}
       </React.Fragment>
     );
   }

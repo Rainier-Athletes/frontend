@@ -27,7 +27,7 @@ export default function SubjectColumn(props) {
           ))
       }
       <input
-        type="number"
+        type="text"
         onChange={ props.handleSubjectChange }
         name={ `${props.subject.subjectName}-grade` }
         value={ props.subject.grade }

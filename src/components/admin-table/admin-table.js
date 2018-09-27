@@ -447,7 +447,7 @@ class AdminTable extends React.Component {
           getValidFilterValues={this.getValidFilterValues}
           onClearFilters={this.handleOnClearFilters}
           />
-          { this.state.studentSelected ? <StudentDataForm studentId={ this.state.studentSelected }></StudentDataForm> : null }
+          {/* { this.state.studentSelected ? <StudentDataForm studentId={ this.state.studentSelected }></StudentDataForm> : null } */}
       </React.Fragment>
     );
   }

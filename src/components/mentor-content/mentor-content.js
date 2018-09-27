@@ -10,7 +10,7 @@ class MentorContent extends React.Component {
     return (
       <div role="main" className="col-md-8 panel">
         <h1>hello</h1>
-        <PointTrackerForm></PointTrackerForm>
+        {/* <PointTrackerForm></PointTrackerForm> */}
       </div>
     );
   }

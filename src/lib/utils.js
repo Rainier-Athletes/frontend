@@ -36,10 +36,41 @@ const convertDateToValue = (date) => {
   return `${year}-${month}-${day}`;
 };
 
+const getNextFridayDateString = (date) => {
+  // find the friday following the given date
+  let workingDate = date;
+  if (!(date instanceof Date)) workingDate = new Date(date);
+  
+  const day = workingDate.getDay();
+  const today = workingDate.getDate();
+  const delta = day > 5 ? 7 + 5 - day : 5 - day;
+  workingDate.setDate(today + delta);
+
+  return convertDateToValue(workingDate);
+};
+
+const getReportingPeriods = (date = Date.now()) => {
+  const oneDayInMs = 1000 * 60 * 60 * 24;
+  let friday = new Date(`${getNextFridayDateString(date)} 00:00:00`);
+  friday = new Date(friday).setDate(new Date(friday).getDate() - 14);
+  let saturday = new Date(friday - (6 * oneDayInMs));
+  const reportingPeriods = [];
+
+  for (let i = 0; i < 3; i++) {
+    reportingPeriods.push(`${new Date(saturday).toDateString()} to ${new Date(friday).toDateString()}`);
+    saturday = new Date(saturday).setDate(new Date(saturday).getDate() + 7);
+    friday = new Date(friday).setDate(new Date(friday).getDate() + 7);
+  }
+  
+  return reportingPeriods;
+};
+
 export { 
   renderIf, 
   devLogger, 
   cookieFetch, 
   cookieDelete,
   convertDateToValue,
+  getNextFridayDateString,
+  getReportingPeriods,
 }; 

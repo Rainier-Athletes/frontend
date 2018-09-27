@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import * as routes from '../../lib/routes';
 import ConnectionModal from '../connection-modal/connection-modal';
 import './admin-table.scss';
-// import StudentDataForm from '../student-data-form/student-data-form';
+import StudentDataModal from '../student-data-form/student-data-form';
 
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';
@@ -483,7 +483,7 @@ class AdminTable extends React.Component {
           onClose={this.toggleModal}>
         </ConnectionModal>
         {this.state.sdIsOpen 
-          ? <StudentDataForm onClose={this.toggleSdModal} studentId={this.state.studentSelected}></StudentDataForm> : null}
+          ? <StudentDataModal onClose={this.toggleSdModal} studentId={this.state.studentSelected}></StudentDataModal> : null}
         <ReactDataGrid
           ref={ node => this.grid = node }
           enableCellSelect={true}

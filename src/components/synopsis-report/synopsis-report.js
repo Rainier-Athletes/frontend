@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import './synopsis-report.scss';
 
 export default function SynopsisReport(props) {
-  const { pointTracker } = props;
+  const { pointTracker, student } = props;
+  
+  const submitterName = `${pointTracker.mentor.firstName} ${pointTracker.mentor.lastName}`;
+  const studentsSchool = student.studentData.school.find(s => s.currentSchool).schoolName;
+
   return (
     <div className="synopsis-report">
       <h1>{ pointTracker.title }</h1>
@@ -73,8 +77,8 @@ export default function SynopsisReport(props) {
       <p>{ pointTracker.synopsisComments.additionalComments }</p>
 
       <p>Best,</p>
-      <p>[Your Name]</p>
-      <p>RA [Your School] Mentor</p>
+      <p>{submitterName}</p>
+      <p>RA {studentsSchool} Mentor</p>
 
     </div>
   );
@@ -82,4 +86,5 @@ export default function SynopsisReport(props) {
 
 SynopsisReport.propTypes = {
   pointTracker: PropTypes.object,
+  student: PropTypes.object,
 };

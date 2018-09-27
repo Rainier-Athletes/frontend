@@ -52,8 +52,8 @@ export const fetchPointTrackers = studentIds => (store) => { // eslint-disable-l
     });
 };
   
-const pointTrackerToHTML = (pointTracker) => {
-  const synopsisReport = <SynopsisReport pointTracker={pointTracker}/>;
+const pointTrackerToHTML = (pointTracker, student) => {
+  const synopsisReport = <SynopsisReport pointTracker={pointTracker} student={student}/>;
 
   return (
     `<style>
@@ -83,10 +83,11 @@ const pointTrackerToHTML = (pointTracker) => {
 
 export const createSynopsisReport = pointTracker => (store) => {
   const { token } = store.getState();
+  const student = store.getState().students.find(s => s._id.toString() === pointTracker.student.toString());
 
   const data = {
     name: pointTracker.studentName,
-    html: pointTrackerToHTML(pointTracker),
+    html: pointTrackerToHTML(pointTracker, student),
   };
 
   return superagent.post(`${API_URL}${routes.SYNOPSIS_REPORT}`)

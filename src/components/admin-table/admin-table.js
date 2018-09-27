@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import * as routes from '../../lib/routes';
 import ConnectionModal from '../connection-modal/connection-modal';
 import './admin-table.scss';
-import StudentDataForm from '../student-data-form/student-data-form';
+// import StudentDataForm from '../student-data-form/student-data-form';
 
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';

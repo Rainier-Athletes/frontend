@@ -1,12 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import './_side-bar.scss';
-
-const mapDispatchToProps = dispatch => ({
-
-});
 
 class Sidebar extends React.Component {
   render() {
@@ -15,35 +10,13 @@ class Sidebar extends React.Component {
         <div className="sidebar-sticky">
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a className="nav-link disabled sidebar-heading" href="#">
+              <a className="nav-link disabled sidebar-heading">
                 Student
               </a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Orders
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Products
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Customers
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Reports
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Integrations
-              </a>
-            </li>
+            {
+              this.props.content
+            }
           </ul>
         </div>
       </nav>
@@ -51,4 +24,8 @@ class Sidebar extends React.Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Sidebar);
+Sidebar.propTypes = {
+  content: PropTypes.node,
+};
+
+export default Sidebar;

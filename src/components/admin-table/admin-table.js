@@ -209,15 +209,15 @@ class AdminTable extends React.Component {
     profile.studentData.mentors.forEach((mentor) => {
       if (mentor.mentor.active && mentor.currentMentor) childArr.push(mentor.mentor);
     });
-    
+
     profile.studentData.coaches.forEach((coach) => {
       if (coach.coach.active && coach.currentCoach) childArr.push(coach.coach);
     });
-    
+
     profile.studentData.family.forEach((member) => {
       if (member.member.active) childArr.push(member.member);
     });
-    
+
     profile.studentData.teachers.forEach((teacher) => {
       if (teacher.teacher.active && teacher.currentTeacher) childArr.push(teacher.teacher);
     });
@@ -300,7 +300,7 @@ class AdminTable extends React.Component {
   };
 
   onRowsSelected = (rows) => {
-    this.setState({ 
+    this.setState({
       selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx)),
       studentSelected: rows[0].row.role === 'student' ? rows[0].row._id.toString() : null,
     });
@@ -308,7 +308,7 @@ class AdminTable extends React.Component {
 
   onRowsDeselected = (rows) => {
     const rowIndexes = rows.map(r => r.rowIdx);
-    this.setState({ 
+    this.setState({
       selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1),
       studentSelected: null,
     });
@@ -380,13 +380,12 @@ class AdminTable extends React.Component {
 
   onCellExpand = (args) => {
     const rows = this.state.rows.slice(0);
-    const rowKey = args.rowData._id;
-    const rowIndex = args.rowIdx; 
+    const rowKey = args.rowData.name;
+    const rowIndex = rows.indexOf(args.rowData);
     const subRows = args.expandArgs.children;
 
     const expanded = Object.assign({}, this.state.expanded);
-
-    if (!expanded[rowKey]) {
+    if (expanded && !expanded[rowKey]) {
       expanded[rowKey] = true;
       this.updateSubRowDetails(subRows, args.rowData.treeDepth);
       rows.splice(rowIndex + 1, 0, ...subRows);
@@ -482,7 +481,7 @@ class AdminTable extends React.Component {
           show={this.state.isOpen}
           onClose={this.toggleModal}>
         </ConnectionModal>
-        {this.state.sdIsOpen 
+        {this.state.sdIsOpen
           ? <StudentDataModal onClose={this.toggleSdModal} studentId={this.state.studentSelected}></StudentDataModal> : null}
         <ReactDataGrid
           ref={ node => this.grid = node }
@@ -533,6 +532,6 @@ AdminTable.propTypes = {
   deleteProfile: PropTypes.func,
   history: PropTypes.array,
   deleteRelationship: PropTypes.func,
-}
+};
 
 export default connect(null, mapDispatchToProps)(AdminTable);

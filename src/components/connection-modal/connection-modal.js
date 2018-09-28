@@ -29,7 +29,7 @@ class ConnectionModal extends React.Component {
 
   handleSubmit = () => {
     const keys = Object.keys(this.state.query);
-    if (keys.includes('student') && keys.some(k => ['mentor', 'coach', 'teacher', 'family'].includes(k))) {
+    if (keys.includes('student') && keys.some(k => ['mentor', 'coach', 'teacher', 'family', 'admin'].includes(k))) {
       this.props.setRelationship(this.state.query);
     }
   }
@@ -62,7 +62,7 @@ class ConnectionModal extends React.Component {
     return (
       <div className="modalContainer">
         <form onChange={this.handleChange}>
-          <button className="close-modal" onClick={this.props.onClose}>X</button>
+          <button className="close-modal" onClick={this.props.onClose}>x</button>
           <h1>Add A Connection</h1>
           <div className="field-wrap dropdown">
             <label htmlFor="student">Student:</label>
@@ -85,6 +85,7 @@ class ConnectionModal extends React.Component {
                 <option value="teacher">Teacher</option>
                 <option value="coach">Coach</option>
                 <option value="family">Family member</option>
+                <option value="admin">Admin</option>
               </select>
           </div>
           <div className="field-wrap dropdown">
@@ -101,7 +102,7 @@ class ConnectionModal extends React.Component {
               </select>
           </div>
         <div className="addButton-container">
-          <button type="submit" className="addButton" onClick={this.handleSubmit}>Add Connection</button>
+          <button type="submit" className="addButton" onClick={this.handleSubmit}>Add Person</button>
         </div>
         </form>
       </div>

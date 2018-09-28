@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  FormGroup, 
-  ControlLabel, 
+  FormGroup,
+  ControlLabel,
   FormControl,
   HelpBlock,
   Checkbox,
@@ -43,11 +43,11 @@ const mapStateToProps = (state, ownProps) => {
   const teachers = state.profile.filter(p => p.role === 'teacher');
   const family = state.profile.filter(p => p.role === 'family');
 
-  return ({ 
-    student, 
-    mentors, 
-    coaches, 
-    teachers, 
+  return ({
+    student,
+    mentors,
+    coaches,
+    teachers,
     family,
   });
 };
@@ -92,10 +92,10 @@ class StudentDataForm extends React.Component {
       newState.newSchool = true;
       newState.school.unshift({ schoolName: '', currentSchool: true, isElementarySchool: false });
     }
-    
+
     this.setState(newState);
   }
-  
+
   handleSchoolChange = (e) => {
     const newState = Object.assign({}, this.state);
     // new school is school[0]
@@ -132,13 +132,13 @@ class StudentDataForm extends React.Component {
     } else {
       newState.newSport = true;
       newState.sports.unshift({
-        sport: '', 
-        team: '', 
-        league: '', 
+        sport: '',
+        team: '',
+        league: '',
         currentlyPlaying: true,
       });
     }
-    
+
     this.setState(newState);
   }
 
@@ -171,28 +171,28 @@ class StudentDataForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-  
+    console.log('target.id:', e.target.id);
     if (e.target.id.indexOf('new-school') > -1) return this.handleNewSchool(e);
 
     if (this.state._id) { // existing doc, update it
-      this.props.updateStudentData(this.state)
+      console.log('calling updateStudentData');
+      return this.props.updateStudentData(this.state)
         .then(() => {
           console.log('back from update successfully');
         });
-    } else {
-      return this.props.createStudentData(this.state)
-        .then(() => {
-          console.log('back from create successfully');
-        });
     }
-    return this.props.onClose();
+    console.log('calling createStudentData');
+    return this.props.createStudentData(this.state)
+      .then(() => {
+        console.log('back from create successfully');
+      });
   }
 
   FieldGroup = ({
-    id, 
-    label, 
-    help, 
-    ...props 
+    id,
+    label,
+    help,
+    ...props
   }) => {
     return (
       <FormGroup controlId={id}>
@@ -216,7 +216,7 @@ class StudentDataForm extends React.Component {
         ? (this.state.school.find(s => s.currentSchool).isElementarySchool
         ? 'An elementary school' : 'A middle/high school')
         : ''
-        /* eslint-enable */}</h6> 
+        /* eslint-enable */}</h6>
       <Button type="submit" id="create-new-school" onClick={this.handleNewSchool}>Create New School</Button>
       </FormGroup>
     );
@@ -232,15 +232,15 @@ class StudentDataForm extends React.Component {
           value={this.state.school.length ? this.state.school[0].schoolName : ''}
           onChange={this.handleSchoolChange}
         />
-        <Checkbox 
-          inline 
+        <Checkbox
+          inline
           checked={this.state.school.length ? this.state.school.find(s => s.currentSchool).isElementarySchool : false }
           id="isElementarySchool"
           prop="isElementarySchool"
           onChange={this.handleIsElementarySchool}
           >
           Check if elementary school
-        </Checkbox> 
+        </Checkbox>
         <p><Button type="submit" id="save-new-school" onClick={this.handleNewSchool}>Save School</Button></p>
         <p><Button type="reset" id="cancel-new-school" onClick={this.handleNewSchool}>Cancel</Button></p>
       </FormGroup>
@@ -278,33 +278,32 @@ class StudentDataForm extends React.Component {
     );
 
     const currentSportsJSX = (
-      <FormGroup controlId="current-sports">        
-      <h4>{this.state.sports.length 
-        ? 'Sports Teams' 
+      <FormGroup controlId="current-sports">
+      <h4>{this.state.sports.length
+        ? 'Sports Teams'
         : 'No Current Sports' }</h4>
       <h6>{this.state.sports.length
         ? this.state.sports.map((sport, i) => (
           <FormGroup controlId={`current-sport-${i}`} key={`current-sport-${i}`}>
           {`${sport.team} (${sport.sport}), ${sport.league} league`}
-          <Checkbox 
-            inline 
+          <Checkbox
+            inline
             checked={this.state.sports[i].currentlyPlaying}
             id={i}
             onChange={this.handleSportStatusChange}
-            >Currently playing</Checkbox>  
+            >Currently playing</Checkbox>
           </FormGroup>
         ))
         : null
       }</h6>
       <Button type="submit" id="create-new-sport" onClick={this.handleNewSport}>Create New Sport</Button>
-      </FormGroup>   
+      </FormGroup>
     );
 
     return (
       <div className="student-data-form">
         <h1>Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h1>
         <form onSubmit={this.handleSubmit}>
-          <button className="close-modal" onClick={this.props.onClose}>X</button>
           <FormGroup controlId="gender-dob">
             <this.FieldGroup
               id="gender"
@@ -334,30 +333,30 @@ class StudentDataForm extends React.Component {
               placeholder="Enter student's grade in school"
               value={this.state.grade ? this.state.grade : ''}
               onChange={this.handleTextFieldChange}
-            />         
+            />
           </FormGroup>
           {this.state.family.length ? <h4>Guardians</h4> : null }
-          {this.state.family.length 
+          {this.state.family.length
             ? this.state.family.map((f, i) => (
               <FormGroup controlId={`guardians-${i}`} key={f.member._id}>
                 {`${f.member.firstName} ${f.member.lastName}:`}
-                <Checkbox 
-                  inline 
+                <Checkbox
+                  inline
                   checked={this.state.family[i].weekdayGuardian}
                   id={f.member._id.toString()}
                   prop="weekdayGuardian"
                   onChange={this.handleGuardianChange}
-                  >Weekday guardian</Checkbox> 
-                <Checkbox 
-                  inline 
+                  >Weekday guardian</Checkbox>
+                <Checkbox
+                  inline
                   checked={this.state.family[i].weekendGuardian}
                   id={f.member._id.toString()}
                   prop="weekendGuardian"
                   onChange={this.handleGuardianChange}
                   >Weekend guardian</Checkbox>
               </FormGroup>
-            )) 
-            : null 
+            ))
+            : null
           }
           <FormGroup controlId="sports-info">
             {this.state.newSport
@@ -395,7 +394,6 @@ class StudentDataForm extends React.Component {
             />
           </FormGroup>
           <Button type="submit">Submit</Button>
-          <p><Button type="reset" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button></p>
         </form>
     </div>
     );
@@ -411,7 +409,6 @@ StudentDataForm.propTypes = {
   history: PropTypes.array,
   updateStudentData: PropTypes.func,
   createStudentData: PropTypes.func,
-  onClose: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentDataForm);

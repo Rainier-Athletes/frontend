@@ -203,20 +203,25 @@ class AdminTable extends React.Component {
 
   populateStudentChildren = (profile) => {
     const childArr = [];
-    if (profile.studentData) {
-      for (const i in profile.studentData.mentors) { //eslint-disable-line
-        childArr.push(profile.studentData.mentors);
-      }
-      for (const i in profile.studentData.coaches) { // eslint-disable-line
-        childArr.push(profile.studentData.coaches[i]);
-      }
-      for (const i in profile.studentData.family) { // eslint-disable-line
-        childArr.push(profile.studentData.family[i]);
-      }
-      for (const i in profile.studentData.teachers) { // eslint-disable-line
-        childArr.push(profile.studentData.teachers[i]);
-      }
-    }
+
+    if (!profile.studentData) return childArr;
+
+    profile.studentData.mentors.forEach((mentor) => {
+      if (mentor.mentor.active && mentor.currentMentor) childArr.push(mentor.mentor);
+    });
+
+    profile.studentData.coaches.forEach((coach) => {
+      if (coach.coach.active && coach.currentCoach) childArr.push(coach.coach);
+    });
+
+    profile.studentData.family.forEach((member) => {
+      if (member.member.active) childArr.push(member.member);
+    });
+
+    profile.studentData.teachers.forEach((teacher) => {
+      if (teacher.teacher.active && teacher.currentTeacher) childArr.push(teacher.teacher);
+    });
+    
     return childArr;
   };
 

@@ -53,8 +53,8 @@ class Navbar extends React.Component {
       this.props.fetchTeachers(),
       this.props.fetchPointTrackers(),
     ])
-      .then(console.log)
-      .catch(console.error);
+      .then(console.log) // eslint-disable-line
+      .catch(console.error);  // eslint-disable-line
   }
 
   handleClickOutside = () => {
@@ -74,12 +74,12 @@ class Navbar extends React.Component {
   }
 
   renderAdmin = () => {
-    return <React.Fragment><li className="nav-item"><Link to="/mentor" className="nav-link">Mentor</Link></li><li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li></React.Fragment>;
+    return <React.Fragment><li className="nav-item"><Link to="/mentor" className="nav-link">Mentor</Link></li><li className="nav-item"><Link to="/admindashboard" className="nav-link">Admin</Link></li></React.Fragment>;
   }
 
   determineRole = () => {
     if (this.props.myProfile) {
-      console.log(this.props.myProfile.role);
+      console.log(this.props.myProfile.role); // eslint-disable-line
       return this.props.myProfile.role === 'mentor' ? this.renderMentor() : this.renderAdmin();
     }
     return null;

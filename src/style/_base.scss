@@ -14,7 +14,7 @@ strong { font-weight: bold; }
 
 body {
   background: $color-white;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 #root {
@@ -79,11 +79,11 @@ footer {
     padding-top: 10px;
     padding-left: 3px;
     display: inline-block;
-    color: $color-white;
+    color: $color-input-focus;
     list-style-type: none;
 
     &:hover {
-      color: $color-input-focus;
+      color: $color-input-field;
     }
   }
 }

@@ -20,3 +20,11 @@ svg > path {
 .column data input {
   margin-bottom: 5px;
 }
+
+.invalid-scores {
+  background: red;
+}
+
+.invalid-scores:hover {
+  background: rgb(247, 147, 147)
+}

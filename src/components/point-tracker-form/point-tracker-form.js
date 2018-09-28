@@ -263,15 +263,23 @@ class PointTrackerForm extends React.Component {
       return totalTokensEarned;
     });
     
-    const totalClassScoreSum = totalEarnedTokens.reduce((acc, cur) => acc + cur, 0);
-    
+    const totalTokensEarned = totalEarnedTokens.reduce((acc, cur) => acc + cur, 0);
+    const tokenPercentage = totalTokensEarned / totalTokensPossible;
+    console.log('totalTokensEarned', totalTokensEarned, 'tokenPercentage', tokenPercentage);
+
     let earnedPlayingTime = 'None of game';
-    if (totalClassScoreSum >= 16) earnedPlayingTime = 'One quarter';
-    if (totalClassScoreSum >= 21) earnedPlayingTime = 'Two quarters';
-    if (totalClassScoreSum >= 25) earnedPlayingTime = 'Three quarters';
-    if (totalClassScoreSum >= 29) earnedPlayingTime = 'All but start';
-    if (totalClassScoreSum >= 30) earnedPlayingTime = 'Entire game';
-    if (earnedPlayingTime !== this.state.earnedPlayingTime) this.setState({ ...this.state, earnedPlayingTime });
+    if (tokenPercentage >= 0.35) earnedPlayingTime = 'One quarter';
+    if (tokenPercentage >= 0.55) earnedPlayingTime = 'Two quarters';
+    if (tokenPercentage >= 0.65) earnedPlayingTime = 'Three quarters';
+    if (tokenPercentage >= 0.75) earnedPlayingTime = 'All but start';
+    if (tokenPercentage >= 0.8) earnedPlayingTime = 'Entire game';
+    if (earnedPlayingTime !== this.state.earnedPlayingTime) {
+      this.setState({ 
+        ...this.state, 
+        earnedPlayingTime,
+      });
+    }
+    console.log('earnedPlayingTime', earnedPlayingTime);
     console.groupEnd('calcPlayingTime');
     return earnedPlayingTime;
   }

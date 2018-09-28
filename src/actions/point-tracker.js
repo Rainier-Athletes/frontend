@@ -14,17 +14,29 @@ export const setPointTrackers = pointTrackers => ({
   payload: pointTrackers,
 });
 
+export const setSynopsisReportLink = link => ({
+  type: 'SYNOPSIS_REPORT_LINK_SET',
+  payload: link,
+});
+
+export const clearSynopsisReportLink = () => ({
+  type: 'SYNOPSIS_REPORT_LINK_CLEAR',
+});
+
 export const createPointTracker = pointTracker => (store) => {
   const { token } = store.getState();
 
-  pointTracker.date = new Date(pointTracker.date).toISOString();
-
+  console.log('createPointTracker sending report', pointTracker.title);
+  
   return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(pointTracker)
     .then((res) => {
       return store.dispatch(setPointTracker(res.body));
+    })
+    .catch((err) => {
+      console.error('createPointTracker error:', err);
     });
 };
 
@@ -40,8 +52,8 @@ export const fetchPointTrackers = studentIds => (store) => { // eslint-disable-l
     });
 };
   
-const pointTrackerToHTML = (pointTracker) => {
-  const synopsisReport = <SynopsisReport pointTracker={pointTracker}/>;
+const pointTrackerToHTML = (pointTracker, student) => {
+  const synopsisReport = <SynopsisReport pointTracker={pointTracker} student={student}/>;
 
   return (
     `<style>
@@ -71,10 +83,11 @@ const pointTrackerToHTML = (pointTracker) => {
 
 export const createSynopsisReport = pointTracker => (store) => {
   const { token } = store.getState();
+  const student = store.getState().students.find(s => s._id.toString() === pointTracker.student.toString());
 
   const data = {
     name: pointTracker.studentName,
-    html: pointTrackerToHTML(pointTracker),
+    html: pointTrackerToHTML(pointTracker, student),
   };
 
   return superagent.post(`${API_URL}${routes.SYNOPSIS_REPORT}`)
@@ -82,6 +95,6 @@ export const createSynopsisReport = pointTracker => (store) => {
     .set('Content-Type', 'application/json')
     .send(data)
     .then((res) => {
-      return store.dispatch(setPointTracker(res.body));
+      return store.dispatch(setSynopsisReportLink(res.body.webViewLink));
     });
 };

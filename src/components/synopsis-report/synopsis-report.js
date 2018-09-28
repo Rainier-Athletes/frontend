@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import './synopsis-report.scss';
 
 export default function SynopsisReport(props) {
-  const { pointTracker } = props;
+  const { pointTracker, student } = props;
+  
+  const submitterName = `${pointTracker.mentor.firstName} ${pointTracker.mentor.lastName}`;
+  const studentsSchool = student.studentData.school.find(s => s.currentSchool).schoolName;
+
   return (
     <div className="synopsis-report">
-      <h1>Rainier Athletes { pointTracker.studentName } Weekly Synopsis. { pointTracker.date.toString().substring(0, 10) }</h1>
+      <h1>{ pointTracker.title }</h1>
 
       <h2>Point Sheet Summary</h2>
       <p>
@@ -20,7 +24,7 @@ export default function SynopsisReport(props) {
 
       <p>Please find the weekly Rainier Athletes synopsis report for { pointTracker.studentName } below. Keep in mind that { pointTracker.studentName }’s family are also included on Basecamp.</p>
 
-      <p>Rainier Athletes students earn full playing time by achieving goals in the classroom which will show up in the table below as at least 75% points and at least 70% grade in every class.</p>
+      <p>Rainier Athletes students earn full playing time by achieving goals in the classroom which will show up in the table below as at least 75% points and at least a C grade in every class.</p>
       
       <table>
         <thead>
@@ -60,7 +64,7 @@ export default function SynopsisReport(props) {
       <p>X = 1 point (RA goal not achieved, constructive conversation took place</p>
       <p>Blank = 0 points (no teacher/student conversation took place)</p>
         
-      <p>Based on these points, { pointTracker.studentName } earned { pointTracker.synopsisComments.extraPlayingTime } amount of playing time in the upcoming game! { pointTracker.synopsisComments.mentorGrantedPlayingTime }</p>
+      <p>Based on these points, { pointTracker.studentName } earned playing time amounting to { pointTracker.earnedPlayingTime } in the upcoming game. { pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime ? `${pointTracker.studentName}'s mentor has selected playing time of ${pointTracker.mentorGrantedPlayingTime} however. "${pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}"` : '' }</p>
 
       <h3>Student Action Items</h3>
       <p>{ pointTracker.synopsisComments.studentActionItems }</p>
@@ -73,8 +77,8 @@ export default function SynopsisReport(props) {
       <p>{ pointTracker.synopsisComments.additionalComments }</p>
 
       <p>Best,</p>
-      <p>[Your Name]</p>
-      <p>RA [Your School] Mentor</p>
+      <p>{submitterName}</p>
+      <p>RA {studentsSchool} Mentor</p>
 
     </div>
   );
@@ -82,4 +86,5 @@ export default function SynopsisReport(props) {
 
 SynopsisReport.propTypes = {
   pointTracker: PropTypes.object,
+  student: PropTypes.object,
 };

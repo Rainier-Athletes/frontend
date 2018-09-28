@@ -5,18 +5,22 @@ import profile from './profile';
 import myProfile from './myProfile';
 import pointTracker from './point-tracker';
 import pointTrackers from './point-trackers';
+import synopsisReportLink from './synopsis-report';
+import studentData from './student-data';
 import students from './students';
 import teachers from './teachers';
 import myStudents from './myStudents';
 
 export default combineReducers({
-  token,
-  role,
   profile,
-  myProfile,
   students,
   teachers,
   pointTracker,
   pointTrackers,
   myStudents,
+  synopsisReportLink,
+  studentData,
+  myProfile,
+  role,
+  token,
 });

@@ -2,18 +2,18 @@ p {
   font-size: 30px;
 }
 
-.modalContainer {
-  background: rgba(33, 33, 33, .97);
+.student-data-form {
+  background: rgba(165, 164, 164, 0.97);
   border-radius: 7px;
   box-shadow: 0px 0px 10px rgb(186, 186, 186);
-  width: 30em;
-  height: 32em;
+  width: 50em;
+  // height: 50em;
   color: white;
   font-family: helvetica;
   position: absolute;
   z-index: 99;
   margin: auto;
-  top: 0; left: 0; bottom: 0; right: 0;
+  top: 6em; left: 0; bottom: 0; right: 0;
 }
 
 .hide {
@@ -63,29 +63,26 @@ p {
 }
 
 .addButton-container {
-  width: 8em;
+  width: 9em;
   margin-left: auto;
   margin-right: auto;
 }
 
 .addButton {
-  // display: flex;
-  text-align: center;
-  background-color: #0B9444;
-  // box-shadow: 2px 3px 5px #83CBA3;
+  background: #099544;
+  box-shadow: 0px 3px #076e32;
   border: none;
-  border-radius: .3em;
+  border-radius: 2em;
   color: white;
   cursor: pointer;
-  width: 10em;
+  width: 9em;
   font-size: 16px;
   font-weight: 300;
-  margin: 20px 20px;
-  padding: 8px;
+  padding: 12px;
 }
 
 .addButton:hover {
-  background-color: #53B57D;
+  background-color: #306c39;
 }
 
 input:focus, button:focus {

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 import './_mentor-content.scss';
 
 class MentorContent extends React.Component {

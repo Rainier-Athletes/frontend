@@ -17,9 +17,9 @@ const emptyPointTracker = {
   subjects: [{
     subjectName: 'Tutorial',
     scoring: {
-      excusedDays: '',
-      stamps: '',
-      halfStamps: '',
+      excusedDays: 0,
+      stamps: 0,
+      halfStamps: 0,
     },
     grade: '',
   }],
@@ -108,8 +108,23 @@ class PointTrackerForm extends React.Component {
             const newSubject = { ...subject };
             if (categoryName === 'grade') {
               newSubject.grade = validGrades.includes(event.target.value.toUpperCase()) ? event.target.value.toUpperCase() : '';
+            } else if (categoryName === 'excusedDays') {
+              newSubject.scoring.excusedDays = Math.min(Math.max(parseInt(event.target.value, 10), 0), 5);
             } else {
-              newSubject.scoring[categoryName] = Math.min(Math.max(parseInt(event.target.value, 10), 0), 8);
+              const currentValue = parseInt(event.target.value, 10);
+
+              // test currentValue for NaN which doesn't equal itself.
+              if (currentValue !== currentValue) { // eslint-disable-line 
+                newSubject.scoring[categoryName] = '';
+              } else {
+                const maxPointsPossible = 40 - (newSubject.scoring.excusedDays * 8);
+                const maxPointsAdjustment = categoryName === 'stamps' 
+                  ? newSubject.scoring.halfStamps
+                  : newSubject.scoring.stamps * 2;
+                let maxValidValue = maxPointsPossible - maxPointsAdjustment;
+                maxValidValue = categoryName === 'stamps' ? maxValidValue / 2 : maxValidValue;
+                newSubject.scoring[categoryName] = Math.min(Math.max(currentValue, 0), maxValidValue);
+              }
             }
            
             return newSubject;

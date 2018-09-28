@@ -171,21 +171,21 @@ class StudentDataForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('target.id:', e.target.id);
+  
     if (e.target.id.indexOf('new-school') > -1) return this.handleNewSchool(e);
 
     if (this.state._id) { // existing doc, update it
-      console.log('calling updateStudentData');
-      return this.props.updateStudentData(this.state)
+      this.props.updateStudentData(this.state)
         .then(() => {
           console.log('back from update successfully');
         });
+    } else {
+      return this.props.createStudentData(this.state)
+        .then(() => {
+          console.log('back from create successfully');
+        });
     }
-    console.log('calling createStudentData');
-    return this.props.createStudentData(this.state)
-      .then(() => {
-        console.log('back from create successfully');
-      });
+    return this.props.onClose();
   }
 
   FieldGroup = ({
@@ -304,6 +304,7 @@ class StudentDataForm extends React.Component {
       <div className="student-data-form">
         <h1>Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h1>
         <form onSubmit={this.handleSubmit}>
+          <button className="close-modal" onClick={this.props.onClose}>X</button>
           <FormGroup controlId="gender-dob">
             <this.FieldGroup
               id="gender"
@@ -394,6 +395,7 @@ class StudentDataForm extends React.Component {
             />
           </FormGroup>
           <Button type="submit">Submit</Button>
+          <p><Button type="reset" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button></p>
         </form>
     </div>
     );
@@ -409,6 +411,7 @@ StudentDataForm.propTypes = {
   history: PropTypes.array,
   updateStudentData: PropTypes.func,
   createStudentData: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentDataForm);

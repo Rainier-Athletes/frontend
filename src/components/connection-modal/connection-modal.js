@@ -23,12 +23,17 @@ class ConnectionModal extends React.Component {
     super(props);
     this.state = {
       query: {},
+      role: '',
     };
   }
 
   handleSubmit = () => {
-    this.props.setRelationship(this.state.query);
+    const keys = Object.keys(this.state.query);
+    if (keys.includes('student') && keys.some(k => ['mentor', 'coach', 'teacher', 'family'].includes(k))) {
+      this.props.setRelationship(this.state.query);
+    }
   }
+
 
   handleChange = (e) => {
     const { selectedIndex } = e.target.options;
@@ -36,6 +41,8 @@ class ConnectionModal extends React.Component {
     if (e.target.getAttribute('type') === 'student') {
       query.student = e.target.value;
       this.setState({ query });
+    } else if (e.target.getAttribute('type') === 'role') {
+      this.setState({ ...this.state, role: e.target.value });
     } else {
       if (query.mentor || query.admin || query.teacher || query.coach || query.family) {
         const key = Object.keys(query).filter(p => p !== 'student');
@@ -58,9 +65,9 @@ class ConnectionModal extends React.Component {
           <button className="close-modal" onClick={this.props.onClose}>X</button>
           <h1>Add A Connection</h1>
           <div className="field-wrap dropdown">
-            <label htmlFor="student">Student Name:</label>
+            <label htmlFor="student">Student:</label>
               <select type="student" required>
-                <option defaultValue> -- select a student -- </option>
+                <option value="" selected="true" disabled> -- select a student -- </option>
                 {
                   this.props.profile.filter(p => p.role === 'student').map((p) => {
                     return <option key={p._id} value={p._id}>
@@ -71,11 +78,21 @@ class ConnectionModal extends React.Component {
               </select>
           </div>
           <div className="field-wrap dropdown">
-            <label htmlFor="connection-name">Name Of Connection:</label>
+            <label htmlFor="role">Role:</label>
+              <select type="role" required>
+                <option value="" selected="true" disabled> -- select a role -- </option>
+                <option value="mentor">Mentor</option>
+                <option value="teacher">Teacher</option>
+                <option value="coach">Coach</option>
+                <option value="family">Family member</option>
+              </select>
+          </div>
+          <div className="field-wrap dropdown">
+            <label htmlFor="connection-name">Connection:</label>
               <select type="connection-name" required>
-                <option defaultValue> -- select a connection -- </option>
+                <option value="" selected="true" disabled> -- select a connection -- </option>
                 {
-                  this.props.profile.filter(p => p.role !== 'student').map((p) => {
+                  this.props.profile.filter(p => p.role === this.state.role).map((p) => {
                     return <option key={p._id} value={p._id} role={p.role}>
                         {p.firstName} {p.lastName} - {p.role}
                       </option>;

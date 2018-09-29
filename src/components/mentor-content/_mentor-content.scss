@@ -3,15 +3,23 @@
     border-radius: 6px;
     margin-top: 84px;
     margin-left: 1em;
-    padding-bottom: 12px;
+    padding: 1.5em 2em 1em 1.5em;
     z-index: 100;
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.col-md-8 {
+  @media (min-width: 768px) {
+    -ms-flex: 0 0 70.5% !important;
+    flex: 0 0 70.5% !important;
+    max-width: 70.5% !important;
+  }
 }
 
 .mentor-btn {
   background-color: #A9C94C;
   font-weight: 600;
-  color: white;
+  color: white !important;
   text-transform: uppercase;
   padding: 4px 16px;
   border-radius: 20px;
@@ -19,4 +27,8 @@
   float: right;
   margin-top: -4px;
   margin-right: 20px;
+
+  &:hover {
+    background-color: #c4d88a;
+  }
 }

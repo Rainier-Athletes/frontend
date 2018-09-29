@@ -13,9 +13,9 @@ class MentorContent extends React.Component {
             Student Profile
           </a>
           {
-            this.props.content ? <button className="mentor-btn" onClick={ this.props.buttonClick }>
+            this.props.content ? <a className="mentor-btn" onClick={ this.props.buttonClick }>
                 Point Tracker
-            </button> : null
+            </a> : null
           }
 
           <div style={{ width: 'auto', overflow: 'auto', padding: '20px' }}>

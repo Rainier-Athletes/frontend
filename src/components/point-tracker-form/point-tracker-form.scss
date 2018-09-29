@@ -10,6 +10,7 @@
     box-shadow: 0 0 12px rgba(0,0,0, 0.3);
 }
 
+
 .select-student, .select-date {
   display: inline-block;
   padding: 5px;
@@ -65,7 +66,6 @@
   // margin: 6% 20% 0 20%;
   // border-radius: 30px;
   // border: 2px solid #e8e8e8;
-}
 
     h2 {
       color: $color-brand-blue;
@@ -83,6 +83,7 @@
         padding: 10px;
       }
     }
+
 
     .submit-report{
       background: $color-button-green;
@@ -102,7 +103,7 @@
       &:visited {
         background: $color-button-active;
     }
-
+  }
 
   .synopsis {
     padding-top: 2.5em;

@@ -4,6 +4,14 @@ import PropTypes from 'prop-types';
 import './_side-bar.scss';
 
 class Sidebar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selected: null,
+    };
+  }
+  
   render() {
     return (
       <nav className="col-md-3 d-md-block sidebar">

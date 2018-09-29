@@ -23,6 +23,7 @@ class Mentor extends React.Component {
     this.state = {
       content: '',
       modal: false,
+      selected: -1,
     };
   }
 
@@ -42,7 +43,11 @@ class Mentor extends React.Component {
     const i = e.currentTarget.dataset.index;
 
     if (this.props.myStudents[i].role === 'student') {
-      this.setState({ content: this.props.myStudents[i] });
+      this.setState({
+        ...this.state,
+        content: this.props.myStudents[i],
+        selected: i,
+      });
     }
   }
 
@@ -50,7 +55,12 @@ class Mentor extends React.Component {
     if (this.props.myStudents) {
       return this.props.myStudents.map((student, i) => {
         return (
-          <li className="nav-item" key={student._id} data-index={i} onClick={ this.handleSidebarClick.bind(this) }><a className="nav-link">
+          <li
+            className={ this.state.selected === i.toString() ? 'nav-item selected' : 'nav-item' }
+            key={student._id}
+            data-index={i}
+            onClick={ this.handleSidebarClick.bind(this) }>
+            <a className="nav-link">
               { student.firstName } { student.lastName }
             </a>
           </li>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Sidebar from '../side-bar/side-bar';
 import MentorContent from '../mentor-content/mentor-content';
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 
 import * as profileActions from '../../actions/profile';
@@ -21,6 +22,7 @@ class Mentor extends React.Component {
     super(props);
     this.state = {
       content: '',
+      modal: false,
     };
   }
 
@@ -59,13 +61,25 @@ class Mentor extends React.Component {
     return 'loading';
   }
 
+  handleButtonClick = () => {
+    if (this.state.modal) {
+      this.setState({ modal: false });
+    } else {
+      this.setState({ modal: true });
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="container-fluid">
           <div className="row">
           <Sidebar content={ this.fetchStudents() }/>
-          <MentorContent content={ this.state.content }/>
+          <MentorContent content={ this.state.content } buttonClick={ this.handleButtonClick }>
+            {
+              this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
+            }
+          </ MentorContent>
           </div>
         </div>
       </React.Fragment>

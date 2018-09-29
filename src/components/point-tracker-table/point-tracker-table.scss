@@ -4,7 +4,7 @@
   border: 2px solid #e8e8e8;
   width: 92%;
   border-radius: 1em;
-  
+
   .labels {
     width: 20em;
     font-size: 12px;
@@ -50,7 +50,9 @@
 
 .data-entry {
   display: block;
-  margin-left: 25px;
+  width: 75vw;
+  max-width: 1024px;
+  padding: 2em;
 }
 
 .synopsis {

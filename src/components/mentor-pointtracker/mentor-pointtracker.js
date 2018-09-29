@@ -48,14 +48,19 @@ class Mentor extends React.Component {
     return 'Forms...';
   }
 
+  handleButtonClick = () => {
+    console.log('hello');
+    // this.setState({ modal: true });
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="container-fluid">
           <div className="row">
           <Sidebar content={ this.fetchPointTrackers() }/>
-          <MentorContent content={ this.state.content }>
-            <PointTrackerForm />
+          <MentorContent content={ this.state.content } buttonClick={ this.handleButtonClick }>
+            <PointTrackerForm content={ this.state.content }/>
           </MentorContent>
           </div>
         </div>

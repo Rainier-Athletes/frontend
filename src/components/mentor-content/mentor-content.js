@@ -34,7 +34,7 @@ class MentorContent extends React.Component {
 }
 
 MentorContent.propTypes = {
-  content: PropTypes.node,
+  content: PropTypes.object,
   title: PropTypes.string,
   btnClick: PropTypes.func,
   children: PropTypes.node,

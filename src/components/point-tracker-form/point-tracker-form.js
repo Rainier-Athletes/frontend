@@ -85,21 +85,17 @@ class PointTrackerForm extends React.Component {
     }
   }
 
-  handleStudentSelect = () => {
-    // event.preventDefault();
-    // const studentId = event.target.value;
+  componentDidMount = () => {
     const selectedStudent = this.props.content;
     const { lastPointTracker } = selectedStudent.studentData;
-    console.log(selectedStudent._id);
+
     this.setState((prevState) => {
       let newState = { ...prevState };
       newState = lastPointTracker || emptyPointTracker;
-      console.log(selectedStudent._id);
-      console.log(newState);
       newState.student = `${selectedStudent._id}`;
-      // newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
-      // newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
-      // newState.synopsisSaved = false;
+      newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
+      newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
+      newState.synopsisSaved = false;
       return newState;
     });
   }
@@ -220,14 +216,16 @@ class PointTrackerForm extends React.Component {
 
   calcPlayingTime = () => {
     if (!this.state.student) return null;
+
     console.groupCollapsed('calcPlayingTime');
     const { subjects } = this.state;
-
     const studentsFiltered = this.props.students.filter(s => s._id.toString() === this.state.student.toString());
     const student = studentsFiltered[0];
-    console.log(student);
 
-    const { isElementarySchool } = student.studentData.school.filter(s => s.currentSchool)[0];
+    let isElementarySchool = null;
+    if (student.studentData.school.length > 0) {
+      isElementarySchool = student.studentData.school.filter(s => s.currentSchool)[0].isElementarySchool; // eslint-disable-line
+    }
 
     const numberOfPeriods = subjects.length;
     const totalClassTokens = numberOfPeriods * 2;
@@ -329,7 +327,7 @@ class PointTrackerForm extends React.Component {
     const synopsisCommentsJSX = (
       <div className="synopsis">
         <h4>Synopsis</h4>
-        <p>Playing Time Earned:</p>
+        <p>Playing Time Earned: { this.calcPlayingTime() }</p>
 
         <label htmlFor="mentorGrantedPlayingTime">Mentor Granted Playing Time:</label>
         <select
@@ -435,6 +433,7 @@ PointTrackerForm.propTypes = {
   fetchStudents: PropTypes.func,
   fetchTeachers: PropTypes.func,
   buttonClick: PropTypes.func,
+  content: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointTrackerForm);

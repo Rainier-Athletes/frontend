@@ -5,7 +5,7 @@ import { getReportingPeriods } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import PointTrackerSummary from '../point-tracker-summary/point-tracker-summary';
 import * as pointTrackerActions from '../../actions/point-tracker';
-import waitingGif from '../../assets/loading_icon.gif';
+import waitingGif from '../../assets/loading_icon_2.gif';
 
 import './point-tracker-form.scss';
 
@@ -17,9 +17,9 @@ const emptyPointTracker = {
   subjects: [{
     subjectName: 'Tutorial',
     scoring: {
-      excusedDays: '',
-      stamps: '',
-      halfStamps: '',
+      excusedDays: 0,
+      stamps: 0,
+      halfStamps: 0,
     },
     grade: '',
   }],
@@ -108,8 +108,22 @@ class PointTrackerForm extends React.Component {
             const newSubject = { ...subject };
             if (categoryName === 'grade') {
               newSubject.grade = validGrades.includes(event.target.value.toUpperCase()) ? event.target.value.toUpperCase() : '';
+            } else if (categoryName === 'excusedDays') {
+              newSubject.scoring.excusedDays = Math.min(Math.max(parseInt(event.target.value, 10), 0), 5);
             } else {
-              newSubject.scoring[categoryName] = Math.min(Math.max(parseInt(event.target.value, 10), 0), 8);
+              const currentValue = parseInt(event.target.value, 10);
+              // test currentValue for NaN which doesn't equal itself.
+              if (currentValue !== currentValue) { // eslint-disable-line 
+                newSubject.scoring[categoryName] = '';
+              } else {
+                const maxPointsPossible = 40 - (newSubject.scoring.excusedDays * 8);
+                const maxPointsAdjustment = categoryName === 'stamps' 
+                  ? newSubject.scoring.halfStamps
+                  : newSubject.scoring.stamps * 2;
+                let maxValidValue = maxPointsPossible - maxPointsAdjustment;
+                maxValidValue = categoryName === 'stamps' ? maxValidValue / 2 : maxValidValue;
+                newSubject.scoring[categoryName] = Math.floor(Math.min(Math.max(currentValue, 0), maxValidValue));
+              }
             }
            
             return newSubject;
@@ -146,16 +160,27 @@ class PointTrackerForm extends React.Component {
     });
   }
 
+  validScores = (subjects) => {
+    return subjects.every(subject => (
+      subject.scoring.stamps * 2 + subject.scoring.halfStamps <= 40 - subject.scoring.excusedDays * 8
+    ));
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
     const pointTracker = this.state;
-    delete pointTracker._id;
-    console.log('handleSubmit', pointTracker.title);
-    this.setState({ ...this.state, waitingOnSaves: true });
-    this.props.createPointTracker(pointTracker);
-    this.props.createSynopsisReport(pointTracker);
+    if (this.validScores(pointTracker.subjects)) {
+      delete pointTracker._id;
+      console.log('handleSubmit', pointTracker.title);
+      this.setState({ ...this.state, waitingOnSaves: true });
+      this.props.createPointTracker(pointTracker);
+      this.props.createSynopsisReport(pointTracker);
 
-    this.setState({ pointTracker: emptyPointTracker });
+      this.setState({ pointTracker: emptyPointTracker });
+    } else {
+      console.log('scores not valid for submitting point tracker');
+      alert('Errors in scores. Please correct before saving.');
+    }
   }
 
   getTeacherName = (teacherId) => {
@@ -259,19 +284,27 @@ class PointTrackerForm extends React.Component {
 
       const totalTokensEarned = classTokensEarned + gradeTokensEarned;
       console.log('classTokens', classTokensEarned, 'gradeTokens', gradeTokensEarned, 'totalTokens', totalTokensEarned);
-
+      console.log('.map w/in calc playing time:', subject.scoring);
       return totalTokensEarned;
     });
     
-    const totalClassScoreSum = totalEarnedTokens.reduce((acc, cur) => acc + cur, 0);
-    
+    const totalTokensEarned = totalEarnedTokens.reduce((acc, cur) => acc + cur, 0);
+    const tokenPercentage = totalTokensEarned / totalTokensPossible;
+    console.log('totalTokensEarned', totalTokensEarned, 'tokenPercentage', tokenPercentage);
+
     let earnedPlayingTime = 'None of game';
-    if (totalClassScoreSum >= 16) earnedPlayingTime = 'One quarter';
-    if (totalClassScoreSum >= 21) earnedPlayingTime = 'Two quarters';
-    if (totalClassScoreSum >= 25) earnedPlayingTime = 'Three quarters';
-    if (totalClassScoreSum >= 29) earnedPlayingTime = 'All but start';
-    if (totalClassScoreSum >= 30) earnedPlayingTime = 'Entire game';
-    if (earnedPlayingTime !== this.state.earnedPlayingTime) this.setState({ ...this.state, earnedPlayingTime });
+    if (tokenPercentage >= 0.35) earnedPlayingTime = 'One quarter';
+    if (tokenPercentage >= 0.55) earnedPlayingTime = 'Two quarters';
+    if (tokenPercentage >= 0.65) earnedPlayingTime = 'Three quarters';
+    if (tokenPercentage >= 0.75) earnedPlayingTime = 'All but start';
+    if (tokenPercentage >= 0.8) earnedPlayingTime = 'Entire game';
+    if (earnedPlayingTime !== this.state.earnedPlayingTime) {
+      this.setState({ 
+        ...this.state, 
+        earnedPlayingTime,
+      });
+    }
+    console.log('earnedPlayingTime', earnedPlayingTime);
     console.groupEnd('calcPlayingTime');
     return earnedPlayingTime;
   }
@@ -386,18 +419,6 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
-    const displaySummaryJSX = () => {
-      // let link;
-      console.log('displaySummaryJSX saved:', this.state.synopsisSaved);
-      if (this.state.synopsisSaved) {
-        console.log('this.state.title', this.state.title);
-        // link = this.props.synopsisReportLink;
-        // this.setState({ ...this.state, synopsisSaved: false, synopsisLink: link });
-        return (<PointTrackerSummary pointTracker={this.state}/>);
-      }
-      return null;
-    };
-
     return (
       <div className="points-tracker">
         <form className="data-entry" onSubmit={ this.handleSubmit }>
@@ -414,10 +435,8 @@ class PointTrackerForm extends React.Component {
           />
           { synopsisCommentsJSX }
           { this.state.waitingOnSaves ? <img src={waitingGif} alt="waiting" /> : <button className="submit-report" type="submit">Submit Point Tracker</button> }
-          { displaySummaryJSX() }
+          { this.state.synopsisSaved ? <PointTrackerSummary pointTracker={this.state}/> : null }
         </form>
-
-
       </div>
     );
   }

@@ -4,34 +4,33 @@
   h2.studentModalHeader {
     color: $color-brand-blue;
   }
-      background: rgba(169,169,169, .97);
-      border-radius: 7px;
-      box-shadow: 0px 0px 10px rgb(186, 186, 186);
-      width: 50em;
-      max-height: calc(100vh - 4px);
-      overflow-y: auto;
-      color: white;
-      font-family: $font-primary;
-      position: absolute;
-      z-index: 99;
-      margin: auto;
-      top: 6em; left: 0; bottom: 0; right: 0;
-      padding: 20px 30px 0px 30px;
-    }
+    background: rgba(169,169,169, .97);
+    border-radius: 7px;
+    box-shadow: 0px 0px 10px rgb(186, 186, 186);
+    width: 50em;
+    max-height: calc(100vh - 4px);
+    overflow-y: auto;
+    color: white;
+    font-family: $font-primary;
+    position: absolute;
+    z-index: 99;
+    margin: auto;
+    top: 6em; left: 0; bottom: 0; right: 0;
+    padding: 20px 30px 20px 30px;
+  }
 
 .hide {
   display: none;
 }
 
-
 .submitBtn-container {
-  display: flex;
   width: 9em;
   margin-left: auto;
   margin-right: auto;
 }
 
 .submitBtn {
+  display: flex;
   background: $color-input-field;
   box-shadow: 0px 0px 3px black;
   border: none;
@@ -52,6 +51,8 @@
 .cancelBtn {
   background: $color-white;
   display: inline;
+  box-shadow: 0px 0px 3px black;
+  border-radius: 2em;
   margin-left: 10px;
 }
 
@@ -93,6 +94,7 @@
   background: none;
   float: right;
   font-size: 20px;
+  font-weight: 700;
   position: relative;
   right: 10px;
   padding: 0;
@@ -101,6 +103,5 @@
 
 .close-modal:hover {
   color: $color-error;
-  font-weight: 900;
   background: none;
 }

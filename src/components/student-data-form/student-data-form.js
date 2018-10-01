@@ -264,8 +264,8 @@ class StudentDataForm extends React.Component {
           value={this.state.sports.length ? this.state.sports[0].league : ''}
           onChange={this.handleSportFieldChange}
         />
-        <p><Button type="submit" className="submit-data" id="save-new-sport" onClick={this.handleNewSport}>Save Sport</Button></p>
-        <p><Button type="reset" className="cancel-data" id="cancel-new-sport" onClick={this.handleNewSport}>Cancel</Button></p>
+        <p><Button type="submit" className="submitBtn" id="save-new-sport" onClick={this.handleNewSport}>Save Sport</Button></p>
+        <p><Button type="reset" className="cancelBtn" id="cancel-new-sport" onClick={this.handleNewSport}>Cancel</Button></p>
       </FormGroup>
     );
 
@@ -288,13 +288,13 @@ class StudentDataForm extends React.Component {
         ))
         : null
       }</h6>
-      <Button type="submit" className="submit-data" id="create-new-sport" onClick={this.handleNewSport}>Create New Sport</Button>
+      <Button type="submit" className="submitBtn" id="create-new-sport" onClick={this.handleNewSport}>Create New Sport</Button>
       </FormGroup>
     );
 
     return (
       <div className="student-data-form">
-        <h1>Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h1>
+        <h2 className="studentModalHeader">Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h2>
         <form onSubmit={this.handleSubmit}>
           <button className="close-modal" onClick={this.props.onClose}>x</button>
           <FormGroup controlId="gender-dob">
@@ -386,8 +386,8 @@ class StudentDataForm extends React.Component {
               onChange={this.handleTextFieldChange}
             />
           </FormGroup>
-          <Button type="submit" className="submit-data" id="submit-student-data">Submit</Button>
-          <Button type="reset" className="cancel-data" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
+          <Button type="submit" className="submitBtn" id="submit-student-data">Submit</Button>
+          <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
         </form>
     </div>
     );

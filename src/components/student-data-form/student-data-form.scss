@@ -1,97 +1,68 @@
 @import '../../style/vars';
 
-p {
-  font-size: 30px;
-}
-
 .student-data-form {
-  background: rgba(165, 164, 164, 0.97);
+  background: rgba(169,169,169, .97);
   border-radius: 7px;
   box-shadow: 0px 0px 10px rgb(186, 186, 186);
   width: 50em;
-  // height: 50em;
+  max-height: calc(100vh - 4px);
+  overflow-y: auto;
   color: white;
-  font-family: helvetica;
+  font-family: $font-primary;
   position: absolute;
   z-index: 99;
   margin: auto;
   top: 6em; left: 0; bottom: 0; right: 0;
-  padding: 20px;
+  padding: 20px 30px 0px 30px;
 }
 
 .hide {
   display: none;
 }
 
-.field-wrap {
+h2 .studentModalHeader {
+  color: $color-brand-blue;
+}
+
+.submitBtn-container {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin: 5px 20px;
-  padding: 5px;
+  width: 9em;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.field-wrap > label {
+.submitBtn {
+  background: $color-button-green;
+  box-shadow: 0px 0px 3px black;
+  border: none;
+  border-radius: 2em;
   color: white;
-  font-size: 18px;
+  cursor: pointer;
+  width: 12em;
+  font-size: 16px;
   font-weight: 300;
-  margin-right: 1.5em;
-  max-width: 7em;
+  padding: 12px;
+}
+.submitBtn:hover {
+  background-color: $color-button-active;
+  color: $color-black;
+  font-weight: 600;
 }
 
-// .modalContainer h1 {
-//   text-align:center;
-//   text-shadow: 0px 0px 3px black;
-//   color: white;
-//   font-size: 36px;
-//   font-weight: 300;
-//   position: relative;
-//   top: 1em;
-//   margin-bottom: 2em;
-// }
+.cancelBtn {
+  background: $color-white;
+  display: inline;
+  margin-left: 10px;
+}
 
-// .modalContainer input:focus {
-//   background: white;
-//   color: black;
-// }
+.cancelBtn:hover {
+  background-color: $color-lightgrey;
+  font-weight: 600;
+}
 
-// .btn-container {
-//   display: flex;
-//   justify-content: center;
-// }
-
-// .admin-mentor-btn {
-//   display: none;
-//   justify-content: center;
-// }
-
-
-  // .submitBtn-container {
-  //   width: 9em;
-  //   margin-left: auto;
-  //   margin-right: auto;
-  // }
-
-  .submitBtn {
-    background: #099544;
-    box-shadow: 0px 3px #076e32;
-    border: none;
-    border-radius: 2em;
-    color: white;
-    cursor: pointer;
-    width: 9em;
-    font-size: 16px;
-    font-weight: 300;
-    padding: 12px;
-  }
-
-  // .submitBtn:hover {
-  //   background-color: #306c39;
-  // }
-
-// input:focus, button:focus {
-//   outline: 0;
-// }
+input:focus, button:focus {
+  outline: 1;
+}
 
 // .dropdown select {
 //   width: 15em;
@@ -104,13 +75,14 @@ p {
   background: none;
   float: right;
   font-size: 20px;
-  position: absolute;
+  position: relative;
   right: 10px;
   padding: 0;
   margin: 0;
 }
 
 .close-modal:hover {
-  color: rgb(211, 50, 50);
+  color: $color-error;
+  font-weight: 900;
   background: none;
 }

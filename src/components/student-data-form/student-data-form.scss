@@ -1,3 +1,5 @@
+@import '../../style/vars';
+
 p {
   font-size: 30px;
 }
@@ -14,6 +16,7 @@ p {
   z-index: 99;
   margin: auto;
   top: 6em; left: 0; bottom: 0; right: 0;
+  padding: 20px;
 }
 
 .hide {
@@ -36,64 +39,65 @@ p {
   max-width: 7em;
 }
 
-.modalContainer h1 {
-  text-align:center;
-  text-shadow: 0px 0px 3px black;
-  color: white;
-  font-size: 36px;
-  font-weight: 300;
-  position: relative;
-  top: 1em;
-  margin-bottom: 2em;
-}
+// .modalContainer h1 {
+//   text-align:center;
+//   text-shadow: 0px 0px 3px black;
+//   color: white;
+//   font-size: 36px;
+//   font-weight: 300;
+//   position: relative;
+//   top: 1em;
+//   margin-bottom: 2em;
+// }
 
-.modalContainer input:focus {
-  background: white;
-  color: black;
-}
+// .modalContainer input:focus {
+//   background: white;
+//   color: black;
+// }
 
-.btn-container {
-  display: flex;
-  justify-content: center;
-}
+// .btn-container {
+//   display: flex;
+//   justify-content: center;
+// }
 
-.admin-mentor-btn {
-  display: none;
-  justify-content: center;
-}
+// .admin-mentor-btn {
+//   display: none;
+//   justify-content: center;
+// }
 
-.addButton-container {
-  width: 9em;
-  margin-left: auto;
-  margin-right: auto;
-}
 
-.addButton {
-  background: #099544;
-  box-shadow: 0px 3px #076e32;
-  border: none;
-  border-radius: 2em;
-  color: white;
-  cursor: pointer;
-  width: 9em;
-  font-size: 16px;
-  font-weight: 300;
-  padding: 12px;
-}
+  // .submitBtn-container {
+  //   width: 9em;
+  //   margin-left: auto;
+  //   margin-right: auto;
+  // }
 
-.addButton:hover {
-  background-color: #306c39;
-}
+  .submitBtn {
+    background: #099544;
+    box-shadow: 0px 3px #076e32;
+    border: none;
+    border-radius: 2em;
+    color: white;
+    cursor: pointer;
+    width: 9em;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 12px;
+  }
 
-input:focus, button:focus {
-  outline: 0;
-}
+  // .submitBtn:hover {
+  //   background-color: #306c39;
+  // }
 
-.dropdown select {
-  width: 15em;
-  height: 2em;
-  background-color: white !important;
-}
+// input:focus, button:focus {
+//   outline: 0;
+// }
+
+// .dropdown select {
+//   width: 15em;
+//   height: 2em;
+//   background-color: white !important;
+// }
 
 .close-modal {
   color: white;

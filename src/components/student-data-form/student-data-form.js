@@ -209,7 +209,7 @@ class StudentDataForm extends React.Component {
         ? 'An elementary school' : 'A middle/high school')
         : ''
         /* eslint-enable */}</h6>
-      <Button type="submit" id="create-new-school" onClick={this.handleNewSchool}>Create New School</Button>
+      <Button type="submit" className="submitBtn" id="create-new-school" onClick={this.handleNewSchool}>Create New School</Button>
       </FormGroup>
     );
     // eslint-enable
@@ -233,8 +233,8 @@ class StudentDataForm extends React.Component {
           >
           Check if elementary school
         </Checkbox>
-        <p><Button type="submit" id="save-new-school" onClick={this.handleNewSchool}>Save School</Button></p>
-        <p><Button type="reset" id="cancel-new-school" onClick={this.handleNewSchool}>Cancel</Button></p>
+        <p><Button type="submit" className="submitBtn" id="save-new-school" onClick={this.handleNewSchool}>Save School</Button></p>
+        <p><Button type="reset" className="cancelBtn" id="cancel-new-school" onClick={this.handleNewSchool}>Cancel</Button></p>
       </FormGroup>
     );
 
@@ -264,8 +264,8 @@ class StudentDataForm extends React.Component {
           value={this.state.sports.length ? this.state.sports[0].league : ''}
           onChange={this.handleSportFieldChange}
         />
-        <p><Button type="submit" id="save-new-sport" onClick={this.handleNewSport}>Save Sport</Button></p>
-        <p><Button type="reset" id="cancel-new-sport" onClick={this.handleNewSport}>Cancel</Button></p>
+        <p><Button type="submit" className="submit-data" id="save-new-sport" onClick={this.handleNewSport}>Save Sport</Button></p>
+        <p><Button type="reset" className="cancel-data" id="cancel-new-sport" onClick={this.handleNewSport}>Cancel</Button></p>
       </FormGroup>
     );
 
@@ -288,7 +288,7 @@ class StudentDataForm extends React.Component {
         ))
         : null
       }</h6>
-      <Button type="submit" id="create-new-sport" onClick={this.handleNewSport}>Create New Sport</Button>
+      <Button type="submit" className="submit-data" id="create-new-sport" onClick={this.handleNewSport}>Create New Sport</Button>
       </FormGroup>
     );
 
@@ -386,8 +386,8 @@ class StudentDataForm extends React.Component {
               onChange={this.handleTextFieldChange}
             />
           </FormGroup>
-          <Button type="submit" id="submit-student-data">Submit</Button>
-          <Button type="reset" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
+          <Button type="submit" className="submit-data" id="submit-student-data">Submit</Button>
+          <Button type="reset" className="cancel-data" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
         </form>
     </div>
     );

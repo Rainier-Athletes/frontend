@@ -170,7 +170,6 @@ class StudentDataForm extends React.Component {
   }
 
   handleSubmit = (e) => {
-    alert('Student\'s information was updated'); // eslint-disable-line
     e.preventDefault();
 
     if (e.target.id.indexOf('new-school') > -1) return this.handleNewSchool(e);

@@ -391,7 +391,7 @@ class StudentDataForm extends React.Component {
               onChange={this.handleTextFieldChange}
             />
           </FormGroup>
-          <Button type="submit" className="formSubmitBtn" id="submit-student-data" onClick={this.props.updateStudentData}>Submit</Button>
+          <Button type="submit" className="formSubmitBtn" id="submit-student-data">Submit</Button>
           <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
         </form>
     </div>

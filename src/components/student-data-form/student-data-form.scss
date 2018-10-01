@@ -23,14 +23,17 @@
   display: none;
 }
 
+.checkbox {
+  padding-left: 10px;
+}
 .submitBtn-container {
+  display: absolute;
   width: 9em;
   margin-left: auto;
   margin-right: auto;
 }
 
 .submitBtn {
-  display: flex;
   background: $color-input-field;
   box-shadow: 0px 0px 3px black;
   border: none;
@@ -64,7 +67,7 @@
 .formSubmitBtn {
   background: $color-button-green;
   box-shadow: 0px 0px 3px black;
-  border: none;
+  border: 1px solid $color-black;
   border-radius: 2em;
   color: white;
   cursor: pointer;
@@ -95,7 +98,8 @@
   float: right;
   font-size: 20px;
   font-weight: 700;
-  position: relative;
+  position: absolute;
+  clear: both;
   right: 10px;
   padding: 0;
   margin: 0;

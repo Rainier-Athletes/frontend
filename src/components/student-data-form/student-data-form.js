@@ -170,6 +170,7 @@ class StudentDataForm extends React.Component {
   }
 
   handleSubmit = (e) => {
+    alert('Student\'s information was updated');
     e.preventDefault();
 
     if (e.target.id.indexOf('new-school') > -1) return this.handleNewSchool(e);
@@ -228,6 +229,7 @@ class StudentDataForm extends React.Component {
           inline
           checked={this.state.school.length ? this.state.school.find(s => s.currentSchool).isElementarySchool : false }
           id="isElementarySchool"
+          className="checkbox"
           prop="isElementarySchool"
           onChange={this.handleIsElementarySchool}
           >
@@ -281,6 +283,7 @@ class StudentDataForm extends React.Component {
           <Checkbox
             inline
             checked={this.state.sports[i].currentlyPlaying}
+            className="checkbox"
             id={i}
             onChange={this.handleSportStatusChange}
             >Currently playing</Checkbox>
@@ -302,7 +305,7 @@ class StudentDataForm extends React.Component {
               id="gender"
               type="text"
               label="Gender"
-              placeholder="Enter student's gender"
+              placeholder="Enter student&rsquo;s gender"
               value={this.state.gender ? this.state.gender : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -336,6 +339,7 @@ class StudentDataForm extends React.Component {
                 <Checkbox
                   inline
                   checked={this.state.family[i].weekdayGuardian}
+                  className="checkbox"
                   id={f.member._id.toString()}
                   prop="weekdayGuardian"
                   onChange={this.handleGuardianChange}
@@ -343,6 +347,7 @@ class StudentDataForm extends React.Component {
                 <Checkbox
                   inline
                   checked={this.state.family[i].weekendGuardian}
+                  className="checkbox"
                   id={f.member._id.toString()}
                   prop="weekendGuardian"
                   onChange={this.handleGuardianChange}
@@ -386,7 +391,7 @@ class StudentDataForm extends React.Component {
               onChange={this.handleTextFieldChange}
             />
           </FormGroup>
-          <Button type="submit" className="formSubmitBtn" id="submit-student-data">Submit</Button>
+          <Button type="submit" className="formSubmitBtn" id="submit-student-data" onClick={this.props.updateStudentData}>Submit</Button>
           <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
         </form>
     </div>

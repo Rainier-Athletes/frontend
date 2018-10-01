@@ -296,9 +296,9 @@ class StudentDataForm extends React.Component {
 
     return (
       <div className="student-data-form">
+        <button className="close-modal" onClick={this.props.onClose}>x</button>
         <h2 className="studentModalHeader">Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h2>
         <form onSubmit={this.handleSubmit}>
-          <button className="close-modal" onClick={this.props.onClose}>x</button>
           <FormGroup controlId="gender-dob">
             <this.FieldGroup
               id="gender"

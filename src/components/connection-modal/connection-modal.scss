@@ -1,21 +1,22 @@
 @import '../../style/vars';
 
 p {
-  font-size: 30px;
+  font-size: 24px;
 }
 
 .modalContainer {
-  background: rgba(33, 33, 33, .97);
+  background: rgba(169,169,169, .97);
   border-radius: 7px;
   box-shadow: 0px 0px 10px rgb(186, 186, 186);
   width: 30em;
-  height: 32em;
+  height: 30em;
+  overflow-y: auto;
   color: white;
   font-family: $font-primary;
   position: absolute;
   z-index: 99;
   margin: auto;
-  top: 0; left: 0; bottom: 0; right: 0;
+  top: 4px; left: 0; bottom: 0; right: 0;
 }
 
 .hide {
@@ -40,10 +41,10 @@ p {
 
 .modalContainer h1 {
   text-align:center;
-  text-shadow: 0px 0px 3px black;
-  color: white;
-  font-size: 36px;
-  font-weight: 300;
+  // text-shadow: 0px 0px 3px black;
+  color: $color-brand-blue;
+  font-size: 30px;
+  font-weight: 500;
   position: relative;
   top: 1em;
   margin-bottom: 2em;
@@ -71,10 +72,9 @@ p {
 }
 
 .addButton {
-  // display: flex;
   text-align: center;
-  background-color: #0B9444;
-  // box-shadow: 2px 3px 5px #83CBA3;
+  background-color: $color-button-green;
+  box-shadow: 0px 0px 3px black;
   border: none;
   border-radius: .3em;
   color: white;
@@ -87,7 +87,9 @@ p {
 }
 
 .addButton:hover {
-  background-color: #53B57D;
+  background-color: $color-button-active;
+  color: $color-black;
+  font-weight: 600;
 }
 
 input:focus, button:focus {

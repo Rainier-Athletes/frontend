@@ -2,7 +2,10 @@
 
 .student-data-form   {
   h2.studentModalHeader {
+    text-align: center;
     color: $color-brand-blue;
+    font-size: 26px;
+    font-weight: 500;
   }
     background: rgba(169,169,169, .97);
     border-radius: 7px;

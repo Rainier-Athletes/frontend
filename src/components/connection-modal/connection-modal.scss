@@ -1,3 +1,5 @@
+@import '../../style/vars';
+
 p {
   font-size: 30px;
 }
@@ -9,7 +11,7 @@ p {
   width: 30em;
   height: 32em;
   color: white;
-  font-family: helvetica;
+  font-family: $font-primary;
   position: absolute;
   z-index: 99;
   margin: auto;

@@ -51,7 +51,7 @@ textarea, input, select {
   transition: 350ms all;
 
   &:hover {
-    background: $color-input-focus;
+    background: $color-button-focus;
     color: $color-black;
   }
 

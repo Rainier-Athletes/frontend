@@ -228,6 +228,7 @@ class StudentDataForm extends React.Component {
           inline
           checked={this.state.school.length ? this.state.school.find(s => s.currentSchool).isElementarySchool : false }
           id="isElementarySchool"
+          className="checkbox"
           prop="isElementarySchool"
           onChange={this.handleIsElementarySchool}
           >
@@ -243,7 +244,7 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="sport"
           type="text"
-          label="Sport (baseball, soccer, etc):"
+          label="Sport (baseball, soccer, etc): "
           placeholder="Enter new sport"
           value={this.state.sports.length ? this.state.sports[0].sport : ''}
           onChange={this.handleSportFieldChange}
@@ -251,7 +252,7 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="team"
           type="text"
-          label="Team name:"
+          label="Team name: "
           placeholder="Enter new team name"
           value={this.state.sports.length ? this.state.sports[0].team : ''}
           onChange={this.handleSportFieldChange}
@@ -259,8 +260,8 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="league"
           type="text"
-          label="League:"
-          placeholder="Enter new team's league"
+          label="League: "
+          placeholder="Enter new team&rsquo;s league"
           value={this.state.sports.length ? this.state.sports[0].league : ''}
           onChange={this.handleSportFieldChange}
         />
@@ -281,6 +282,7 @@ class StudentDataForm extends React.Component {
           <Checkbox
             inline
             checked={this.state.sports[i].currentlyPlaying}
+            className="checkbox"
             id={i}
             onChange={this.handleSportStatusChange}
             >Currently playing</Checkbox>
@@ -302,7 +304,7 @@ class StudentDataForm extends React.Component {
               id="gender"
               type="text"
               label="Gender"
-              placeholder="Enter student's gender"
+              placeholder="Enter student&rsquo;s gender"
               value={this.state.gender ? this.state.gender : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -336,6 +338,7 @@ class StudentDataForm extends React.Component {
                 <Checkbox
                   inline
                   checked={this.state.family[i].weekdayGuardian}
+                  className="checkbox"
                   id={f.member._id.toString()}
                   prop="weekdayGuardian"
                   onChange={this.handleGuardianChange}
@@ -343,6 +346,7 @@ class StudentDataForm extends React.Component {
                 <Checkbox
                   inline
                   checked={this.state.family[i].weekendGuardian}
+                  className="checkbox"
                   id={f.member._id.toString()}
                   prop="weekendGuardian"
                   onChange={this.handleGuardianChange}
@@ -363,7 +367,7 @@ class StudentDataForm extends React.Component {
               key="synopsisReportArchiveUrl"
               type="text"
               label="Synopsis Reports Archive URL"
-              placeholder="Enter student's synopsis report archive url"
+              placeholder="Enter student&rsquo;s synopsis report archive url"
               value={this.state.synopsisReportArchiveUrl ? this.state.synopsisReportArchiveUrl : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -372,7 +376,7 @@ class StudentDataForm extends React.Component {
               key="googleCalendarUrl"
               type="text"
               label="Google Calendar URL"
-              placeholder="Enter student's google calendar url"
+              placeholder="Enter student&rsquo;s Google calendar url"
               value={this.state.googleCalendarUrl ? this.state.googleCalendarUrl : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -381,7 +385,7 @@ class StudentDataForm extends React.Component {
               key="googleDocsUrl"
               type="text"
               label="Google Docs URL"
-              placeholder="Enter student's google documents url"
+              placeholder="Enter student&rsquo;s Google documents url"
               value={this.state.googleDocsUrl ? this.state.googleDocsUrl : ''}
               onChange={this.handleTextFieldChange}
             />

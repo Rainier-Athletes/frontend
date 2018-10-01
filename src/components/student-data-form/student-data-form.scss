@@ -4,28 +4,30 @@
   h2.studentModalHeader {
     color: $color-brand-blue;
   }
-      background: rgba(169,169,169, .97);
-      border-radius: 7px;
-      box-shadow: 0px 0px 10px rgb(186, 186, 186);
-      width: 50em;
-      max-height: calc(100vh - 4px);
-      overflow-y: auto;
-      color: white;
-      font-family: $font-primary;
-      position: absolute;
-      z-index: 99;
-      margin: auto;
-      top: 6em; left: 0; bottom: 0; right: 0;
-      padding: 20px 30px 0px 30px;
-    }
+    background: rgba(169,169,169, .97);
+    border-radius: 7px;
+    box-shadow: 0px 0px 10px rgb(186, 186, 186);
+    width: 50em;
+    max-height: calc(100vh - 4px);
+    overflow-y: auto;
+    color: white;
+    font-family: $font-primary;
+    position: absolute;
+    z-index: 99;
+    margin: auto;
+    top: 6em; left: 0; bottom: 0; right: 0;
+    padding: 20px 30px 20px 30px;
+  }
 
 .hide {
   display: none;
 }
 
-
+.checkbox {
+  padding-left: 10px;
+}
 .submitBtn-container {
-  display: flex;
+  display: absolute;
   width: 9em;
   margin-left: auto;
   margin-right: auto;
@@ -51,7 +53,9 @@
 
 .cancelBtn {
   background: $color-white;
-  display: inline;
+  color: $color-error;
+  box-shadow: 0px 0px 3px black;
+  border-radius: 2em;
   margin-left: 10px;
 }
 
@@ -63,7 +67,7 @@
 .formSubmitBtn {
   background: $color-button-green;
   box-shadow: 0px 0px 3px black;
-  border: none;
+  border: 1px solid $color-black;
   border-radius: 2em;
   color: white;
   cursor: pointer;
@@ -93,7 +97,9 @@
   background: none;
   float: right;
   font-size: 20px;
-  position: relative;
+  font-weight: 700;
+  position: absolute;
+  clear: both;
   right: 10px;
   padding: 0;
   margin: 0;
@@ -101,6 +107,5 @@
 
 .close-modal:hover {
   color: $color-error;
-  font-weight: 900;
   background: none;
 }

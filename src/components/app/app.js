@@ -5,12 +5,12 @@ import { faAngleDown, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
+import Mentor from '../mentor/mentor';
+import MentorPointTracker from '../mentor-pointtracker/mentor-pointtracker';
 import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
 
 import Auth from '../auth/auth';
-import PointTrackerForm from '../point-tracker-form/point-tracker-form';
-
 import './app.scss';
 
 library.add(faAngleDown, faUserPlus);
@@ -27,8 +27,9 @@ export default class App extends React.Component {
             <Navbar />
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
-            <Route expact path="/admin" component={ AdminUser(Admin) } />
-            <Route expact path="/mentor" component={ MentorUser(PointTrackerForm) } />
+            <Route exact path="/admin" component={ AdminUser(Admin) } />
+            <Route exact path="/mentor" component={ MentorUser(Mentor) } />
+            <Route exact path="/mentor/pointtracker" component={ MentorUser(MentorPointTracker) } />
           </div>
         </BrowserRouter>
         <footer className="footer">

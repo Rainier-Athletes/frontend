@@ -4,10 +4,12 @@ import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import * as routes from '../../lib/routes';
-import './mentor-table.scss';
 import ConnectionModal from '../connection-modal/connection-modal';
+import './admin-table.scss';
+import StudentDataModal from '../student-data-form/student-data-form';
 
 import * as profileActions from '../../actions/profile';
+import * as relationshipActions from '../../actions/relationship';
 
 const faker = require('faker');
 const { Editors, Formatters, Toolbar, Filters: { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter }, Data: { Selectors } } = require('react-data-grid-addons'); // eslint-disable-line
@@ -19,12 +21,13 @@ const mapDispatchToProps = dispatch => ({
   updateProfile: profile => dispatch(profileActions.updateProfileReq(profile)),
   createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
   deleteProfile: profile => dispatch(profileActions.deleteProfileReq(profile)),
+  deleteRelationship: profiles => dispatch(relationshipActions.deleteRelationshipReq(profiles)),
 });
 
 const newRows = {};
 const updatedRows = {};
 
-class MentorTable extends React.Component {
+class AdminTable extends React.Component {
   constructor(props, context) {
     super(props, context);
     this._columns = [
@@ -40,7 +43,7 @@ class MentorTable extends React.Component {
         key: 'firstName',
         name: 'First Name',
         editable: true,
-        width: 200,
+        width: 80,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -50,17 +53,27 @@ class MentorTable extends React.Component {
         key: 'lastName',
         name: 'Last Name',
         editable: true,
-        width: 200,
+        width: 80,
         resizable: true,
         sortable: true,
         filterable: true,
         filterRenderer: AutoCompleteFilter,
       },
       {
-        key: 'email',
-        name: 'Email',
+        key: 'primaryEmail',
+        name: 'Primary Email',
         editable: true,
-        width: 200,
+        width: 150,
+        resizable: true,
+        sortable: true,
+        filterable: true,
+        filterRenderer: AutoCompleteFilter,
+      },
+      {
+        key: 'secondaryEmail',
+        name: 'Secondary Email',
+        editable: true,
+        width: 150,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -70,34 +83,83 @@ class MentorTable extends React.Component {
         key: 'role',
         name: 'Role',
         editable: true,
-        width: 200,
-        resizable: true,
+        width: 60,
+        resizable: false,
         sortable: true,
         filterable: true,
         filterRenderer: MultiSelectFilter,
       },
       {
-        key: 'address',
-        name: 'Address',
+        key: 'street',
+        name: 'Street',
         editable: true,
-        width: 200,
+        width: 150,
         resizable: true,
         sortable: true,
         filterable: true,
         filterRenderer: AutoCompleteFilter,
       },
       {
-        key: 'phone',
-        name: 'Phone',
+        key: 'apt',
+        name: 'Apt',
         editable: true,
-        width: 200,
+        width: 60,
+        resizable: false,
+        sortable: true,
+        filterable: true,
+        filterRenderer: AutoCompleteFilter,
+      },
+      {
+        key: 'city',
+        name: 'City',
+        editable: true,
+        width: 60,
         resizable: true,
+        sortable: true,
+        filterable: true,
+        filterRenderer: AutoCompleteFilter,
+      },
+      {
+        key: 'state',
+        name: 'State',
+        editable: true,
+        width: 60,
+        resizable: false,
+        sortable: true,
+        filterable: true,
+        filterRenderer: AutoCompleteFilter,
+      },
+      {
+        key: 'zip',
+        name: 'Zip',
+        editable: true,
+        width: 60,
+        resizable: false,
+        sortable: true,
+        filterable: true,
+        filterRenderer: AutoCompleteFilter,
+      },
+      {
+        key: 'cellPhone',
+        name: 'Cell #',
+        editable: true,
+        width: 120,
+        resizable: false,
+        sortable: true,
+      },
+      {
+        key: 'phone',
+        name: 'Alt #',
+        editable: true,
+        width: 120,
+        resizable: false,
         sortable: true,
       },
     ];
     this.state = {
       rows: [],
       selectedIndexes: [],
+      studentSelected: null,
       originalRows: [],
       expanded: {},
       filters: {},
@@ -105,6 +167,7 @@ class MentorTable extends React.Component {
       newRows: [],
       updatedRows: [],
       isOpen: false, // for the modal
+      sdIsOpen: false, // for student data form modal
     };
   }
 
@@ -127,35 +190,45 @@ class MentorTable extends React.Component {
       });
   };
 
-  populateMentorChildren = (profile) => {
+  populateNonStudentChildren = (profile) => {
     const childArr = [];
-    for (const i in profile.students) { // eslint-disable-line
-      childArr.push(profile.students[i]);
-    }
+    profile.students.forEach((student) => {
+      if (student.active) childArr.push(student);
+    });
+    // for (const i in profile.students) { // eslint-disable-line
+    //   childArr.push(profile.students[i]);
+    // }
     return childArr;
   };
 
   populateStudentChildren = (profile) => {
     const childArr = [];
-    if (profile.studentData.mentor) {
-      childArr.push(profile.studentData.mentor);
-    }
-    for (const i in profile.studentData.coaches) { // eslint-disable-line
-      childArr.push(profile.studentData.coaches[i]);
-    }
-    for (const i in profile.studentData.family) { // eslint-disable-line
-      childArr.push(profile.studentData.family[i]);
-    }
-    for (const i in profile.studentData.teachers) { // eslint-disable-line
-      childArr.push(profile.studentData.teachers[i]);
-    }
+
+    if (!profile.studentData) return childArr;
+
+    profile.studentData.mentors.forEach((mentor) => {
+      if (mentor.mentor.active && mentor.currentMentor) childArr.push(mentor.mentor);
+    });
+
+    profile.studentData.coaches.forEach((coach) => {
+      if (coach.coach.active && coach.currentCoach) childArr.push(coach.coach);
+    });
+
+    profile.studentData.family.forEach((member) => {
+      if (member.member.active) childArr.push(member.member);
+    });
+
+    profile.studentData.teachers.forEach((teacher) => {
+      if (teacher.teacher.active && teacher.currentTeacher) childArr.push(teacher.teacher);
+    });
+    
     return childArr;
   };
 
   populateData = (profile) => {
     let childArr;
-    if (profile.role === 'mentor' && profile.students.length > 0) {
-      childArr = this.populateMentorChildren(profile);
+    if (profile.role !== 'student' && profile.students.length > 0) {
+      childArr = this.populateNonStudentChildren(profile);
     }
     if (profile.role === 'student') {
       childArr = this.populateStudentChildren(profile);
@@ -166,10 +239,16 @@ class MentorTable extends React.Component {
       avatar: profile.picture,
       firstName: profile.firstName,
       lastName: profile.lastName,
-      email: profile.email,
+      primaryEmail: profile.primaryEmail,
+      secondaryEmail: profile.secondaryEmail,
       role: profile.role,
+      cellPhone: profile.cellPhone,
       phone: profile.phone,
-      address: '',
+      street: profile.street,
+      apt: profile.apt,
+      city: profile.city,
+      state: profile.state,
+      zip: profile.zip,
       children: childArr,
     };
   };
@@ -221,12 +300,18 @@ class MentorTable extends React.Component {
   };
 
   onRowsSelected = (rows) => {
-    this.setState({ selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx)) });
+    this.setState({
+      selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx)),
+      studentSelected: rows[0].row.role === 'student' ? rows[0].row._id.toString() : null,
+    });
   };
 
   onRowsDeselected = (rows) => {
     const rowIndexes = rows.map(r => r.rowIdx);
-    this.setState({ selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1) });
+    this.setState({
+      selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1),
+      studentSelected: null,
+    });
   };
 
   handleGridSort = (sortColumn, sortDirection) => {
@@ -369,6 +454,25 @@ class MentorTable extends React.Component {
     });
   }
 
+  toggleSdModal = () => {
+    if (!this.state.studentSelected) return undefined;
+
+    return this.setState({
+      sdIsOpen: !this.state.sdIsOpen,
+    });
+  }
+
+  handleDetach = () => {
+    const selected = this.state.selectedIndexes;
+    const query = {};
+    for (const index in selected) { // eslint-disable-line
+      const i = selected[index];
+      const r = this.state.rows[i];
+      query[r.role] = r._id;
+    }
+    this.props.deleteRelationship(query);
+  }
+
   /*eslint-disable*/
   render() {
     return (
@@ -377,6 +481,8 @@ class MentorTable extends React.Component {
           show={this.state.isOpen}
           onClose={this.toggleModal}>
         </ConnectionModal>
+        {this.state.sdIsOpen
+          ? <StudentDataModal onClose={this.toggleSdModal} studentId={this.state.studentSelected}></StudentDataModal> : null}
         <ReactDataGrid
           ref={ node => this.grid = node }
           enableCellSelect={true}
@@ -389,7 +495,9 @@ class MentorTable extends React.Component {
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
               <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
               <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
+              <button className="modalBtn" onClick={this.toggleSdModal}>Access Selected Student Data</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
+              <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
             </Toolbar>
           }
           enableRowSelect={true}
@@ -405,7 +513,7 @@ class MentorTable extends React.Component {
           }}
           getSubRowDetails={this.getSubRowDetails}
           onCellExpand={this.onCellExpand}
-          rowHeight={50}
+          rowHeight={40}
           minHeight={600}
           rowScrollTimeout={200}
           onAddFilter={this.handleFilterChange}
@@ -417,12 +525,13 @@ class MentorTable extends React.Component {
   }
 }
 
-MentorTable.propTypes = {
+AdminTable.propTypes = {
   fetchProfile: PropTypes.func,
   updateProfile: PropTypes.func,
   createProfile: PropTypes.func,
   deleteProfile: PropTypes.func,
   history: PropTypes.array,
-}
+  deleteRelationship: PropTypes.func,
+};
 
-export default connect(null, mapDispatchToProps)(MentorTable);
+export default connect(null, mapDispatchToProps)(AdminTable);

@@ -1,21 +1,34 @@
 @import '../../style/vars';
 
+.header {
+  background-color: #4C96C9;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 50px;
+  z-index: 999;
+}
+
 .navbar {
   top: 0;
-  position: fixed;
+  position: fixed !important;
   width: 100%;
-  background-color: #1f1f1f;
-  padding: 0;
+  max-width: 1366px;
+  background-color: #4C96C9;
   z-index: 1;
+  margin: auto;
   clear: both;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 !important;
 
-  .logo {
-    float: left;
+  .nav-content {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
 
-    .rainier-logo {
-      width: 20em;
-      margin: 1em 1em;
-    }
+  .rainier-logo {
+    width: 14em;
 
   }
 
@@ -23,32 +36,9 @@
     color: white;
     float: right;
 
-    .dropdown {
-      display: block;
-      position: absolute;
-      background-color: #929292;
-      top: 4.8em;
-      right: 0;
-    }
-
     .google-btn {
       width: 10em;
       margin: 1em;
     }
   }
-}
-
-.login button {
-  color: white;
-  background-color: transparent;
-  padding: 1.8em 1em !important;
-}
-
-.login button:hover {
-  background-color: #4a4a4a;
-}
-
-.dropdown > button {
-  width: 11.9em;
-  color: black;
 }

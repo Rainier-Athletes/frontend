@@ -170,7 +170,7 @@ class StudentDataForm extends React.Component {
   }
 
   handleSubmit = (e) => {
-    alert('Student\'s information was updated');
+    alert('Student\'s information was updated'); // eslint-disable-line
     e.preventDefault();
 
     if (e.target.id.indexOf('new-school') > -1) return this.handleNewSchool(e);
@@ -245,7 +245,7 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="sport"
           type="text"
-          label="Sport (baseball, soccer, etc):"
+          label="Sport (baseball, soccer, etc): "
           placeholder="Enter new sport"
           value={this.state.sports.length ? this.state.sports[0].sport : ''}
           onChange={this.handleSportFieldChange}
@@ -253,7 +253,7 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="team"
           type="text"
-          label="Team name:"
+          label="Team name: "
           placeholder="Enter new team name"
           value={this.state.sports.length ? this.state.sports[0].team : ''}
           onChange={this.handleSportFieldChange}
@@ -261,8 +261,8 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="league"
           type="text"
-          label="League:"
-          placeholder="Enter new team's league"
+          label="League: "
+          placeholder="Enter new team&rsquo;s league"
           value={this.state.sports.length ? this.state.sports[0].league : ''}
           onChange={this.handleSportFieldChange}
         />
@@ -368,7 +368,7 @@ class StudentDataForm extends React.Component {
               key="synopsisReportArchiveUrl"
               type="text"
               label="Synopsis Reports Archive URL"
-              placeholder="Enter student's synopsis report archive url"
+              placeholder="Enter student&rsquo;s synopsis report archive url"
               value={this.state.synopsisReportArchiveUrl ? this.state.synopsisReportArchiveUrl : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -377,7 +377,7 @@ class StudentDataForm extends React.Component {
               key="googleCalendarUrl"
               type="text"
               label="Google Calendar URL"
-              placeholder="Enter student's google calendar url"
+              placeholder="Enter student&rsquo;s Google calendar url"
               value={this.state.googleCalendarUrl ? this.state.googleCalendarUrl : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -386,7 +386,7 @@ class StudentDataForm extends React.Component {
               key="googleDocsUrl"
               type="text"
               label="Google Docs URL"
-              placeholder="Enter student's google documents url"
+              placeholder="Enter student&rsquo;s Google documents url"
               value={this.state.googleDocsUrl ? this.state.googleDocsUrl : ''}
               onChange={this.handleTextFieldChange}
             />

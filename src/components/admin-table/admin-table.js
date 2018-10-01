@@ -36,14 +36,14 @@ class AdminTable extends React.Component {
         name: 'Avatar',
         width: 60,
         formatter: ImageFormatter,
-        resizable: true,
+        resizable: false,
         headerRenderer: <ImageFormatter value={faker.image.cats()} />,
       },
       {
         key: 'firstName',
         name: 'First Name',
         editable: true,
-        width: 80,
+        width: 75,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -53,7 +53,7 @@ class AdminTable extends React.Component {
         key: 'lastName',
         name: 'Last Name',
         editable: true,
-        width: 80,
+        width: 75,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -63,7 +63,7 @@ class AdminTable extends React.Component {
         key: 'primaryEmail',
         name: 'Primary Email',
         editable: true,
-        width: 150,
+        width: 125,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -73,7 +73,7 @@ class AdminTable extends React.Component {
         key: 'secondaryEmail',
         name: 'Secondary Email',
         editable: true,
-        width: 150,
+        width: 125,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -83,7 +83,7 @@ class AdminTable extends React.Component {
         key: 'role',
         name: 'Role',
         editable: true,
-        width: 60,
+        width: 75,
         resizable: false,
         sortable: true,
         filterable: true,
@@ -93,7 +93,7 @@ class AdminTable extends React.Component {
         key: 'street',
         name: 'Street',
         editable: true,
-        width: 150,
+        width: 125,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -103,7 +103,7 @@ class AdminTable extends React.Component {
         key: 'apt',
         name: 'Apt',
         editable: true,
-        width: 60,
+        width: 40,
         resizable: false,
         sortable: true,
         filterable: true,
@@ -113,7 +113,7 @@ class AdminTable extends React.Component {
         key: 'city',
         name: 'City',
         editable: true,
-        width: 60,
+        width: 75,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -123,7 +123,7 @@ class AdminTable extends React.Component {
         key: 'state',
         name: 'State',
         editable: true,
-        width: 60,
+        width: 40,
         resizable: false,
         sortable: true,
         filterable: true,
@@ -133,7 +133,7 @@ class AdminTable extends React.Component {
         key: 'zip',
         name: 'Zip',
         editable: true,
-        width: 60,
+        width: 40,
         resizable: false,
         sortable: true,
         filterable: true,
@@ -143,16 +143,16 @@ class AdminTable extends React.Component {
         key: 'cellPhone',
         name: 'Cell #',
         editable: true,
-        width: 120,
-        resizable: false,
+        width: 100,
+        resizable: true,
         sortable: true,
       },
       {
         key: 'phone',
         name: 'Alt #',
         editable: true,
-        width: 120,
-        resizable: false,
+        width: 100,
+        resizable: true,
         sortable: true,
       },
     ];
@@ -495,9 +495,10 @@ class AdminTable extends React.Component {
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
               <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
               <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
-              <button className="modalBtn" onClick={this.toggleSdModal}>Access Selected Student Data</button>
+              <button className="modalBtn" onClick={this.toggleSdModal}>Access Student Data*</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
               <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
+              <p className="infoText">*To access a student's data, click the checkbox next to student name, then click the Access Student Data button.</p>
             </Toolbar>
           }
           enableRowSelect={true}

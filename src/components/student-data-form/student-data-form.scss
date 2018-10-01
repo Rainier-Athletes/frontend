@@ -1,28 +1,28 @@
 @import '../../style/vars';
 
-.student-data-form {
-  background: rgba(169,169,169, .97);
-  border-radius: 7px;
-  box-shadow: 0px 0px 10px rgb(186, 186, 186);
-  width: 50em;
-  max-height: calc(100vh - 4px);
-  overflow-y: auto;
-  color: white;
-  font-family: $font-primary;
-  position: absolute;
-  z-index: 99;
-  margin: auto;
-  top: 6em; left: 0; bottom: 0; right: 0;
-  padding: 20px 30px 0px 30px;
-}
+.student-data-form   {
+  h2.studentModalHeader {
+    color: $color-brand-blue;
+  }
+      background: rgba(169,169,169, .97);
+      border-radius: 7px;
+      box-shadow: 0px 0px 10px rgb(186, 186, 186);
+      width: 50em;
+      max-height: calc(100vh - 4px);
+      overflow-y: auto;
+      color: white;
+      font-family: $font-primary;
+      position: absolute;
+      z-index: 99;
+      margin: auto;
+      top: 6em; left: 0; bottom: 0; right: 0;
+      padding: 20px 30px 0px 30px;
+    }
 
 .hide {
   display: none;
 }
 
-h2 .studentModalHeader {
-  color: $color-brand-blue;
-}
 
 .submitBtn-container {
   display: flex;
@@ -32,7 +32,7 @@ h2 .studentModalHeader {
 }
 
 .submitBtn {
-  background: $color-button-green;
+  background: $color-input-field;
   box-shadow: 0px 0px 3px black;
   border: none;
   border-radius: 2em;
@@ -44,7 +44,7 @@ h2 .studentModalHeader {
   padding: 12px;
 }
 .submitBtn:hover {
-  background-color: $color-button-active;
+  background-color: $color-input-focus;
   color: $color-black;
   font-weight: 600;
 }
@@ -56,13 +56,31 @@ h2 .studentModalHeader {
 }
 
 .cancelBtn:hover {
-  background-color: $color-lightgrey;
+  font-weight: 600;
+  border: 1px solid $color-black;
+}
+
+.formSubmitBtn {
+  background: $color-button-green;
+  box-shadow: 0px 0px 3px black;
+  border: none;
+  border-radius: 2em;
+  color: white;
+  cursor: pointer;
+  width: 12em;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 12px;
+}
+.formSubmitBtn:hover {
+  background-color: $color-button-active;
+  color: $color-black;
   font-weight: 600;
 }
 
-input:focus, button:focus {
-  outline: 1;
-}
+// input:focus, button:focus {
+//   outline: 0;
+// }
 
 // .dropdown select {
 //   width: 15em;

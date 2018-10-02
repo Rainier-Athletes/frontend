@@ -7,13 +7,15 @@ class MentorContent extends React.Component {
   render() {
     const student = this.props.content;
 
+    const currentSchool = student.studentData ? student.studentData.school.find(s => s.currentSchool).schoolName : null;
+
     const studentProfile = (
       <div className="student-profile container">
         <div className="profile-primary row">
           <div>
             <span className="info name">{ student.firstName } { student.lastName } </span>
             <span className="icon">{ student.studentData ? student.studentData.dateOfBirth : null } </span>
-            <span className="icon">{ student.studentData ? student.studentData.school[0] : null } </span>
+            <span className="icon">{ student.studentData ? currentSchool : null } </span>
           </div>
         </div>
         <div className="row">
@@ -30,8 +32,9 @@ class MentorContent extends React.Component {
         </div>
         <div className="row">
           <div className="profile-link">
-            <a className="btn-link-1" href={ student.studentData ? student.studentData.googleDocsUrl : null } >Google Docs</a>
-            <a className="btn-link-1" href={ student.studentData ? student.studentData.googleCalendarUrl : null }>Google Calendar</a>
+            <a className="btn-link-1" href={ student.studentData ? student.studentData.synopsisReportArchiveUrl : null }>Synopsis Report Archive</a>
+            <a className="btn-link-1" href={ student.studentData ? student.studentData.googleDocsUrl : null } >Student Documents</a>
+            <a className="btn-link-1" href={ student.studentData ? student.studentData.googleCalendarUrl : null }>Student Calendar</a>
           </div>
         </div>
         <div className="row">

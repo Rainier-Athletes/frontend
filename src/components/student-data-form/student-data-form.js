@@ -421,7 +421,7 @@ class StudentDataForm extends React.Component {
             <this.FieldGroup
               id="password"
               key="password"
-              type="text"
+              type="password"
               label="Synergy Password"
               placeholder="Synergy Password"
               value={this.state.synergy.password ? Buffer.from(this.state.synergy.password, 'base64') : ''}

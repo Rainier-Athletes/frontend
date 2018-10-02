@@ -1,18 +1,49 @@
 @import '../../style/vars';
 
+.point-tracker-modal {
+    position: absolute;
+    height: 85vh;
+    overflow: scroll;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    box-shadow: 0 0 12px rgba(0,0,0, 0.3);
+
+    .container, .col-md-12, .col-md-6, .col-md-4 {
+      padding: 0 !important;
+    }
+
+    .modal-dialog {
+      @media (min-width: 576px) {
+        max-width: inherit !important;
+        margin: 0.5em !important;
+      }
+    }
+
+    .modal-content {
+      border: 0 !important;
+    }
+
+    .close > span {
+      font-size: 2.5em;
+      line-height: 0em;
+      height: 0px;
+      margin-bottom: 0px;
+    }
+}
+
 .select-student, .select-date {
   display: inline-block;
   padding: 5px;
-
-    select, input {
-      background-color: $color-input-focus;
-      display: inline-block;
-      // border: 1px solid $color-brand-blue;
-      width: 180px;
-      height: 3em;
-      padding: 10px;
-      }
 }
+
+select {
+  background-color: $gray;
+  display: inline-block;
+  width: 200px;
+  height: 3em;
+  padding: 10px;
+  }
 
 .survey-question-container {
   width: 100%;
@@ -49,13 +80,12 @@
 }
 
 .points-tracker {
-  padding-top: 20px;
-  padding-left: 2%;
-  padding-bottom: 2%;
-  margin: 6% 20% 0 20%;
-  border-radius: 30px;
-  border: 2px solid #e8e8e8;
-}
+  // padding-top: 20px;
+  // padding-left: 2%;
+  // padding-bottom: 2%;
+  // margin: 6% 20% 0 20%;
+  // border-radius: 30px;
+  // border: 2px solid #e8e8e8;
 
     h2 {
       color: $color-brand-blue;
@@ -73,6 +103,7 @@
         padding: 10px;
       }
     }
+
 
     .submit-report{
       background: $color-button-green;
@@ -92,7 +123,7 @@
       &:visited {
         background: $color-button-active;
     }
-
+  }
 
   .synopsis {
     padding-top: 2.5em;
@@ -103,4 +134,9 @@
     // padding-top: 1em;
     padding-bottom: 1.6em;
   }
+}
+
+textarea {
+  display: block;
+  margin-bottom: 1.5em !important;
 }

@@ -1,19 +1,22 @@
+@import '../../style/vars';
+
 p {
-  font-size: 30px;
+  font-size: 24px;
 }
 
 .modalContainer {
-  background: rgba(33, 33, 33, .97);
+  background: rgba(169,169,169, .97);
   border-radius: 7px;
   box-shadow: 0px 0px 10px rgb(186, 186, 186);
-  width: 23em;
-  height: 29em;
+  width: 30em;
+  height: 30em;
+  overflow-y: auto;
   color: white;
-  font-family: helvetica;
+  font-family: $font-primary;
   position: absolute;
   z-index: 99;
   margin: auto;
-  top: 0; left: 0; bottom: 0; right: 0;
+  top: 4px; left: 0; bottom: 0; right: 0;
 }
 
 .hide {
@@ -23,8 +26,8 @@ p {
 .field-wrap {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 5px;
+  justify-content: flex-end;
+  margin: 5px 20px;
   padding: 5px;
 }
 
@@ -38,10 +41,10 @@ p {
 
 .modalContainer h1 {
   text-align:center;
-  text-shadow: 0px 0px 3px black;
-  color: white;
-  font-size: 36px;
-  font-weight: 300;
+  // text-shadow: 0px 0px 3px black;
+  color: $color-brand-blue;
+  font-size: 30px;
+  font-weight: 500;
   position: relative;
   top: 1em;
   margin-bottom: 2em;
@@ -63,38 +66,38 @@ p {
 }
 
 .addButton-container {
-  width: 7em;
+  width: 8em;
   margin-left: auto;
   margin-right: auto;
 }
 
 .addButton {
-  background: #099544;
-  box-shadow: 0px 3px #076e32;
+  text-align: center;
+  background-color: $color-button-green;
+  box-shadow: 0px 0px 3px black;
   border: none;
-  border-radius: 2em;
+  border-radius: .3em;
   color: white;
   cursor: pointer;
-  width: 7em;
+  width: 10em;
   font-size: 16px;
   font-weight: 300;
-  padding: 12px;
+  margin: 20px 20px;
+  padding: 8px;
 }
 
 .addButton:hover {
-  background-color: #306c39;
+  background-color: $color-button-active;
+  color: $color-black;
+  font-weight: 600;
 }
 
 input:focus, button:focus {
   outline: 0;
 }
 
-.dropdown {
-  margin-bottom: 2em;
-}
-
 .dropdown select {
-  width: 11em;
+  width: 15em;
   height: 2em;
   background-color: white !important;
 }

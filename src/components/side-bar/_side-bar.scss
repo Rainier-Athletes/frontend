@@ -1,0 +1,71 @@
+
+.col-md-3 {
+  padding: 1.5em 0 1em 0 !important;
+}
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+.sidebar {
+  background-color: white !important;
+  border-radius: 6px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  margin-top: 84px;
+  margin-left: 1em;
+  padding-bottom: 12px;
+  z-index: 100;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+
+  .nav-title {
+    margin-bottom: 0.5em;
+  }
+
+  .nav-item:hover {
+    background-color: #bfd4e4;
+    color: white;
+  }
+
+  .selected {
+    background-color: #A4C7E3;
+    color: white;
+  }
+
+  .nav-link {
+    padding: 1.5em 2em;
+  }
+
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  text-transform: uppercase;
+  color: #D8D8D8 !important;
+  font-weight: 600;
+  display: inline !important;
+}

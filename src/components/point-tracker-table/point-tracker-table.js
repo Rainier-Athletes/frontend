@@ -15,7 +15,7 @@ export default class PointTrackerTable extends React.Component {
 
     this.state = defaultState;
   }
-  
+
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -32,67 +32,72 @@ export default class PointTrackerTable extends React.Component {
 
   render() {
     const addNewSubjectJSX = (
-    <div>
-      <h4>Subjects</h4>
-      <select className="choose-teacher"
-        name="teacherId" 
-        onChange={ this.handleChange } 
-        value={ this.state.teacherId }
-        default=""
-      >
-        <option disabled defaultValue value="">Select Teacher</option>
-        {
-          this.props.teachers.map(teacher => (
-            <option 
-              key={ teacher._id }
-              value={ teacher._id }
-            >{ `${teacher.firstName} ${teacher.lastName}` }
-          </option>
-          ))
-        }
-      </select>
-      <input 
-        type="text" 
-        placeholder="Subject Name" 
-        name="subjectName"
-        value= { this.state.subjectName }
-        onChange={ this.handleChange }
-      />
-
-
-      <div className="new-subject">
-        <button type="button" className="add-subject-btn" onClick={ this.handleCreateSubject }>Add new subject</button>
+    <div className="row">
+      <div className="col-md-4">
+        <select className="add-subject"
+          name="teacherId"
+          onChange={ this.handleChange }
+          value={ this.state.teacherId }
+          default=""
+        >
+          <option disabled defaultValue value="">Select Teacher</option>
+          {
+            this.props.teachers.map(teacher => (
+              <option
+                key={ teacher._id }
+                value={ teacher._id }
+              >{ `${teacher.firstName} ${teacher.lastName}` }
+            </option>
+            ))
+          }
+        </select>
       </div>
-
+      <div className="col-md-4">
+        <input className="add-subject"
+          type="text"
+          placeholder="Subject Name"
+          name="subjectName"
+          value= { this.state.subjectName }
+          onChange={ this.handleChange }
+        />
+      </div>
+      <div className="col-md-4">
+        <div className="add-subject">
+          <button type="button" className="add-subject-btn add-subject" onClick={ this.handleCreateSubject }>Add new subject</button>
+        </div>
+      </div>
     </div>
     );
-  
-    const subjectsJSX = this.props.subjects.map(subject => (
-    <SubjectColumn
-      key={ `${subject.subjectName}-${subject.teacher}` } 
-      label={ subject.subjectName }
-      subject={ subject }
-      handleSubjectChange={ this.props.handleSubjectChange }
-      getTeacherName={ this.props.getTeacherName }
-      deleteSubject={ this.props.deleteSubject }
-    />
-    ));
+
+    const subjectsJSX = this.props.subjects.map((subject) => {
+      return (
+        <SubjectColumn
+          key={ `${subject.subjectName}-${subject.teacher}` }
+          label={ subject.subjectName }
+          subject={ subject }
+          handleSubjectChange={ this.props.handleSubjectChange }
+          getTeacherName={ this.props.getTeacherName }
+          deleteSubject={ this.props.deleteSubject }
+        />
+      );
+    });
 
     return (
-    <React.Fragment>
-      <h4>Point Sheet and Grades</h4>
-      { addNewSubjectJSX }
-      <div className="point-table">
-        <div className="row-labels">
-          <label></label>
-          <label>Periods Missed</label>
-          <label>Num. of Stamps</label>
-          <label>Num. of Xs</label>
-          <label>Grade</label>
+      <div className="row">
+        <div className="col-md-12">
+          <span className="title">Point Sheet</span>
+          { addNewSubjectJSX }
+          <div className="point-table">
+            <div className="row-labels">
+              <label>Periods Missed</label>
+              <label>Num. of Stamps</label>
+              <label>Num. of Xs</label>
+              <label>Grade</label>
+            </div>
+            { subjectsJSX }
+          </div>
         </div>
-        { subjectsJSX }
       </div>
-      </React.Fragment>
     );
   }
 }

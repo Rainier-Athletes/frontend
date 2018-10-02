@@ -15,7 +15,6 @@ import './student-data-form.scss';
 
 const emptyStudentData = {
   student: '',
-  // lastPointTracker: '',
   coaches: [],
   sports: [],
   mentors: [],
@@ -42,6 +41,7 @@ const mapStateToProps = (state, ownProps) => {
   const coaches = state.profile.filter(p => p.role === 'coach');
   const teachers = state.profile.filter(p => p.role === 'teacher');
   const family = state.profile.filter(p => p.role === 'family');
+  const waitingOnSave = state.studentData && state.studentData.waitingOnSave;
 
   return ({
     student,
@@ -49,6 +49,7 @@ const mapStateToProps = (state, ownProps) => {
     coaches,
     teachers,
     family,
+    waitingOnSave,
   });
 };
 
@@ -57,6 +58,7 @@ const mapDispatchToProps = dispatch => ({
   fetchAllStudentData: () => dispatch(studentDataActions.fetchBulkStudentData()),
   createStudentData: studentData => dispatch(studentDataActions.createStudentData(studentData)),
   updateStudentData: studentData => dispatch(studentDataActions.updateStudentData(studentData)),
+  setWaitingOnSave: studentData => dispatch(studentDataActions.setWaitingOnSave(studentData)),
 });
 
 class StudentDataForm extends React.Component {
@@ -73,7 +75,9 @@ class StudentDataForm extends React.Component {
 
     this.state.newSchool = false;
     this.state.newSport = false;
+    this.state.waitingOnSave = false;
   }
+
 
   handleNewSchool = (e) => {
     e.stopPropagation();
@@ -98,7 +102,6 @@ class StudentDataForm extends React.Component {
 
   handleSchoolChange = (e) => {
     const newState = Object.assign({}, this.state);
-    // new school is school[0]
     newState.school[0].schoolName = e.target.value;
     this.setState(newState);
   }
@@ -111,8 +114,6 @@ class StudentDataForm extends React.Component {
   }
 
   handleTextFieldChange = (e) => {
-    // e.preventDefault();
-    console.log(e.target.id, e.target.value);
     this.setState({ ...this.state, [e.target.id]: e.target.value });
   }
 
@@ -144,7 +145,6 @@ class StudentDataForm extends React.Component {
 
   handleSportFieldChange = (e) => {
     const newState = Object.assign({}, this.state);
-    // new sport is sports[0]
     newState.sports[0][e.target.id] = e.target.value;
     this.setState(newState);
   }
@@ -154,7 +154,6 @@ class StudentDataForm extends React.Component {
     const newState = Object.assign({}, this.state);
     const { sports } = newState;
     const sportIdx = parseInt(id, 10);
-    console.log(sports, id, sportIdx);
     sports[sportIdx].currentlyPlaying = !sports[sportIdx].currentlyPlaying;
     this.setState(newState);
   }
@@ -171,21 +170,23 @@ class StudentDataForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('target.id:', e.target.id);
-    if (e.target.id.indexOf('new-school') > -1) return this.handleNewSchool(e);
+
+    this.setState({ waitingOnSave: true }); // react state
+    this.props.setWaitingOnSave(this.state); // redux store
 
     if (this.state._id) { // existing doc, update it
-      console.log('calling updateStudentData');
-      return this.props.updateStudentData(this.state)
-        .then(() => {
-          console.log('back from update successfully');
-        });
+      return this.props.updateStudentData(this.state);
     }
-    console.log('calling createStudentData');
-    return this.props.createStudentData(this.state)
-      .then(() => {
-        console.log('back from create successfully');
-      });
+    return this.props.createStudentData(this.state);
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.waitingOnSave !== prevProps.waitingOnSave) {
+      if (prevProps.waitingOnSave) {
+        this.setState({ waitingOnSave: false });
+        this.props.onClose();
+      }
+    }
   }
 
   FieldGroup = ({
@@ -217,7 +218,7 @@ class StudentDataForm extends React.Component {
         ? 'An elementary school' : 'A middle/high school')
         : ''
         /* eslint-enable */}</h6>
-      <Button type="submit" id="create-new-school" onClick={this.handleNewSchool}>Create New School</Button>
+      <Button type="submit" className="submitBtn" id="create-new-school" onClick={this.handleNewSchool}>Create New School</Button>
       </FormGroup>
     );
     // eslint-enable
@@ -236,13 +237,14 @@ class StudentDataForm extends React.Component {
           inline
           checked={this.state.school.length ? this.state.school.find(s => s.currentSchool).isElementarySchool : false }
           id="isElementarySchool"
+          className="checkbox"
           prop="isElementarySchool"
           onChange={this.handleIsElementarySchool}
           >
           Check if elementary school
         </Checkbox>
-        <p><Button type="submit" id="save-new-school" onClick={this.handleNewSchool}>Save School</Button></p>
-        <p><Button type="reset" id="cancel-new-school" onClick={this.handleNewSchool}>Cancel</Button></p>
+        <p><Button type="submit" className="submitBtn" id="save-new-school" onClick={this.handleNewSchool}>Save School</Button></p>
+        <p><Button type="reset" className="cancelBtn" id="cancel-new-school" onClick={this.handleNewSchool}>Cancel</Button></p>
       </FormGroup>
     );
 
@@ -251,7 +253,7 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="sport"
           type="text"
-          label="Sport (baseball, soccer, etc):"
+          label="Sport (baseball, soccer, etc): "
           placeholder="Enter new sport"
           value={this.state.sports.length ? this.state.sports[0].sport : ''}
           onChange={this.handleSportFieldChange}
@@ -259,7 +261,7 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="team"
           type="text"
-          label="Team name:"
+          label="Team name: "
           placeholder="Enter new team name"
           value={this.state.sports.length ? this.state.sports[0].team : ''}
           onChange={this.handleSportFieldChange}
@@ -267,13 +269,13 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="league"
           type="text"
-          label="League:"
-          placeholder="Enter new team's league"
+          label="League: "
+          placeholder="Enter new team&rsquo;s league"
           value={this.state.sports.length ? this.state.sports[0].league : ''}
           onChange={this.handleSportFieldChange}
         />
-        <p><Button type="submit" id="save-new-sport" onClick={this.handleNewSport}>Save Sport</Button></p>
-        <p><Button type="reset" id="cancel-new-sport" onClick={this.handleNewSport}>Cancel</Button></p>
+        <p><Button type="submit" className="submitBtn" id="save-new-sport" onClick={this.handleNewSport}>Save Sport</Button></p>
+        <p><Button type="reset" className="cancelBtn" id="cancel-new-sport" onClick={this.handleNewSport}>Cancel</Button></p>
       </FormGroup>
     );
 
@@ -289,6 +291,7 @@ class StudentDataForm extends React.Component {
           <Checkbox
             inline
             checked={this.state.sports[i].currentlyPlaying}
+            className="checkbox"
             id={i}
             onChange={this.handleSportStatusChange}
             >Currently playing</Checkbox>
@@ -296,20 +299,21 @@ class StudentDataForm extends React.Component {
         ))
         : null
       }</h6>
-      <Button type="submit" id="create-new-sport" onClick={this.handleNewSport}>Create New Sport</Button>
+      <Button type="submit" className="submitBtn" id="create-new-sport" onClick={this.handleNewSport}>Create New Sport</Button>
       </FormGroup>
     );
 
     return (
       <div className="student-data-form">
-        <h1>Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h1>
+        <button className="close-modal" onClick={this.props.onClose}>x</button>
+        <h2 className="studentModalHeader">Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h2>
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="gender-dob">
             <this.FieldGroup
               id="gender"
               type="text"
               label="Gender"
-              placeholder="Enter student's gender"
+              placeholder="Enter student&rsquo;s gender"
               value={this.state.gender ? this.state.gender : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -343,6 +347,7 @@ class StudentDataForm extends React.Component {
                 <Checkbox
                   inline
                   checked={this.state.family[i].weekdayGuardian}
+                  className="checkbox"
                   id={f.member._id.toString()}
                   prop="weekdayGuardian"
                   onChange={this.handleGuardianChange}
@@ -350,6 +355,7 @@ class StudentDataForm extends React.Component {
                 <Checkbox
                   inline
                   checked={this.state.family[i].weekendGuardian}
+                  className="checkbox"
                   id={f.member._id.toString()}
                   prop="weekendGuardian"
                   onChange={this.handleGuardianChange}
@@ -370,7 +376,7 @@ class StudentDataForm extends React.Component {
               key="synopsisReportArchiveUrl"
               type="text"
               label="Synopsis Reports Archive URL"
-              placeholder="Enter student's synopsis report archive url"
+              placeholder="Enter student&rsquo;s synopsis report archive url"
               value={this.state.synopsisReportArchiveUrl ? this.state.synopsisReportArchiveUrl : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -379,7 +385,7 @@ class StudentDataForm extends React.Component {
               key="googleCalendarUrl"
               type="text"
               label="Google Calendar URL"
-              placeholder="Enter student's google calendar url"
+              placeholder="Enter student&rsquo;s Google calendar url"
               value={this.state.googleCalendarUrl ? this.state.googleCalendarUrl : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -388,12 +394,16 @@ class StudentDataForm extends React.Component {
               key="googleDocsUrl"
               type="text"
               label="Google Docs URL"
-              placeholder="Enter student's google documents url"
+              placeholder="Enter student&rsquo;s Google documents url"
               value={this.state.googleDocsUrl ? this.state.googleDocsUrl : ''}
               onChange={this.handleTextFieldChange}
             />
           </FormGroup>
-          <Button type="submit">Submit</Button>
+          {!this.state.waitingOnSave 
+            ? <Button type="submit" className="formSubmitBtn" id="submit-student-data">Submit</Button>
+            : 'Waiting...'
+          }
+          <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
         </form>
     </div>
     );
@@ -409,6 +419,9 @@ StudentDataForm.propTypes = {
   history: PropTypes.array,
   updateStudentData: PropTypes.func,
   createStudentData: PropTypes.func,
+  onClose: PropTypes.func,
+  setWaitingOnSave: PropTypes.func,
+  waitingOnSave: PropTypes.bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentDataForm);

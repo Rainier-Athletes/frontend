@@ -6,7 +6,7 @@ import './_mentor-content.scss';
 class MentorContent extends React.Component {
   render() {
     const student = this.props.content;
-    console.log(student);
+
     const studentProfile = (
       <div className="student-profile container">
         <div className="profile-primary row">

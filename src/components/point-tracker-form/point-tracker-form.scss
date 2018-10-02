@@ -8,21 +8,42 @@
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     box-shadow: 0 0 12px rgba(0,0,0, 0.3);
-}
 
+    .container, .col-md-12, .col-md-6 {
+      padding: 0 !important;
+    }
+
+    .modal-dialog {
+      @media (min-width: 576px) {
+        max-width: inherit !important;
+        margin: 0.5em !important;
+      }
+    }
+
+    .modal-content {
+      border: 0 !important;
+    }
+
+    .close > span {
+      font-size: 2.5em;
+      line-height: 0em;
+      height: 0px;
+      margin-bottom: 0px;
+    }
+}
 
 .select-student, .select-date {
   display: inline-block;
   padding: 5px;
-
-    select, input {
-      background-color: $gray;
-      display: inline-block;
-      width: 300px;
-      height: 3em;
-      padding: 10px;
-      }
 }
+
+select {
+  background-color: $gray;
+  display: inline-block;
+  width: 200px;
+  height: 3em;
+  padding: 10px;
+  }
 
 .survey-question-container {
   width: 100%;

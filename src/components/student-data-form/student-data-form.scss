@@ -1,112 +1,114 @@
-p {
-  font-size: 30px;
-}
+@import '../../style/vars';
 
-.student-data-form {
-  background: rgba(165, 164, 164, 0.97);
-  border-radius: 7px;
-  box-shadow: 0px 0px 10px rgb(186, 186, 186);
-  width: 50em;
-  // height: 50em;
-  color: white;
-  font-family: helvetica;
-  position: absolute;
-  z-index: 99;
-  margin: auto;
-  top: 6em; left: 0; bottom: 0; right: 0;
-}
+.student-data-form   {
+  h2.studentModalHeader {
+    text-align: center;
+    color: $color-brand-blue;
+    font-size: 26px;
+    font-weight: 500;
+  }
+    background: rgba(169,169,169, .97);
+    border-radius: 7px;
+    box-shadow: 0px 0px 10px rgb(186, 186, 186);
+    width: 50em;
+    max-height: calc(100vh - 4px);
+    overflow-y: auto;
+    color: white;
+    font-family: $font-primary;
+    position: absolute;
+    z-index: 99;
+    margin: auto;
+    top: 6em; left: 0; bottom: 0; right: 0;
+    padding: 20px 30px 20px 30px;
+  }
 
 .hide {
   display: none;
 }
 
-.field-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin: 5px 20px;
-  padding: 5px;
+.checkbox {
+  padding-left: 10px;
 }
-
-.field-wrap > label {
-  color: white;
-  font-size: 18px;
-  font-weight: 300;
-  margin-right: 1.5em;
-  max-width: 7em;
-}
-
-.modalContainer h1 {
-  text-align:center;
-  text-shadow: 0px 0px 3px black;
-  color: white;
-  font-size: 36px;
-  font-weight: 300;
-  position: relative;
-  top: 1em;
-  margin-bottom: 2em;
-}
-
-.modalContainer input:focus {
-  background: white;
-  color: black;
-}
-
-.btn-container {
-  display: flex;
-  justify-content: center;
-}
-
-.admin-mentor-btn {
-  display: none;
-  justify-content: center;
-}
-
-.addButton-container {
+.submitBtn-container {
+  display: absolute;
   width: 9em;
   margin-left: auto;
   margin-right: auto;
 }
 
-.addButton {
-  background: #099544;
-  box-shadow: 0px 3px #076e32;
+.submitBtn {
+  background: $color-input-field;
+  box-shadow: 0px 0px 3px black;
   border: none;
   border-radius: 2em;
   color: white;
   cursor: pointer;
-  width: 9em;
+  width: 12em;
   font-size: 16px;
   font-weight: 300;
   padding: 12px;
 }
-
-.addButton:hover {
-  background-color: #306c39;
+.submitBtn:hover {
+  background-color: $color-input-focus;
+  color: $color-black;
+  font-weight: 600;
 }
 
-input:focus, button:focus {
-  outline: 0;
+.cancelBtn {
+  background: $color-white;
+  color: $color-error;
+  box-shadow: 0px 0px 3px black;
+  border-radius: 2em;
+  margin-left: 10px;
 }
 
-.dropdown select {
-  width: 15em;
-  height: 2em;
-  background-color: white !important;
+.cancelBtn:hover {
+  font-weight: 600;
+  border: 1px solid $color-black;
 }
+
+.formSubmitBtn {
+  background: $color-button-green;
+  box-shadow: 0px 0px 3px black;
+  border: 1px solid $color-black;
+  border-radius: 2em;
+  color: white;
+  cursor: pointer;
+  width: 12em;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 12px;
+}
+.formSubmitBtn:hover {
+  background-color: $color-button-active;
+  color: $color-black;
+  font-weight: 600;
+}
+
+// input:focus, button:focus {
+//   outline: 0;
+// }
+
+// .dropdown select {
+//   width: 15em;
+//   height: 2em;
+//   background-color: white !important;
+// }
 
 .close-modal {
   color: white;
   background: none;
   float: right;
   font-size: 20px;
+  font-weight: 700;
   position: absolute;
+  clear: both;
   right: 10px;
   padding: 0;
   margin: 0;
 }
 
 .close-modal:hover {
-  color: rgb(211, 50, 50);
+  color: $color-error;
   background: none;
 }

@@ -15,7 +15,7 @@ export default class PointTrackerTable extends React.Component {
 
     this.state = defaultState;
   }
-  
+
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -32,18 +32,19 @@ export default class PointTrackerTable extends React.Component {
 
   render() {
     const addNewSubjectJSX = (
+
     <div>
       <h4>Subjects</h4>
       <select className="choose-teacher"
-        name="teacherId" 
-        onChange={ this.handleChange } 
+        name="teacherId"
+        onChange={ this.handleChange }
         value={ this.state.teacherId }
         default=""
       >
         <option disabled defaultValue value="">Select Teacher</option>
         {
           this.props.teachers.map(teacher => (
-            <option 
+            <option
               key={ teacher._id }
               value={ teacher._id }
             >{ `${teacher.firstName} ${teacher.lastName}` }
@@ -51,9 +52,9 @@ export default class PointTrackerTable extends React.Component {
           ))
         }
       </select>
-      <input 
-        type="text" 
-        placeholder="Subject Name" 
+      <input
+        type="text"
+        placeholder="Subject Name"
         name="subjectName"
         value= { this.state.subjectName }
         onChange={ this.handleChange }
@@ -66,11 +67,11 @@ export default class PointTrackerTable extends React.Component {
 
     </div>
     );
-  
+
     const subjectsJSX = this.props.subjects.map((subject) => {
       return (
         <SubjectColumn
-          key={ `${subject.subjectName}-${subject.teacher}` } 
+          key={ `${subject.subjectName}-${subject.teacher}` }
           label={ subject.subjectName }
           subject={ subject }
           handleSubjectChange={ this.props.handleSubjectChange }
@@ -81,20 +82,22 @@ export default class PointTrackerTable extends React.Component {
     });
 
     return (
-    <React.Fragment>
-      <h4>Point Sheet and Grades</h4>
-      { addNewSubjectJSX }
-      <div className="point-table">
-        <div className="row-labels">
-          <label>Subject</label>
-          <label>Periods Missed</label>
-          <label>Num. of Stamps</label>
-          <label>Num. of Xs</label>
-          <label>Grade</label>
+      <div className="row">
+        <div className="col-md-12">
+          <span className="title">Point Sheet</span>
+          { addNewSubjectJSX }
+          <div className="point-table">
+            <div className="row-labels">
+              <label>Subject</label>
+              <label>Periods Missed</label>
+              <label>Num. of Stamps</label>
+              <label>Num. of Xs</label>
+              <label>Grade</label>
+            </div>
+            { subjectsJSX }
+          </div>
         </div>
-        { subjectsJSX }
       </div>
-      </React.Fragment>
     );
   }
 }

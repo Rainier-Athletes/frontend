@@ -8,7 +8,7 @@ export default function SubjectColumn(props) {
     const { subjectName, teacher } = props.subject;
     props.deleteSubject(subjectName, teacher);
   };
-  
+
   return (
     <div className="column data">
       <label>{ props.getTeacherName(props.subject.teacher) }</label>
@@ -16,15 +16,19 @@ export default function SubjectColumn(props) {
       {
         Object.keys(props.subject.scoring)
           .filter(keyName => keyName !== 'tutorials')
-          .map((markType, i) => (
-            <input
-              key={ i }
-              type="number"
-              onChange={ props.handleSubjectChange }
-              name={ `${props.subject.subjectName}-${markType}` }
-              value={ props.subject.scoring[markType] === null ? '' : props.subject.scoring[markType]}
-            />
-          ))
+          .map((markType, i) => {
+            const { excusedDays, stamps, halfStamps } = props.subject.scoring;
+            const validScores = excusedDays ? (stamps * 2 + halfStamps) <= (40 - excusedDays * 8) : true;
+            return (
+              <input
+                key={ i }
+                type="number"
+                onChange={ props.handleSubjectChange }
+                className={validScores ? '' : 'invalid-scores'}
+                name={ `${props.subject.subjectName}-${markType}` }
+                value={ props.subject.scoring[markType] === null ? '' : props.subject.scoring[markType]}
+              />);
+          })
       }
       <input
         type="text"

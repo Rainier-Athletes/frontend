@@ -9,7 +9,9 @@ import {
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import * as studentDataActions from '../../actions/student-data';
+import LoadingSpinner from '../spinner/spinner';
 
 import './student-data-form.scss';
 
@@ -401,7 +403,7 @@ class StudentDataForm extends React.Component {
           </FormGroup>
           {!this.state.waitingOnSave 
             ? <Button type="submit" className="formSubmitBtn" id="submit-student-data">Submit</Button>
-            : 'Waiting...'
+            : <LoadingSpinner />
           }
           <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
         </form>

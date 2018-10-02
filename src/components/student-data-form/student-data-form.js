@@ -138,6 +138,7 @@ class StudentDataForm extends React.Component {
         sport: '',
         team: '',
         league: '',
+        teamCalendarUrl: 'http://',
         currentlyPlaying: true,
       });
     }
@@ -283,6 +284,14 @@ class StudentDataForm extends React.Component {
           value={this.state.sports.length ? this.state.sports[0].league : ''}
           onChange={this.handleSportFieldChange}
         />
+        <this.FieldGroup
+          id="teamCalendarUrl"
+          type="text"
+          label="Team Calendar URL: "
+          placeholder="Enter new team&rsquo;s calendar link"
+          value={this.state.sports.length ? this.state.sports[0].teamCalendarUrl : ''}
+          onChange={this.handleSportFieldChange}
+        />
         <p><Button type="submit" className="submitBtn" id="save-new-sport" onClick={this.handleNewSport}>Save Sport</Button></p>
         <p><Button type="reset" className="cancelBtn" id="cancel-new-sport" onClick={this.handleNewSport}>Cancel</Button></p>
       </FormGroup>
@@ -304,6 +313,11 @@ class StudentDataForm extends React.Component {
             id={i}
             onChange={this.handleSportStatusChange}
             >Currently playing</Checkbox>
+          <a href={sport.teamCalendarUrl ? sport.teamCalendarUrl : '#'} 
+            alt="team calendar url" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="team-calendar-url">Calendar</a>
           </FormGroup>
         ))
         : null

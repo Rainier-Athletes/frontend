@@ -9,24 +9,12 @@ class MentorContent extends React.Component {
     const haveData = !!student.studentData;
 
     const currentSchool = haveData ? student.studentData.school.find(s => s.currentSchool).schoolName : null;
-    const emptySport = {
-      sport: '',
-      team: '',
-      league: '',
-      teamCalendarUrl: '',
-    };
-    const currentSport = haveData ? student.studentData.sports.find(s => s.currentlyPlaying) : emptySport;
-    const { 
-      sport, 
-      team, 
-      league, 
-      teamCalendarUrl,
-    } = currentSport;
+
     const coaches = haveData ? student.studentData.coaches : null;
     const currentCoach = coaches ? coaches.find(c => c.currentCoach) : null;
     const currentCoachName = currentCoach ? `${currentCoach.firstName} ${currentCoach.lastName}` : '';
 
-    const currentSportsJSX = haveData ? (student.studentData.sports.filter(s => s.currentlyPlaying).map((s, i) => (
+    const currentSportsJSX = haveData ? (student.studentData.sports.filter(s => s.currentlyPlaying).map(s => (
       <div className="team-info" key={s._id}>
         <span className="label">Sport: {s.sport}</span>
         <span className="label">Team: {s.team}</span>
@@ -36,6 +24,29 @@ class MentorContent extends React.Component {
             target="_blank"
             rel="noopener noreferrer"
             className="team-calendar-url">Click here</a></span>
+      </div>
+    ))) : null;
+
+    const currentCoachesJSX = haveData ? (student.studentData.coaches.filter(c => c.currentCoach).map(c => (
+      <div className="current-coaches" key={c._id}>
+        <span className="label">Name: {`${c.coach.firstName} ${c.coach.lastName}`}</span>
+        <span className="label">{c.coach.cellPhone ? `Cell: ${c.coach.cellPhone}` : `Phone: ${c.coach.phone}`}</span>
+        <span className="label">Email: <a 
+          href={c.coach.primaryEmail ? `mailto:${c.coach.primaryEmail}` : '#'}
+          target="_blank"
+          rel="noopener noreferrer">{c.coach.primaryEmail}</a></span>
+      </div>
+    ))) : null;
+
+    const familyMembersJSX = haveData ? (student.studentData.family.map(f => (
+      <div className="current-family" key={f._id}>
+        <span className="label">Name: {`${f.member.firstName} ${f.member.lastName}`}</span>
+        <span className="label">Student Residence: {f.weekdayGuardian ? 'weekdays' : ''} {f.weekendGuardian ? 'weekends' : ''}</span>
+        <span className="label">{f.member.cellPhone ? `Cell: ${f.member.cellPhone}` : `Phone: ${f.member.phone}`}</span>
+        <span className="label">Email: <a 
+          href={f.member.primaryEmail ? `mailto:${f.member.primaryEmail}` : '#'}
+          target="_blank"
+          rel="noopener noreferrer">{f.member.primaryEmail}</a></span>
       </div>
     ))) : null;
 
@@ -75,13 +86,14 @@ class MentorContent extends React.Component {
         </div>
         <div className="row">
           <div className="col-md-6">
+            <span className="title">Current Coaches</span>
+            {currentCoachesJSX}
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-6">
             <span className="title">Family Info</span>
-              <span className="label">Name</span>
-              <span className="label">Rel.</span>
-              <span className="label">Email</span>
-              <span className="label">Cell</span>
-              <span className="label">Address</span>
-              <span className="label">Others</span>
+              {familyMembersJSX}
           </div>
         </div>
       </div>

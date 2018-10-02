@@ -11,7 +11,8 @@ export default function SubjectColumn(props) {
 
   return (
     <div className="column data">
-      <label>{ props.getTeacherName(props.subject.teacher) }</label>
+      <label>{ props.subject.subjectName.toLowerCase() !== 'tutorial' 
+        ? props.subject.teacher.lastName : '0' }</label>
       <label>{ props.subject.subjectName }</label>
       {
         Object.keys(props.subject.scoring)
@@ -44,6 +45,5 @@ export default function SubjectColumn(props) {
 SubjectColumn.propTypes = {
   subject: PropTypes.object,
   handleSubjectChange: PropTypes.func,
-  getTeacherName: PropTypes.func,
   deleteSubject: PropTypes.func,
 };

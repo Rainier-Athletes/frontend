@@ -1,14 +1,12 @@
 @import '../../style/vars';
 
 .point-table {
-  border: 2px solid #e8e8e8;
-  width: 92%;
-  border-radius: 1em;
 
   .labels {
     width: 20em;
     font-size: 12px;
     text-align: right;
+    color: gray;
   }
 
   input::-webkit-outer-spin-button,
@@ -19,11 +17,35 @@
 
   * {
     display: inline-block;
-    height: 70%;
+    height: 3em;
     width: 5em;
     padding: .5em;
-    margin: .2em;
+    margin: .1em;
+    margin-right: 0.5em;
     font-weight: bold;
+    border-radius: 0;
+  }
+}
+
+.column {
+  label {
+    color: gray;
+
+    &:nth-of-type(2) {
+      font-weight: normal;
+    }
+  }
+
+  input {
+    &:nth-of-type(1) {
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+
+    &:nth-of-type(4) {
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
   }
 }
 
@@ -35,17 +57,13 @@
 .row-labels {
   position: relative;
   bottom: 2.75em;
-  font-size: 14px;
   line-height: 1;
-  padding-left: .1em;
-  text-align: center;
-  // margin: 80px 0px;
-  border: black;
-
 }
 
 .row-labels label {
   margin-bottom: 0px;
+  color: gray;
+  padding: 0 !important;
 }
 
 .data-entry {
@@ -59,19 +77,17 @@
   padding-bottom: 5em;
 }
 
-.choose-teacher {
-  width: 180px;
-  height: 2.5em;
+.add-subject {
+  height: 3em;
+  width: 90%;
 }
 
 .add-subject-btn {
   background-color: $color-white;
   color: $color-brand-blue;
   border: 1px solid #59AACE;
-  padding: 10px;
+  padding: 8px;
   border-radius: 4px;
-  margin-right: 5px;
-  margin-bottom: 20px;
   transition: 350ms all;
 
   &:hover {
@@ -83,4 +99,9 @@
   &::placeholder {
     color: $color-black;
   }
+}
+
+.modal-footer {
+  padding: 1em 0 !important;
+  justify-content: flex-start !important;
 }

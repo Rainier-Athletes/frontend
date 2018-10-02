@@ -439,8 +439,11 @@ class PointTrackerForm extends React.Component {
                   createSubject={ this.createSubject }
                 />
                 { synopsisCommentsJSX }
-                { this.state.waitingOnSaves ? <img src={waitingGif} alt="waiting" /> : <button className="submit-report" type="submit">Submit Point Tracker</button> }
-                { this.state.synopsisSaved ? <PointTrackerSummary pointTracker={this.state}/> : null }
+                <div className="modal-footer">
+                  { this.state.waitingOnSaves ? <img src={waitingGif} alt="waiting" /> : <button className="btn btn-secondary" type="submit">Submit Point Tracker</button> }
+                  { this.state.synopsisSaved ? <PointTrackerSummary pointTracker={this.state}/> : null }
+                </div>
+
               </form>
             </div>
 

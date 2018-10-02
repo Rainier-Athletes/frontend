@@ -69,11 +69,17 @@ class ConnectionModal extends React.Component {
               <select type="student" required>
                 <option value="" selected="true" disabled> -- select a student -- </option>
                 {
-                  this.props.profile.filter(p => p.role === 'student').map((p) => {
-                    return <option key={p._id} value={p._id}>
-                        {p.firstName} {p.lastName}
+                  this.props.profile.filter(p => p.role === 'student')
+                    .sort((p1, p2) => {
+                      if (p1.lastName > p2.lastName) return 1;
+                      if (p1.lastName < p2.lastName) return -1;
+                      return 0;
+                    })
+                    .map((p) => {
+                      return <option key={p._id} value={p._id}>
+                        {p.lastName}, {p.firstName}
                       </option>;
-                  })
+                    })
                 }
               </select>
           </div>
@@ -93,11 +99,16 @@ class ConnectionModal extends React.Component {
               <select type="connection-name" required>
                 <option value="" selected="true" disabled> -- select a connection -- </option>
                 {
-                  this.props.profile.filter(p => p.role === this.state.role).map((p) => {
-                    return <option key={p._id} value={p._id} role={p.role}>
-                        {p.firstName} {p.lastName} - {p.role}
-                      </option>;
-                  })
+                  this.props.profile.filter(p => p.role === this.state.role)
+                    .sort((p1, p2) => {
+                      if (p1.lastName > p2.lastName) return 1;
+                      if (p1.lastName < p2.lastName) return -1;
+                      return 0;
+                    }).map((p) => {
+                      return <option key={p._id} value={p._id} role={p.role}>
+                          {p.lastName}, {p.firstName} - {p.role}
+                        </option>;
+                    })
                 }
               </select>
           </div>

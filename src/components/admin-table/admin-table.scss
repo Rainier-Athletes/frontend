@@ -4,7 +4,6 @@ p.infoText {
   font-size: 12px;
 }
 
-
 .react-grid-Toolbar .tools {
   float: left;
   width: 100%;
@@ -26,6 +25,10 @@ p.infoText {
     right: 5px;
     position: absolute;
     cursor: pointer;
+  }
+
+  .react-grid-Cell.rdg-child-cell {
+    background-color: lightgrey;
   }
 
   .react-grid-Toolbar {

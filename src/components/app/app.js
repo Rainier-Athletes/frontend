@@ -1,19 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleDown, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faUserPlus, faSpinner } from '@fortawesome/free-solid-svg-icons'; //eslint-disable-line
 
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
 import Mentor from '../mentor/mentor';
-import MentorPointTracker from '../mentor-pointtracker/mentor-pointtracker';
 import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
 
 import Auth from '../auth/auth';
 import './app.scss';
 
-library.add(faAngleDown, faUserPlus);
+library.add(faAngleDown, faUserPlus, faSpinner);
 
 const AdminUser = Auth(['admin']);
 const MentorUser = Auth(['mentor', 'admin']);
@@ -29,7 +28,6 @@ export default class App extends React.Component {
             <Route exact path="*" component={AuthRedirect} />
             <Route exact path="/admin" component={ AdminUser(Admin) } />
             <Route exact path="/mentor" component={ MentorUser(Mentor) } />
-            <Route exact path="/mentor/pointtracker" component={ MentorUser(MentorPointTracker) } />
           </div>
         </BrowserRouter>
         <footer className="footer">

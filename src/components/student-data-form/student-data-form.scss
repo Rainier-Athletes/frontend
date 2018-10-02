@@ -70,7 +70,7 @@
 .formSubmitBtn {
   background: $color-button-green;
   box-shadow: 0px 0px 3px black;
-  border: 1px solid $color-black;
+  // border: 1px solid $color-black;
   border-radius: 2em;
   color: white;
   cursor: pointer;
@@ -85,15 +85,9 @@
   font-weight: 600;
 }
 
-// input:focus, button:focus {
-//   outline: 0;
-// }
-
-// .dropdown select {
-//   width: 15em;
-//   height: 2em;
-//   background-color: white !important;
-// }
+.formSubmitBtn:focus {
+  outline: 0;
+}
 
 .close-modal {
   color: white;

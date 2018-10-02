@@ -9,13 +9,14 @@ import {
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import * as studentDataActions from '../../actions/student-data';
+import LoadingSpinner from '../spinner/spinner';
 
 import './student-data-form.scss';
 
 const emptyStudentData = {
   student: '',
-  // lastPointTracker: '',
   coaches: [],
   sports: [],
   mentors: [],
@@ -42,6 +43,7 @@ const mapStateToProps = (state, ownProps) => {
   const coaches = state.profile.filter(p => p.role === 'coach');
   const teachers = state.profile.filter(p => p.role === 'teacher');
   const family = state.profile.filter(p => p.role === 'family');
+  const waitingOnSave = state.studentData && state.studentData.waitingOnSave;
 
   return ({
     student,
@@ -49,6 +51,7 @@ const mapStateToProps = (state, ownProps) => {
     coaches,
     teachers,
     family,
+    waitingOnSave,
   });
 };
 
@@ -57,6 +60,7 @@ const mapDispatchToProps = dispatch => ({
   fetchAllStudentData: () => dispatch(studentDataActions.fetchBulkStudentData()),
   createStudentData: studentData => dispatch(studentDataActions.createStudentData(studentData)),
   updateStudentData: studentData => dispatch(studentDataActions.updateStudentData(studentData)),
+  setWaitingOnSave: studentData => dispatch(studentDataActions.setWaitingOnSave(studentData)),
 });
 
 class StudentDataForm extends React.Component {
@@ -73,7 +77,9 @@ class StudentDataForm extends React.Component {
 
     this.state.newSchool = false;
     this.state.newSport = false;
+    this.state.waitingOnSave = false;
   }
+
 
   handleNewSchool = (e) => {
     e.stopPropagation();
@@ -98,7 +104,6 @@ class StudentDataForm extends React.Component {
 
   handleSchoolChange = (e) => {
     const newState = Object.assign({}, this.state);
-    // new school is school[0]
     newState.school[0].schoolName = e.target.value;
     this.setState(newState);
   }
@@ -111,8 +116,6 @@ class StudentDataForm extends React.Component {
   }
 
   handleTextFieldChange = (e) => {
-    // e.preventDefault();
-    console.log(e.target.id, e.target.value);
     this.setState({ ...this.state, [e.target.id]: e.target.value });
   }
 
@@ -144,7 +147,6 @@ class StudentDataForm extends React.Component {
 
   handleSportFieldChange = (e) => {
     const newState = Object.assign({}, this.state);
-    // new sport is sports[0]
     newState.sports[0][e.target.id] = e.target.value;
     this.setState(newState);
   }
@@ -154,7 +156,6 @@ class StudentDataForm extends React.Component {
     const newState = Object.assign({}, this.state);
     const { sports } = newState;
     const sportIdx = parseInt(id, 10);
-    console.log(sports, id, sportIdx);
     sports[sportIdx].currentlyPlaying = !sports[sportIdx].currentlyPlaying;
     this.setState(newState);
   }
@@ -172,12 +173,22 @@ class StudentDataForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    if (e.target.id.indexOf('new-school') > -1) return this.handleNewSchool(e);
+    this.setState({ waitingOnSave: true }); // react state
+    this.props.setWaitingOnSave(this.state); // redux store
 
     if (this.state._id) { // existing doc, update it
       return this.props.updateStudentData(this.state);
     }
     return this.props.createStudentData(this.state);
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.waitingOnSave !== prevProps.waitingOnSave) {
+      if (prevProps.waitingOnSave) {
+        this.setState({ waitingOnSave: false });
+        this.props.onClose();
+      }
+    }
   }
 
   FieldGroup = ({
@@ -390,7 +401,10 @@ class StudentDataForm extends React.Component {
               onChange={this.handleTextFieldChange}
             />
           </FormGroup>
-          <Button type="submit" className="formSubmitBtn" id="submit-student-data">Submit</Button>
+          {!this.state.waitingOnSave 
+            ? <Button type="submit" className="formSubmitBtn" id="submit-student-data">Submit</Button>
+            : <LoadingSpinner />
+          }
           <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
         </form>
     </div>
@@ -408,6 +422,8 @@ StudentDataForm.propTypes = {
   updateStudentData: PropTypes.func,
   createStudentData: PropTypes.func,
   onClose: PropTypes.func,
+  setWaitingOnSave: PropTypes.func,
+  waitingOnSave: PropTypes.bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentDataForm);

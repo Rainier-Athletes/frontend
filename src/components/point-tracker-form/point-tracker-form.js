@@ -76,13 +76,28 @@ class PointTrackerForm extends React.Component {
 
   componentDidUpdate = (prevProps) => {
     if (this.props.synopsisReportLink !== prevProps.synopsisReportLink) {
-      this.setState({ 
-        ...this.state, 
+      this.setState({
+        ...this.state,
         synopsisSaved: true,
         waitingOnSaves: false,
         synopsisLink: this.props.synopsisReportLink,
       });
     }
+  }
+
+  componentDidMount = () => {
+    const selectedStudent = this.props.content;
+    const { lastPointTracker } = selectedStudent.studentData;
+
+    this.setState((prevState) => {
+      let newState = { ...prevState };
+      newState = lastPointTracker || emptyPointTracker;
+      newState.student = `${selectedStudent._id}`;
+      newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
+      newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
+      newState.synopsisSaved = false;
+      return newState;
+    });
   }
 
   handleTitleChange = (event) => {
@@ -97,7 +112,7 @@ class PointTrackerForm extends React.Component {
     const validGrades = ['A', 'B', 'C', 'D', 'F', ''];
 
     const { name } = event.target;
-    
+
     this.setState((prevState) => {
       const newState = { ...prevState };
       const [subjectName, categoryName] = name.split('-');
@@ -113,11 +128,11 @@ class PointTrackerForm extends React.Component {
             } else {
               const currentValue = parseInt(event.target.value, 10);
               // test currentValue for NaN which doesn't equal itself.
-              if (currentValue !== currentValue) { // eslint-disable-line 
+              if (currentValue !== currentValue) { // eslint-disable-line
                 newSubject.scoring[categoryName] = '';
               } else {
                 const maxPointsPossible = 40 - (newSubject.scoring.excusedDays * 8);
-                const maxPointsAdjustment = categoryName === 'stamps' 
+                const maxPointsAdjustment = categoryName === 'stamps'
                   ? newSubject.scoring.halfStamps
                   : newSubject.scoring.stamps * 2;
                 let maxValidValue = maxPointsPossible - maxPointsAdjustment;
@@ -125,7 +140,7 @@ class PointTrackerForm extends React.Component {
                 newSubject.scoring[categoryName] = Math.floor(Math.min(Math.max(currentValue, 0), maxValidValue));
               }
             }
-           
+
             return newSubject;
           }
           return subject;
@@ -224,33 +239,18 @@ class PointTrackerForm extends React.Component {
     });
   }
 
-  handleStudentSelect = (event) => {
-    event.preventDefault();
-    const studentId = event.target.value;
-    const selectedStudent = this.props.students.filter(student => student._id === studentId)[0];
-    const { lastPointTracker } = selectedStudent.studentData;
-
-    this.setState((prevState) => {
-      let newState = { ...prevState };
-      newState = lastPointTracker || emptyPointTracker;
-      newState.student = studentId;
-      newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
-      newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
-      newState.synopsisSaved = false;
-      return newState;
-    });
-  }
-
   calcPlayingTime = () => {
     if (!this.state.student) return null;
+
     console.groupCollapsed('calcPlayingTime');
     const { subjects } = this.state;
-
     const studentsFiltered = this.props.students.filter(s => s._id.toString() === this.state.student.toString());
     const student = studentsFiltered[0];
-    console.log(student);
 
-    const { isElementarySchool } = student.studentData.school.filter(s => s.currentSchool)[0];
+    let isElementarySchool = null;
+    if (student.studentData.school.length > 0) {
+      isElementarySchool = student.studentData.school.filter(s => s.currentSchool)[0].isElementarySchool; // eslint-disable-line
+    }
 
     const numberOfPeriods = subjects.length;
     const totalClassTokens = numberOfPeriods * 2;
@@ -273,7 +273,7 @@ class PointTrackerForm extends React.Component {
       const totalClassPointsEarned = (2 * stamps) + halfStamps;
       const classPointPercentage = totalClassPointsEarned / pointsPossible;
       console.log('totalClassPointsEarned', totalClassPointsEarned, 'classPointPercentage', classPointPercentage);
-      
+
       let classTokensEarned = 0;
       if (classPointPercentage >= 0.50) classTokensEarned = 1;
       if (classPointPercentage >= 0.75) classTokensEarned = 2;
@@ -287,7 +287,7 @@ class PointTrackerForm extends React.Component {
       console.log('.map w/in calc playing time:', subject.scoring);
       return totalTokensEarned;
     });
-    
+
     const totalTokensEarned = totalEarnedTokens.reduce((acc, cur) => acc + cur, 0);
     const tokenPercentage = totalTokensEarned / totalTokensPossible;
     console.log('totalTokensEarned', totalTokensEarned, 'tokenPercentage', tokenPercentage);
@@ -299,8 +299,8 @@ class PointTrackerForm extends React.Component {
     if (tokenPercentage >= 0.75) earnedPlayingTime = 'All but start';
     if (tokenPercentage >= 0.8) earnedPlayingTime = 'Entire game';
     if (earnedPlayingTime !== this.state.earnedPlayingTime) {
-      this.setState({ 
-        ...this.state, 
+      this.setState({
+        ...this.state,
         earnedPlayingTime,
       });
     }
@@ -311,28 +311,14 @@ class PointTrackerForm extends React.Component {
 
   render() {
     const reportingPeriods = getReportingPeriods();
-
     const selectOptionsJSX = (
-      <section>
-        <div className="select-student">
-        <label htmlFor="">Select Student</label>
-          <select 
-            required 
-            onChange={ this.handleStudentSelect } 
-            defaultValue="">
-          <option disabled value="">Select Student</option>
-          { this.props.students.map(student => (
-              <option 
-                placeholder="Select" 
-                key={ student._id } 
-                value={ student._id }
-              >{ `${student.firstName} ${student.lastName}`}
-              </option>
-          ))}
-          </select>
+      <div className="row">
+        <div className="col-md-6">
+          <span className="title">Student</span>
+          <span className="name">{this.props.content.firstName} {this.props.content.lastName }</span>
         </div>
-        <div className="select-date">
-          <label htmlFor="">Select Reporting Period</label>
+        <div className="col-md-6">
+          <label className="title" htmlFor="">Select Reporting Period</label>
           <select
             required
             onChange={ this.handleTitleChange }
@@ -346,12 +332,12 @@ class PointTrackerForm extends React.Component {
             ))}
           </select>
         </div>
-        <div className="clearfix"></div>
-      </section>
+      </div>
     );
 
     const surveyQuestionsJSX = (
       <fieldset>
+        <span className="title">Communication</span>
         <div className="survey-questions">
         {Object.keys(this.state.surveyQuestions)
           .filter(keyName => names[keyName])
@@ -368,29 +354,39 @@ class PointTrackerForm extends React.Component {
         </div>
     </fieldset>
     );
-    
+
+    // add back in calc plauing time calc below
+    const playingTime = (
+      <React.Fragment>
+        <div className="row">
+          <div className="col-md-6">
+            <span className="title">Playing Time Earned</span>
+            <span className="name">{ this.calcPlayingTime() } </span>
+          </div>
+          <div className="col-md-6">
+            <label className="title" htmlFor="mentorGrantedPlayingTime">Mentor Granted Playing Time:</label>
+            <select
+              name="mentorGrantedPlayingTime"
+              onChange={ this.handlePlayingTimeChange }
+              value={ this.state.mentorGrantedPlayingTime }
+              required
+              >
+              <option value="" defaultValue>Select Playing Time</option>
+              <option value="Entire game">Entire Game</option>
+              <option value="All but start">All but start</option>
+              <option value="Three quarters">Three quarters</option>
+              <option value="Two quarters">Two quarters</option>
+              <option value="One quarter">One quarter</option>
+              <option value="None of game">None of game</option>
+            </select>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+
     const synopsisCommentsJSX = (
       <div className="synopsis">
-        <h4>Synopsis</h4>
-        <p>Playing Time Earned: { this.calcPlayingTime() }</p>
-
-        <label htmlFor="mentorGrantedPlayingTime">Mentor Granted Playing Time:</label>
-        <select
-          name="mentorGrantedPlayingTime"
-          onChange={ this.handlePlayingTimeChange }
-          value={ this.state.mentorGrantedPlayingTime }
-          required
-          >
-          <option value="" defaultValue>Select Playing Time</option>
-          <option value="Entire game">Entire Game</option>
-          <option value="All but start">All but start</option>
-          <option value="Three quarters">Three quarters</option>
-          <option value="Two quarters">Two quarters</option>
-          <option value="One quarter">One quarter</option>
-          <option value="None of game">None of game</option>
-        </select>
-
-        { 
+        {
           Object.keys(this.state.synopsisComments)
             .filter(keyName => names[keyName])
             .map((synopsisComment, i) => {
@@ -399,10 +395,10 @@ class PointTrackerForm extends React.Component {
                   || this.state.mentorGrantedPlayingTime === this.state.earnedPlayingTime) {
                   return null;
                 }
-              } 
+              }
               return (
                 <div key={ i }>
-                  <label htmlFor={ synopsisComment }>{ names[synopsisComment] }</label>
+                  <label className="title" htmlFor={ synopsisComment }>{ names[synopsisComment] }</label>
                   <textarea
                     name={ synopsisComment }
                     onChange={ this.handleSynopsisCommentChange }
@@ -410,7 +406,6 @@ class PointTrackerForm extends React.Component {
                     rows="6"
                     cols="80"
                     wrap="hard"
-                    placeholder={ names[synopsisComment] }
                   />
                 </div>
               );
@@ -420,23 +415,40 @@ class PointTrackerForm extends React.Component {
     );
 
     return (
-      <div className="points-tracker">
-        <form className="data-entry" onSubmit={ this.handleSubmit }>
-          <h2>POINT TRACKER TABLE</h2>
-          { selectOptionsJSX }
-          { surveyQuestionsJSX }
-            <PointTrackerTable
-              handleSubjectChange={ this.handleSubjectChange }
-              subjects={ this.state.subjects }
-              getTeacherName={ this.getTeacherName }
-              teachers={ this.props.teachers }
-              deleteSubject= { this.deleteSubject }
-              createSubject={ this.createSubject }
-          />
-          { synopsisCommentsJSX }
-          { this.state.waitingOnSaves ? <img src={waitingGif} alt="waiting" /> : <button className="submit-report" type="submit">Submit Point Tracker</button> }
-          { this.state.synopsisSaved ? <PointTrackerSummary pointTracker={this.state}/> : null }
-        </form>
+      <div className="points-tracker panel point-tracker-modal">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title title">Point Tracker Table</h5>
+              <button type="button" className="close" onClick={ this.props.buttonClick } data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <form className="data-entry container" onSubmit={ this.handleSubmit }>
+                { selectOptionsJSX }
+                { playingTime }
+                { surveyQuestionsJSX }
+                <PointTrackerTable
+                  handleSubjectChange={ this.handleSubjectChange }
+                  subjects={ this.state.subjects }
+                  getTeacherName={ this.getTeacherName }
+                  teachers={ this.props.teachers }
+                  deleteSubject= { this.deleteSubject }
+                  createSubject={ this.createSubject }
+                />
+                { synopsisCommentsJSX }
+                <div className="modal-footer">
+                  { this.state.waitingOnSaves ? <img src={waitingGif} alt="waiting" /> : <button className="btn btn-secondary" type="submit">Submit Point Tracker</button> }
+                  { this.state.synopsisSaved ? <PointTrackerSummary pointTracker={this.state}/> : null }
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+        </div>
       </div>
     );
   }
@@ -464,83 +476,8 @@ PointTrackerForm.propTypes = {
   clearSynopsisReportLink: PropTypes.func,
   fetchStudents: PropTypes.func,
   fetchTeachers: PropTypes.func,
+  buttonClick: PropTypes.func,
+  content: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointTrackerForm);
-
-/*
-const pointTrackerHTML = `
-  <style>
-    img{  
-    width: 200px;
-  }
-  .image{  
-    padding-left:20px;
-    padding-top: 10px;
-    padding-bottom:12px;
-    height: 20px;
-    background: #1f1f1f;
-    width: 500px;
-    border-radius: 30px;
-  }
-  body {
-    padding: 20px;
-    margin: 20px;
-    border-radius: 30px;
-    border: 2px solid #e8e8e8;
-  
-  }
-  h1, h2, h3 {
-    font-style:bold;
-    font-family: "Raleway", Helvetica;
-    color:#089444;
-  }
-  p {
-    font-family: "Raleway", Helvetica;
-    color:#1186B4;
-  }
-  </style>
-  <body>
-    <div class=image>
-      <img style="-webkit-user-select: none;" src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png"> 
-    </div> 
-  <body>
-  <table></table>
-    <h1>${pointTracker.studentName}</h1>
-    <h3>Playing Time Earned</h3>
-    <p>${pointTracker.synopsisComments.mentorGrantedPlayingTime}</p>
-    <h3>Extra Playing Time Earned</h3>      
-    <p>${pointTracker.synopsisComments.extraPlayingTime}</p>
-    <h3>Student Action Items</h3>      
-    <p>${pointTracker.synopsisComments.studentActionItems}</p>
-    <h3>Sports Update</h3>      
-    <p>${pointTracker.synopsisComments.sportsUpdate}</p>
-    <h3>Additional Comments</h3>      
-    <p>${pointTracker.synopsisComments.additionalComments}</p>
-    <br>
-    <br>
-    <p>Sincerely,<br>${myProfile.firstName} ${myProfile.lastName}</p>
-    <p>${pointTracker.subjects}</p>      
-  </body>
-  <script>
-    var table = document.createElement('table');
-    for (var i = 0; i < 4; i++){
-        var tr = document.createElement('tr');   
-    
-        var td1 = document.createElement('td');
-        var td2 = document.createElement('td');
-    
-        var text1 = document.createTextNode('${pointTracker.subjects[0].subjectName}');
-        var text2 = document.createTextNode('Text2');
-    
-        td1.appendChild(text1);
-        td2.appendChild(text2);
-        tr.appendChild(td1);
-        tr.appendChild(td2);
-    
-        table.appendChild(tr);
-    }
-    document.body.appendChild(table);
-  </script>
-  `;
-  */

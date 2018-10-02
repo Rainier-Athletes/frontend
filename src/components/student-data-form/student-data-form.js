@@ -170,6 +170,13 @@ class StudentDataForm extends React.Component {
     this.setState(newState);
   }
 
+  handleSynergyChange = (e) => {
+    const newState = Object.assign({}, this.state);
+    const { id } = e.target;
+    newState.synergy[id] = id === 'username' ? e.target.value : Buffer.from(e.target.value).toString('base64');
+    this.setState(newState);
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -350,7 +357,7 @@ class StudentDataForm extends React.Component {
                   inline
                   checked={this.state.family[i].weekdayGuardian}
                   className="checkbox"
-                  id={f.member._id.toString()}
+                  id={`${f.member._id.toString()}-1`}
                   prop="weekdayGuardian"
                   onChange={this.handleGuardianChange}
                   >Weekday guardian</Checkbox>
@@ -358,7 +365,7 @@ class StudentDataForm extends React.Component {
                   inline
                   checked={this.state.family[i].weekendGuardian}
                   className="checkbox"
-                  id={f.member._id.toString()}
+                  id={`${f.member._id.toString()}-2`}
                   prop="weekendGuardian"
                   onChange={this.handleGuardianChange}
                   >Weekend guardian</Checkbox>
@@ -399,6 +406,26 @@ class StudentDataForm extends React.Component {
               placeholder="Enter student&rsquo;s Google documents url"
               value={this.state.googleDocsUrl ? this.state.googleDocsUrl : ''}
               onChange={this.handleTextFieldChange}
+            />
+          </FormGroup>
+          <FormGroup controlId="synergy">
+            <this.FieldGroup
+              id="username"
+              key="username"
+              type="text"
+              label="Synergy Username"
+              placeholder="Synergy username"
+              value={this.state.synergy.username ? this.state.synergy.username : ''}
+              onChange={this.handleSynergyChange}
+            />
+            <this.FieldGroup
+              id="password"
+              key="password"
+              type="password"
+              label="Synergy Password"
+              placeholder="Synergy Password"
+              value={this.state.synergy.password ? Buffer.from(this.state.synergy.password, 'base64') : ''}
+              onChange={this.handleSynergyChange}
             />
           </FormGroup>
           {!this.state.waitingOnSave 

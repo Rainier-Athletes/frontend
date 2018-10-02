@@ -42,7 +42,7 @@ label {
 }
 
 textarea, input, select {
-  background: $color-input-field;
+  background: $gray;
   border: none;
   padding: 10px;
   border-radius: 4px;
@@ -51,7 +51,7 @@ textarea, input, select {
   transition: 350ms all;
 
   &:hover {
-    background: $color-input-focus;
+    background: #BEBEBE;
     color: $color-black;
   }
 

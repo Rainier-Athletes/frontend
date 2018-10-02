@@ -8,11 +8,8 @@ class MentorContent extends React.Component {
     const student = this.props.content;
     const haveData = !!student.studentData;
 
-    const currentSchool = haveData ? student.studentData.school.find(s => s.currentSchool).schoolName : null;
-
-    const coaches = haveData ? student.studentData.coaches : null;
-    const currentCoach = coaches ? coaches.find(c => c.currentCoach) : null;
-    const currentCoachName = currentCoach ? `${currentCoach.firstName} ${currentCoach.lastName}` : '';
+    const currentSchool = haveData ? student.studentData.school.find(s => s.currentSchool) : null;
+    const currentSchoolName = currentSchool ? currentSchool.schoolName : '';
 
     const currentSportsJSX = haveData ? (student.studentData.sports.filter(s => s.currentlyPlaying).map(s => (
       <div className="team-info" key={s._id}>
@@ -56,7 +53,7 @@ class MentorContent extends React.Component {
           <div>
             <span className="info name">{ student.firstName } { student.lastName } </span>
             <span className="icon">{ student.studentData ? student.studentData.dateOfBirth : null } </span>
-            <span className="icon">{ student.studentData ? currentSchool : null } </span>
+            <span className="icon">{ student.studentData ? currentSchoolName : null } </span>
           </div>
         </div>
         <div className="row">

@@ -20,7 +20,11 @@
   clear: both;
   left: 50%;
   transform: translateX(-50%);
-  padding: 0 !important;
+  padding: 0.5em 1em !important;
+
+  @media (min-width: 992px) {
+    padding: 0 1em !important;
+  }
 
   .nav-content {
     margin-left: auto !important;
@@ -29,7 +33,6 @@
 
   .rainier-logo {
     width: 14em;
-
   }
 
   .login {
@@ -40,5 +43,9 @@
       width: 10em;
       margin: 1em;
     }
+  }
+
+  li {
+    padding: 10px;
   }
 }

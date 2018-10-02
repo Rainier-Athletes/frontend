@@ -42,7 +42,7 @@ label {
 }
 
 textarea, input, select {
-  background: $color-input-field;
+  background: $gray;
   border: none;
   padding: 10px;
   border-radius: 4px;
@@ -51,7 +51,7 @@ textarea, input, select {
   transition: 350ms all;
 
   &:hover {
-    background: $color-input-focus;
+    background: #BEBEBE;
     color: $color-black;
   }
 
@@ -74,16 +74,20 @@ footer {
   height: 60px;
   border-top: none;
   margin-top: 50px;
+  bottom: 0;
+  width: 100%;
+  margin: auto;
+  position: absolute;
 
   a {
     padding-top: 10px;
     padding-left: 3px;
     display: inline-block;
-    color: $color-white;
+    color: $color-input-focus;
     list-style-type: none;
 
     &:hover {
-      color: $color-input-focus;
+      color: $color-input-field;
     }
   }
 }

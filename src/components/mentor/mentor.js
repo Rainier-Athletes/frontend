@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Sidebar from '../side-bar/side-bar';
 import MentorContent from '../mentor-content/mentor-content';
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 
 import * as profileActions from '../../actions/profile';
@@ -20,7 +21,9 @@ class Mentor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: '',
+      content: {},
+      modal: false,
+      selected: -1,
     };
   }
 
@@ -40,7 +43,11 @@ class Mentor extends React.Component {
     const i = e.currentTarget.dataset.index;
 
     if (this.props.myStudents[i].role === 'student') {
-      this.setState({ content: this.props.myStudents[i] });
+      this.setState({
+        ...this.state,
+        content: this.props.myStudents[i],
+        selected: i,
+      });
     }
   }
 
@@ -48,7 +55,12 @@ class Mentor extends React.Component {
     if (this.props.myStudents) {
       return this.props.myStudents.map((student, i) => {
         return (
-          <li className="nav-item" key={student._id} data-index={i} onClick={ this.handleSidebarClick.bind(this) }><a className="nav-link">
+          <li
+            className={ this.state.selected === i.toString() ? 'nav-item selected' : 'nav-item' }
+            key={student._id}
+            data-index={i}
+            onClick={ this.handleSidebarClick.bind(this) }>
+            <a className="nav-link">
               { student.firstName } { student.lastName }
             </a>
           </li>
@@ -59,13 +71,25 @@ class Mentor extends React.Component {
     return 'loading';
   }
 
+  handleButtonClick = () => {
+    if (this.state.modal) {
+      this.setState({ modal: false });
+    } else {
+      this.setState({ modal: true });
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="container-fluid">
           <div className="row">
           <Sidebar content={ this.fetchStudents() }/>
-          <MentorContent content={ this.state.content }/>
+          <MentorContent content={ this.state.content } buttonClick={ this.handleButtonClick }>
+            {
+              this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
+            }
+          </ MentorContent>
           </div>
         </div>
       </React.Fragment>

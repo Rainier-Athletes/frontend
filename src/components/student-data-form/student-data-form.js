@@ -9,7 +9,9 @@ import {
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import * as studentDataActions from '../../actions/student-data';
+import LoadingSpinner from '../spinner/spinner';
 
 import './student-data-form.scss';
 
@@ -136,6 +138,7 @@ class StudentDataForm extends React.Component {
         sport: '',
         team: '',
         league: '',
+        teamCalendarUrl: 'http://',
         currentlyPlaying: true,
       });
     }
@@ -165,6 +168,13 @@ class StudentDataForm extends React.Component {
     const { family } = newState;
     const memberIdx = family.map(m => m.member._id).indexOf(id);
     family[memberIdx][prop] = !family[memberIdx][prop];
+    this.setState(newState);
+  }
+
+  handleSynergyChange = (e) => {
+    const newState = Object.assign({}, this.state);
+    const { id } = e.target;
+    newState.synergy[id] = id === 'username' ? e.target.value : Buffer.from(e.target.value).toString('base64');
     this.setState(newState);
   }
 
@@ -274,6 +284,14 @@ class StudentDataForm extends React.Component {
           value={this.state.sports.length ? this.state.sports[0].league : ''}
           onChange={this.handleSportFieldChange}
         />
+        <this.FieldGroup
+          id="teamCalendarUrl"
+          type="text"
+          label="Team Calendar URL: "
+          placeholder="Enter new team&rsquo;s calendar link"
+          value={this.state.sports.length ? this.state.sports[0].teamCalendarUrl : ''}
+          onChange={this.handleSportFieldChange}
+        />
         <p><Button type="submit" className="submitBtn" id="save-new-sport" onClick={this.handleNewSport}>Save Sport</Button></p>
         <p><Button type="reset" className="cancelBtn" id="cancel-new-sport" onClick={this.handleNewSport}>Cancel</Button></p>
       </FormGroup>
@@ -295,6 +313,11 @@ class StudentDataForm extends React.Component {
             id={i}
             onChange={this.handleSportStatusChange}
             >Currently playing</Checkbox>
+          <a href={sport.teamCalendarUrl ? sport.teamCalendarUrl : '#'} 
+            alt="team calendar url" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="team-calendar-url">Calendar</a>
           </FormGroup>
         ))
         : null
@@ -348,7 +371,7 @@ class StudentDataForm extends React.Component {
                   inline
                   checked={this.state.family[i].weekdayGuardian}
                   className="checkbox"
-                  id={f.member._id.toString()}
+                  id={`${f.member._id.toString()}-1`}
                   prop="weekdayGuardian"
                   onChange={this.handleGuardianChange}
                   >Weekday guardian</Checkbox>
@@ -356,7 +379,7 @@ class StudentDataForm extends React.Component {
                   inline
                   checked={this.state.family[i].weekendGuardian}
                   className="checkbox"
-                  id={f.member._id.toString()}
+                  id={`${f.member._id.toString()}-2`}
                   prop="weekendGuardian"
                   onChange={this.handleGuardianChange}
                   >Weekend guardian</Checkbox>
@@ -399,9 +422,29 @@ class StudentDataForm extends React.Component {
               onChange={this.handleTextFieldChange}
             />
           </FormGroup>
+          <FormGroup controlId="synergy">
+            <this.FieldGroup
+              id="username"
+              key="username"
+              type="text"
+              label="Synergy Username"
+              placeholder="Synergy username"
+              value={this.state.synergy.username ? this.state.synergy.username : ''}
+              onChange={this.handleSynergyChange}
+            />
+            <this.FieldGroup
+              id="password"
+              key="password"
+              type="password"
+              label="Synergy Password"
+              placeholder="Synergy Password"
+              value={this.state.synergy.password ? Buffer.from(this.state.synergy.password, 'base64') : ''}
+              onChange={this.handleSynergyChange}
+            />
+          </FormGroup>
           {!this.state.waitingOnSave 
             ? <Button type="submit" className="formSubmitBtn" id="submit-student-data">Submit</Button>
-            : 'Waiting...'
+            : <LoadingSpinner />
           }
           <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
         </form>

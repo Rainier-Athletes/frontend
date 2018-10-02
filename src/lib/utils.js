@@ -50,16 +50,16 @@ const getNextFridayDateString = (date) => {
 };
 
 const getReportingPeriods = (date = Date.now()) => {
-  const oneDayInMs = 1000 * 60 * 60 * 24;
   let friday = new Date(`${getNextFridayDateString(date)} 00:00:00`);
   friday = new Date(friday).setDate(new Date(friday).getDate() - 14);
-  let saturday = new Date(friday - (6 * oneDayInMs));
+  let monday = new Date(friday).setDate(new Date(friday).getDate() - 4);
+  let sunday = new Date(friday).setDate(new Date(friday).getDate() + 2);
   const reportingPeriods = [];
 
   for (let i = 0; i < 3; i++) {
-    reportingPeriods.push(`${new Date(saturday).toDateString()} to ${new Date(friday).toDateString()}`);
-    saturday = new Date(saturday).setDate(new Date(saturday).getDate() + 7);
-    friday = new Date(friday).setDate(new Date(friday).getDate() + 7);
+    reportingPeriods.push(`${new Date(monday).toDateString()} to ${new Date(sunday).toDateString()}`);
+    monday = new Date(monday).setDate(new Date(monday).getDate() + 7);
+    sunday = new Date(sunday).setDate(new Date(sunday).getDate() + 7);
   }
   
   return reportingPeriods;

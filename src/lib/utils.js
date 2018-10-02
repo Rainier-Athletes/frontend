@@ -50,7 +50,6 @@ const getNextFridayDateString = (date) => {
 };
 
 const getReportingPeriods = (date = Date.now()) => {
-  // const oneDayInMs = 1000 * 60 * 60 * 24;
   let friday = new Date(`${getNextFridayDateString(date)} 00:00:00`);
   friday = new Date(friday).setDate(new Date(friday).getDate() - 14);
   let monday = new Date(friday).setDate(new Date(friday).getDate() - 4);

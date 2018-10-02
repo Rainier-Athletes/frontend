@@ -29,7 +29,7 @@
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  color: white !important;
+  color: white;
   padding: 4px 16px;
   float: right;
   margin-top: -4px;
@@ -107,6 +107,12 @@
       color: white !important;
     }
   }
+}
+
+.mentor-btn a:hover {
+  background-color: $color-button-active;
+  color: $color-black;
+  text-decoration: none;
 }
 
 .mentor-btn a:hover {

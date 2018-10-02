@@ -21,7 +21,7 @@ class Mentor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: '',
+      content: {},
       modal: false,
       selected: -1,
     };

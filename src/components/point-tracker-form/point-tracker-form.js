@@ -198,12 +198,6 @@ class PointTrackerForm extends React.Component {
     }
   }
 
-  getTeacherName = (teacherId) => {
-    return this.props.teachers
-      .filter(teacher => teacher._id === teacherId)
-      .map(teacher => `${teacher.firstName} ${teacher.lastName}`)[0] || '';
-  }
-
   deleteSubject = (subjectName, teacherId) => {
     this.setState((prevState) => {
       const newState = { ...prevState };
@@ -433,8 +427,7 @@ class PointTrackerForm extends React.Component {
                 <PointTrackerTable
                   handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.subjects }
-                  getTeacherName={ this.getTeacherName }
-                  teachers={ this.props.teachers }
+                  teachers={ this.props.content.studentData.teachers }
                   deleteSubject= { this.deleteSubject }
                   createSubject={ this.createSubject }
                 />

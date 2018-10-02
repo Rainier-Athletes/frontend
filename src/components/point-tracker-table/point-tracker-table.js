@@ -42,11 +42,11 @@ export default class PointTrackerTable extends React.Component {
         >
           <option disabled defaultValue value="">Select Teacher</option>
           {
-            this.props.teachers.map(teacher => (
+            this.props.teachers.map(t => (
               <option
-                key={ teacher._id }
-                value={ teacher._id }
-              >{ `${teacher.firstName} ${teacher.lastName}` }
+                key={ t.teacher._id }
+                value={ t.teacher._id }
+              >{ `${t.teacher.lastName}, ${t.teacher.firstName}` }
             </option>
             ))
           }
@@ -76,7 +76,6 @@ export default class PointTrackerTable extends React.Component {
           label={ subject.subjectName }
           subject={ subject }
           handleSubjectChange={ this.props.handleSubjectChange }
-          getTeacherName={ this.props.getTeacherName }
           deleteSubject={ this.props.deleteSubject }
         />
       );
@@ -89,6 +88,8 @@ export default class PointTrackerTable extends React.Component {
           { addNewSubjectJSX }
           <div className="point-table">
             <div className="row-labels">
+              <label>Teacher</label>
+              <label>Subject</label>
               <label>Periods Missed</label>
               <label>Num. of Stamps</label>
               <label>Num. of Xs</label>
@@ -106,7 +107,6 @@ PointTrackerTable.propTypes = {
   subjects: PropTypes.array,
   teachers: PropTypes.array,
   handleSubjectChange: PropTypes.func,
-  getTeacherName: PropTypes.func,
   createSubject: PropTypes.func,
   deleteSubject: PropTypes.func,
 };

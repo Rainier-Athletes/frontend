@@ -8,15 +8,24 @@
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
-.mentor-btn {
-  background-color: #A9C94C;
+.mentor-btn a {
+  background-color: $color-button-green;
+  box-shadow: 0px 0px 3px black;
+  border: none;
+  border-radius: .3em;
+  font-family: $font-primary;
+  font-size: 12px;
   font-weight: 600;
-  color: white;
   text-transform: uppercase;
+  color: white;
   padding: 4px 16px;
-  border-radius: 20px;
-
   float: right;
   margin-top: -4px;
   margin-right: 20px;
+}
+
+.mentor-btn a:hover {
+  background-color: $color-button-active;
+  color: $color-black;
+  text-decoration: none;
 }

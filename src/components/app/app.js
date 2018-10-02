@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleDown, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faUserPlus, faSpinner } from '@fortawesome/free-solid-svg-icons'; //eslint-disable-line
 
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Admin from '../admin/admin';
@@ -13,7 +13,7 @@ import Dashboard from '../dashboard/dashboard';
 import Auth from '../auth/auth';
 import './app.scss';
 
-library.add(faAngleDown, faUserPlus);
+library.add(faAngleDown, faUserPlus, faSpinner);
 
 const AdminUser = Auth(['admin']);
 const MentorUser = Auth(['mentor', 'admin']);

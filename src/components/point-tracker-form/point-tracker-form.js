@@ -23,20 +23,59 @@ const emptyPointTracker = {
     },
     grade: '',
   }],
-  surveyQuestions: {
-    mentorAttendedCheckin: false,
-    metFaceToFace: false,
-    hadOtherCommunication: false,
-    hadNoCommunication: false,
-    scoreSheetTurnedIn: false,
-    scoreSheetLostOrIncomplete: false,
-    scoreSheetWillBeLate: false,
-    scoreSheetOther: false,
-    scoreSheetOtherReason: '',
-    synopsisInformationComplete: false,
-    synopsisInformationIncomplete: false,
-    synopsisCompletedByRaStaff: false,
+  communications: [
+    {
+      with: 'Student',
+      role: 'student',
+      f2fCheckIn: false,
+      f2fRaEvent: false,
+      f2fGameOrPractice: false,
+      basecampOrEmail: false,
+      phoneOrText: false,
+      familyMeeting: false,
+      notes: '',
+    },
+    {
+      with: 'Family',
+      role: 'family',
+      f2fCheckIn: false,
+      f2fRaEvent: false,
+      f2fGameOrPractice: false,
+      basecampOrEmail: false,
+      phoneOrText: false,
+      familyMeeting: false,
+      notes: '',
+    },
+    {
+      with: 'Teacher',
+      role: 'teacher',
+      f2fCheckIn: false,
+      f2fRaEvent: false,
+      f2fGameOrPractice: false,
+      basecampOrEmail: false,
+      phoneOrText: false,
+      familyMeeting: false,
+      notes: '',
+    },
+    {
+      with: 'Coach',
+      role: 'coach',
+      f2fCheckIn: false,
+      f2fRaEvent: false,
+      f2fGameOrPractice: false,
+      basecampOrEmail: false,
+      phoneOrText: false,
+      familyMeeting: false,
+      notes: '',
+    },
+  ],
+  pointSheetStatus: {
+    turnedIn: false,
+    lost: false,
+    incomplete: false,
+    absent: false,
   },
+  pointSheetStatusNotes: '',
   earnedPlayingTime: '',
   mentorGrantedPlayingTime: '',
   synopsisComments: {
@@ -48,17 +87,10 @@ const emptyPointTracker = {
 };
 
 const names = {
-  mentorAttendedCheckin: 'Mentor Attended Checkin',
-  metFaceToFace: 'Met Face-to-Face',
-  hadOtherCommunication: 'Had Other Communication',
-  hadNoCommunication: 'Had No Communication',
-  scoreSheetTurnedIn: 'Score Sheet Turned In',
-  scoreSheetLostOrIncomplete: 'Score Sheet Lost or Incomplete',
-  scoreSheetWillBeLate: 'Score Sheet will be Late',
-  scoreSheetOther: 'Score Sheet Other',
-  synopsisInformationComplete: 'Synopsis Information Complete',
-  synopsisInformationIncomplete: 'Synopsis Information Incomplete',
-  synopsisCompletedByRaStaff: 'Synopsis Completed by RA Staff',
+  turnedIn: 'Point sheet turned in',
+  lost: 'Point sheet lost',
+  incomplete: 'Point sheet less than 25% completed',
+  absent: 'Student reported absent',
   mentorGrantedPlayingTimeComments: 'Mentor Granted Playing Time Explanation',
   studentActionItems: 'Student Action Items',
   sportsUpdate: 'Sports Update',
@@ -151,15 +183,23 @@ class PointTrackerForm extends React.Component {
     });
   }
 
-  handleSurveyQuestionChange = (event) => {
+  handlePointSheetStatusChange = (event) => {
     const { name, checked } = event.target;
 
     this.setState((prevState) => {
       const newState = { ...prevState };
-      newState.surveyQuestions[name] = checked;
+      newState.pointSheetStatus[name] = checked;
       return newState;
     });
   }
+
+  handlePointSheetNotesChange = (event) => {
+    this.setState({ pointSheetStatusNotes: event.target.value });
+  }
+
+  // handleCommuncationsChange = (event) => {
+
+  // }
 
   handlePlayingTimeChange = (event) => {
     this.setState({ ...this.state, mentorGrantedPlayingTime: event.target.value });
@@ -329,22 +369,33 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
-    const surveyQuestionsJSX = (
+    const pointSheetStatusJSX = (
       <fieldset>
-        <span className="title">Communication</span>
+        <span className="title">Point Sheet Status</span>
         <div className="survey-questions">
-        {Object.keys(this.state.surveyQuestions)
+        {Object.keys(this.state.pointSheetStatus)
           .filter(keyName => names[keyName])
-          .map((surveyQuestion, i) => (
+          .map((statusQuestion, i) => (
             <div className="survey-question-container" key={ i }>
               <input
                 type="checkbox"
-                name={ surveyQuestion }
-                onChange= { this.handleSurveyQuestionChange }
-                checked={ this.state.surveyQuestions.surveyQuestion }/>
-              <label htmlFor={ surveyQuestion }>{ names[surveyQuestion] }</label>
+                name={ statusQuestion }
+                onChange= { this.handlePointSheetStatusChange }
+                checked={ this.state.pointSheetStatus.statusQuestion }/>
+              <label htmlFor={ statusQuestion }>{ names[statusQuestion] }</label>
             </div>
           ))}
+          <div className="survey-question-container">
+            <label className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status Notes</label>
+                    <textarea
+                      name="pointSheetStatusNotes"
+                      onChange={ this.handlePointSheetNotesChange }
+                      value={ this.state.pointSheetStatusNotes }
+                      rows="3"
+                      cols="80"
+                      wrap="hard"
+                    />
+          </div>
         </div>
     </fieldset>
     );
@@ -423,7 +474,7 @@ class PointTrackerForm extends React.Component {
               <form className="data-entry container" onSubmit={ this.handleSubmit }>
                 { selectOptionsJSX }
                 { playingTime }
-                { surveyQuestionsJSX }
+                { pointSheetStatusJSX }
                 <PointTrackerTable
                   handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.subjects }

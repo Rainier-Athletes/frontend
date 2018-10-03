@@ -79,6 +79,27 @@ select {
   vertical-align: middle;
 }
 
+.comm-table {
+  table{
+    border: 1px solid black;
+    table-layout: fixed;
+    width: 900px;
+  }
+
+  th, td {
+    border: 1px solid black;
+    width: 200px;
+  }
+
+  td:nth-child(1), th:nth-child(1) {
+    width: 200px;
+  }
+
+  th {
+    font-weight: bold;
+  }
+}
+
 .points-tracker {
   // padding-top: 20px;
   // padding-left: 2%;

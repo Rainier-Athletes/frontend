@@ -69,8 +69,16 @@ const emptyPointTracker = {
       notes: '',
     },
   ],
+  oneTeam: {
+    mentorMeal: false,
+    sportsGame: false,
+    communityEvent: false,
+    iepSummerReview: false,
+    other: false,
+  },
+  oneTeamNotes: '',
   pointSheetStatus: {
-    turnedIn: false,
+    turnedIn: true,
     lost: false,
     incomplete: false,
     absent: false,
@@ -91,10 +99,15 @@ const names = {
   lost: 'Point sheet lost',
   incomplete: 'Point sheet less than 25% completed',
   absent: 'Student reported absent',
+  other: 'Other',
   mentorGrantedPlayingTimeComments: 'Mentor Granted Playing Time Explanation',
   studentActionItems: 'Student Action Items',
   sportsUpdate: 'Sports Update',
   additionalComments: 'Additional Comments',
+  mentorMeal: 'Mentor meal',
+  sportsGame: 'Sports game meet up',
+  communityEvent: 'RA Comm. Event meet up',
+  iepSummerReview: 'IEP/Summer Review Meeting',
 };
 
 class PointTrackerForm extends React.Component {
@@ -183,6 +196,14 @@ class PointTrackerForm extends React.Component {
     });
   }
 
+  handlePointSheetTurnedInChange = (event) => {
+    console.log('handle turnedIn change:', event.target.value);
+    // this.setState({ pointSheetStatus: { turnedIn: !!event.target.value } });
+    const newState = Object.assign({}, this.state);
+    newState.pointSheetStatus.turnedIn = event.target.value === 'true';
+    this.setState(newState);
+  }
+
   handlePointSheetStatusChange = (event) => {
     const { name, checked } = event.target;
 
@@ -197,9 +218,19 @@ class PointTrackerForm extends React.Component {
     this.setState({ pointSheetStatusNotes: event.target.value });
   }
 
-  // handleCommuncationsChange = (event) => {
+  handleOneTeamChange = (event) => {
+    const { name, checked } = event.target;
 
-  // }
+    this.setState((prevState) => {
+      const newState = { ...prevState };
+      newState.oneTeam[name] = checked;
+      return newState;
+    });
+  }
+
+  handleOneTeamNotesChange = (event) => {
+    this.setState({ oneTeamNotes: event.target.value });
+  }
 
   handlePlayingTimeChange = (event) => {
     this.setState({ ...this.state, mentorGrantedPlayingTime: event.target.value });
@@ -345,6 +376,7 @@ class PointTrackerForm extends React.Component {
 
   render() {
     const reportingPeriods = getReportingPeriods();
+
     const selectOptionsJSX = (
       <div className="row">
         <div className="col-md-6">
@@ -369,35 +401,104 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
-    const pointSheetStatusJSX = (
+    const oneTeamJSX = (
       <fieldset>
-        <span className="title">Point Sheet Status</span>
+        <span className="title">One Team Face-to-Face Meet Ups</span>
         <div className="survey-questions">
-        {Object.keys(this.state.pointSheetStatus)
+        {Object.keys(this.state.oneTeam)
           .filter(keyName => names[keyName])
-          .map((statusQuestion, i) => (
+          .map((oneTeamQuestion, i) => (
             <div className="survey-question-container" key={ i }>
               <input
                 type="checkbox"
-                name={ statusQuestion }
-                onChange= { this.handlePointSheetStatusChange }
-                checked={ this.state.pointSheetStatus.statusQuestion }/>
-              <label htmlFor={ statusQuestion }>{ names[statusQuestion] }</label>
+                name={ oneTeamQuestion }
+                onChange= { this.handleOneTeamChange }
+                checked={ this.state.oneTeam.oneTeamQuestion }/>
+              <label htmlFor={ oneTeamQuestion }>{ names[oneTeamQuestion] }</label>
             </div>
           ))}
           <div className="survey-question-container">
-            <label className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status Notes</label>
+            <label className="title" htmlFor="oneTeamNotes">One Team Notes</label>
                     <textarea
-                      name="pointSheetStatusNotes"
-                      onChange={ this.handlePointSheetNotesChange }
-                      value={ this.state.pointSheetStatusNotes }
-                      rows="3"
+                      name="One Team Notes"
+                      onChange={ this.handleOneTeamNotesChange }
+                      value={ this.state.oneTeamNotes }
+                      rows="2"
                       cols="80"
                       wrap="hard"
                     />
           </div>
         </div>
     </fieldset>
+    );
+
+    const pointSheetStatusJSX = (
+      <fieldset>
+        <span className="title">Point Sheet Status</span>
+        <div className="survey-questions">
+          {Object.keys(this.state.pointSheetStatus)
+            .filter(keyName => names[keyName])
+            .map((statusQuestion, i) => {
+              console.log('this.state.pointSheetStatus.turnedIn', this.state.pointSheetStatus.turnedIn);
+              if (statusQuestion === 'turnedIn') {
+                return (
+                  <div className="survey-question-container" key={ i }>
+                    <label htmlFor="turned-in">Point sheet turned in: </label>
+                      <input 
+                        type="radio" 
+                        name="turned-in" 
+                        value="true" 
+                        checked={this.state.pointSheetStatus.turnedIn ? 'checked' : ''} 
+                        onChange={this.handlePointSheetTurnedInChange}/> Yes
+                      <input 
+                        type="radio" 
+                        name="turned-in" 
+                        value="false" 
+                        checked={!this.state.pointSheetStatus.turnedIn ? 'checked' : ''} 
+                        onChange={this.handlePointSheetTurnedInChange}/> No
+                    {/* </label> */}
+                  </div>
+                );
+              }
+              return (!this.state.pointSheetStatus.turnedIn
+                ? <div className="survey-question-container" key={ i }>
+                  <input
+                    type="checkbox"
+                    name={ statusQuestion }
+                    onChange= { this.handlePointSheetStatusChange }
+                    checked={ this.state.pointSheetStatus.statusQuestion }/>
+                  <label htmlFor={ statusQuestion }>{ names[statusQuestion] }</label>
+                </div>
+                : null
+              );
+            })
+            }
+            { !this.state.pointSheetStatus.turnedIn && this.state.pointSheetStatus.other 
+              ? <div className="survey-question-container">
+                <label className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status: Other</label>
+                        <textarea
+                          name="pointSheetStatusNotes"
+                          placeholder="Please explain selected status..."
+                          onChange={ this.handlePointSheetNotesChange }
+                          value={ this.state.pointSheetStatusNotes }
+                          required={this.state.pointSheetStatus.other}
+                          rows="2"
+                          cols="80"
+                          wrap="hard"
+                        />
+              </div>
+              : '' }
+        </div>
+    </fieldset>
+    );
+
+    const communicationPillarsTableJSX = (
+      <fieldset>
+        <span className="title">Communication Touch Points</span>
+        <div className="survey-questions">
+          <h6>The Comm Table Goes Here</h6>
+        </div>
+      </fieldset>
     );
 
     // add back in calc plauing time calc below
@@ -473,8 +574,10 @@ class PointTrackerForm extends React.Component {
             <div className="modal-body">
               <form className="data-entry container" onSubmit={ this.handleSubmit }>
                 { selectOptionsJSX }
-                { playingTime }
+                { communicationPillarsTableJSX }
+                { oneTeamJSX }
                 { pointSheetStatusJSX }
+                { playingTime }
                 <PointTrackerTable
                   handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.subjects }

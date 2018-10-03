@@ -430,6 +430,8 @@ class PointTrackerForm extends React.Component {
                       name="One Team Notes"
                       onChange={ this.handleOneTeamNotesChange }
                       value={ this.state.oneTeamNotes }
+                      placeholder={this.state.oneTeam.other ? 'Please explain selection of Other': ''}
+                      required={this.state.oneTeam.other}
                       rows="2"
                       cols="80"
                       wrap="hard"

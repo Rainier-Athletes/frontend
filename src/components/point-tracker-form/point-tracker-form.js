@@ -197,19 +197,26 @@ class PointTrackerForm extends React.Component {
   }
 
   handlePointSheetTurnedInChange = (event) => {
-    console.log('handle turnedIn change:', event.target.value);
-    // this.setState({ pointSheetStatus: { turnedIn: !!event.target.value } });
     const newState = Object.assign({}, this.state);
     newState.pointSheetStatus.turnedIn = event.target.value === 'true';
+    if (!newState.pointSheetStatus.turnedIn) {
+      const keys = Object.keys(newState.pointSheetStatus);
+      keys.forEach((key) => {
+        newState.pointSheetStatus[key] = false;
+      });
+    }
     this.setState(newState);
   }
 
   handlePointSheetStatusChange = (event) => {
-    const { name, checked } = event.target;
-
+    const { id } = event.target;
     this.setState((prevState) => {
       const newState = { ...prevState };
-      newState.pointSheetStatus[name] = checked;
+      const keys = Object.keys(newState.pointSheetStatus);
+      keys.forEach((key) => {
+        newState.pointSheetStatus[key] = false;
+        if (key === id) newState.pointSheetStatus[key] = true;
+      });
       return newState;
     });
   }
@@ -439,7 +446,6 @@ class PointTrackerForm extends React.Component {
           {Object.keys(this.state.pointSheetStatus)
             .filter(keyName => names[keyName])
             .map((statusQuestion, i) => {
-              console.log('this.state.pointSheetStatus.turnedIn', this.state.pointSheetStatus.turnedIn);
               if (statusQuestion === 'turnedIn') {
                 return (
                   <div className="survey-question-container" key={ i }>
@@ -460,25 +466,28 @@ class PointTrackerForm extends React.Component {
                   </div>
                 );
               }
+              console.log('other:', this.state.pointSheetStatus.other);
               return (!this.state.pointSheetStatus.turnedIn
                 ? <div className="survey-question-container" key={ i }>
                   <input
-                    type="checkbox"
-                    name={ statusQuestion }
+                    type="radio"
+                    id={ statusQuestion }
+                    name="pointSheetStatus"
+                    required={!this.state.pointSheetStatus.turnedIn}
                     onChange= { this.handlePointSheetStatusChange }
-                    checked={ this.state.pointSheetStatus.statusQuestion }/>
-                  <label htmlFor={ statusQuestion }>{ names[statusQuestion] }</label>
+                    checked={ this.state.pointSheetStatus.statusQuestion }/>{ names[statusQuestion] }
+                  {/* <label htmlFor={ statusQuestion }>{ names[statusQuestion] }</label> */}
                 </div>
                 : null
               );
             })
             }
-            { !this.state.pointSheetStatus.turnedIn && this.state.pointSheetStatus.other 
+            { !this.state.pointSheetStatus.turnedIn 
               ? <div className="survey-question-container">
-                <label className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status: Other</label>
+                <label className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status Notes</label>
                         <textarea
                           name="pointSheetStatusNotes"
-                          placeholder="Please explain selected status..."
+                          placeholder={this.state.pointSheetStatus.other ? 'Please explain selected status...' : ''}
                           onChange={ this.handlePointSheetNotesChange }
                           value={ this.state.pointSheetStatusNotes }
                           required={this.state.pointSheetStatus.other}

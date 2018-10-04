@@ -271,8 +271,7 @@ class PointTrackerForm extends React.Component {
 
       this.setState({ pointTracker: emptyPointTracker });
     } else {
-      console.log('scores not valid for submitting point tracker');
-      alert('Errors in scores. Please correct before saving.');
+      alert('Errors in scores. Please correct before saving.'); // eslint-disable-line
     }
   }
 

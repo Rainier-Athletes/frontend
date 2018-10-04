@@ -83,16 +83,15 @@ select {
   table{
     border: 1px solid black;
     table-layout: fixed;
-    width: 900px;
   }
 
   th, td {
     border: 1px solid black;
-    width: 200px;
+    padding: 4px 10px;
   }
 
   td:nth-child(1), th:nth-child(1) {
-    width: 200px;
+    // width: 400px;
   }
 
   th {

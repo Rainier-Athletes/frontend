@@ -104,9 +104,9 @@ class MentorContent extends React.Component {
             Student Profile
           </a>
           {
-            student ? <a className="mentor-btn" onClick={ this.props.buttonClick }>
+            student ? <button type="submit" className="linkToPT" onClick={ this.props.buttonClick }>
                 Point Tracker
-            </a> : null
+            </button> : null
           }
           {
             student.studentData ? studentProfile : null

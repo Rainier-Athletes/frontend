@@ -1,7 +1,7 @@
 @import '../../style/vars';
 
 .panel {
-    background-color: white !important;
+    background-color: white;
     border-radius: 6px;
     margin-top: 84px;
     margin-left: 1em;
@@ -14,13 +14,13 @@
 
 .col-md-8 {
   @media (min-width: 768px) {
-    -ms-flex: 0 0 70.5% !important;
-    flex: 0 0 70.5% !important;
-    max-width: 70.5% !important;
+    -ms-flex: 0 0 70.5%;
+    flex: 0 0 70.5%;
+    max-width: 70.5%;
   }
 }
 
-.mentor-btn a {
+.linkToPT {
   background-color: $color-button-green;
   box-shadow: 0px 0px 3px black;
   border: none;
@@ -29,14 +29,14 @@
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  color: white !important;
+  color: white;
   padding: 4px 16px;
   float: right;
   margin-top: -4px;
   margin-right: 20px;
 
   &:hover {
-    background-color: #c4d88a;
+    background-color: $color-button-active;
   }
 }
 
@@ -71,12 +71,12 @@
 
   .title {
     text-transform: uppercase;
-    color: #D8D8D8 !important;
+    color: #D8D8D8;
     font-weight: 600;
   }
 
   .label {
-    color: #D8D8D8 !important;
+    color: #D8D8D8;
     font-weight: 600;
   }
 
@@ -91,7 +91,7 @@
 
   .btn-link-1 {
     font-weight: 600;
-    color: #66afe9 !important;
+    color: #66afe9;
     text-transform: uppercase;
     padding: 4px 16px;
     border-radius: 20px;
@@ -103,8 +103,8 @@
 
 
     &:hover {
-      background-color: #66afe9 !important;
-      color: white !important;
+      background-color: #66afe9;
+      color: white;
     }
   }
 }

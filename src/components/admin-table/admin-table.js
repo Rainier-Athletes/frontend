@@ -317,10 +317,10 @@ class AdminTable extends React.Component {
   handleGridSort = (sortColumn, sortDirection) => {
     const comparer = (a, b) => { // eslint-disable-line
       if (sortDirection === 'ASC') {
-        return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
+        return (a[sortColumn].toUpperCase() > b[sortColumn].toUpperCase()) ? 1 : -1;
       }
       if (sortDirection === 'DESC') {
-        return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
+        return (a[sortColumn].toUpperCase() < b[sortColumn].toUpperCase()) ? 1 : -1;
       }
     };
     const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);

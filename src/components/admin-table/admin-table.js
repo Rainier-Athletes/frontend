@@ -418,6 +418,7 @@ class AdminTable extends React.Component {
 
   handleFilterChange = (filter) => {
     const newFilters = Object.assign({}, this.state.filters);
+    console.log('filterChange', filter, newFilters);
     if (filter.filterTerm) {
       newFilters[filter.column.key] = filter;
     } else {
@@ -428,7 +429,8 @@ class AdminTable extends React.Component {
 
   getValidFilterValues = (columnId) => {
     const values = this.state.rows.map(r => r[columnId]);
-    return values.filter((item, i, a) => { return i === a.indexOf(item); });
+    const returnValue = values.filter((item, i, a) => { return i === a.indexOf(item); });
+    return returnValue[0] ? returnValue : [''];
   };
 
   handleOnClearFilters = () => {

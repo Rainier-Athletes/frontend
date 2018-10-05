@@ -24,8 +24,8 @@ const mapDispatchToProps = dispatch => ({
   deleteRelationship: profiles => dispatch(relationshipActions.deleteRelationshipReq(profiles)),
 });
 
-const newRows = {};
-const updatedRows = {};
+// const newRows = {};
+// const updatedRows = {};
 
 class AdminTable extends React.Component {
   constructor(props, context) {
@@ -177,17 +177,25 @@ class AdminTable extends React.Component {
   }
 
   createRows = () => {
-    this.props.fetchProfile()
-      .then((res) => {
-        const rows = [];
-        for (let i = 0; i < res.payload.length; i++) {
-          if (res.payload[i].active) rows.push(this.populateData(res.payload[i]));
-        }
-        return rows;
-      })
-      .then((rows) => {
-        this.setState({ rows, originalRows: rows });
-      });
+    return new Promise((resolve) => {
+      this.props.fetchProfile()
+        .then((res) => {
+          const rows = [];
+          for (let i = 0; i < res.payload.length; i++) {
+            if (res.payload[i].active) rows.push(this.populateData(res.payload[i]));
+          }
+          return rows;
+        })
+        .then((rows) => {
+          this.setState({ rows, originalRows: rows });
+        })
+        .then(() => {
+          return resolve();
+        });
+      // .then(() => {
+      //   window.location.reload();
+      // });
+    });
   };
 
   populateNonStudentChildren = (profile) => {
@@ -262,22 +270,26 @@ class AdminTable extends React.Component {
   };
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    console.log('handleGridRowsUpdate', fromRow, toRow, updated);
     const rows = this.state.rows.slice();
+    const newRows = this.state.newRows.slice();
+    const updatedRows = this.state.updatedRows.slice();
+
     for (let i = fromRow; i <= toRow; i++) {
       const rowToUpdate = rows[i];
       const updatedRow = update(rowToUpdate, { $merge: updated });
       rows[i] = updatedRow;
 
-      if (!rows[i]._id) {
+      if (!rows[i]._id) { // if no _id prop it hasn't been retrieved/saved to db
         const index = this.state.counter;
         newRows[index] = rows[i];
-        this.setState({ newRows });
+        // this.setState({ newRows });
       } else {
-        updatedRows[rows[i].id] = rows[i];
-        this.setState({ updatedRows });
+        updatedRows.push(rows[i]);
+        // this.setState({ updatedRows });
       }
     }
-    this.setState({ rows, gridModified: true, originalRows: rows });
+    this.setState({ rows, newRows, updatedRows, gridModified: true, originalRows: rows });
     // this.setState({ originalRows: rows });
   }
 
@@ -338,7 +350,7 @@ class AdminTable extends React.Component {
   };
 
   rowGetter = (i) => {
-    return { ...this.state.rows[i] };
+    return this.state.rows[i];
   };
 
 
@@ -347,10 +359,10 @@ class AdminTable extends React.Component {
   };
 
   handleCreate = (profile) => {
-    this.props.createProfile(profile)
-      .then(() => {
-        this.props.history.push(routes.PROFILE_ROUTE);
-      });
+    this.props.createProfile(profile);
+      // .then(() => {
+      //   this.props.history.push(routes.PROFILE_ROUTE);
+      // });
   }
 
   handleUpdate = (profile) => {
@@ -361,20 +373,32 @@ class AdminTable extends React.Component {
   handleDelete = (event) => {
     event.preventDefault();
     const selected = this.state.selectedIndexes.sort((a, b) => b - a); // sort selection in inverse order
+    const rows = this.state.rows.slice(0);
+
     for (const index in selected) { // eslint-disable-line
       const i = selected[index];
-      this.props.deleteProfile(this.state.rows[i]);
+      if (rows[i]._id) this.props.deleteProfile(rows[i]);
     }
     // now delete rows from grid in sorted (inverse) order 
     // so as to not mess up indexes and delete the wrong row(s)
-    const rows = this.state.rows.slice(0); 
-    // for (let index = selected.length - 1; index >= 0; index--) {
+    let { counter } = this.state; // handle special case of deleting rows just added
+    let addedRows = this.state.newRows.slice(); // same here
     for (let index = 0; index < selected.length; index++) {
       const i = selected[index];
+      if (!rows[i]._id) { // row was added but not yet saved to db
+        addedRows = addedRows.filter(row => row.lastName !== rows[i].lastName && row.firstName !== rows[i].firstName); // firstName and lastName are the only values required by the db
+        counter -= 1;
+      }
       rows.splice(i, 1);
     }
+    const gridModified = !(counter === 0 && this.state.updatedRows.length === 0);
     this.onRowsDeselected(selected); // clear selection boxes
-    this.setState({ rows });
+    this.setState({ 
+      rows, 
+      newRows: addedRows, 
+      counter, 
+      gridModified,
+    });
   }
 
   getSubRowDetails = (rowItem) => {
@@ -420,14 +444,25 @@ class AdminTable extends React.Component {
 
   handleUpdateTable = () => {
     const { newRows, updatedRows } = this.state; // eslint-disable-line
-    Object.keys(newRows).forEach((key) => {
-      this.handleCreate(newRows[key]);
+
+    // Object.keys(newRows).forEach((key) => {
+    //   this.handleCreate(newRows[key]);
+    // });
+    newRows.forEach(row => this.handleCreate(row));
+    // Object.keys(updatedRows).forEach((key) => {
+    //   this.handleUpdate(updatedRows[key]);
+    // });
+    updatedRows.forEach(row => this.handleUpdate(row));
+    this.setState({ 
+      gridModified: false, 
+      updatedRows: [], 
+      newRows: [], 
+      counters: 0, 
     });
-    Object.keys(updatedRows).forEach((key) => {
-      this.handleUpdate(updatedRows[key]);
-    });
-    this.setState({ gridModified: false });
-    this.createRows(); // refresh state with updated rows from db
+    this.createRows() // refresh state with updated rows from db
+      .then(() => {
+        window.location.reload();
+      });
   };
 
   handleFilterChange = (filter) => {

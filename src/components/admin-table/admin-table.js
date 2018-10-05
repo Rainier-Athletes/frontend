@@ -499,7 +499,8 @@ class AdminTable extends React.Component {
   // };
 
   toggleModal = () => {
-    this.setState({
+    if (this.state.gridModified) return alert('Please save changes to table before adding new connection.');
+    return this.setState({
       isOpen: !this.state.isOpen,
     });
   }

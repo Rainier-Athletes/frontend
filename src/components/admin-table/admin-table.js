@@ -166,6 +166,7 @@ class AdminTable extends React.Component {
       counter: 0,
       newRows: [],
       updatedRows: [],
+      gridModified: false,
       isOpen: false, // for the modal
       sdIsOpen: false, // for student data form modal
     };
@@ -280,8 +281,8 @@ class AdminTable extends React.Component {
         this.setState({ updatedRows });
       }
     }
-    this.setState({ rows });
-    this.setState({ originalRows: rows });
+    this.setState({ rows, gridModified: true, originalRows: rows });
+    // this.setState({ originalRows: rows });
   }
 
   handleAddRow = ({ newRowIndex }) => {
@@ -294,9 +295,9 @@ class AdminTable extends React.Component {
 
     let rows = this.state.rows.slice();
     rows = update(rows, { $unshift: [newRow] });
-    this.setState({ rows });
     const num = this.state.counter + 1;
-    this.setState({ counter: num });
+    this.setState({ rows, counter: num, gridModified: true });
+    // this.setState({ counter: num });
   };
 
   onRowsSelected = (rows) => {
@@ -414,6 +415,7 @@ class AdminTable extends React.Component {
     Object.keys(updatedRows).forEach((key) => {
       this.handleUpdate(updatedRows[key]);
     });
+    this.setState({ gridModified: false });
   };
 
   handleFilterChange = (filter) => {
@@ -495,7 +497,7 @@ class AdminTable extends React.Component {
           onGridRowsUpdated={this.handleGridRowsUpdated}
           toolbar={
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
-              <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
+              <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.handleUpdateTable }>Save Table</button>
               <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
               <button className="modalBtn" onClick={this.toggleSdModal}>Access Student Data*</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>

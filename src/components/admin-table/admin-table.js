@@ -181,13 +181,12 @@ class AdminTable extends React.Component {
       .then((res) => {
         const rows = [];
         for (let i = 0; i < res.payload.length; i++) {
-          rows[i] = this.populateData(res.payload[i], i);
+          if (res.payload[i].active) rows.push(this.populateData(res.payload[i]));
         }
         return rows;
       })
       .then((rows) => {
-        this.setState({ rows });
-        this.setState({ originalRows: rows });
+        this.setState({ rows, originalRows: rows });
       });
   };
 
@@ -196,9 +195,6 @@ class AdminTable extends React.Component {
     profile.students.forEach((student) => {
       if (student.active) childArr.push(student);
     });
-    // for (const i in profile.students) { // eslint-disable-line
-    //   childArr.push(profile.students[i]);
-    // }
     return childArr;
   };
 
@@ -308,7 +304,12 @@ class AdminTable extends React.Component {
   };
 
   onRowsDeselected = (rows) => {
-    const rowIndexes = rows.map(r => r.rowIdx);
+    let rowIndexes;
+    if (typeof rows[0] === 'object') {
+      rowIndexes = rows.map(r => r.rowIdx);
+    } else {
+      rowIndexes = rows;
+    }
     this.setState({
       selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1),
       studentSelected: null,
@@ -337,7 +338,7 @@ class AdminTable extends React.Component {
   };
 
   rowGetter = (i) => {
-    return this.state.rows[i];
+    return { ...this.state.rows[i] };
   };
 
 
@@ -359,11 +360,21 @@ class AdminTable extends React.Component {
 
   handleDelete = (event) => {
     event.preventDefault();
-    const selected = this.state.selectedIndexes;
+    const selected = this.state.selectedIndexes.sort((a, b) => b - a); // sort selection in inverse order
     for (const index in selected) { // eslint-disable-line
       const i = selected[index];
       this.props.deleteProfile(this.state.rows[i]);
     }
+    // now delete rows from grid in sorted (inverse) order 
+    // so as to not mess up indexes and delete the wrong row(s)
+    const rows = this.state.rows.slice(0); 
+    // for (let index = selected.length - 1; index >= 0; index--) {
+    for (let index = 0; index < selected.length; index++) {
+      const i = selected[index];
+      rows.splice(i, 1);
+    }
+    this.onRowsDeselected(selected); // clear selection boxes
+    this.setState({ rows });
   }
 
   getSubRowDetails = (rowItem) => {
@@ -416,11 +427,11 @@ class AdminTable extends React.Component {
       this.handleUpdate(updatedRows[key]);
     });
     this.setState({ gridModified: false });
+    this.createRows(); // refresh state with updated rows from db
   };
 
   handleFilterChange = (filter) => {
     const newFilters = Object.assign({}, this.state.filters);
-    console.log('filterChange', filter, newFilters);
     if (filter.filterTerm) {
       newFilters[filter.column.key] = filter;
     } else {
@@ -439,18 +450,18 @@ class AdminTable extends React.Component {
     this.setState({ filters: {} });
   };
 
-  getRows = () => {
-    return Selectors.getRows(this.state);
-  };
+  // getRows = () => {
+  //   return Selectors.getRows(this.state);
+  // };
 
-  getSize = () => {
-    return this.getRows().length;
-  };
+  // getSize = () => {
+  //   return this.getRows().length;
+  // };
 
-  rowGetter = (rowIdx) => {
-    const rows = this.getRows();
-    return rows[rowIdx];
-  };
+  // rowGetter = (rowIdx) => {
+  //   const rows = this.getRows();
+  //   return rows[rowIdx];
+  // };
 
   toggleModal = () => {
     this.setState({
@@ -506,7 +517,7 @@ class AdminTable extends React.Component {
             </Toolbar>
           }
           enableRowSelect={true}
-          onRowSelect={this.onRowSelect}
+          // onRowSelect={this.onRowSelect}
           rowSelection={{
             showCheckbox: true,
             enableShiftSelect: true,

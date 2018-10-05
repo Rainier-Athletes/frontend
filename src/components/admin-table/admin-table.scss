@@ -17,7 +17,7 @@ p.infoText {
 .react-grid-Container {
   position: relative;
   top: 3.5em;
-  width: auto; // this must be auto, not 1366px, so that it can resize to the viewer's window
+  max-width: 1366px;
   margin: auto !important;
 
   .rdg-cell-expand {
@@ -33,8 +33,9 @@ p.infoText {
 
   .react-grid-Toolbar {
     border-color: none;
+    height: 100px;
   }
-  
+
   .react-grid-Toolbar .btn {
     font-size: 12px;
     border-color: none;

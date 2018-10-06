@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
-import * as routes from '../../lib/routes';
 import ConnectionModal from '../connection-modal/connection-modal';
 import './admin-table.scss';
 import StudentDataModal from '../student-data-form/student-data-form';
 
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';
+import raLogo from '../../assets/rainier-logo-100px.png';
 
-const faker = require('faker');
 const { Editors, Formatters, Toolbar, Filters: { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter }, Data: { Selectors } } = require('react-data-grid-addons'); // eslint-disable-line
 const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors; // eslint-disable-line
 const { ImageFormatter } = Formatters;
@@ -24,9 +23,6 @@ const mapDispatchToProps = dispatch => ({
   deleteRelationship: profiles => dispatch(relationshipActions.deleteRelationshipReq(profiles)),
 });
 
-// const newRows = {};
-// const updatedRows = {};
-
 class AdminTable extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -37,7 +33,7 @@ class AdminTable extends React.Component {
         width: 60,
         formatter: ImageFormatter,
         resizable: false,
-        headerRenderer: <ImageFormatter value={faker.image.cats()} />,
+        headerRenderer: <ImageFormatter value={raLogo} />,
       },
       {
         key: 'firstName',
@@ -192,9 +188,6 @@ class AdminTable extends React.Component {
         .then(() => {
           return resolve();
         });
-      // .then(() => {
-      //   window.location.reload();
-      // });
     });
   };
 
@@ -289,8 +282,13 @@ class AdminTable extends React.Component {
         // this.setState({ updatedRows });
       }
     }
-    this.setState({ rows, newRows, updatedRows, gridModified: true, originalRows: rows });
-    // this.setState({ originalRows: rows });
+    this.setState({ 
+      rows, 
+      newRows, 
+      updatedRows, 
+      gridModified: true, 
+      originalRows: rows, 
+    });
   }
 
   handleAddRow = ({ newRowIndex }) => {
@@ -349,6 +347,7 @@ class AdminTable extends React.Component {
     return this.state.rows[index];
   };
 
+  /*
   rowGetter = (i) => {
     return this.state.rows[i];
   };
@@ -357,12 +356,23 @@ class AdminTable extends React.Component {
   getSize = () => {
     return this.state.rows.length;
   };
+  */
+  
+  getRows = () => {
+    return Selectors.getRows(this.state);
+  };
 
+  getSize = () => {
+    return this.getRows().length;
+  };
+
+  rowGetter = (rowIdx) => {
+    const rows = this.getRows();
+    return rows[rowIdx];
+  };
+  
   handleCreate = (profile) => {
     this.props.createProfile(profile);
-      // .then(() => {
-      //   this.props.history.push(routes.PROFILE_ROUTE);
-      // });
   }
 
   handleUpdate = (profile) => {
@@ -445,13 +455,7 @@ class AdminTable extends React.Component {
   handleUpdateTable = () => {
     const { newRows, updatedRows } = this.state; // eslint-disable-line
 
-    // Object.keys(newRows).forEach((key) => {
-    //   this.handleCreate(newRows[key]);
-    // });
     newRows.forEach(row => this.handleCreate(row));
-    // Object.keys(updatedRows).forEach((key) => {
-    //   this.handleUpdate(updatedRows[key]);
-    // });
     updatedRows.forEach(row => this.handleUpdate(row));
     this.setState({ 
       gridModified: false, 
@@ -477,26 +481,13 @@ class AdminTable extends React.Component {
 
   getValidFilterValues = (columnId) => {
     const values = this.state.rows.map(r => r[columnId]);
-    const returnValue = values.filter((item, i, a) => { return i === a.indexOf(item); });
-    return returnValue[0] ? returnValue : [''];
+    const returnValue = values.filter((item, i, a) => { return i === a.indexOf(item) && item !== undefined; });
+    return returnValue[0] ? returnValue : [];
   };
 
   handleOnClearFilters = () => {
     this.setState({ filters: {} });
   };
-
-  // getRows = () => {
-  //   return Selectors.getRows(this.state);
-  // };
-
-  // getSize = () => {
-  //   return this.getRows().length;
-  // };
-
-  // rowGetter = (rowIdx) => {
-  //   const rows = this.getRows();
-  //   return rows[rowIdx];
-  // };
 
   toggleModal = () => {
     if (this.state.gridModified) return alert('Please save changes to table before adding new connection.');
@@ -553,7 +544,7 @@ class AdminTable extends React.Component {
             </Toolbar>
           }
           enableRowSelect={true}
-          // onRowSelect={this.onRowSelect}
+          onRowSelect={this.onRowSelect}
           rowSelection={{
             showCheckbox: true,
             enableShiftSelect: true,

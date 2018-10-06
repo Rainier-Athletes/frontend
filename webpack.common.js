@@ -38,7 +38,7 @@ webpackConfig.module.rules = [
     loader: 'url-loader?limit=10000&mimetype=application/font-woff',
   },
   {
-    test: /\.(png|svg|jpg|gif)$/i,
+    test: /\.(png|svg|jpg|gif|ico)$/i,
     use: ['file-loader'],
   },
   {

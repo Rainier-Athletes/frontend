@@ -1,13 +1,13 @@
 
+.col-md-3 {
+  padding: 1.5em 0 1em 0 !important;
+}
+
 .feather {
   width: 16px;
   height: 16px;
   vertical-align: text-bottom;
 }
-
-/*
- * Sidebar
- */
 
 .sidebar {
   background-color: white !important;
@@ -19,16 +19,32 @@
   margin-top: 84px;
   margin-left: 1em;
   padding-bottom: 12px;
-  z-index: 100; /* Behind the navbar */
+  z-index: 100;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+
+  .nav-title {
+    margin-bottom: 0.5em;
+  }
+
+  .nav-item:hover {
+    background-color: #bfd4e4;
+    color: white;
+  }
+
+  .selected {
+    background-color: #A4C7E3;
+    color: white;
+  }
+
+  .nav-link {
+    padding: 1.5em 2em;
+  }
+
 }
 
 .sidebar-sticky {
   position: relative;
   top: 0;
-  padding-top: .5rem;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
@@ -49,14 +65,7 @@
 
 .sidebar-heading {
   text-transform: uppercase;
-  color: #D8D8D8 !important;
+  color: #A9A9A9 !important;
   font-weight: 600;
-}
-
-/*
- * Content
- */
-
-[role="main"] {
-  padding-top: 48px; /* Space for fixed navbar */
+  display: inline !important;
 }

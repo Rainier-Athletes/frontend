@@ -1,11 +1,13 @@
 import superagent from 'superagent';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import * as routes from '../lib/routes';
 
 export const setStudentData = studentData => ({
   type: 'STUDENT_DATA_SET',
-  payload: studentData,
+  payload: { ...studentData, waitingOnSave: false },
+});
+
+export const setWaitingOnSave = () => ({
+  type: 'STUDENT_DATA_WAITING_ON_SAVE',
 });
 
 export const setBulkStudentData = studentDataArray => ({
@@ -16,8 +18,6 @@ export const setBulkStudentData = studentDataArray => ({
 export const createStudentData = studentData => (store) => {
   const { token } = store.getState();
 
-  console.log('createStudentData sending', JSON.stringify(studentData, null, 4));
-  
   return superagent.post(`${API_URL}${routes.STUDENT_DATA_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')

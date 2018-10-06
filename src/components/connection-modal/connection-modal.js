@@ -29,7 +29,7 @@ class ConnectionModal extends React.Component {
 
   handleSubmit = () => {
     const keys = Object.keys(this.state.query);
-    if (keys.includes('student') && keys.some(k => ['mentor', 'coach', 'teacher', 'family'].includes(k))) {
+    if (keys.includes('student') && keys.some(k => ['mentor', 'coach', 'teacher', 'family', 'admin'].includes(k))) {
       this.props.setRelationship(this.state.query);
     }
   }
@@ -62,18 +62,24 @@ class ConnectionModal extends React.Component {
     return (
       <div className="modalContainer">
         <form onChange={this.handleChange}>
-          <button className="close-modal" onClick={this.props.onClose}>X</button>
+          <button className="close-modal" onClick={this.props.onClose}>x</button>
           <h1>Add A Connection</h1>
           <div className="field-wrap dropdown">
             <label htmlFor="student">Student:</label>
               <select type="student" required>
                 <option value="" selected="true" disabled> -- select a student -- </option>
                 {
-                  this.props.profile.filter(p => p.role === 'student').map((p) => {
-                    return <option key={p._id} value={p._id}>
-                        {p.firstName} {p.lastName}
+                  this.props.profile.filter(p => p.role === 'student')
+                    .sort((p1, p2) => {
+                      if (p1.lastName > p2.lastName) return 1;
+                      if (p1.lastName < p2.lastName) return -1;
+                      return 0;
+                    })
+                    .map((p) => {
+                      return <option key={p._id} value={p._id}>
+                        {p.lastName}, {p.firstName}
                       </option>;
-                  })
+                    })
                 }
               </select>
           </div>
@@ -85,6 +91,7 @@ class ConnectionModal extends React.Component {
                 <option value="teacher">Teacher</option>
                 <option value="coach">Coach</option>
                 <option value="family">Family member</option>
+                <option value="admin">Admin</option>
               </select>
           </div>
           <div className="field-wrap dropdown">
@@ -92,11 +99,16 @@ class ConnectionModal extends React.Component {
               <select type="connection-name" required>
                 <option value="" selected="true" disabled> -- select a connection -- </option>
                 {
-                  this.props.profile.filter(p => p.role === this.state.role).map((p) => {
-                    return <option key={p._id} value={p._id} role={p.role}>
-                        {p.firstName} {p.lastName} - {p.role}
-                      </option>;
-                  })
+                  this.props.profile.filter(p => p.role === this.state.role)
+                    .sort((p1, p2) => {
+                      if (p1.lastName > p2.lastName) return 1;
+                      if (p1.lastName < p2.lastName) return -1;
+                      return 0;
+                    }).map((p) => {
+                      return <option key={p._id} value={p._id} role={p.role}>
+                          {p.lastName}, {p.firstName} - {p.role}
+                        </option>;
+                    })
                 }
               </select>
           </div>

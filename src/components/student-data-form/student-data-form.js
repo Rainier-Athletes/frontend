@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  FormGroup, 
-  ControlLabel, 
+  FormGroup,
+  ControlLabel,
   FormControl,
   HelpBlock,
   Checkbox,
@@ -9,13 +9,14 @@ import {
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import * as studentDataActions from '../../actions/student-data';
+import LoadingSpinner from '../spinner/spinner';
 
 import './student-data-form.scss';
 
 const emptyStudentData = {
   student: '',
-  // lastPointTracker: '',
   coaches: [],
   sports: [],
   mentors: [],
@@ -42,13 +43,15 @@ const mapStateToProps = (state, ownProps) => {
   const coaches = state.profile.filter(p => p.role === 'coach');
   const teachers = state.profile.filter(p => p.role === 'teacher');
   const family = state.profile.filter(p => p.role === 'family');
+  const waitingOnSave = state.studentData && state.studentData.waitingOnSave;
 
-  return ({ 
-    student, 
-    mentors, 
-    coaches, 
-    teachers, 
+  return ({
+    student,
+    mentors,
+    coaches,
+    teachers,
     family,
+    waitingOnSave,
   });
 };
 
@@ -57,6 +60,7 @@ const mapDispatchToProps = dispatch => ({
   fetchAllStudentData: () => dispatch(studentDataActions.fetchBulkStudentData()),
   createStudentData: studentData => dispatch(studentDataActions.createStudentData(studentData)),
   updateStudentData: studentData => dispatch(studentDataActions.updateStudentData(studentData)),
+  setWaitingOnSave: studentData => dispatch(studentDataActions.setWaitingOnSave(studentData)),
 });
 
 class StudentDataForm extends React.Component {
@@ -73,7 +77,9 @@ class StudentDataForm extends React.Component {
 
     this.state.newSchool = false;
     this.state.newSport = false;
+    this.state.waitingOnSave = false;
   }
+
 
   handleNewSchool = (e) => {
     e.stopPropagation();
@@ -92,13 +98,12 @@ class StudentDataForm extends React.Component {
       newState.newSchool = true;
       newState.school.unshift({ schoolName: '', currentSchool: true, isElementarySchool: false });
     }
-    
+
     this.setState(newState);
   }
-  
+
   handleSchoolChange = (e) => {
     const newState = Object.assign({}, this.state);
-    // new school is school[0]
     newState.school[0].schoolName = e.target.value;
     this.setState(newState);
   }
@@ -111,8 +116,6 @@ class StudentDataForm extends React.Component {
   }
 
   handleTextFieldChange = (e) => {
-    // e.preventDefault();
-    console.log(e.target.id, e.target.value);
     this.setState({ ...this.state, [e.target.id]: e.target.value });
   }
 
@@ -132,19 +135,19 @@ class StudentDataForm extends React.Component {
     } else {
       newState.newSport = true;
       newState.sports.unshift({
-        sport: '', 
-        team: '', 
-        league: '', 
+        sport: '',
+        team: '',
+        league: '',
+        teamCalendarUrl: 'http://',
         currentlyPlaying: true,
       });
     }
-    
+
     this.setState(newState);
   }
 
   handleSportFieldChange = (e) => {
     const newState = Object.assign({}, this.state);
-    // new sport is sports[0]
     newState.sports[0][e.target.id] = e.target.value;
     this.setState(newState);
   }
@@ -154,7 +157,6 @@ class StudentDataForm extends React.Component {
     const newState = Object.assign({}, this.state);
     const { sports } = newState;
     const sportIdx = parseInt(id, 10);
-    console.log(sports, id, sportIdx);
     sports[sportIdx].currentlyPlaying = !sports[sportIdx].currentlyPlaying;
     this.setState(newState);
   }
@@ -169,30 +171,39 @@ class StudentDataForm extends React.Component {
     this.setState(newState);
   }
 
+  handleSynergyChange = (e) => {
+    const newState = Object.assign({}, this.state);
+    const { id } = e.target;
+    newState.synergy[id] = id === 'username' ? e.target.value : Buffer.from(e.target.value).toString('base64');
+    this.setState(newState);
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('target.id:', e.target.id);
-    if (e.target.id.indexOf('new-school') > -1) return this.handleNewSchool(e);
+
+    this.setState({ waitingOnSave: true }); // react state
+    this.props.setWaitingOnSave(this.state); // redux store
 
     if (this.state._id) { // existing doc, update it
-      console.log('calling updateStudentData');
-      return this.props.updateStudentData(this.state)
-        .then(() => {
-          console.log('back from update successfully');
-        });
+      return this.props.updateStudentData(this.state);
     }
-    console.log('calling createStudentData');
-    return this.props.createStudentData(this.state)
-      .then(() => {
-        console.log('back from create successfully');
-      });
+    return this.props.createStudentData(this.state);
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.waitingOnSave !== prevProps.waitingOnSave) {
+      if (prevProps.waitingOnSave) {
+        this.setState({ waitingOnSave: false });
+        this.props.onClose();
+      }
+    }
   }
 
   FieldGroup = ({
-    id, 
-    label, 
-    help, 
-    ...props 
+    id,
+    label,
+    help,
+    ...props
   }) => {
     return (
       <FormGroup controlId={id}>
@@ -216,8 +227,8 @@ class StudentDataForm extends React.Component {
         ? (this.state.school.find(s => s.currentSchool).isElementarySchool
         ? 'An elementary school' : 'A middle/high school')
         : ''
-        /* eslint-enable */}</h6> 
-      <Button type="submit" id="create-new-school" onClick={this.handleNewSchool}>Create New School</Button>
+        /* eslint-enable */}</h6>
+      <Button type="submit" className="submitBtn" id="create-new-school" onClick={this.handleNewSchool}>Create New School</Button>
       </FormGroup>
     );
     // eslint-enable
@@ -232,17 +243,18 @@ class StudentDataForm extends React.Component {
           value={this.state.school.length ? this.state.school[0].schoolName : ''}
           onChange={this.handleSchoolChange}
         />
-        <Checkbox 
-          inline 
+        <Checkbox
+          inline
           checked={this.state.school.length ? this.state.school.find(s => s.currentSchool).isElementarySchool : false }
           id="isElementarySchool"
+          className="checkbox"
           prop="isElementarySchool"
           onChange={this.handleIsElementarySchool}
           >
           Check if elementary school
-        </Checkbox> 
-        <p><Button type="submit" id="save-new-school" onClick={this.handleNewSchool}>Save School</Button></p>
-        <p><Button type="reset" id="cancel-new-school" onClick={this.handleNewSchool}>Cancel</Button></p>
+        </Checkbox>
+        <p><Button type="submit" className="submitBtn" id="save-new-school" onClick={this.handleNewSchool}>Save School</Button></p>
+        <p><Button type="reset" className="cancelBtn" id="cancel-new-school" onClick={this.handleNewSchool}>Cancel</Button></p>
       </FormGroup>
     );
 
@@ -251,7 +263,7 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="sport"
           type="text"
-          label="Sport (baseball, soccer, etc):"
+          label="Sport (baseball, soccer, etc): "
           placeholder="Enter new sport"
           value={this.state.sports.length ? this.state.sports[0].sport : ''}
           onChange={this.handleSportFieldChange}
@@ -259,7 +271,7 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="team"
           type="text"
-          label="Team name:"
+          label="Team name: "
           placeholder="Enter new team name"
           value={this.state.sports.length ? this.state.sports[0].team : ''}
           onChange={this.handleSportFieldChange}
@@ -267,49 +279,64 @@ class StudentDataForm extends React.Component {
         <this.FieldGroup
           id="league"
           type="text"
-          label="League:"
-          placeholder="Enter new team's league"
+          label="League: "
+          placeholder="Enter new team&rsquo;s league"
           value={this.state.sports.length ? this.state.sports[0].league : ''}
           onChange={this.handleSportFieldChange}
         />
-        <p><Button type="submit" id="save-new-sport" onClick={this.handleNewSport}>Save Sport</Button></p>
-        <p><Button type="reset" id="cancel-new-sport" onClick={this.handleNewSport}>Cancel</Button></p>
+        <this.FieldGroup
+          id="teamCalendarUrl"
+          type="text"
+          label="Team Calendar URL: "
+          placeholder="Enter new team&rsquo;s calendar link"
+          value={this.state.sports.length ? this.state.sports[0].teamCalendarUrl : ''}
+          onChange={this.handleSportFieldChange}
+        />
+        <p><Button type="submit" className="submitBtn" id="save-new-sport" onClick={this.handleNewSport}>Save Sport</Button></p>
+        <p><Button type="reset" className="cancelBtn" id="cancel-new-sport" onClick={this.handleNewSport}>Cancel</Button></p>
       </FormGroup>
     );
 
     const currentSportsJSX = (
-      <FormGroup controlId="current-sports">        
-      <h4>{this.state.sports.length 
-        ? 'Sports Teams' 
+      <FormGroup controlId="current-sports">
+      <h4>{this.state.sports.length
+        ? 'Sports Teams'
         : 'No Current Sports' }</h4>
       <h6>{this.state.sports.length
         ? this.state.sports.map((sport, i) => (
           <FormGroup controlId={`current-sport-${i}`} key={`current-sport-${i}`}>
           {`${sport.team} (${sport.sport}), ${sport.league} league`}
-          <Checkbox 
-            inline 
+          <Checkbox
+            inline
             checked={this.state.sports[i].currentlyPlaying}
+            className="checkbox"
             id={i}
             onChange={this.handleSportStatusChange}
-            >Currently playing</Checkbox>  
+            >Currently playing</Checkbox>
+          <a href={sport.teamCalendarUrl ? sport.teamCalendarUrl : '#'} 
+            alt="team calendar url" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="team-calendar-url">Calendar</a>
           </FormGroup>
         ))
         : null
       }</h6>
-      <Button type="submit" id="create-new-sport" onClick={this.handleNewSport}>Create New Sport</Button>
-      </FormGroup>   
+      <Button type="submit" className="submitBtn" id="create-new-sport" onClick={this.handleNewSport}>Create New Sport</Button>
+      </FormGroup>
     );
 
     return (
       <div className="student-data-form">
-        <h1>Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h1>
+        <button className="close-modal" onClick={this.props.onClose}>x</button>
+        <h2 className="studentModalHeader">Student Profile Data for {this.state.student.firstName} {this.state.student.lastName}</h2>
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="gender-dob">
             <this.FieldGroup
               id="gender"
               type="text"
               label="Gender"
-              placeholder="Enter student's gender"
+              placeholder="Enter student&rsquo;s gender"
               value={this.state.gender ? this.state.gender : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -333,30 +360,32 @@ class StudentDataForm extends React.Component {
               placeholder="Enter student's grade in school"
               value={this.state.grade ? this.state.grade : ''}
               onChange={this.handleTextFieldChange}
-            />         
+            />
           </FormGroup>
           {this.state.family.length ? <h4>Guardians</h4> : null }
-          {this.state.family.length 
+          {this.state.family.length
             ? this.state.family.map((f, i) => (
               <FormGroup controlId={`guardians-${i}`} key={f.member._id}>
                 {`${f.member.firstName} ${f.member.lastName}:`}
-                <Checkbox 
-                  inline 
+                <Checkbox
+                  inline
                   checked={this.state.family[i].weekdayGuardian}
-                  id={f.member._id.toString()}
+                  className="checkbox"
+                  id={`${f.member._id.toString()}-1`}
                   prop="weekdayGuardian"
                   onChange={this.handleGuardianChange}
-                  >Weekday guardian</Checkbox> 
-                <Checkbox 
-                  inline 
+                  >Weekday guardian</Checkbox>
+                <Checkbox
+                  inline
                   checked={this.state.family[i].weekendGuardian}
-                  id={f.member._id.toString()}
+                  className="checkbox"
+                  id={`${f.member._id.toString()}-2`}
                   prop="weekendGuardian"
                   onChange={this.handleGuardianChange}
                   >Weekend guardian</Checkbox>
               </FormGroup>
-            )) 
-            : null 
+            ))
+            : null
           }
           <FormGroup controlId="sports-info">
             {this.state.newSport
@@ -370,7 +399,7 @@ class StudentDataForm extends React.Component {
               key="synopsisReportArchiveUrl"
               type="text"
               label="Synopsis Reports Archive URL"
-              placeholder="Enter student's synopsis report archive url"
+              placeholder="Enter student&rsquo;s synopsis report archive url"
               value={this.state.synopsisReportArchiveUrl ? this.state.synopsisReportArchiveUrl : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -379,7 +408,7 @@ class StudentDataForm extends React.Component {
               key="googleCalendarUrl"
               type="text"
               label="Google Calendar URL"
-              placeholder="Enter student's google calendar url"
+              placeholder="Enter student&rsquo;s Google calendar url"
               value={this.state.googleCalendarUrl ? this.state.googleCalendarUrl : ''}
               onChange={this.handleTextFieldChange}
             />
@@ -388,12 +417,36 @@ class StudentDataForm extends React.Component {
               key="googleDocsUrl"
               type="text"
               label="Google Docs URL"
-              placeholder="Enter student's google documents url"
+              placeholder="Enter student&rsquo;s Google documents url"
               value={this.state.googleDocsUrl ? this.state.googleDocsUrl : ''}
               onChange={this.handleTextFieldChange}
             />
           </FormGroup>
-          <Button type="submit">Submit</Button>
+          <FormGroup controlId="synergy">
+            <this.FieldGroup
+              id="username"
+              key="username"
+              type="text"
+              label="Synergy Username"
+              placeholder="Synergy username"
+              value={this.state.synergy.username ? this.state.synergy.username : ''}
+              onChange={this.handleSynergyChange}
+            />
+            <this.FieldGroup
+              id="password"
+              key="password"
+              type="password"
+              label="Synergy Password"
+              placeholder="Synergy Password"
+              value={this.state.synergy.password ? Buffer.from(this.state.synergy.password, 'base64') : ''}
+              onChange={this.handleSynergyChange}
+            />
+          </FormGroup>
+          {!this.state.waitingOnSave 
+            ? <Button type="submit" className="formSubmitBtn" id="submit-student-data">Submit</Button>
+            : <LoadingSpinner />
+          }
+          <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
         </form>
     </div>
     );
@@ -409,6 +462,9 @@ StudentDataForm.propTypes = {
   history: PropTypes.array,
   updateStudentData: PropTypes.func,
   createStudentData: PropTypes.func,
+  onClose: PropTypes.func,
+  setWaitingOnSave: PropTypes.func,
+  waitingOnSave: PropTypes.bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentDataForm);

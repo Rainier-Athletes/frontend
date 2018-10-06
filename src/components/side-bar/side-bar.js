@@ -1,49 +1,30 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import './_side-bar.scss';
 
-const mapDispatchToProps = dispatch => ({
-
-});
-
 class Sidebar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selected: null,
+    };
+  }
+  
   render() {
     return (
-      <nav className="col-md-3 d-none d-md-block sidebar">
+      <nav className="col-md-3 d-md-block sidebar">
         <div className="sidebar-sticky">
           <ul className="nav flex-column">
-            <li className="nav-item">
-              <a className="nav-link disabled sidebar-heading" href="#">
+            <li className="nav-title">
+              <a className="nav-link disabled sidebar-heading">
                 Student
               </a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Orders
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Products
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Customers
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Reports
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Integrations
-              </a>
-            </li>
+            {
+              this.props.content
+            }
           </ul>
         </div>
       </nav>
@@ -51,4 +32,8 @@ class Sidebar extends React.Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Sidebar);
+Sidebar.propTypes = {
+  content: PropTypes.node,
+};
+
+export default Sidebar;

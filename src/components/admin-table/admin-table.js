@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
-import * as routes from '../../lib/routes';
 import ConnectionModal from '../connection-modal/connection-modal';
 import './admin-table.scss';
-// import StudentDataForm from '../student-data-form/student-data-form';
+import StudentDataModal from '../student-data-form/student-data-form';
 
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';
+import raLogo from '../../assets/rainier-logo-100px.png';
 
-const faker = require('faker');
 const { Editors, Formatters, Toolbar, Filters: { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter }, Data: { Selectors } } = require('react-data-grid-addons'); // eslint-disable-line
 const { AutoComplete: AutoCompleteEditor, DropDownEditor } = Editors; // eslint-disable-line
 const { ImageFormatter } = Formatters;
@@ -24,9 +23,6 @@ const mapDispatchToProps = dispatch => ({
   deleteRelationship: profiles => dispatch(relationshipActions.deleteRelationshipReq(profiles)),
 });
 
-const newRows = {};
-const updatedRows = {};
-
 class AdminTable extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -36,14 +32,14 @@ class AdminTable extends React.Component {
         name: 'Avatar',
         width: 60,
         formatter: ImageFormatter,
-        resizable: true,
-        headerRenderer: <ImageFormatter value={faker.image.cats()} />,
+        resizable: false,
+        headerRenderer: <ImageFormatter value={raLogo} />,
       },
       {
         key: 'firstName',
         name: 'First Name',
         editable: true,
-        width: 80,
+        width: 75,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -53,7 +49,7 @@ class AdminTable extends React.Component {
         key: 'lastName',
         name: 'Last Name',
         editable: true,
-        width: 80,
+        width: 75,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -63,7 +59,7 @@ class AdminTable extends React.Component {
         key: 'primaryEmail',
         name: 'Primary Email',
         editable: true,
-        width: 150,
+        width: 125,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -73,7 +69,7 @@ class AdminTable extends React.Component {
         key: 'secondaryEmail',
         name: 'Secondary Email',
         editable: true,
-        width: 150,
+        width: 125,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -83,8 +79,8 @@ class AdminTable extends React.Component {
         key: 'role',
         name: 'Role',
         editable: true,
-        width: 60,
-        resizable: false,
+        width: 95,
+        resizable: true,
         sortable: true,
         filterable: true,
         filterRenderer: MultiSelectFilter,
@@ -93,7 +89,7 @@ class AdminTable extends React.Component {
         key: 'street',
         name: 'Street',
         editable: true,
-        width: 150,
+        width: 125,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -103,7 +99,7 @@ class AdminTable extends React.Component {
         key: 'apt',
         name: 'Apt',
         editable: true,
-        width: 60,
+        width: 40,
         resizable: false,
         sortable: true,
         filterable: true,
@@ -113,7 +109,7 @@ class AdminTable extends React.Component {
         key: 'city',
         name: 'City',
         editable: true,
-        width: 60,
+        width: 75,
         resizable: true,
         sortable: true,
         filterable: true,
@@ -123,7 +119,7 @@ class AdminTable extends React.Component {
         key: 'state',
         name: 'State',
         editable: true,
-        width: 60,
+        width: 40,
         resizable: false,
         sortable: true,
         filterable: true,
@@ -133,7 +129,7 @@ class AdminTable extends React.Component {
         key: 'zip',
         name: 'Zip',
         editable: true,
-        width: 60,
+        width: 40,
         resizable: false,
         sortable: true,
         filterable: true,
@@ -143,16 +139,16 @@ class AdminTable extends React.Component {
         key: 'cellPhone',
         name: 'Cell #',
         editable: true,
-        width: 120,
-        resizable: false,
+        width: 100,
+        resizable: true,
         sortable: true,
       },
       {
         key: 'phone',
         name: 'Alt #',
         editable: true,
-        width: 120,
-        resizable: false,
+        width: 100,
+        resizable: true,
         sortable: true,
       },
     ];
@@ -166,7 +162,9 @@ class AdminTable extends React.Component {
       counter: 0,
       newRows: [],
       updatedRows: [],
+      gridModified: false,
       isOpen: false, // for the modal
+      sdIsOpen: false, // for student data form modal
     };
   }
 
@@ -175,18 +173,22 @@ class AdminTable extends React.Component {
   }
 
   createRows = () => {
-    this.props.fetchProfile()
-      .then((res) => {
-        const rows = [];
-        for (let i = 0; i < res.payload.length; i++) {
-          rows[i] = this.populateData(res.payload[i], i);
-        }
-        return rows;
-      })
-      .then((rows) => {
-        this.setState({ rows });
-        this.setState({ originalRows: rows });
-      });
+    return new Promise((resolve) => {
+      this.props.fetchProfile()
+        .then((res) => {
+          const rows = [];
+          for (let i = 0; i < res.payload.length; i++) {
+            if (res.payload[i].active) rows.push(this.populateData(res.payload[i]));
+          }
+          return rows;
+        })
+        .then((rows) => {
+          this.setState({ rows, originalRows: rows });
+        })
+        .then(() => {
+          return resolve();
+        });
+    });
   };
 
   populateNonStudentChildren = (profile) => {
@@ -194,9 +196,6 @@ class AdminTable extends React.Component {
     profile.students.forEach((student) => {
       if (student.active) childArr.push(student);
     });
-    // for (const i in profile.students) { // eslint-disable-line
-    //   childArr.push(profile.students[i]);
-    // }
     return childArr;
   };
 
@@ -208,15 +207,15 @@ class AdminTable extends React.Component {
     profile.studentData.mentors.forEach((mentor) => {
       if (mentor.mentor.active && mentor.currentMentor) childArr.push(mentor.mentor);
     });
-    
+
     profile.studentData.coaches.forEach((coach) => {
       if (coach.coach.active && coach.currentCoach) childArr.push(coach.coach);
     });
-    
+
     profile.studentData.family.forEach((member) => {
       if (member.member.active) childArr.push(member.member);
     });
-    
+
     profile.studentData.teachers.forEach((teacher) => {
       if (teacher.teacher.active && teacher.currentTeacher) childArr.push(teacher.teacher);
     });
@@ -264,23 +263,32 @@ class AdminTable extends React.Component {
   };
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    console.log('handleGridRowsUpdate', fromRow, toRow, updated); // eslint-disable-line
     const rows = this.state.rows.slice();
+    const newRows = this.state.newRows.slice();
+    const updatedRows = this.state.updatedRows.slice();
+
     for (let i = fromRow; i <= toRow; i++) {
       const rowToUpdate = rows[i];
       const updatedRow = update(rowToUpdate, { $merge: updated });
       rows[i] = updatedRow;
 
-      if (!rows[i]._id) {
+      if (!rows[i]._id) { // if no _id prop it hasn't been retrieved/saved to db
         const index = this.state.counter;
         newRows[index] = rows[i];
-        this.setState({ newRows });
+        // this.setState({ newRows });
       } else {
-        updatedRows[rows[i].id] = rows[i];
-        this.setState({ updatedRows });
+        updatedRows.push(rows[i]);
+        // this.setState({ updatedRows });
       }
     }
-    this.setState({ rows });
-    this.setState({ originalRows: rows });
+    this.setState({ 
+      rows, 
+      newRows, 
+      updatedRows, 
+      gridModified: true, 
+      originalRows: rows, 
+    });
   }
 
   handleAddRow = ({ newRowIndex }) => {
@@ -293,23 +301,26 @@ class AdminTable extends React.Component {
 
     let rows = this.state.rows.slice();
     rows = update(rows, { $unshift: [newRow] });
-    this.setState({ rows });
     const num = this.state.counter + 1;
-    this.setState({ counter: num });
+    this.setState({ rows, counter: num, gridModified: true });
+    // this.setState({ counter: num });
   };
 
   onRowsSelected = (rows) => {
-    console.log('onRowsSelected is the last row selected', rows);
-    console.log('onRowsSelected rows[0].role', rows[0].row.role);
-    this.setState({ 
+    this.setState({
       selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx)),
       studentSelected: rows[0].row.role === 'student' ? rows[0].row._id.toString() : null,
     });
   };
 
   onRowsDeselected = (rows) => {
-    const rowIndexes = rows.map(r => r.rowIdx);
-    this.setState({ 
+    let rowIndexes;
+    if (typeof rows[0] === 'object') {
+      rowIndexes = rows.map(r => r.rowIdx);
+    } else {
+      rowIndexes = rows;
+    }
+    this.setState({
       selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1),
       studentSelected: null,
     });
@@ -318,10 +329,10 @@ class AdminTable extends React.Component {
   handleGridSort = (sortColumn, sortDirection) => {
     const comparer = (a, b) => { // eslint-disable-line
       if (sortDirection === 'ASC') {
-        return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
+        return (a[sortColumn].toUpperCase() > b[sortColumn].toUpperCase()) ? 1 : -1;
       }
       if (sortDirection === 'DESC') {
-        return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
+        return (a[sortColumn].toUpperCase() < b[sortColumn].toUpperCase()) ? 1 : -1;
       }
     };
     const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
@@ -336,6 +347,7 @@ class AdminTable extends React.Component {
     return this.state.rows[index];
   };
 
+  /*
   rowGetter = (i) => {
     return this.state.rows[i];
   };
@@ -344,12 +356,23 @@ class AdminTable extends React.Component {
   getSize = () => {
     return this.state.rows.length;
   };
+  */
+  
+  getRows = () => {
+    return Selectors.getRows(this.state);
+  };
 
+  getSize = () => {
+    return this.getRows().length;
+  };
+
+  rowGetter = (rowIdx) => {
+    const rows = this.getRows();
+    return rows[rowIdx];
+  };
+  
   handleCreate = (profile) => {
-    this.props.createProfile(profile)
-      .then(() => {
-        this.props.history.push(routes.PROFILE_ROUTE);
-      });
+    this.props.createProfile(profile);
   }
 
   handleUpdate = (profile) => {
@@ -359,11 +382,33 @@ class AdminTable extends React.Component {
 
   handleDelete = (event) => {
     event.preventDefault();
-    const selected = this.state.selectedIndexes;
+    const selected = this.state.selectedIndexes.sort((a, b) => b - a); // sort selection in inverse order
+    const rows = this.state.rows.slice(0);
+
     for (const index in selected) { // eslint-disable-line
       const i = selected[index];
-      this.props.deleteProfile(this.state.rows[i]);
+      if (rows[i]._id) this.props.deleteProfile(rows[i]);
     }
+    // now delete rows from grid in sorted (inverse) order 
+    // so as to not mess up indexes and delete the wrong row(s)
+    let { counter } = this.state; // handle special case of deleting rows just added
+    let addedRows = this.state.newRows.slice(); // same here
+    for (let index = 0; index < selected.length; index++) {
+      const i = selected[index];
+      if (!rows[i]._id) { // row was added but not yet saved to db
+        addedRows = addedRows.filter(row => row.lastName !== rows[i].lastName && row.firstName !== rows[i].firstName); // firstName and lastName are the only values required by the db
+        counter -= 1;
+      }
+      rows.splice(i, 1);
+    }
+    const gridModified = !(counter === 0 && this.state.updatedRows.length === 0);
+    this.onRowsDeselected(selected); // clear selection boxes
+    this.setState({ 
+      rows, 
+      newRows: addedRows, 
+      counter, 
+      gridModified,
+    });
   }
 
   getSubRowDetails = (rowItem) => {
@@ -381,13 +426,12 @@ class AdminTable extends React.Component {
 
   onCellExpand = (args) => {
     const rows = this.state.rows.slice(0);
-    const rowKey = args.rowData._id;
-    const rowIndex = args.rowIdx; 
+    const rowKey = args.rowData.name;
+    const rowIndex = rows.indexOf(args.rowData);
     const subRows = args.expandArgs.children;
 
     const expanded = Object.assign({}, this.state.expanded);
-
-    if (!expanded[rowKey]) {
+    if (expanded && !expanded[rowKey]) {
       expanded[rowKey] = true;
       this.updateSubRowDetails(subRows, args.rowData.treeDepth);
       rows.splice(rowIndex + 1, 0, ...subRows);
@@ -410,12 +454,19 @@ class AdminTable extends React.Component {
 
   handleUpdateTable = () => {
     const { newRows, updatedRows } = this.state; // eslint-disable-line
-    Object.keys(newRows).forEach((key) => {
-      this.handleCreate(newRows[key]);
+
+    newRows.forEach(row => this.handleCreate(row));
+    updatedRows.forEach(row => this.handleUpdate(row));
+    this.setState({ 
+      gridModified: false, 
+      updatedRows: [], 
+      newRows: [], 
+      counters: 0, 
     });
-    Object.keys(updatedRows).forEach((key) => {
-      this.handleUpdate(updatedRows[key]);
-    });
+    this.createRows() // refresh state with updated rows from db
+      .then(() => {
+        window.location.reload();
+      });
   };
 
   handleFilterChange = (filter) => {
@@ -430,29 +481,26 @@ class AdminTable extends React.Component {
 
   getValidFilterValues = (columnId) => {
     const values = this.state.rows.map(r => r[columnId]);
-    return values.filter((item, i, a) => { return i === a.indexOf(item); });
+    const returnValue = values.filter((item, i, a) => { return i === a.indexOf(item) && item !== undefined; });
+    return returnValue[0] ? returnValue : [];
   };
 
   handleOnClearFilters = () => {
     this.setState({ filters: {} });
   };
 
-  getRows = () => {
-    return Selectors.getRows(this.state);
-  };
-
-  getSize = () => {
-    return this.getRows().length;
-  };
-
-  rowGetter = (rowIdx) => {
-    const rows = this.getRows();
-    return rows[rowIdx];
-  };
-
   toggleModal = () => {
-    this.setState({
+    if (this.state.gridModified) return alert('Please save changes to table before adding new connection.'); // eslint-disable-line
+    return this.setState({
       isOpen: !this.state.isOpen,
+    });
+  }
+
+  toggleSdModal = () => {
+    if (!this.state.studentSelected) return undefined;
+
+    return this.setState({
+      sdIsOpen: !this.state.sdIsOpen,
     });
   }
 
@@ -475,6 +523,8 @@ class AdminTable extends React.Component {
           show={this.state.isOpen}
           onClose={this.toggleModal}>
         </ConnectionModal>
+        {this.state.sdIsOpen
+          ? <StudentDataModal onClose={this.toggleSdModal} studentId={this.state.studentSelected}></StudentDataModal> : null}
         <ReactDataGrid
           ref={ node => this.grid = node }
           enableCellSelect={true}
@@ -485,10 +535,12 @@ class AdminTable extends React.Component {
           onGridRowsUpdated={this.handleGridRowsUpdated}
           toolbar={
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
-              <button className="updateBtn" onClick={ this.handleUpdateTable }>Save Table</button>
+              <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.handleUpdateTable }>Save Table</button>
               <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
+              <button className="modalBtn" onClick={this.toggleSdModal}>Access Student Data*</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
               <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
+              <p className="infoText">*To access a student's data, click the checkbox next to student name, then click the Access Student Data button.</p>
             </Toolbar>
           }
           enableRowSelect={true}
@@ -511,7 +563,6 @@ class AdminTable extends React.Component {
           getValidFilterValues={this.getValidFilterValues}
           onClearFilters={this.handleOnClearFilters}
           />
-          {/* { this.state.studentSelected ? <StudentDataForm studentId={ this.state.studentSelected }></StudentDataForm> : null } */}
       </React.Fragment>
     );
   }
@@ -524,6 +575,6 @@ AdminTable.propTypes = {
   deleteProfile: PropTypes.func,
   history: PropTypes.array,
   deleteRelationship: PropTypes.func,
-}
+};
 
 export default connect(null, mapDispatchToProps)(AdminTable);

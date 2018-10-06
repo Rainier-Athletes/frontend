@@ -9,6 +9,7 @@ import synopsisReportLink from './synopsis-report';
 import studentData from './student-data';
 import students from './students';
 import teachers from './teachers';
+import myStudents from './myStudents';
 
 export default combineReducers({
   profile,
@@ -16,6 +17,7 @@ export default combineReducers({
   teachers,
   pointTracker,
   pointTrackers,
+  myStudents,
   synopsisReportLink,
   studentData,
   myProfile,

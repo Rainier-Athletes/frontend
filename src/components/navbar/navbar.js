@@ -21,8 +21,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   doLogout: () => dispatch(authActions.logout()),
   fetchMyProfile: profile => dispatch(profileActions.fetchMyProfileReq(profile)),
-  fetchStudents: studentIds => dispatch(profileActions.fetchStudents(studentIds)),
-  fetchTeachers: studentIds => dispatch(profileActions.fetchTeachers(studentIds)),
+  fetchStudents: studentIds => dispatch(profileActions.fetchStudentsReq(studentIds)),
+  fetchTeachers: studentIds => dispatch(profileActions.fetchTeachersReq(studentIds)),
   fetchPointTrackers: studentIds => dispatch(pointTrackerActions.fetchPointTrackers(studentIds)),
 });
 
@@ -79,7 +79,6 @@ class Navbar extends React.Component {
 
   determineRole = () => {
     if (this.props.myProfile) {
-      console.log(this.props.myProfile.role); // eslint-disable-line
       return this.props.myProfile.role === 'mentor' ? this.renderMentor() : this.renderAdmin();
     }
     return null;

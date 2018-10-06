@@ -30,10 +30,10 @@ export default class App extends React.Component {
             <Route exact path="/mentor" component={ MentorUser(Mentor) } />
           </div>
         </BrowserRouter>
-        <footer className="footer">
+        {/* <footer className="footer">
            <a href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website"> ©2018 Rainier Athletes |</a>
            <a href="https://github.com/Rainier-Athletes" alt="Link to GitHub repository">CodeFellows</a>
-        </footer>
+        </footer> */}
       </div>
     );
   }

@@ -637,6 +637,13 @@ p.infoText {
   border: 1px solid r#1186B4;
 }
 
+.saveAlert {
+  background: red;
+}
+.saveAlert:hover {
+  background: rgb(255, 143, 143);
+}
+
 .tools > button {
   padding: 0.5em;
   border-radius: 0.5em;

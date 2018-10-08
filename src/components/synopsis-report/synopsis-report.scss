@@ -5,7 +5,7 @@
   border: 2px solid #e8e8e8;
 }
 
-.img{
+.img{  
   padding-left:10px;
   padding-top: 10px;
   padding-bottom:10px;
@@ -13,4 +13,15 @@
   background: #1f1f1f;
   width: 500px;
   border-radius: 30px;
+}
+  
+h1, h2, h3, p {
+    font-style:bold;
+    font-family: helvetica;
+    color:#089444;
+}
+
+p {
+    font-family: Arial;
+    color:#1186B4;
 }

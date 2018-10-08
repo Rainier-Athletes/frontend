@@ -1,4 +1,5 @@
 import React from 'react';
+import { Prompt } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
@@ -170,6 +171,12 @@ class AdminTable extends React.Component {
 
   componentDidMount = () => {
     this.createRows();
+  }
+
+  willTransitionFrom(component, transition) {
+    if (this.state.gridModified && !window.confirm('Unsaved changes! Are you sure you want to leave?')) {
+      transition.abort();
+    }
   }
 
   createRows = () => {
@@ -527,6 +534,7 @@ class AdminTable extends React.Component {
         </ConnectionModal>
         {this.state.sdIsOpen
           ? <StudentDataModal onClose={this.toggleSdModal} studentId={this.state.studentSelected}></StudentDataModal> : null}
+        <Prompt when={this.state.gridModified} message="Unsaved changes. Are you sure you want to leave?" />
         <ReactDataGrid
           ref={ node => this.grid = node }
           enableCellSelect={true}

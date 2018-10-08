@@ -346,17 +346,6 @@ class AdminTable extends React.Component {
 
     return this.state.rows[index];
   };
-
-  /*
-  rowGetter = (i) => {
-    return this.state.rows[i];
-  };
-
-
-  getSize = () => {
-    return this.state.rows.length;
-  };
-  */
   
   getRows = () => {
     return Selectors.getRows(this.state);
@@ -384,11 +373,23 @@ class AdminTable extends React.Component {
     event.preventDefault();
     const selected = this.state.selectedIndexes.sort((a, b) => b - a); // sort selection in inverse order
     const rows = this.state.rows.slice(0);
+    
+    // check for connections on rows selected for deactivation
+    let activeConnections = false;
+    for (let index = 0; index < selected.length; index++) {
+      const i = selected[index];
+      if (rows[i].children && rows[i].children.length) activeConnections = true;
+      if (activeConnections) break;
+    }
+    if (activeConnections) {
+      return alert(`Please remove all active connections from selected rows before deleting.`);
+    }
 
-    for (const index in selected) { // eslint-disable-line
+    for (let index = 0; index < selected.length; index++) {
       const i = selected[index];
       if (rows[i]._id) this.props.deleteProfile(rows[i]);
     }
+
     // now delete rows from grid in sorted (inverse) order 
     // so as to not mess up indexes and delete the wrong row(s)
     let { counter } = this.state; // handle special case of deleting rows just added
@@ -401,6 +402,7 @@ class AdminTable extends React.Component {
       }
       rows.splice(i, 1);
     }
+
     const gridModified = !(counter === 0 && this.state.updatedRows.length === 0);
     this.onRowsDeselected(selected); // clear selection boxes
     this.setState({ 

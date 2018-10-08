@@ -21,20 +21,22 @@
 }
 
 .linkToPT {
+  background-color: $color-button-green;
+  box-shadow: 0px 0px 3px black;
+  border: none;
+  border-radius: .3em;
+  font-family: $font-primary;
+  font-size: 12px;
   font-weight: 600;
-  background-color: #A9C94C;
-  color: white;
   text-transform: uppercase;
+  color: white;
   padding: 4px 16px;
-  border-radius: 20px;
-  display: initial;
+  float: right;
   margin-top: -4px;
   margin-right: 20px;
-  line-height: 18px;
-  float: right;
 
   &:hover {
-    background-color: #9eb757;
+    background-color: $color-button-active;
   }
 }
 

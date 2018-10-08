@@ -90,12 +90,22 @@ select {
     padding: 4px 10px;
   }
 
+  td:nth-child(1), th:nth-child(1) {
+    // width: 400px;
+  }
+
   th {
     font-weight: bold;
   }
 }
 
 .points-tracker {
+  // padding-top: 20px;
+  // padding-left: 2%;
+  // padding-bottom: 2%;
+  // margin: 6% 20% 0 20%;
+  // border-radius: 30px;
+  // border: 2px solid #e8e8e8;
 
     h2 {
       color: $color-brand-blue;

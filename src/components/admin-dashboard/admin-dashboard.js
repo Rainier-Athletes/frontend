@@ -1,6 +1,6 @@
 import React from 'react';
-import AdminDashboardSidebar from '../admin-dashboard-sidebar/admin-dashboard-sidebar';
-import AdminDashboardContent from '../admin-dashboard-content/admin-dashboard-content';
+import AdminSidebar from '../admin-sidebar/admin-sidebar';
+import AdminContent from '../admin-content/admin-content';
 
 import './_admin-dashboard.scss';
 
@@ -10,8 +10,8 @@ export default class AdminDashboard extends React.Component {
       <React.Fragment>
         <div className="container-fluid">
           <div className="row">
-          <AdminDashboardSidebar />
-          <AdminDashboardContent />
+          <AdminSidebar />
+          <AdminContent />
           </div>
         </div>
       </React.Fragment>

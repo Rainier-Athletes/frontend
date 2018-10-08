@@ -1,16 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { BrowserRouter, Link } from 'react-router-dom';
+// import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 import * as routes from '../../lib/routes';
 
-import './_admin-dashboard-sidebar.scss';
+import './_admin-sidebar.scss';
 
-const mapDispatchToProps = dispatch => ({
+// const mapDispatchToProps = dispatch => ({
 
-});
+// });
 
-class AdminDashboardSidebar extends React.Component {
+export default class AdminSidebar extends React.Component {
   render() {
     return (
       <nav className="col-md-3 d-none d-md-block sidebar">
@@ -22,8 +22,8 @@ class AdminDashboardSidebar extends React.Component {
               </a>
             </li>
             <li className="nav-item">
-              <Link to={routes.ADMIN_ROUTE} className="nav-link">
-                Administrative Table
+              <Link to={routes.ADMIN_DATA_ROUTE} className="nav-link">
+                Administrative Data
               </Link>
             </li>
             <li className="nav-item">
@@ -53,4 +53,4 @@ class AdminDashboardSidebar extends React.Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(AdminDashboardSidebar);
+// export default connect(null, mapDispatchToProps)(AdminDashboardSidebar);

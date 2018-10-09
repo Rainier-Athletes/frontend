@@ -42,13 +42,14 @@ export default class PointTrackerTable extends React.Component {
         >
           <option disabled defaultValue value="">Select Teacher</option>
           {
-            this.props.teachers.map(t => (
-              <option
-                key={ t.teacher._id }
-                value={ t.teacher._id }
-              >{ `${t.teacher.lastName}, ${t.teacher.firstName}` }
-            </option>
-            ))
+            this.props.teachers.sort((a, b) => (a.teacher.lastName.toLowerCase() > b.teacher.lastName.toLowerCase() ? 1 : -1))
+              .map(t => (
+                <option
+                  key={ t.teacher._id }
+                  value={ t.teacher._id }
+                >{ `${t.teacher.lastName}, ${t.teacher.firstName}` }
+                </option>
+              ))
           }
         </select>
       </div>

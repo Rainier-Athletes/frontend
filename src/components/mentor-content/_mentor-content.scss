@@ -99,6 +99,11 @@
     line-height: 18px;
     border: 2px #66afe9 solid;
 
+    @media (max-width: 900px) {
+      display: block;
+      margin-top: 12px;
+      align-items: center;
+    }
 
     &:hover {
       background-color: #66afe9;

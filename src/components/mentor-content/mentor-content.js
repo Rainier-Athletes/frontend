@@ -104,7 +104,7 @@ class MentorContent extends React.Component {
             Student Profile
           </a>
           {
-            student ? <button type="submit" className="linkToPT" onClick={ this.props.buttonClick }>
+            Object.keys(student).length !== 0 ? <button type="submit" className="linkToPT" onClick={ this.props.buttonClick }>
                 Point Tracker
             </button> : null
           }

@@ -176,13 +176,12 @@ class PointTrackerForm extends React.Component {
               if (currentValue !== currentValue) { // eslint-disable-line
                 newSubject.scoring[categoryName] = '';
               } else {
-                const maxPointsPossible = 40 - (newSubject.scoring.excusedDays * 8);
-                const maxPointsAdjustment = categoryName === 'stamps'
+                const maxStampsPossible = 20 - (newSubject.scoring.excusedDays * 4);
+                const maxStampsAdjustment = categoryName === 'stamps' 
                   ? newSubject.scoring.halfStamps
-                  : newSubject.scoring.stamps * 2;
-                let maxValidValue = maxPointsPossible - maxPointsAdjustment;
-                maxValidValue = categoryName === 'stamps' ? maxValidValue / 2 : maxValidValue;
-                newSubject.scoring[categoryName] = Math.floor(Math.min(Math.max(currentValue, 0), maxValidValue));
+                  : newSubject.scoring.stamps;
+                const maxValidStamps = maxStampsPossible - maxStampsAdjustment;
+                newSubject.scoring[categoryName] = Math.floor(Math.min(Math.max(currentValue, 0), maxValidStamps));
               }
             }
 
@@ -255,7 +254,7 @@ class PointTrackerForm extends React.Component {
 
   validScores = (subjects) => {
     return subjects.every(subject => (
-      subject.scoring.stamps * 2 + subject.scoring.halfStamps <= 40 - subject.scoring.excusedDays * 8
+      subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4
     ));
   }
 
@@ -337,8 +336,8 @@ class PointTrackerForm extends React.Component {
       // console.log('form data:', isElementarySchool, subjectName, excusedDays, stamps, halfStamps, grade);
 
       let pointsPossible = 40 - (excusedDays * 8);
-      if (isElementarySchool && subjectName.toLowerCase() === 'tutorial') pointsPossible = 0;
       if (subjectName.toLowerCase() === 'tutorial') pointsPossible = 8 - (excusedDays * 2);
+      if (isElementarySchool && subjectName.toLowerCase() === 'tutorial') pointsPossible = 0;
       // console.log('pointsPossible', pointsPossible);
 
       const totalClassPointsEarned = (2 * stamps) + halfStamps;

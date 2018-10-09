@@ -95,7 +95,7 @@ const emptyPointTracker = {
 };
 
 const names = {
-  turnedIn: 'Point sheet turned in',
+  turnedIn: 'Point sheet >25% complete',
   lost: 'Point sheet lost',
   incomplete: 'Point sheet less than 25% completed',
   absent: 'Student reported absent',
@@ -104,6 +104,7 @@ const names = {
   studentActionItems: 'Student Action Items',
   sportsUpdate: 'Sports Update',
   additionalComments: 'Additional Comments',
+  wednesdayCheckin: 'Wednesday Checkin',
   mentorMeal: 'Mentor meal',
   sportsGame: 'Sports game meet up',
   communityEvent: 'RA Comm. Event meet up',

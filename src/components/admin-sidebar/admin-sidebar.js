@@ -1,7 +1,7 @@
 import React from 'react';
 // import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import * as routes from '../../lib/routes';
 
 import './_admin-sidebar.scss';
@@ -11,6 +11,12 @@ import './_admin-sidebar.scss';
 // });
 
 export default class AdminSidebar extends React.Component {
+  // constructor(props) {
+  //   super(props);
+
+  //   this.state = '';
+  // }
+
   render() {
     return (
       <nav className="col-md-3 d-none d-md-block sidebar">
@@ -21,12 +27,16 @@ export default class AdminSidebar extends React.Component {
                 Take me to:
               </a>
             </li>
-            <li className="nav-item">
-              <Link to={routes.ADMIN_DATA_ROUTE} className="nav-link">
+            <li className="nav-item" 
+              onClick={ this.props.onClick }
+              href={ routes.ADMIN_DATA_ROUTE }>
+              {/* <Link to={routes.ADMIN_DATA_ROUTE} className="nav-link"> */}
+              <a className="nav-link">
                 Administrative Data
-              </Link>
+                </a>
+              {/* </Link> */}
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to={routes.POINTS_TRACKER_ROUTE} className="nav-link">
                 Create a New Points Tracker
                 </Link>
@@ -45,12 +55,16 @@ export default class AdminSidebar extends React.Component {
               <a className="nav-link" href="/extract">
                 Export Points Trackers
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </nav>
     );
   }
 }
+
+AdminSidebar.propTypes = {
+  onClick: PropTypes.func,
+};
 
 // export default connect(null, mapDispatchToProps)(AdminDashboardSidebar);

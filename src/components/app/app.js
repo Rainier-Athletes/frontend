@@ -11,6 +11,7 @@ import Dashboard from '../dashboard/dashboard';
 import AdminDashboard from '../admin-dashboard/admin-dashboard';
 
 import Auth from '../auth/auth';
+import Admin from '../admin/admin';
 import './app.scss';
 
 library.add(faAngleDown, faUserPlus);
@@ -28,6 +29,7 @@ export default class App extends React.Component {
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
             <Route exact path="/admindashboard" component={ AdminUser(AdminDashboard) } />
+            <Route exact path="/admin" component={ AdminUser(Admin) } />
             <Route exact path="/mentor" component={ MentorUser(Mentor) } />
           </div>
         </BrowserRouter>

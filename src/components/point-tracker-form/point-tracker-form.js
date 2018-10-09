@@ -70,6 +70,7 @@ const emptyPointTracker = {
     },
   ],
   oneTeam: {
+    wednesdayCheckin: false,
     mentorMeal: false,
     sportsGame: false,
     communityEvent: false,
@@ -95,9 +96,9 @@ const emptyPointTracker = {
 };
 
 const names = {
-  turnedIn: 'Point sheet >25% complete',
+  turnedIn: 'Point sheet >25% complete: ',
   lost: 'Point sheet lost',
-  incomplete: 'Point sheet less than 25% completed',
+  incomplete: 'Point sheet <25% completed',
   absent: 'Student reported absent',
   other: 'Other',
   mentorGrantedPlayingTimeComments: 'Mentor Granted Playing Time Explanation',
@@ -140,6 +141,9 @@ class PointTrackerForm extends React.Component {
       newState = lastPointTracker || emptyPointTracker;
       newState.student = `${selectedStudent._id}`;
       newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
+      newState.isElementaryStudent = selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool;
+      // elementray has no tutorial so pop it from the empty point tracker
+      if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
       newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
       newState.synopsisSaved = false;
       return newState;
@@ -295,7 +299,7 @@ class PointTrackerForm extends React.Component {
       const newState = { ...prevState };
       const newSubject = {
         subjectName,
-        teacher: teacherId,
+        teacher: this.props.teachers.find(t => t._id.toString() === teacherId.toString()),
         scoring: {
           excusedDays: '',
           stamps: '',
@@ -504,7 +508,7 @@ class PointTrackerForm extends React.Component {
               if (statusQuestion === 'turnedIn') {
                 return (
                   <div className="survey-question-container" key={ i }>
-                    <label htmlFor="turned-in">Point sheet turned in: </label>
+                    <label htmlFor="turned-in">{ names[statusQuestion] }</label>
                       <input 
                         type="radio" 
                         name="turned-in" 
@@ -603,14 +607,13 @@ class PointTrackerForm extends React.Component {
             <span className="name">{ this.calcPlayingTime() } </span>
           </div>
           <div className="col-md-6">
-            <label className="title" htmlFor="mentorGrantedPlayingTime">Mentor Granted Playing Time:</label>
+            <label className="title" htmlFor="mentorGrantedPlayingTime">Optional Mentor Granted Playing Time:</label>
             <select
               name="mentorGrantedPlayingTime"
               onChange={ this.handlePlayingTimeChange }
               value={ this.state.mentorGrantedPlayingTime }
-              required
               >
-              <option value="" defaultValue>Select Playing Time</option>
+              <option value="" defaultValue>Select playing time override</option>
               <option value="Entire game">Entire Game</option>
               <option value="All but start">All but start</option>
               <option value="Three quarters">Three quarters</option>
@@ -629,9 +632,11 @@ class PointTrackerForm extends React.Component {
           Object.keys(this.state.synopsisComments)
             .filter(keyName => names[keyName])
             .map((synopsisComment, i) => {
+              const playingTimeCommentsRequired = synopsisComment === 'mentorGrantedPlayingTimeComments' 
+                && (this.state.mentorGrantedPlayingTime !== '' // '' => none selected
+              && this.state.mentorGrantedPlayingTime !== this.state.earnedPlayingTime);
               if (synopsisComment === 'mentorGrantedPlayingTimeComments') {
-                if (this.state.mentorGrantedPlayingTime === '' // '' => none selected
-                  || this.state.mentorGrantedPlayingTime === this.state.earnedPlayingTime) {
+                if (!playingTimeCommentsRequired) {
                   return null;
                 }
               }
@@ -645,6 +650,10 @@ class PointTrackerForm extends React.Component {
                     rows="6"
                     cols="80"
                     wrap="hard"
+                    required={playingTimeCommentsRequired}
+                    placeholder={playingTimeCommentsRequired
+                      ? 'Please explain your choice of student playing time.'
+                      : ''}
                   />
                 </div>
               );
@@ -677,6 +686,7 @@ class PointTrackerForm extends React.Component {
                   teachers={ this.props.content.studentData.teachers }
                   deleteSubject= { this.deleteSubject }
                   createSubject={ this.createSubject }
+                  isElementaryStudent={this.state.isElementaryStudent}
                 />
                 { synopsisCommentsJSX }
                 <div className="modal-footer">

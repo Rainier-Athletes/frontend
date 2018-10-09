@@ -73,10 +73,10 @@ export default class PointTrackerTable extends React.Component {
       return (
         <SubjectColumn
           key={ `${subject.subjectName}-${subject.teacher}` }
-          label={ subject.subjectName }
           subject={ subject }
           handleSubjectChange={ this.props.handleSubjectChange }
           deleteSubject={ this.props.deleteSubject }
+          isElementaryStudent={ this.props.isElementaryStudent }
         />
       );
     });
@@ -93,7 +93,7 @@ export default class PointTrackerTable extends React.Component {
               <label>Periods Missed</label>
               <label>Num. of Stamps</label>
               <label>Num. of Xs</label>
-              <label>Grade</label>
+              { this.props.isElementaryStudent ? null : <label>Grade</label> }
             </div>
             { subjectsJSX }
           </div>
@@ -109,4 +109,5 @@ PointTrackerTable.propTypes = {
   handleSubjectChange: PropTypes.func,
   createSubject: PropTypes.func,
   deleteSubject: PropTypes.func,
+  isElementaryStudent: PropTypes.bool,
 };

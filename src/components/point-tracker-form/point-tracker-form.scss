@@ -82,18 +82,26 @@ select {
 .comm-table {
   table{
     border: 1px solid black;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
     table-layout: fixed;
   }
 
   th, td {
     border: 1px solid black;
-    padding: 4px 10px;
+    padding: 4px 15px;
   }
 
   th {
     font-weight: bold;
+    text-align: center;
+  }
+
+  .comm-table-header {
+    background-color: lightgrey;
   }
 }
+
 
 .points-tracker {
 

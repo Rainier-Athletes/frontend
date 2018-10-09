@@ -406,7 +406,8 @@ class PointTrackerForm extends React.Component {
         type="checkbox"
         name={ `${com.role}-${row}-${columnKeys[col]}` }
         onChange= { this.handleCommCheckboxChange }
-        checked={ checked }/>
+        checked={ checked }
+        />
     );
   }
 
@@ -559,10 +560,9 @@ class PointTrackerForm extends React.Component {
       <fieldset>
         <span className="title">Communication Touch Points</span>
         <div className="survey-questions">
-          <h6>The Comm Table Goes Here</h6>
           <table className="comm-table">
             <thead>
-              <tr>
+              <tr className='comm-table-header'>
                 <th>RA Core Pillar</th>
                 <th>Face-To-Face</th>
                 <th>Digital</th>

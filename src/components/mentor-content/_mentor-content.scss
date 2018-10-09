@@ -22,10 +22,11 @@
 
 .linkToPT {
   font-weight: 600;
-  background-color: #A9C94C;
-  color: white;
+  background-color: white;
+  color: #0B9444;
   text-transform: uppercase;
   padding: 4px 16px;
+  border: 1px solid #0B9444;
   border-radius: 20px;
   display: initial;
   margin-top: -4px;
@@ -34,7 +35,13 @@
   float: right;
 
   &:hover {
-    background-color: #9eb757;
+    background-color: #0B9444;
+    color: white;
+    border: none;
+  }
+
+  &:active {
+    border: none;
   }
 }
 

@@ -389,7 +389,7 @@ class AdminTable extends React.Component {
       if (activeConnections) break;
     }
     if (activeConnections) {
-      return alert(`Please remove all active connections from selected rows before deleting.`);
+      return alert('Please remove all active connections from selected rows before deleting.');
     }
 
     for (let index = 0; index < selected.length; index++) {

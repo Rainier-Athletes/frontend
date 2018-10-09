@@ -50,11 +50,11 @@
       border-color: #ccc;
       margin-right: 12px;
 
-      &:hover {
-        color: #333;
-        background-color: #e6e6e6;
-        border-color: #adadad;
-      }
+      // &:hover {
+      //   color: #333;
+      //   background-color: #e6e6e6;
+      //   border-color: #adadad;
+      // }
     }
 
     .checkbox-inline {
@@ -83,6 +83,17 @@
     input[type=checkbox], input[type=radio] {
       margin-right: 4px;
     }
+
+    a {
+      color: $color-brand-blue;
+      text-decoration: none;
+
+      &:hover {
+        color: $color-input-field;
+        font-weight: 400;
+        text-decoration: underline;
+      }
+    }
   }
 
   .title {
@@ -100,5 +111,37 @@
   .col-md-6, .col-md-12 {
     padding-left: 0 !important;
     display: inline-block;
+  }
+
+  .submitBtn {
+    background-color: white;
+    color: $color-brand-blue;
+
+    &:hover {
+      background-color: $color-brand-blue;
+      color: white;
+    }
+  }
+
+  .cancelBtn {
+    
+    &:hover {
+      color: #333;
+      background-color: #e6e6e6;
+      border-color: #adadad;
+    }
+  }
+
+  .btn-secondary {
+    background-color: $color-brand-green;
+    font-size: 12px;
+    border: none;
+
+    &:hover {
+      background-color: white;
+      color: $color-brand-green;
+      font-weight: 600;
+      border: 0.5px solid $color-brand-green;
+    }
   }
 }

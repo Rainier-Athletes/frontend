@@ -638,10 +638,13 @@ p.infoText {
 }
 
 .saveAlert {
-  background: red;
+  background-color: $color-error;
+  color: white;
+  font-weight: 700;
+  border-color: gray;
 }
 .saveAlert:hover {
-  background: rgb(255, 143, 143);
+  background: #CF0021;
 }
 
 .tools > button {

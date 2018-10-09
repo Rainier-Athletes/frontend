@@ -1,0 +1,104 @@
+@import '../../style/vars';
+
+.student-data-modal {
+  position: absolute;
+  height: 85vh;
+  overflow: scroll;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px rgba(0,0,0, 0.3) !important;
+
+  .modal-content {
+    border: none;
+  }
+
+  .modal-body {
+    padding: 1.5em 0;
+  }
+
+  .modal-header {
+    padding: 0;
+  }
+
+  &.panel {
+    height: 85vh !important;
+  }
+
+  .modal-dialog {
+    margin: 0 !important;
+    width: 60vw;
+  }
+
+  label {
+    text-transform: uppercase;
+    color: #A9A9A9;
+    font-weight: 600;
+    line-height: 28px;
+  }
+
+  .form-group {
+
+    & > input {
+      background-color: $gray;
+      display: block;
+      line-height: 30px;
+      height: 30px;
+    }
+
+    .btn-default {
+      border-color: #ccc;
+      margin-right: 12px;
+
+      &:hover {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+      }
+    }
+
+    .checkbox-inline {
+      text-transform: lowercase;
+      color: $color-black;
+      margin-left: 8px;
+
+    }
+
+    .checkbox {
+      & > label {
+        text-transform: lowercase;
+        color: $color-black;
+      }
+    }
+
+    h6 {
+      font-weight: 600;
+      line-height: 28px;
+    }
+
+    h4, h5 {
+      color: $color-black;
+    }
+
+    input[type=checkbox], input[type=radio] {
+      margin-right: 4px;
+    }
+  }
+
+  .title {
+    text-transform: uppercase;
+    color: #A9A9A9;
+    font-weight: 600;
+  }
+
+  .close > span {
+    line-height: 11px;
+    font-size: 3em;
+    margin-bottom: 0;
+  }
+
+  .col-md-6, .col-md-12 {
+    padding-left: 0 !important;
+    display: inline-block;
+  }
+}

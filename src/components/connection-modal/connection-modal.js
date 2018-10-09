@@ -29,7 +29,7 @@ class ConnectionModal extends React.Component {
 
   handleSubmit = () => {
     const keys = Object.keys(this.state.query);
-    if (keys.includes('student') && keys.some(k => ['mentor', 'coach', 'teacher', 'family'].includes(k))) {
+    if (keys.includes('student') && keys.some(k => ['mentor', 'coach', 'teacher', 'family', 'admin'].includes(k))) {
       this.props.setRelationship(this.state.query);
     }
   }
@@ -60,50 +60,73 @@ class ConnectionModal extends React.Component {
     }
 
     return (
-      <div className="modalContainer">
-        <form onChange={this.handleChange}>
-          <button className="close-modal" onClick={this.props.onClose}>X</button>
-          <h1>Add A Connection</h1>
-          <div className="field-wrap dropdown">
-            <label htmlFor="student">Student:</label>
-              <select type="student" required>
-                <option value="" selected="true" disabled> -- select a student -- </option>
-                {
-                  this.props.profile.filter(p => p.role === 'student').map((p) => {
-                    return <option key={p._id} value={p._id}>
-                        {p.firstName} {p.lastName}
-                      </option>;
-                  })
-                }
-              </select>
+      <div className="panel connection-modal">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title title">Add a Connection</h5>
+              <button type="button" className="close" onClick={ this.props.onClose } data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <form onChange={this.handleChange}>
+                <div className="field-wrap dropdown">
+                  <label className="title" htmlFor="student">Student:</label>
+                    <select type="student" required>
+                      <option value="" selected="true" disabled> -- select a student -- </option>
+                      {
+                        this.props.profile.filter(p => p.role === 'student')
+                          .sort((p1, p2) => {
+                            if (p1.lastName > p2.lastName) return 1;
+                            if (p1.lastName < p2.lastName) return -1;
+                            return 0;
+                          })
+                          .map((p) => {
+                            return <option key={p._id} value={p._id}>
+                              {p.lastName}, {p.firstName}
+                            </option>;
+                          })
+                      }
+                    </select>
+                </div>
+                <div className="field-wrap dropdown">
+                  <label className="title" htmlFor="role">Role:</label>
+                    <select type="role" required>
+                      <option value="" selected="true" disabled> -- select a role -- </option>
+                      <option value="mentor">Mentor</option>
+                      <option value="teacher">Teacher</option>
+                      <option value="coach">Coach</option>
+                      <option value="family">Family member</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div className="field-wrap dropdown">
+                  <label className="title" htmlFor="connection-name">Connection:</label>
+                    <select type="connection-name" required>
+                      <option value="" selected="true" disabled> -- select a connection -- </option>
+                      {
+                        this.props.profile.filter(p => p.role === this.state.role)
+                          .sort((p1, p2) => {
+                            if (p1.lastName > p2.lastName) return 1;
+                            if (p1.lastName < p2.lastName) return -1;
+                            return 0;
+                          }).map((p) => {
+                            return <option key={p._id} value={p._id} role={p.role}>
+                                {p.lastName}, {p.firstName} - {p.role}
+                              </option>;
+                          })
+                      }
+                    </select>
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button type="submit" className="btn btn-secondary" onClick={this.handleSubmit}>Add Connection</button>
+            </div>
           </div>
-          <div className="field-wrap dropdown">
-            <label htmlFor="role">Role:</label>
-              <select type="role" required>
-                <option value="" selected="true" disabled> -- select a role -- </option>
-                <option value="mentor">Mentor</option>
-                <option value="teacher">Teacher</option>
-                <option value="coach">Coach</option>
-                <option value="family">Family member</option>
-              </select>
-          </div>
-          <div className="field-wrap dropdown">
-            <label htmlFor="connection-name">Connection:</label>
-              <select type="connection-name" required>
-                <option value="" selected="true" disabled> -- select a connection -- </option>
-                {
-                  this.props.profile.filter(p => p.role === this.state.role).map((p) => {
-                    return <option key={p._id} value={p._id} role={p.role}>
-                        {p.firstName} {p.lastName} - {p.role}
-                      </option>;
-                  })
-                }
-              </select>
-          </div>
-        <div className="addButton-container">
-          <button type="submit" className="addButton" onClick={this.handleSubmit}>Add Connection</button>
         </div>
-        </form>
       </div>
     );
   }

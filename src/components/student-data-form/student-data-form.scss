@@ -1,112 +1,104 @@
-p {
-  font-size: 30px;
-}
+@import '../../style/vars';
 
-.student-data-form {
-  background: rgba(165, 164, 164, 0.97);
-  border-radius: 7px;
-  box-shadow: 0px 0px 10px rgb(186, 186, 186);
-  width: 50em;
-  // height: 50em;
-  color: white;
-  font-family: helvetica;
+.student-data-modal {
   position: absolute;
-  z-index: 99;
-  margin: auto;
-  top: 6em; left: 0; bottom: 0; right: 0;
-}
+  height: 85vh;
+  overflow: scroll;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px rgba(0,0,0, 0.3) !important;
 
-.hide {
-  display: none;
-}
+  .modal-content {
+    border: none;
+  }
 
-.field-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin: 5px 20px;
-  padding: 5px;
-}
+  .modal-body {
+    padding: 1.5em 0;
+  }
 
-.field-wrap > label {
-  color: white;
-  font-size: 18px;
-  font-weight: 300;
-  margin-right: 1.5em;
-  max-width: 7em;
-}
+  .modal-header {
+    padding: 0;
+  }
 
-.modalContainer h1 {
-  text-align:center;
-  text-shadow: 0px 0px 3px black;
-  color: white;
-  font-size: 36px;
-  font-weight: 300;
-  position: relative;
-  top: 1em;
-  margin-bottom: 2em;
-}
+  &.panel {
+    height: 85vh !important;
+  }
 
-.modalContainer input:focus {
-  background: white;
-  color: black;
-}
+  .modal-dialog {
+    margin: 0 !important;
+    width: 60vw;
+  }
 
-.btn-container {
-  display: flex;
-  justify-content: center;
-}
+  label {
+    text-transform: uppercase;
+    color: #A9A9A9;
+    font-weight: 600;
+    line-height: 28px;
+  }
 
-.admin-mentor-btn {
-  display: none;
-  justify-content: center;
-}
+  .form-group {
 
-.addButton-container {
-  width: 9em;
-  margin-left: auto;
-  margin-right: auto;
-}
+    & > input {
+      background-color: $gray;
+      display: block;
+      line-height: 30px;
+      height: 30px;
+    }
 
-.addButton {
-  background: #099544;
-  box-shadow: 0px 3px #076e32;
-  border: none;
-  border-radius: 2em;
-  color: white;
-  cursor: pointer;
-  width: 9em;
-  font-size: 16px;
-  font-weight: 300;
-  padding: 12px;
-}
+    .btn-default {
+      border-color: #ccc;
+      margin-right: 12px;
 
-.addButton:hover {
-  background-color: #306c39;
-}
+      &:hover {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+      }
+    }
 
-input:focus, button:focus {
-  outline: 0;
-}
+    .checkbox-inline {
+      text-transform: lowercase;
+      color: $color-black;
+      margin-left: 8px;
 
-.dropdown select {
-  width: 15em;
-  height: 2em;
-  background-color: white !important;
-}
+    }
 
-.close-modal {
-  color: white;
-  background: none;
-  float: right;
-  font-size: 20px;
-  position: absolute;
-  right: 10px;
-  padding: 0;
-  margin: 0;
-}
+    .checkbox {
+      & > label {
+        text-transform: lowercase;
+        color: $color-black;
+      }
+    }
 
-.close-modal:hover {
-  color: rgb(211, 50, 50);
-  background: none;
+    h6 {
+      font-weight: 600;
+      line-height: 28px;
+    }
+
+    h4, h5 {
+      color: $color-black;
+    }
+
+    input[type=checkbox], input[type=radio] {
+      margin-right: 4px;
+    }
+  }
+
+  .title {
+    text-transform: uppercase;
+    color: #A9A9A9;
+    font-weight: 600;
+  }
+
+  .close > span {
+    line-height: 11px;
+    font-size: 3em;
+    margin-bottom: 0;
+  }
+
+  .col-md-6, .col-md-12 {
+    padding-left: 0 !important;
+    display: inline-block;
+  }
 }

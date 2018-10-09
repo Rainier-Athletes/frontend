@@ -1,115 +1,51 @@
-p {
-  font-size: 30px;
-}
+@import '../../style/vars';
 
-.modalContainer {
-  background: rgba(33, 33, 33, .97);
-  border-radius: 7px;
-  box-shadow: 0px 0px 10px rgb(186, 186, 186);
-  width: 30em;
-  height: 32em;
-  color: white;
-  font-family: helvetica;
+.connection-modal {
   position: absolute;
-  z-index: 99;
-  margin: auto;
-  top: 0; left: 0; bottom: 0; right: 0;
-}
+  height: 85vh;
+  overflow: scroll;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px rgba(0,0,0, 0.3) !important;
+  margin-top: 22vh !important;
 
-.hide {
-  display: none;
-}
+  .modal-content {
+    border: none;
+  }
 
-.field-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin: 5px 20px;
-  padding: 5px;
-}
+  .modal-body {
+    padding: 1.5em 0;
+  }
 
-.field-wrap > label {
-  color: white;
-  font-size: 18px;
-  font-weight: 300;
-  margin-right: 1.5em;
-  max-width: 7em;
-}
+  .modal-header {
+    padding: 0;
+  }
 
-.modalContainer h1 {
-  text-align:center;
-  text-shadow: 0px 0px 3px black;
-  color: white;
-  font-size: 36px;
-  font-weight: 300;
-  position: relative;
-  top: 1em;
-  margin-bottom: 2em;
-}
+  &.panel {
+    height: auto !important;
+  }
 
-.modalContainer input:focus {
-  background: white;
-  color: black;
-}
+  .modal-dialog {
+    margin: 0 !important;
+  }
 
-.btn-container {
-  display: flex;
-  justify-content: center;
-}
+  .title {
+    text-transform: uppercase;
+    color: #A9A9A9;
+    font-weight: 600;
+  }
 
-.admin-mentor-btn {
-  display: none;
-  justify-content: center;
-}
+  span, select {
+    display: block;
+    line-height: 30px;
+    height: 30px;
+    margin-bottom: 18px;
+  }
 
-.addButton-container {
-  width: 8em;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.addButton {
-  // display: flex;
-  text-align: center;
-  background-color: #0B9444;
-  // box-shadow: 2px 3px 5px #83CBA3;
-  border: none;
-  border-radius: .3em;
-  color: white;
-  cursor: pointer;
-  width: 10em;
-  font-size: 16px;
-  font-weight: 300;
-  margin: 20px 20px;
-  padding: 8px;
-}
-
-.addButton:hover {
-  background-color: #53B57D;
-}
-
-input:focus, button:focus {
-  outline: 0;
-}
-
-.dropdown select {
-  width: 15em;
-  height: 2em;
-  background-color: white !important;
-}
-
-.close-modal {
-  color: white;
-  background: none;
-  float: right;
-  font-size: 20px;
-  position: absolute;
-  right: 10px;
-  padding: 0;
-  margin: 0;
-}
-
-.close-modal:hover {
-  color: rgb(211, 50, 50);
-  background: none;
+  .close > span {
+    line-height: 11px;
+    font-size: 3em;
+    margin-bottom: 0;
+  }
 }

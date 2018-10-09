@@ -1,13 +1,126 @@
+@import '../../style/vars';
+
 .panel {
-    background-color: white !important;
+    background-color: white;
     border-radius: 6px;
-    /* position: fixed; */
-    /* top: 0; */
-    /* bottom: 0; */
-    /* left: 0; */
     margin-top: 84px;
     margin-left: 1em;
-    padding-bottom: 12px;
+    padding: 1.5em 2em 1em 1.5em;
     z-index: 100;
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    height: 85vh;
+    overflow: scroll;
+}
+
+.col-md-8 {
+  @media (min-width: 768px) {
+    -ms-flex: 0 0 70.5%;
+    flex: 0 0 70.5%;
+    max-width: 70.5%;
+  }
+}
+
+.linkToPT {
+  font-weight: 600;
+  background-color: white;
+  color: #0B9444;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border: 1px solid #0B9444;
+  border-radius: 20px;
+  display: initial;
+  margin-top: -4px;
+  margin-right: 20px;
+  line-height: 18px;
+  float: right;
+
+  &:hover {
+    background-color: #0B9444;
+    color: white;
+    border: none;
+  }
+
+  &:active {
+    border: none;
+  }
+}
+
+.student-profile, .point-tracker-modal {
+  overflow: scroll;
+
+  span {
+    display: block;
+    line-height: 30px;
+    height: 30px;
+    margin-bottom: 4px;
+  }
+
+  .icon:before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 30px;
+    float: left;
+    margin: 0 6px 0 0;
+    background-color: #E9E9E9;
+    border-radius: 50%;
+  }
+
+  .row {
+    margin: 2em 0;
+
+    .col-md-6 {
+      padding-left: 0;
+    }
+  }
+
+  .title {
+    text-transform: uppercase;
+    color: #A9A9A9;
+    font-weight: 600;
+  }
+
+  .label {
+    color:black;
+    font-weight: 600;
+  }
+
+  .name {
+    font-size: 18px;
+  }
+
+  .profile-link {
+    margin: auto;
+    padding: 2em 0;
+  }
+
+  .btn-link-1 {
+    font-weight: 600;
+    color: #66afe9;
+    text-transform: uppercase;
+    padding: 4px 16px;
+    border-radius: 20px;
+    display: initial;
+    margin-top: -4px;
+    margin-right: 20px;
+    line-height: 18px;
+    border: 2px #66afe9 solid;
+
+    @media (max-width: 900px) {
+      display: block;
+      margin-top: 12px;
+      align-items: center;
+    }
+
+    &:hover {
+      background-color: #66afe9;
+      color: white;
+    }
+  }
+}
+
+.mentor-btn a:hover {
+  background-color: $color-button-active;
+  color: $color-black;
+  text-decoration: none;
 }

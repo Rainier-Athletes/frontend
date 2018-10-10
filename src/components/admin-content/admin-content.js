@@ -51,9 +51,9 @@ class AdminContent extends React.Component {
 
   handleButtonClick = () => {
     if (this.state.modal) {
-      this.setState({ modal: false });
+      this.setState({ modal: false, show: 'nada' });
     } else {
-      this.setState({ modal: true });
+      this.setState({ modal: true, show: routes.POINTS_TRACKER_ROUTE });
     }
   }
 

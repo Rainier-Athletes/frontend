@@ -33,6 +33,8 @@ class AdminDashboard extends React.Component {
           return ({ ...prevState, show: routes.POINTS_TRACKER_ROUTE });
         });
         break;
+      case '/exportdata':
+        return this.setState({ show: '/exportdata' });
       default:
     }
   }

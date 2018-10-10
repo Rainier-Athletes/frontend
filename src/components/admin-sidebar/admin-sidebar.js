@@ -37,20 +37,10 @@ export default class AdminSidebar extends React.Component {
                 Student Point Tracker Form
               </Link>
             </li>
-            <li className="nav-item">
-              <a className="nav-link disabled sidebar-heading" href="#">
-                Export Data:
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/studentdata">
-                Student Data
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/extract">
-                Export Points Trackers
-              </a>
+            <li className="nav-item" onClick={this.props.onClick} show="/exportdata">
+              <Link to="#" className="nav-link">
+                Export CSV Data
+              </Link>
             </li>
           </ul>
         </div>

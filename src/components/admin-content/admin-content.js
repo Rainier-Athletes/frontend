@@ -12,8 +12,6 @@ import './_admin-content.scss';
 
 const mapStateToProps = state => ({
   myProfile: state.myProfile,
-  loggedIn: !!state.token,
-  profiles: state.profile,
 });
 
 // const name = Auth(['admin']);
@@ -26,6 +24,9 @@ class AdminContent extends React.Component {
       show: 'nada',
       content: undefined,
       modal: false,
+      exportSource: '',
+      exportFrom: '',
+      exportTo: '',
     };
   }
   
@@ -53,6 +54,43 @@ class AdminContent extends React.Component {
       this.setState({ modal: false });
     } else {
       this.setState({ modal: true });
+    }
+  }
+
+  exportFormChange = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('target id', e.target.id, 'target value', e.target.value);
+    switch (e.target.id) {
+      case 'data-source':
+        return this.setState({ exportSource: e.target.value });
+      case 'from':
+        return this.setState({ exportFrom: e.target.value });
+      case 'to':
+        return this.setState({ exportTo: e.target.value });
+      default:
+    }
+    return undefined;
+  }
+
+  handleExportButton = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const defaultExport = {
+      exportSource: '',
+      exportFrom: '',
+      exportTo: '',
+    };
+
+    switch (e.target.id) {
+      case 'extract':
+        debugger;
+        console.log('extract', this.state.exportSource, 'from', this.state.exportFrom, 'to', this.state.exportTo);
+        break;
+      case 'cancel':
+        return this.setState({ show: 'nada', ...defaultExport });
+      default:
     }
   }
 
@@ -84,6 +122,29 @@ class AdminContent extends React.Component {
       </form>
     );
 
+    const pickExportTypeAndDateRangeJSX = (
+      <form onChange={this.exportFormChange}>
+        <div className="fieldwrap dropdown">
+          <label className="title" htmlFor="data-source">Exported data source:</label>
+          <select type="text" id="data-source"required>
+            <option value="" selected="true" disabled>-- select data source -- </option> 
+            <option value="pointstracker" key="pointstracker">Point Tracker Forms</option>
+            <option value="studentdata" key="studentdata">Student Data</option>
+          </select>
+        </div>
+        <div className="fieldwrap">
+          <label className="title" htmlFor="from">Starting date:</label>
+          <input type="date" id="from" />
+        </div>
+        <div className="fieldwrap">
+          <label className="title" htmlFor="to">Ending date:</label>
+          <input type="date" id="to" />
+        </div>
+        <button type="submit" id="extract" className="submitBtn" onClick={this.handleExportButton}>Create Extract File</button>
+        <button type="reset" id="cancel" className="resetBtn" onClick={this.handleExportButton}>Cancel</button>
+      </form>
+    );
+
     return (
       <div role="main" className="col-md-8 panel">
         {this.state.show === 'nada' && !this.state.modal ? <h1>Hello { name }</h1> : null }
@@ -91,6 +152,7 @@ class AdminContent extends React.Component {
         {
           this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
         }
+        {this.state.show === '/exportdata' ? pickExportTypeAndDateRangeJSX : null }
       </div>
     );
   }

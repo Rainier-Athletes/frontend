@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import AdminTable from '../admin-table/admin-table';
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 import * as routes from '../../lib/routes';
 
 // import Navbar from '../navbar/navbar';
@@ -23,7 +23,9 @@ class AdminContent extends React.Component {
     super(props);
     
     this.state = {
-      show: null,
+      show: 'nada',
+      content: undefined,
+      modal: false,
     };
   }
   
@@ -38,21 +40,20 @@ class AdminContent extends React.Component {
     const { selectedIndex } = e.target.options;
     console.log('content change selectedIndex', selectedIndex);
     console.log('content chagne options @', e.target.options[selectedIndex]);
-    /*
-    if (e.target.getAttribute('type') === 'student') {
-      query.student = e.target.value;
-      this.setState({ query });
-    } else if (e.target.getAttribute('type') === 'role') {
-      this.setState({ ...this.state, role: e.target.value });
+    const modal = !this.state.modal;
+    this.setState({ 
+      content: this.props.students.find(s => s._id.toString() === e.target.value),
+      modal,
+      show: 'nada',
+    });
+  }
+
+  handleButtonClick = () => {
+    if (this.state.modal) {
+      this.setState({ modal: false });
     } else {
-      if (query.mentor || query.admin || query.teacher || query.coach || query.family) {
-        const key = Object.keys(query).filter(p => p !== 'student');
-        delete query[key];
-      }
-      query[e.target.options[selectedIndex].getAttribute('role')] = e.target.value;
-      this.setState({ query });
+      this.setState({ modal: true });
     }
-    */
   }
 
   render() {
@@ -85,8 +86,11 @@ class AdminContent extends React.Component {
 
     return (
       <div role="main" className="col-md-8 panel">
-        <h1>Hello { name }</h1>
-        {this.props.show === routes.POINTS_TRACKER_ROUTE ? pickStudentJSX : null }
+        {this.state.show === 'nada' && !this.state.modal ? <h1>Hello { name }</h1> : null }
+        {this.state.show === routes.POINTS_TRACKER_ROUTE ? pickStudentJSX : null }
+        {
+          this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
+        }
       </div>
     );
   }

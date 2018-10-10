@@ -29,12 +29,12 @@ export default class AdminSidebar extends React.Component {
             </li>
             <li className="nav-item">
               <Link to={routes.ADMIN_DATA_ROUTE} className="nav-link">
-                Administrative Data
+                Administrative Data Table
               </Link>
             </li>
             <li className="nav-item" onClick={this.props.onClick} show={routes.POINTS_TRACKER_ROUTE}>
               <Link to="#" className="nav-link">
-                Create a New Points Tracker
+                Student Point Tracker Form
               </Link>
             </li>
             <li className="nav-item">

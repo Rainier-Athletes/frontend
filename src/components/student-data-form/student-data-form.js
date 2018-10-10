@@ -341,7 +341,8 @@ class StudentDataForm extends React.Component {
     );
 
     return (
-      <div className="panel student-data-modal">
+      <div className="modal-backdrop">
+        <div className="panel student-data-modal">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -497,6 +498,7 @@ class StudentDataForm extends React.Component {
             </div>
           </div>
         </div>
+      </div>
       </div>
     );
   }

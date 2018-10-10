@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AdminSidebar from '../admin-sidebar/admin-sidebar';
 import AdminContent from '../admin-content/admin-content';
@@ -7,7 +8,11 @@ import * as routes from '../../lib/routes';
 
 import './_admin-dashboard.scss';
 
-export default class AdminDashboard extends React.Component {
+const mapStateToProps = state => ({
+  students: state.students,
+});
+
+class AdminDashboard extends React.Component {
   constructor(props) {
     super(props);
     
@@ -19,13 +24,13 @@ export default class AdminDashboard extends React.Component {
   }
 
   handleSidebarClick = (e) => {
-    const href = e.currentTarget.getAttribute('href');
-    console.log('dashboard href:', href, 'this.state.show', this.state.show);
-    switch (href) {
-      case routes.ADMIN_DATA_ROUTE:
+    const show = e.currentTarget.getAttribute('show');
+    console.log('sidebarClick show:', show, 'this.state.show', this.state.show);
+    switch (show) {
+      case routes.POINTS_TRACKER_ROUTE:
         this.setState((prevState) => {
-          console.log('setState cb setting show to admin data route');
-          return ({ ...prevState, show: routes.ADMIN_DATA_ROUTE });
+          console.log('setState cb setting show to', routes.POINTS_TRACKER_ROUTE);
+          return ({ ...prevState, show: routes.POINTS_TRACKER_ROUTE });
         });
         break;
       default:
@@ -45,8 +50,8 @@ export default class AdminDashboard extends React.Component {
       <React.Fragment>
         <div className="container-fluid">
           <div className="row">
-          <AdminSidebar onClick={ this.handleSidebarClick }/>
-          <AdminContent show={ this.state.show }/>
+          <AdminSidebar onClick={ this.handleSidebarClick } />
+          <AdminContent show={ this.state.show } students={this.props.students} />
           </div>
         </div>
       </React.Fragment>
@@ -55,5 +60,7 @@ export default class AdminDashboard extends React.Component {
 }
 
 AdminDashboard.propTypes = {
-  location: PropTypes.object,
+  students: PropTypes.array,
 };
+
+export default connect(mapStateToProps)(AdminDashboard);

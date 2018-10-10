@@ -32,10 +32,10 @@ export default class AdminSidebar extends React.Component {
                 Administrative Data
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to={routes.POINTS_TRACKER_ROUTE} className="nav-link">
+            <li className="nav-item" onClick={this.props.onClick} show={routes.POINTS_TRACKER_ROUTE}>
+              <Link to="#" className="nav-link">
                 Create a New Points Tracker
-                </Link>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="nav-link disabled sidebar-heading" href="#">

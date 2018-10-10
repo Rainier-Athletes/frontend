@@ -583,7 +583,7 @@ AdminTable.propTypes = {
   updateProfile: PropTypes.func,
   createProfile: PropTypes.func,
   deleteProfile: PropTypes.func,
-  history: PropTypes.array,
+  history: PropTypes.object,
   deleteRelationship: PropTypes.func,
 };
 

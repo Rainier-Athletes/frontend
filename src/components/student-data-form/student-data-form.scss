@@ -47,14 +47,8 @@
     }
 
     .btn-default {
-      border-color: #ccc;
+      border-color: $color-brand-blue;
       margin-right: 12px;
-
-      // &:hover {
-      //   color: #333;
-      //   background-color: #e6e6e6;
-      //   border-color: #adadad;
-      // }
     }
 
     .checkbox-inline {

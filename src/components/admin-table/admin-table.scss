@@ -10,8 +10,12 @@ p.infoText {
   margin: 1em 0 !important;
 }
 
-.react-grid-Canvas, .react-grid-Grid {
+.react-grid-Canvas {
   height: 77vh !important;
+}
+
+.react-grid-Grid {
+  height: 81vh !important;
 }
 
 .react-grid-Container {

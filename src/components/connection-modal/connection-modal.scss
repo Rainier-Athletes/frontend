@@ -10,19 +10,6 @@
   box-shadow: 0 0 12px rgba(0,0,0, 0.3) !important;
   margin-top: 22vh !important;
 
-  .modal-backdrop {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #333;
-    opacity: 0.6;
-    width: 100%;
-    height: 100%;
-    z-index: 1040;
-  }
-
   .modal-content {
     border: none;
   }
@@ -68,7 +55,8 @@
 
   .btn-secondary {
     background-color: $color-brand-green;
-    border: none;
+    font-weight: 600;
+    border: 0.5px solid $color-brand-green;
 
     &:hover {
       background-color: white;

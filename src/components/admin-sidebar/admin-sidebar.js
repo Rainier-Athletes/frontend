@@ -27,16 +27,12 @@ export default class AdminSidebar extends React.Component {
                 Take me to:
               </a>
             </li>
-            <li className="nav-item" 
-              onClick={ this.props.onClick }
-              href={ routes.ADMIN_DATA_ROUTE }>
-              {/* <Link to={routes.ADMIN_DATA_ROUTE} className="nav-link"> */}
-              <a className="nav-link">
+            <li className="nav-item">
+              <Link to={routes.ADMIN_DATA_ROUTE} className="nav-link">
                 Administrative Data
-                </a>
-              {/* </Link> */}
+              </Link>
             </li>
-            {/* <li className="nav-item">
+            <li className="nav-item">
               <Link to={routes.POINTS_TRACKER_ROUTE} className="nav-link">
                 Create a New Points Tracker
                 </Link>
@@ -55,7 +51,7 @@ export default class AdminSidebar extends React.Component {
               <a className="nav-link" href="/extract">
                 Export Points Trackers
               </a>
-            </li> */}
+            </li>
           </ul>
         </div>
       </nav>

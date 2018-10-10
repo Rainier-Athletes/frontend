@@ -4,14 +4,15 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleDown, faUserPlus } from '@fortawesome/free-solid-svg-icons'; //eslint-disable-line
 
 import AuthRedirect from '../auth-redirect/auth-redirect';
-// import Admin from '../admin/admin';
 import Mentor from '../mentor/mentor';
 import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
 import AdminDashboard from '../admin-dashboard/admin-dashboard';
-
+import AdminTable from '../admin-table/admin-table';
 import Auth from '../auth/auth';
-import Admin from '../admin/admin';
+
+import * as routes from '../../lib/routes';
+
 import './app.scss';
 
 library.add(faAngleDown, faUserPlus);
@@ -28,9 +29,9 @@ export default class App extends React.Component {
             <Navbar />
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
-            <Route exact path="/admindashboard" component={ AdminUser(AdminDashboard) } />
-            <Route exact path="/admin" component={ AdminUser(Admin) } />
-            <Route exact path="/mentor" component={ MentorUser(Mentor) } />
+            <Route exact path={routes.ADMIN_DASHBOARD_ROUTE} component={ AdminUser(AdminDashboard) } />
+            <Route exact path={routes.ADMIN_DATA_ROUTE} component={ AdminUser(AdminTable) } />
+            <Route exact path={routes.MENTOR_ROUTE} component={ MentorUser(Mentor) } />
           </div>
         </BrowserRouter>
         <footer className="footer">

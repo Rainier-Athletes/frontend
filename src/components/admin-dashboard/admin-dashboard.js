@@ -8,26 +8,19 @@ import * as routes from '../../lib/routes';
 import './_admin-dashboard.scss';
 
 export default class AdminDashboard extends React.Component {
-  // constructor(props) {
-  //   super(props);
+  constructor(props) {
+    super(props);
     
-  state = {
-    show: 'nada',
-  };
-  //   console.log('constructor state', this.state);
-  // }
-
-  // static getDerivedStateFromProps = (nextProps) => {
-  //   if (nextProps.show) {
-  //     return { show: nextProps.show };
-  //   }
-
-  //   return null;
-  // }
+    this.state = {
+      show: '/admindashboard',
+    };
+    console.log('AdminDashboard props', props);
+    console.log('AdminDashboard constructor state', this.state); 
+  }
 
   handleSidebarClick = (e) => {
     const href = e.currentTarget.getAttribute('href');
-    console.log('dashboard href:', href, 'this.state', this.state);
+    console.log('dashboard href:', href, 'this.state.show', this.state.show);
     switch (href) {
       case routes.ADMIN_DATA_ROUTE:
         this.setState((prevState) => {
@@ -62,5 +55,5 @@ export default class AdminDashboard extends React.Component {
 }
 
 AdminDashboard.propTypes = {
-  show: PropTypes.string,
+  location: PropTypes.object,
 };

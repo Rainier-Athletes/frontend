@@ -546,7 +546,7 @@ class AdminTable extends React.Component {
           toolbar={
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
               <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.handleUpdateTable }>Save Table</button>
-              <button className="modalBtn" onClick={this.toggleModal} data-toggle="modal" data-target="#connection-modal">+ Add A Connection</button>
+              <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
               <button className="modalBtn" onClick={this.toggleSdModal}>Access Student Data*</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
               <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>

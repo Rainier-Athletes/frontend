@@ -626,9 +626,9 @@ p.infoText {
 
 .updateBtn {
   background: white;
-  border: 1px solid #59AACE;
+  border: 1px solid $color-brand-blue;
   font-family: $font-primary;
-  color: #1186B4;
+  color: $color-brand-blue;
   font-size: 12px;
   position: relative;
   text-shadow: rgb(206, 206, 206);
@@ -636,19 +636,30 @@ p.infoText {
 }
 
 .updateBtn:hover {
-  background-color: #1186B4;
+  background-color: $color-brand-blue;
   color: white;
-  border: 1px solid r#1186B4;
+  border: 1px solid $color-brand-blue;
 }
 
 .saveAlert {
-  background-color: $color-error;
+  background-color: $color-brand-blue;
   color: white;
-  font-weight: 700;
-  border-color: gray;
 }
+
+.saveAlert::after {
+  position: absolute;
+  content: '';
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #c0272f;
+  top: -10px;
+  right: -10px;
+}
+
 .saveAlert:hover {
-  background: #CF0021;
+  background: #176584;
+  border: 1px solid #176584;
 }
 
 .tools > button {

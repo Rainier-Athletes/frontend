@@ -26,6 +26,9 @@ class SaveTableModal extends React.Component {
 
             <div className="modal-body">
               <label className="title">New profiles</label>
+              {
+                this.props.newRows.filter(p => p !== null).length > 0 ? <span className="red-circle">{this.props.newRows.filter(p => p !== null).length}</span> : null
+              }
               <table className="table save-table">
                 <thead>
                   <tr>
@@ -50,6 +53,9 @@ class SaveTableModal extends React.Component {
               </table>
 
               <label className="title">Updated Rows</label>
+              {
+                this.props.updatedRows.filter(p => p !== null).length > 0 ? <span className="red-circle">{this.props.updatedRows.filter(p => p !== null).length}</span> : null
+              }
               <table className="table save-table">
                 <thead>
                   <tr>

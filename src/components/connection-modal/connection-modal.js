@@ -60,7 +60,8 @@ class ConnectionModal extends React.Component {
     }
 
     return (
-      <div className="panel connection-modal">
+      <div className="modal-backdrop">
+        <div className="panel connection-modal">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -127,6 +128,7 @@ class ConnectionModal extends React.Component {
             </div>
           </div>
         </div>
+      </div>
       </div>
     );
   }

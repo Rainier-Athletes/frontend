@@ -226,7 +226,7 @@ class AdminTable extends React.Component {
     profile.studentData.teachers.forEach((teacher) => {
       if (teacher.teacher.active && teacher.currentTeacher) childArr.push(teacher.teacher);
     });
-    
+
     return childArr;
   };
 
@@ -289,12 +289,12 @@ class AdminTable extends React.Component {
         // this.setState({ updatedRows });
       }
     }
-    this.setState({ 
-      rows, 
-      newRows, 
-      updatedRows, 
-      gridModified: true, 
-      originalRows: rows, 
+    this.setState({
+      rows,
+      newRows,
+      updatedRows,
+      gridModified: true,
+      originalRows: rows,
     });
   }
 
@@ -353,7 +353,7 @@ class AdminTable extends React.Component {
 
     return this.state.rows[index];
   };
-  
+
   getRows = () => {
     return Selectors.getRows(this.state);
   };
@@ -366,7 +366,7 @@ class AdminTable extends React.Component {
     const rows = this.getRows();
     return rows[rowIdx];
   };
-  
+
   handleCreate = (profile) => {
     this.props.createProfile(profile);
   }
@@ -380,7 +380,7 @@ class AdminTable extends React.Component {
     event.preventDefault();
     const selected = this.state.selectedIndexes.sort((a, b) => b - a); // sort selection in inverse order
     const rows = this.state.rows.slice(0);
-    
+
     // check for connections on rows selected for deactivation
     let activeConnections = false;
     for (let index = 0; index < selected.length; index++) {
@@ -397,7 +397,7 @@ class AdminTable extends React.Component {
       if (rows[i]._id) this.props.deleteProfile(rows[i]);
     }
 
-    // now delete rows from grid in sorted (inverse) order 
+    // now delete rows from grid in sorted (inverse) order
     // so as to not mess up indexes and delete the wrong row(s)
     let { counter } = this.state; // handle special case of deleting rows just added
     let addedRows = this.state.newRows.slice(); // same here
@@ -412,10 +412,10 @@ class AdminTable extends React.Component {
 
     const gridModified = !(counter === 0 && this.state.updatedRows.length === 0);
     this.onRowsDeselected(selected); // clear selection boxes
-    this.setState({ 
-      rows, 
-      newRows: addedRows, 
-      counter, 
+    this.setState({
+      rows,
+      newRows: addedRows,
+      counter,
       gridModified,
     });
   }
@@ -466,11 +466,11 @@ class AdminTable extends React.Component {
 
     newRows.forEach(row => this.handleCreate(row));
     updatedRows.forEach(row => this.handleUpdate(row));
-    this.setState({ 
-      gridModified: false, 
-      updatedRows: [], 
-      newRows: [], 
-      counters: 0, 
+    this.setState({
+      gridModified: false,
+      updatedRows: [],
+      newRows: [],
+      counters: 0,
     });
     this.createRows() // refresh state with updated rows from db
       .then(() => {
@@ -546,7 +546,7 @@ class AdminTable extends React.Component {
           toolbar={
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
               <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.handleUpdateTable }>Save Table</button>
-              <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
+              <button className="modalBtn" onClick={this.toggleModal} data-toggle="modal" data-target="#connection-modal">+ Add A Connection</button>
               <button className="modalBtn" onClick={this.toggleSdModal}>Access Student Data*</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
               <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>

@@ -124,7 +124,7 @@
   }
 
   .cancelBtn {
-    
+
     &:hover {
       color: #333;
       background-color: #e6e6e6;
@@ -135,13 +135,12 @@
   .btn-secondary {
     background-color: $color-brand-green;
     font-size: 12px;
-    border: none;
+    font-weight: 600;
+    border: 0.5px solid $color-brand-green !important;
 
     &:hover {
       background-color: white;
       color: $color-brand-green;
-      font-weight: 600;
-      border: 0.5px solid $color-brand-green;
     }
   }
 }

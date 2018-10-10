@@ -16,8 +16,8 @@ class MentorContent extends React.Component {
         <span className="label">Sport: {s.sport}</span>
         <span className="label">Team: {s.team}</span>
         <span className="label">League: {s.league}</span>
-        <span className="label">Calendar: <a href={s.teamCalendarUrl ? s.teamCalendarUrl : '#'} 
-            alt="team calendar url" 
+        <span className="label">Calendar: <a href={s.teamCalendarUrl ? s.teamCalendarUrl : '#'}
+            alt="team calendar url"
             target="_blank"
             rel="noopener noreferrer"
             className="team-calendar-url">Click here</a></span>
@@ -28,7 +28,7 @@ class MentorContent extends React.Component {
       <div className="current-coaches" key={c._id}>
         <span className="label">Name: {`${c.coach.firstName} ${c.coach.lastName}`}</span>
         <span className="label">{c.coach.cellPhone ? `Cell: ${c.coach.cellPhone}` : `Phone: ${c.coach.phone}`}</span>
-        <span className="label">Email: <a 
+        <span className="label">Email: <a
           href={c.coach.primaryEmail ? `mailto:${c.coach.primaryEmail}` : '#'}
           target="_blank"
           rel="noopener noreferrer">{c.coach.primaryEmail}</a></span>
@@ -40,7 +40,7 @@ class MentorContent extends React.Component {
         <span className="label">Name: {`${f.member.firstName} ${f.member.lastName}`}</span>
         <span className="label">Student Residence: {f.weekdayGuardian ? 'weekdays' : ''} {f.weekendGuardian ? 'weekends' : ''}</span>
         <span className="label">{f.member.cellPhone ? `Cell: ${f.member.cellPhone}` : `Phone: ${f.member.phone}`}</span>
-        <span className="label">Email: <a 
+        <span className="label">Email: <a
           href={f.member.primaryEmail ? `mailto:${f.member.primaryEmail}` : '#'}
           target="_blank"
           rel="noopener noreferrer">{f.member.primaryEmail}</a></span>
@@ -104,7 +104,7 @@ class MentorContent extends React.Component {
             Student Profile
           </a>
           {
-            student ? <button type="submit" className="linkToPT" onClick={ this.props.buttonClick }>
+            Object.keys(student).length !== 0 ? <button type="submit" className="linkToPT" onClick={ this.props.buttonClick }>
                 Point Tracker
             </button> : null
           }

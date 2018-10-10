@@ -1,112 +1,147 @@
 @import '../../style/vars';
 
-.student-data-form   {
-  h2.studentModalHeader {
-    text-align: center;
-    color: $color-brand-blue;
-    font-size: 26px;
-    font-weight: 500;
-  }
-    background: rgba(169,169,169, .97);
-    border-radius: 7px;
-    box-shadow: 0px 0px 10px rgb(186, 186, 186);
-    width: 50em;
-    max-height: calc(100vh - 4px);
-    overflow-y: auto;
-    color: white;
-    font-family: $font-primary;
-    position: absolute;
-    z-index: 99;
-    margin: auto;
-    top: 6em; left: 0; bottom: 0; right: 0;
-    padding: 20px 30px 20px 30px;
-  }
-
-.hide {
-  display: none;
-}
-
-.checkbox {
-  padding-left: 10px;
-}
-.submitBtn-container {
-  display: absolute;
-  width: 9em;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.submitBtn {
-  background: $color-input-field;
-  box-shadow: 0px 0px 3px black;
-  border: none;
-  border-radius: 2em;
-  color: white;
-  cursor: pointer;
-  width: 12em;
-  font-size: 16px;
-  font-weight: 300;
-  padding: 12px;
-}
-.submitBtn:hover {
-  background-color: $color-input-focus;
-  color: $color-black;
-  font-weight: 600;
-}
-
-.cancelBtn {
-  background: $color-white;
-  color: $color-error;
-  box-shadow: 0px 0px 3px black;
-  border-radius: 2em;
-  margin-left: 10px;
-}
-
-.cancelBtn:hover {
-  font-weight: 600;
-  border: 1px solid $color-black;
-}
-
-.formSubmitBtn {
-  background: $color-button-green;
-  box-shadow: 0px 0px 3px black;
-  // border: 1px solid $color-black;
-  border-radius: 2em;
-  color: white;
-  cursor: pointer;
-  width: 12em;
-  font-size: 16px;
-  font-weight: 300;
-  padding: 12px;
-}
-.formSubmitBtn:hover {
-  background-color: $color-button-active;
-  color: $color-black;
-  font-weight: 600;
-}
-
-.formSubmitBtn:focus {
-  outline: 0;
-}
-
-.team-calendar-url {
-  padding-left: 10px;
-}
-
-.close-modal {
-  color: white;
-  background: none;
-  float: right;
-  font-size: 20px;
-  font-weight: 700;
+.student-data-modal {
   position: absolute;
-  clear: both;
-  right: 10px;
-  padding: 0;
-  margin: 0;
-}
+  height: 85vh;
+  overflow: scroll;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px rgba(0,0,0, 0.3) !important;
 
-.close-modal:hover {
-  color: $color-error;
-  background: none;
+  .modal-content {
+    border: none;
+  }
+
+  .modal-body {
+    padding: 1.5em 0;
+  }
+
+  .modal-header {
+    padding: 0;
+  }
+
+  &.panel {
+    height: 85vh !important;
+  }
+
+  .modal-dialog {
+    margin: 0 !important;
+    width: 60vw;
+  }
+
+  label {
+    text-transform: uppercase;
+    color: #A9A9A9;
+    font-weight: 600;
+    line-height: 28px;
+  }
+
+  .form-group {
+
+    & > input {
+      background-color: $gray;
+      display: block;
+      line-height: 30px;
+      height: 30px;
+    }
+
+    .btn-default {
+      border-color: #ccc;
+      margin-right: 12px;
+
+      // &:hover {
+      //   color: #333;
+      //   background-color: #e6e6e6;
+      //   border-color: #adadad;
+      // }
+    }
+
+    .checkbox-inline {
+      text-transform: lowercase;
+      color: $color-black;
+      margin-left: 8px;
+
+    }
+
+    .checkbox {
+      & > label {
+        text-transform: lowercase;
+        color: $color-black;
+      }
+    }
+
+    h6 {
+      font-weight: 600;
+      line-height: 28px;
+    }
+
+    h4, h5 {
+      color: $color-black;
+    }
+
+    input[type=checkbox], input[type=radio] {
+      margin-right: 4px;
+    }
+
+    a {
+      color: $color-brand-blue;
+      text-decoration: none;
+
+      &:hover {
+        color: $color-input-field;
+        font-weight: 400;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .title {
+    text-transform: uppercase;
+    color: #A9A9A9;
+    font-weight: 600;
+  }
+
+  .close > span {
+    line-height: 11px;
+    font-size: 3em;
+    margin-bottom: 0;
+  }
+
+  .col-md-6, .col-md-12 {
+    padding-left: 0 !important;
+    display: inline-block;
+  }
+
+  .submitBtn {
+    background-color: white;
+    color: $color-brand-blue;
+
+    &:hover {
+      background-color: $color-brand-blue;
+      color: white;
+    }
+  }
+
+  .cancelBtn {
+    
+    &:hover {
+      color: #333;
+      background-color: #e6e6e6;
+      border-color: #adadad;
+    }
+  }
+
+  .btn-secondary {
+    background-color: $color-brand-green;
+    font-size: 12px;
+    border: none;
+
+    &:hover {
+      background-color: white;
+      color: $color-brand-green;
+      font-weight: 600;
+      border: 0.5px solid $color-brand-green;
+    }
+  }
 }

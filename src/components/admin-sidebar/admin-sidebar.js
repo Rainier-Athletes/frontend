@@ -42,6 +42,11 @@ export default class AdminSidebar extends React.Component {
                 Export CSV Data
               </Link>
             </li>
+            <li className="nav-item" onClick={this.props.onClick} show={routes.IMPORT_CSV_ROUTE}>
+              <Link to="#" className="nav-link">
+                Import CSV Data (NOT IMPLEMENTED)
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>

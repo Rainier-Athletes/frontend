@@ -164,11 +164,11 @@ class StudentDataForm extends React.Component {
 
   handleGuardianChange = (e) => {
     const { id } = e.target;
+    const idx = id.split('-')[2]; // id is _id-n-arrayidx
     const prop = e.target.getAttribute('prop');
     const newState = Object.assign({}, this.state);
     const { family } = newState;
-    const memberIdx = family.map(m => m.member._id).indexOf(id);
-    family[memberIdx][prop] = !family[memberIdx][prop];
+    family[idx][prop] = !family[idx][prop];
     this.setState(newState);
   }
 
@@ -403,7 +403,7 @@ class StudentDataForm extends React.Component {
                         inline
                         checked={this.state.family[i].weekdayGuardian}
                         className="checkbox"
-                        id={`${f.member._id.toString()}-1`}
+                        id={`${f.member._id.toString()}-1-${i}`}
                         prop="weekdayGuardian"
                         onChange={this.handleGuardianChange}
                         >Weekday guardian</Checkbox>
@@ -411,7 +411,7 @@ class StudentDataForm extends React.Component {
                         inline
                         checked={this.state.family[i].weekendGuardian}
                         className="checkbox"
-                        id={`${f.member._id.toString()}-2`}
+                        id={`${f.member._id.toString()}-2-${i}`}
                         prop="weekendGuardian"
                         onChange={this.handleGuardianChange}
                         >Weekend guardian</Checkbox>

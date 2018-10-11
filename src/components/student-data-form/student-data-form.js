@@ -347,7 +347,7 @@ class StudentDataForm extends React.Component {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title title">Student Profile</h5>
-              <button type="button" className="close" onClick={ this.props.onClose } data-dismiss="modal" aria-label="Close">
+              <button type="button" className="close" onClick={ this.props.onCancel } data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -492,7 +492,7 @@ class StudentDataForm extends React.Component {
                 ? <Button type="submit" className="btn btn-secondary" id="submit-student-data">Submit</Button>
                 : <LoadingSpinner />
               }
-              <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
+              <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onCancel}>Cancel</Button>
               </div>
             </form>
             </div>
@@ -514,6 +514,7 @@ StudentDataForm.propTypes = {
   updateStudentData: PropTypes.func,
   createStudentData: PropTypes.func,
   onClose: PropTypes.func,
+  onCancel: PropTypes.func,
   setWaitingOnSave: PropTypes.func,
   waitingOnSave: PropTypes.bool,
 };

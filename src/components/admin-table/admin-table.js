@@ -272,7 +272,7 @@ class AdminTable extends React.Component {
   };
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    console.log('handleGridRowsUpdate', fromRow, toRow, updated);
+    console.log('handleGridRowsUpdate', fromRow, toRow, updated); // eslint-disable-line
     const rows = this.state.rows.slice();
     const newRows = this.state.newRows.slice();
     const updatedRows = this.state.updatedRows.slice();
@@ -504,7 +504,7 @@ class AdminTable extends React.Component {
   };
 
   toggleModal = () => {
-    if (this.state.gridModified) return alert('Please save changes to table before adding new connection.');
+    if (this.state.gridModified) return alert('Please save changes to table before adding new connection.'); // eslint-disable-line
     return this.setState({
       isOpen: !this.state.isOpen,
     });
@@ -516,13 +516,15 @@ class AdminTable extends React.Component {
     });
   }
 
-  toggleSdModal = () => {
+  toggleSdModal = (cancelled = false) => () => {
     if (!this.state.studentSelected) return undefined;
-
-    return this.setState({
+    const sdWasOpen = this.state.sdIsOpen;
+    this.setState({
       sdIsOpen: !this.state.sdIsOpen,
     });
-  }
+    if (sdWasOpen && !cancelled) return window.location.reload();
+    return undefined;
+  };
 
 
   handleDetach = () => {
@@ -552,7 +554,7 @@ class AdminTable extends React.Component {
           onSubmit={this.handleUpdateTable}>
         </SaveTableModal>
         {this.state.sdIsOpen
-          ? <StudentDataModal onClose={this.toggleSdModal} studentId={this.state.studentSelected}></StudentDataModal> : null}
+          ? <StudentDataModal onClose={this.toggleSdModal()} onCancel={this.toggleSdModal(true)} studentId={this.state.studentSelected}></StudentDataModal> : null}
         <Prompt when={this.state.gridModified} message="Unsaved changes. Are you sure you want to leave?" />
         <ReactDataGrid
           ref={ node => this.grid = node }
@@ -566,7 +568,7 @@ class AdminTable extends React.Component {
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
               <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.toggleSaveTableModal }>Save Table</button>
               <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
-              <button className="modalBtn" onClick={this.toggleSdModal}>Access Student Data*</button>
+              <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data*</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
               <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
               <p className="infoText">*To access a student's data, click the checkbox next to student name, then click the Access Student Data button.</p>
@@ -602,7 +604,7 @@ AdminTable.propTypes = {
   updateProfile: PropTypes.func,
   createProfile: PropTypes.func,
   deleteProfile: PropTypes.func,
-  history: PropTypes.array,
+  history: PropTypes.object,
   deleteRelationship: PropTypes.func,
 };
 

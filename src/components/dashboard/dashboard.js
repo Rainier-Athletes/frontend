@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Iframe from '../iframe/iframe';
 
-import PointTrackerForm from '../point-tracker-form/point-tracker-form';
+// import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 import './_dashboard.scss';
 

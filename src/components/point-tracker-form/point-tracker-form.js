@@ -141,8 +141,11 @@ class PointTrackerForm extends React.Component {
       newState = lastPointTracker || emptyPointTracker;
       newState.student = `${selectedStudent._id}`;
       newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
-      newState.isElementaryStudent = selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool;
-      // elementray has no tutorial so pop it from the empty point tracker
+      newState.isElementaryStudent = selectedStudent.studentData.school 
+        && selectedStudent.studentData.school.length
+        ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool 
+        : false;
+      // elementary has no tutorial so pop it from the empty point tracker
       if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
       newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
       newState.synopsisSaved = false;
@@ -182,7 +185,7 @@ class PointTrackerForm extends React.Component {
                 newSubject.scoring[categoryName] = '';
               } else {
                 const maxStampsPossible = 20 - (newSubject.scoring.excusedDays * 4);
-                const maxStampsAdjustment = categoryName === 'stamps' 
+                const maxStampsAdjustment = categoryName === 'stamps'
                   ? newSubject.scoring.halfStamps
                   : newSubject.scoring.stamps;
                 const maxValidStamps = maxStampsPossible - maxStampsAdjustment;
@@ -427,7 +430,7 @@ class PointTrackerForm extends React.Component {
   }
 
   commNotes = (com, row) => {
-    return (<textarea 
+    return (<textarea
       rows="2"
       cols="80"
       wrap="hard"
@@ -509,17 +512,17 @@ class PointTrackerForm extends React.Component {
                 return (
                   <div className="survey-question-container" key={ i }>
                     <label htmlFor="turned-in">{ names[statusQuestion] }</label>
-                      <input 
-                        type="radio" 
-                        name="turned-in" 
-                        value="true" 
-                        checked={this.state.pointSheetStatus.turnedIn ? 'checked' : ''} 
+                      <input
+                        type="radio"
+                        name="turned-in"
+                        value="true"
+                        checked={this.state.pointSheetStatus.turnedIn ? 'checked' : ''}
                         onChange={this.handlePointSheetTurnedInChange}/> Yes
-                      <input 
-                        type="radio" 
-                        name="turned-in" 
-                        value="false" 
-                        checked={!this.state.pointSheetStatus.turnedIn ? 'checked' : ''} 
+                      <input
+                        type="radio"
+                        name="turned-in"
+                        value="false"
+                        checked={!this.state.pointSheetStatus.turnedIn ? 'checked' : ''}
                         onChange={this.handlePointSheetTurnedInChange}/> No
                     {/* </label> */}
                   </div>
@@ -541,7 +544,7 @@ class PointTrackerForm extends React.Component {
               );
             })
             }
-            { !this.state.pointSheetStatus.turnedIn 
+            { !this.state.pointSheetStatus.turnedIn
               ? <div className="survey-question-container">
                 <label className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status Notes</label>
                         <textarea
@@ -584,7 +587,7 @@ class PointTrackerForm extends React.Component {
                   <td key={`${com.role}${i}3`}>{this.commCheckbox(com, i, 2)}</td>
                   <td key={`${com.role}${i}4`}>{this.commCheckbox(com, i, 3)}</td>
                 </tr>
-                {com.other 
+                {com.other
                   ? <tr key={`${com.role}${i}5`}>
                     <td>Notes:</td>
                     <td colSpan="4" key={`${com.role}${i}6`}>{this.commNotes(com, i)}</td>
@@ -632,7 +635,7 @@ class PointTrackerForm extends React.Component {
           Object.keys(this.state.synopsisComments)
             .filter(keyName => names[keyName])
             .map((synopsisComment, i) => {
-              const playingTimeCommentsRequired = synopsisComment === 'mentorGrantedPlayingTimeComments' 
+              const playingTimeCommentsRequired = synopsisComment === 'mentorGrantedPlayingTimeComments'
                 && (this.state.mentorGrantedPlayingTime !== '' // '' => none selected
               && this.state.mentorGrantedPlayingTime !== this.state.earnedPlayingTime);
               if (synopsisComment === 'mentorGrantedPlayingTimeComments') {
@@ -663,7 +666,8 @@ class PointTrackerForm extends React.Component {
     );
 
     return (
-      <div className="points-tracker panel point-tracker-modal">
+      <div className="modal-backdrop">
+        <div className="points-tracker panel point-tracker-modal">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -699,6 +703,7 @@ class PointTrackerForm extends React.Component {
 
           </div>
         </div>
+      </div>
       </div>
     );
   }

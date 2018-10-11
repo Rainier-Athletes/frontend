@@ -1,6 +1,6 @@
 @import '../../style/vars';
 
-.connection-modal {
+.save-table-modal {
   position: absolute;
   height: 85vh;
   overflow: scroll;
@@ -32,6 +32,7 @@
 
   .modal-dialog {
     margin: 0 !important;
+    width: 60vw;
   }
 
   .title {
@@ -65,4 +66,28 @@
       border: 0.5px solid $color-brand-green;
     }
   }
+
+  .table {
+    margin: 0.8em 0 2.5em 0;
+  }
+
+  .red-circle {
+    display: inline-grid;
+    text-align: center;
+    margin: 0px 8px;
+    background-color: #b13636;
+    padding: 8px;
+    height: 24px;
+    width: 24px;
+    font-weight: 600;
+    color: white;
+    border-radius: 50%;
+    line-height: 8px;
+  }
 }
+
+// .save-table {
+//   th:nth-of-type(1), th:nth-of-type(2) {
+//     width: 24px;
+//   }
+// }

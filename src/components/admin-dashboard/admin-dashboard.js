@@ -28,14 +28,11 @@ class AdminDashboard extends React.Component {
     console.log('sidebarClick show:', show, 'this.state.show', this.state.show);
     switch (show) {
       case routes.POINTS_TRACKER_ROUTE:
-        this.setState((prevState) => {
-          console.log('setState cb setting show to', routes.POINTS_TRACKER_ROUTE);
-          return ({ ...prevState, show: routes.POINTS_TRACKER_ROUTE });
-        });
-        break;
-      case '/exportdata':
-        return this.setState({ show: '/exportdata' });
+        return this.setState({ show: routes.POINTS_TRACKER_ROUTE });
+      case routes.EXTRACT_CSV_ROUTE:
+        return this.setState({ show: routes.EXTRACT_CSV_ROUTE });
       default:
+        return this.setState({ show: 'nada' });
     }
   }
 

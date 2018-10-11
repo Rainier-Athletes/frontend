@@ -10,6 +10,7 @@ import studentData from './student-data';
 import students from './students';
 import teachers from './teachers';
 import myStudents from './myStudents';
+import csvExtractLink from './extract';
 
 export default combineReducers({
   profile,
@@ -19,6 +20,7 @@ export default combineReducers({
   pointTrackers,
   myStudents,
   synopsisReportLink,
+  csvExtractLink,
   studentData,
   myProfile,
   role,

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PointTrackerForm from '../point-tracker-form/point-tracker-form';
+import * as exportActions from '../../actions/extract';
 import * as routes from '../../lib/routes';
 
 // import Navbar from '../navbar/navbar';
@@ -12,8 +13,13 @@ import './_admin-content.scss';
 
 const mapStateToProps = state => ({
   myProfile: state.myProfile,
+  csvExtractLink: state.csvExtractLink,
 });
 
+const mapDispatchToProps = dispatch => ({
+  createCsvExtract: extractCommand => dispatch(exportActions.createCsvExtract(extractCommand)),
+  clearCsvExtractLink: () => dispatch(exportActions.clearCsvExtractLink()),
+});
 // const name = Auth(['admin']);
 
 class AdminContent extends React.Component {
@@ -27,14 +33,29 @@ class AdminContent extends React.Component {
       exportSource: '',
       exportFrom: '',
       exportTo: '',
+      waitingOnSave: false,
+      csvFileSaved: false,
+      csvLink: '',
     };
   }
   
   componentDidUpdate(prevProps) {
     if (prevProps.show !== this.props.show) {
       console.log('admin content props.show', this.props.show);
-      this.setState({ show: this.props.show });
+      this.setState({ show: this.props.show, csvFileSaved: false });
     }
+    if (this.props.csvExtractLink !== prevProps.csvExtractLink) {
+      this.setState({
+        ...this.state,
+        csvFileSaved: true,
+        waitingOnSave: false,
+        csvLink: this.props.csvExtractLink,
+      });
+    }
+  }
+
+  componentDidMount = () => {
+    this.setState({ csvFileSaved: false, waitingOnSave: false });
   }
 
   handleChange = (e) => {
@@ -73,7 +94,7 @@ class AdminContent extends React.Component {
     return undefined;
   }
 
-  handleExportButton = (e) => {
+  handleExtractButton = (e) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -81,21 +102,33 @@ class AdminContent extends React.Component {
       exportSource: '',
       exportFrom: '',
       exportTo: '',
+      waitingOnSave: false,
+      csvFileSaved: false,
     };
 
+    let extractCommand;
     switch (e.target.id) {
       case 'extract':
-        debugger;
-        console.log('extract', this.state.exportSource, 'from', this.state.exportFrom, 'to', this.state.exportTo);
+        extractCommand = `${this.state.exportSource}?from=${this.state.exportFrom}&to=${this.state.exportTo}`;
+        this.setState({ ...this.state, waitingOnSave: true });
+        console.log('extractCommand', extractCommand);
+        this.props.createCsvExtract(extractCommand);
         break;
       case 'cancel':
-        return this.setState({ show: 'nada', ...defaultExport });
+        console.log('cancel: show set to nada?');
+        this.setState({ 
+          ...this.state, 
+          show: 'nada', 
+          ...defaultExport, 
+        });
+        break;
       default:
     }
+    return undefined;
   }
 
   render() {
-    console.log('admin content props.show', this.props.show);
+    console.log('admin content state.show', this.state.show);
     const name = this.props.myProfile ? this.props.myProfile.firstName : null;
 
     const pickStudentJSX = (
@@ -140,8 +173,18 @@ class AdminContent extends React.Component {
           <label className="title" htmlFor="to">Ending date:</label>
           <input type="date" id="to" />
         </div>
-        <button type="submit" id="extract" className="submitBtn" onClick={this.handleExportButton}>Create Extract File</button>
-        <button type="reset" id="cancel" className="resetBtn" onClick={this.handleExportButton}>Cancel</button>
+        { this.state.waitingOnSave 
+          ? <h5>Waiting...</h5> 
+          : <button 
+            className="btn btn-secondary" 
+            type="submit" 
+            id="extract"
+            onClick={this.handleExtractButton}>
+            Create CSV Extract
+            </button> }
+        { this.state.csvFileSaved 
+          ? <h5>CSV Extract File URL: <a href={this.state.csvLink}>{this.state.csvLink}</a></h5>
+          : null}
       </form>
     );
 
@@ -152,7 +195,7 @@ class AdminContent extends React.Component {
         {
           this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
         }
-        {this.state.show === '/exportdata' ? pickExportTypeAndDateRangeJSX : null }
+        {this.state.show === routes.EXTRACT_CSV_ROUTE ? pickExportTypeAndDateRangeJSX : null }
       </div>
     );
   }
@@ -162,6 +205,9 @@ AdminContent.propTypes = {
   myProfile: PropTypes.object,
   show: PropTypes.string,
   students: PropTypes.array,
+  createCsvExtract: PropTypes.func,
+  clearCsvExtractLink: PropTypes.func,
+  csvExtractLink: PropTypes.string,
 };
 
-export default connect(mapStateToProps, null)(AdminContent);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminContent);

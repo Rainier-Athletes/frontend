@@ -141,9 +141,11 @@ class PointTrackerForm extends React.Component {
       newState = lastPointTracker || emptyPointTracker;
       newState.student = `${selectedStudent._id}`;
       newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
-      newState.isElementaryStudent = selectedStudent.studentData.school.find(s => s.currentSchool === s.isElementarySchool);
-      
-      // elementray has no tutorial so pop it from the empty point tracker
+      newState.isElementaryStudent = selectedStudent.studentData.school 
+        && selectedStudent.studentData.school.length
+        ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool 
+        : false;
+      // elementary has no tutorial so pop it from the empty point tracker
       if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
       newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
       newState.synopsisSaved = false;

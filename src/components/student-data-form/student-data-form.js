@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 
 import * as studentDataActions from '../../actions/student-data';
 import LoadingSpinner from '../spinner/spinner';
+import * as util from '../../lib/utils';
 
 import './student-data-form.scss';
 
@@ -367,9 +368,9 @@ class StudentDataForm extends React.Component {
                 <Col componentClass={ControlLabel} md={6}>
                   <this.FieldGroup
                     id="dateOfBirth"
-                    type="text"
+                    type="date"
                     label="Date of Birth"
-                    value={this.state.dateOfBirth ? this.state.dateOfBirth : ''}
+                    value={this.state.dateOfBirth ? util.convertDateToValue(this.state.dateOfBirth) : ''}
                     onChange={this.handleTextFieldChange}
                   />
                 </Col>

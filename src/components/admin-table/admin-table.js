@@ -272,7 +272,7 @@ class AdminTable extends React.Component {
   };
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    console.log('handleGridRowsUpdate', fromRow, toRow, updated);
+    console.log('handleGridRowsUpdate', fromRow, toRow, updated); // eslint-disable-line
     const rows = this.state.rows.slice();
     const newRows = this.state.newRows.slice();
     const updatedRows = this.state.updatedRows.slice();
@@ -504,7 +504,7 @@ class AdminTable extends React.Component {
   };
 
   toggleModal = () => {
-    if (this.state.gridModified) return alert('Please save changes to table before adding new connection.');
+    if (this.state.gridModified) return alert('Please save changes to table before adding new connection.'); // eslint-disable-line
     return this.setState({
       isOpen: !this.state.isOpen,
     });
@@ -602,7 +602,7 @@ AdminTable.propTypes = {
   updateProfile: PropTypes.func,
   createProfile: PropTypes.func,
   deleteProfile: PropTypes.func,
-  history: PropTypes.array,
+  history: PropTypes.object,
   deleteRelationship: PropTypes.func,
 };
 

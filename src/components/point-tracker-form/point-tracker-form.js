@@ -149,6 +149,7 @@ class PointTrackerForm extends React.Component {
       if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
       newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
       newState.synopsisSaved = false;
+      newState.mentorGrantedPlayingTime = '';
       return newState;
     });
   }

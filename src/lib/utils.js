@@ -27,7 +27,13 @@ const cookieDelete = (key) => {
   document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 };
 
-const convertDateToValue = (date) => {
+const convertDateToValue = (inputDate) => {
+  let date;
+  if (inputDate instanceof Date) {
+    date = inputDate.toISOString();
+  } else {
+    date = inputDate;
+  }
   // replacing '-' with '/' gets around the timezone issue that skews
   // dates by a day depending on the current time of day in your
   // current location.

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import AdminPickStudent from '../admin-pick-student/admin-pick-student';
 import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 import AdminExtract from '../admin-extract/admin-extract';
 import * as routes from '../../lib/routes';
@@ -38,13 +39,12 @@ class AdminContent extends React.Component {
     this.setState({ 
       content: this.props.students.find(s => s._id.toString() === e.target.value),
       modal,
-      show: 'nada',
     });
   }
 
   handleButtonClick = () => {
     if (this.state.modal) {
-      this.setState({ modal: false, show: 'nada' });
+      this.setState({ modal: false });
     } else {
       this.setState({ modal: true, show: routes.POINTS_TRACKER_ROUTE });
     }
@@ -53,34 +53,15 @@ class AdminContent extends React.Component {
   render() {
     const name = this.props.myProfile ? this.props.myProfile.firstName : null;
 
-    const pickStudentJSX = (
-      <form onChange={this.handleChange}>
-        <div className="field-wrap dropdown">
-          <label className="title" htmlFor="student">Select student:</label>
-            <select type="student" required>
-              <option value="" selected="true" disabled> -- select a student -- </option>
-              {
-                this.props.students
-                  .sort((p1, p2) => {
-                    if (p1.lastName > p2.lastName) return 1;
-                    if (p1.lastName < p2.lastName) return -1;
-                    return 0;
-                  })
-                  .map((p) => {
-                    return <option key={p._id} value={p._id}>
-                      {p.lastName}, {p.firstName}
-                    </option>;
-                  })
-              }
-            </select>
-        </div>
-      </form>
-    );
-
     return (
       <div role="main" className="col-md-8 panel">
         {this.state.show === 'nada' && !this.state.modal ? <h1>Hello { name }</h1> : null }
-        {this.state.show === routes.POINTS_TRACKER_ROUTE ? pickStudentJSX : null }
+        {this.state.show === routes.POINTS_TRACKER_ROUTE 
+          ? <AdminPickStudent 
+            students={this.props.students}
+            onChange={this.handleChange} />
+          : null 
+        }
         {
           this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
         }

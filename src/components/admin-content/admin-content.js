@@ -14,6 +14,7 @@ import './_admin-content.scss';
 const mapStateToProps = state => ({
   myProfile: state.myProfile,
   csvExtractLink: state.csvExtractLink,
+  error: state.error,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -36,12 +37,12 @@ class AdminContent extends React.Component {
       waitingOnSave: false,
       csvFileSaved: false,
       csvLink: '',
+      error: null,
     };
   }
   
   componentDidUpdate(prevProps) {
     if (prevProps.show !== this.props.show) {
-      console.log('admin content props.show', this.props.show);
       this.setState({ show: this.props.show, csvFileSaved: false });
     }
     if (this.props.csvExtractLink !== prevProps.csvExtractLink) {
@@ -50,6 +51,16 @@ class AdminContent extends React.Component {
         csvFileSaved: true,
         waitingOnSave: false,
         csvLink: this.props.csvExtractLink,
+        error: null,
+      });
+    }
+    if (this.props.error !== prevProps.error) {
+      this.setState({
+        ...this.state,
+        csvFileSaved: true,
+        waitingOnSave: false,
+        csvLink: '',
+        error: this.props.error,
       });
     }
   }
@@ -59,9 +70,6 @@ class AdminContent extends React.Component {
   }
 
   handleChange = (e) => {
-    const { selectedIndex } = e.target.options;
-    console.log('content change selectedIndex', selectedIndex);
-    console.log('content chagne options @', e.target.options[selectedIndex]);
     const modal = !this.state.modal;
     this.setState({ 
       content: this.props.students.find(s => s._id.toString() === e.target.value),
@@ -81,7 +89,6 @@ class AdminContent extends React.Component {
   exportFormChange = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('target id', e.target.id, 'target value', e.target.value);
     switch (e.target.id) {
       case 'data-source':
         return this.setState({ exportSource: e.target.value });
@@ -111,11 +118,9 @@ class AdminContent extends React.Component {
       case 'extract':
         extractCommand = `${this.state.exportSource}?from=${this.state.exportFrom}&to=${this.state.exportTo}`;
         this.setState({ ...this.state, waitingOnSave: true });
-        console.log('extractCommand', extractCommand);
         this.props.createCsvExtract(extractCommand);
         break;
       case 'cancel':
-        console.log('cancel: show set to nada?');
         this.setState({ 
           ...this.state, 
           show: 'nada', 
@@ -128,7 +133,6 @@ class AdminContent extends React.Component {
   }
 
   render() {
-    console.log('admin content state.show', this.state.show);
     const name = this.props.myProfile ? this.props.myProfile.firstName : null;
 
     const pickStudentJSX = (
@@ -154,6 +158,18 @@ class AdminContent extends React.Component {
         </div>
       </form>
     );
+    
+    const csvFileSavedResponseJSX = () => {
+      let responseJSX;
+      if (!this.state.error) {
+        responseJSX = <h5>CSV Extract File URL: <a href={this.state.csvLink}>{this.state.csvLink}</a></h5>;
+      } else if (this.state.error.status === 404) {
+        responseJSX = <h5>No data found in the date range provided. Try a different range.</h5>;
+      } else {
+        responseJSX = <h5>Error saving CSV. Status: {this.error.status}, Message: {this.error.message}</h5>;
+      }
+      return responseJSX;
+    };
 
     const pickExportTypeAndDateRangeJSX = (
       <form onChange={this.exportFormChange}>
@@ -183,8 +199,8 @@ class AdminContent extends React.Component {
             Create CSV Extract
             </button> }
         { this.state.csvFileSaved 
-          ? <h5>CSV Extract File URL: <a href={this.state.csvLink}>{this.state.csvLink}</a></h5>
-          : null}
+          ? csvFileSavedResponseJSX()
+          : null }
       </form>
     );
 
@@ -208,6 +224,7 @@ AdminContent.propTypes = {
   createCsvExtract: PropTypes.func,
   clearCsvExtractLink: PropTypes.func,
   csvExtractLink: PropTypes.string,
+  error: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminContent);

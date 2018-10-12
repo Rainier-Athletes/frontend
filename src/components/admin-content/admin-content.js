@@ -39,13 +39,12 @@ class AdminContent extends React.Component {
     this.setState({ 
       content: this.props.students.find(s => s._id.toString() === e.target.value),
       modal,
-      // show: 'nada',
     });
   }
 
   handleButtonClick = () => {
     if (this.state.modal) {
-      this.setState({ modal: false }); // , show: 'nada' });
+      this.setState({ modal: false });
     } else {
       this.setState({ modal: true, show: routes.POINTS_TRACKER_ROUTE });
     }

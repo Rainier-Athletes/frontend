@@ -27,7 +27,7 @@ const emptyStudentData = {
   gender: '',
   school: [],
   dateOfBirth: undefined,
-  grade: undefined,
+  grade: 0,
   synopsisReportArchiveUrl: '',
   googleCalendarUrl: '',
   googleDocsUrl: '',
@@ -389,7 +389,7 @@ class StudentDataForm extends React.Component {
                     type="text"
                     label="Grade"
                     placeholder="Enter student's grade in school"
-                    value={this.state.grade ? this.state.grade : ''}
+                    value={this.state.grade ? this.state.grade : 0}
                     onChange={this.handleTextFieldChange}
                   />
                 </Col>

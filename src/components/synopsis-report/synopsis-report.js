@@ -8,16 +8,53 @@ export default function SynopsisReport(props) {
   // const submitterName = `${pointTracker.mentor.firstName} ${pointTracker.mentor.lastName}`;
   let studentsSchool = student.studentData.school.find(s => s.currentSchool);
   studentsSchool = studentsSchool ? studentsSchool.schoolName : '';
+  const isMiddleSchool = studentsSchool ? !studentsSchool.isElementarySchool : true;
   const playingTimeOverride = pointTracker.mentorGrantedPlayingTime !== '' 
     && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime;
   
+  const maxPointsPossible = subject => (subject.subjectName.toLowerCase() !== 'tutorial' 
+    ? (40 - subject.scoring.excusedDays * 8) 
+    : 8 - subject.scoring.excusedDays * 2
+  );  
+  
+  const scoreTableJSX = <React.Fragment>
+    <table className="scoring-table">
+      <thead>
+        <tr>
+          {isMiddleSchool ? <th>Teacher</th> : ''}
+          <th>Class</th>
+          {isMiddleSchool ? <th>Grade</th> : ''}
+          <th>Excused</th>
+          <th>Stamps</th>
+          <th>Xs</th>
+          <th>Blanks</th>
+          <th>Point %</th>
+        </tr>
+      </thead>
+      <tbody>
+        {pointTracker.subjects.map(subject => (
+          <tr key={ subject._id }>
+            {isMiddleSchool ? <td>{ subject.teacher.lastName }</td> : ''}
+            <td>{ subject.subjectName }</td>
+            {isMiddleSchool ? <td>{ subject.grade }</td> : ''}
+            <td>{ subject.scoring.excusedDays} </td>
+            <td>{ subject.scoring.stamps }</td>
+            <td>{ subject.scoring.halfStamps }</td>
+            <td>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
+            <td>{ Math.round(((subject.scoring.stamps * 2 + subject.scoring.halfStamps) / maxPointsPossible(subject)) * 100)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    </React.Fragment>;
+
   const pointTrackerHTML = <React.Fragment>
     <body>
       <div className="image">
         <img style={{ WebkitUserSelect: 'none' }} src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png" /> 
       </div>
-      <h1>{pointTracker.studentName}</h1>
-      <h2>{studentsSchool}</h2>
+      <h2>{studentsSchool}, Report for {pointTracker.title}</h2>
+      {scoreTableJSX}
       <h3>Playing Time Earned</h3>
       <p>{pointTracker.earnedPlayingTime}</p>
       {playingTimeOverride

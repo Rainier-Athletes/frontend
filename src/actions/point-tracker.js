@@ -84,6 +84,11 @@ const pointTrackerToHTML = (pointTracker, student) => {
       font-family: "Raleway", Helvetica;
       color: #1186B4;
     }
+    table {
+      font-family: "Raleway", Helvetica;
+      color: #1186B4;
+      font-size: 0.8em;
+    }
     </style>
     ${ReactDOMServer.renderToString(synopsisReport)}
   `);

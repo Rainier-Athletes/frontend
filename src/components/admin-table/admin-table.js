@@ -196,6 +196,10 @@ class AdminTable extends React.Component {
         })
         .then(() => {
           return resolve();
+        })
+        .catch((err) => {
+          console.log(`Unexpected error in admin-table createRows: ${err}`);
+          return resolve();
         });
     });
   };

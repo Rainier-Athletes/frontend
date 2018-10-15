@@ -34,6 +34,9 @@ const convertDateToValue = (inputDate) => {
   } else {
     date = inputDate;
   }
+  
+  if (!inputDate) return null; // handle null inputs
+
   // replacing '-' with '/' gets around the timezone issue that skews
   // dates by a day depending on the current time of day in your
   // current location.

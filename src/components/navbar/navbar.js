@@ -58,6 +58,7 @@ class Navbar extends React.Component {
   }
 
   handleNavMenuClick = () => {
+    // toggle menu closed on selection
     const navDiv = document.getElementById('navbarSupportedContent');
     navDiv.classList.remove('show');
   }

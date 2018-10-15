@@ -32,16 +32,16 @@ export default function SynopsisReport(props) {
         </tr>
       </thead>
       <tbody>
-        {pointTracker.subjects.map(subject => (
-          <tr key={ subject._id }>
+        {pointTracker.subjects.map((subject, row) => (
+          <tr key={ subject._id.toString() }>
             {isMiddleSchool ? <td>{ subject.teacher.lastName }</td> : ''}
-            <td>{ subject.subjectName }</td>
+            <td key={ `${subject._id.toString()}${row}1` }>{ subject.subjectName }</td>
             {isMiddleSchool ? <td>{ subject.grade }</td> : ''}
-            <td>{ subject.scoring.excusedDays} </td>
-            <td>{ subject.scoring.stamps }</td>
-            <td>{ subject.scoring.halfStamps }</td>
-            <td>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
-            <td>{ Math.round(((subject.scoring.stamps * 2 + subject.scoring.halfStamps) / maxPointsPossible(subject)) * 100)}</td>
+            <td key={ `${subject._id.toString()}${row}2` } >{ subject.scoring.excusedDays} </td>
+            <td key={ `${subject._id.toString()}${row}3` }>{ subject.scoring.stamps }</td>
+            <td key={ `${subject._id.toString()}${row}4` }>{ subject.scoring.halfStamps }</td>
+            <td key={ `${subject._id.toString()}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
+            <td key={ `${subject._id.toString()}${row}6` }>{ Math.round(((subject.scoring.stamps * 2 + subject.scoring.halfStamps) / maxPointsPossible(subject)) * 100)}</td>
           </tr>
         ))}
       </tbody>

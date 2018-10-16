@@ -57,25 +57,38 @@ const pointTrackerToHTML = (pointTracker, student) => {
 
   return (
     `<style>
-
-      body {
-        padding: 20px;
-        margin: 20px;
-        border-radius: 30px;
-        border: 2px solid #e8e8e8;
-      }
-
-      h1, h2, h3, p {
-        font-style:bold;
-        font-family: helvetica;
-        color:#089444;
-      }
-
-      p {
-        font-family: Arial;
-        color:#1186B4;
-      }
-
+    img { 
+      width: 200px; 
+    }
+    .image {
+      padding-left: 20px;
+      padding-top: 10px;
+      padding-bottom: 12px;
+      height: 20px;
+      background: #1f1f1f;
+      width: 500px;
+      border-radius: 30px;
+    }
+    body {
+      padding: 20px;
+      margin: '0px;
+      border-radius: 30px;
+      border: 2px solid #e8e8e8;      
+    }
+    h1, h2, h3 {
+      font-style: bold;
+      font-family: "Raleway", Helvetica;
+      color: '089444;
+    }
+    p {
+      font-family: "Raleway", Helvetica;
+      color: #1186B4;
+    }
+    table {
+      font-family: "Raleway", Helvetica;
+      color: #1186B4;
+      font-size: 0.8em;
+    }
     </style>
     ${ReactDOMServer.renderToString(synopsisReport)}
   `);

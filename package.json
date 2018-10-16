@@ -85,6 +85,7 @@
     "popper.js": "^1.14.4",
     "raw-loader": "^0.5.1",
     "react-bootstrap": "^0.32.4",
+    "react-bootstrap-table": "^4.3.1",
     "react-data-grid": "^4.0.7",
     "react-data-grid-addons": "^4.0.8",
     "react-icons": "^3.0.5",

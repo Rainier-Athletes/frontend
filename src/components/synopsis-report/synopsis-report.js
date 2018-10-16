@@ -16,7 +16,7 @@ export default function SynopsisReport(props) {
     : 8 - subject.scoring.excusedDays * 2
   );  
   
-  // styling for this html is in actions/point-tracker.js 
+  // styling for this html is in actions/point-tracker.js
   const scoreTableJSX = <React.Fragment>
     <table className="scoring-table">
       <thead>

@@ -57,16 +57,9 @@ class Navbar extends React.Component {
       .catch(console.error);  // eslint-disable-line
   }
 
-  handleClickOutside = () => {
-    this.setState({
-      dropdown: false,
-    });
-  }
-
-  handleDropDownToggle = () => {
-    this.setState(prevState => ({
-      dropdown: !prevState.dropdown,
-    }));
+  handleNavMenuClick = () => {
+    const navDiv = document.getElementById('navbarSupportedContent');
+    navDiv.classList.remove('show');
   }
 
   renderMentor = () => {
@@ -100,7 +93,7 @@ class Navbar extends React.Component {
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent" onClick={this.handleNavMenuClick}>
           <ul className="navbar-nav mr-auto nav-content">
             {
               this.props.myProfile ? this.determineRole() : null

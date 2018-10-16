@@ -5,10 +5,6 @@
   vertical-align: text-bottom;
 }
 
-/*
- * Sidebar
- */
-
 .sidebar {
   background-color: white !important;
   border-radius: 6px;
@@ -51,12 +47,4 @@
   text-transform: uppercase;
   color: #D8D8D8 !important;
   font-weight: 600;
-}
-
-/*
- * Content
- */
-
-[role="main"] {
-  padding-top: 48px; /* Space for fixed navbar */
 }

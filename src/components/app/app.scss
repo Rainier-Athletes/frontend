@@ -1,9 +1,5 @@
 @import '../../style/vars';
 
-svg > path {
-  fill: white;
-}
-
 .svg-inline--fa.fa-w-10 {
     width: 2em;
 }
@@ -15,4 +11,8 @@ svg > path {
 
 .modal-backdrop {
   background-color: rgba(0,0,0,0.6) !important;
+}
+
+button:focus {
+    outline: none !important;
 }

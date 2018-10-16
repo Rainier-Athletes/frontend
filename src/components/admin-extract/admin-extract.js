@@ -99,7 +99,7 @@ class AdminExtract extends React.Component {
   csvFileSavedResponseJSX = () => {
     let responseJSX;
     if (!this.state.error) {
-      responseJSX = <h5>CSV Extract File URL: <a href={this.state.csvLink}>{this.state.csvLink}</a></h5>;
+      responseJSX = <h5>CSV Extract File URL: <a href={this.state.csvLink} target="blank" rel="noopener noreferrer">{this.state.csvLink}</a></h5>;
     } else if (this.state.error.status === 404) {
       responseJSX = <h5>No data found in the date range provided. Try a different range or try the request again if you are sure there is data available.</h5>;
     } else {

@@ -53,20 +53,13 @@ class Navbar extends React.Component {
       this.props.fetchTeachers(),
       this.props.fetchPointTrackers(),
     ])
-      .then(console.log)
-      .catch(console.error);
+      .then(console.log) // eslint-disable-line
+      .catch(console.error);  // eslint-disable-line
   }
 
-  handleClickOutside = () => {
-    this.setState({
-      dropdown: false,
-    });
-  }
-
-  handleDropDownToggle = () => {
-    this.setState(prevState => ({
-      dropdown: !prevState.dropdown,
-    }));
+  handleNavMenuClick = () => {
+    const navDiv = document.getElementById('navbarSupportedContent');
+    navDiv.classList.remove('show');
   }
 
   renderMentor = () => {
@@ -74,7 +67,7 @@ class Navbar extends React.Component {
   }
 
   renderAdmin = () => {
-    return <React.Fragment><li className="nav-item"><Link to="/mentor" className="nav-link">Mentor</Link></li><li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li></React.Fragment>;
+    return <React.Fragment><li className="nav-item"><Link to="/mentor" className="nav-link">Mentor</Link></li><li className="nav-item"><Link to="/admindashboard" className="nav-link">Admin</Link></li></React.Fragment>;
   }
 
   determineRole = () => {
@@ -87,7 +80,6 @@ class Navbar extends React.Component {
   renderJSX = (loggedIn) => {
     const JSXNotLoggedIn = (
       <React.Fragment>
-        {/* <a className="navbar-brand"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></a> */}
         <Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link>
         <span className="login nav-content"><a href={ this.setGoogleOAuthUrl() }><img className="google-btn" src={ googleBtn } /></a></span>
       </React.Fragment>
@@ -97,12 +89,11 @@ class Navbar extends React.Component {
 
     const JSXLoggedIn = (
       <React.Fragment>
-        {/* <a className="navbar-brand"><Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link></a> */}
         <Link to={routes.ROOT_ROUTE}><img className="rainier-logo navbar-brand" src={ rainierBtn } /></Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent" onClick={this.handleNavMenuClick}>
           <ul className="navbar-nav mr-auto nav-content">
             {
               this.props.myProfile ? this.determineRole() : null

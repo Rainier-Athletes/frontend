@@ -1,0 +1,50 @@
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+.sidebar {
+  background-color: white !important;
+  border-radius: 6px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  margin-top: 84px;
+  margin-left: 1em;
+  padding-bottom: 12px;
+  z-index: 100; /* Behind the navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  text-transform: uppercase;
+  color: #D8D8D8 !important;
+  font-weight: 600;
+}

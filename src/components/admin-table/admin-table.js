@@ -414,7 +414,7 @@ class AdminTable extends React.Component {
 
     const gridModified = !(counter === 0 && this.state.updatedRows.length === 0);
     this.onRowsDeselected(selected); // clear selection boxes
-    this.setState({
+    return this.setState({
       rows,
       newRows: addedRows,
       counter,
@@ -513,15 +513,13 @@ class AdminTable extends React.Component {
     });
   }
 
-  toggleSdModal = (cancelled = false) => () => {
+  toggleSdModal = () => {
     if (!this.state.studentSelected) return undefined;
-    const sdWasOpen = this.state.sdIsOpen;
-    this.setState({
+
+    return this.setState({
       sdIsOpen: !this.state.sdIsOpen,
     });
-    if (sdWasOpen && !cancelled) return window.location.reload();
-    return undefined;
-  };
+  }
 
 
   handleDetach = () => {
@@ -565,7 +563,7 @@ class AdminTable extends React.Component {
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
               <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.toggleSaveTableModal }>Save Table</button>
               <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
-              <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data*</button>
+              <button className="modalBtn" onClick={this.toggleSdModal}>Access Student Data*</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
               <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
               <p className="infoText">*To access a student's data, click the checkbox next to student name, then click the Access Student Data button.</p>

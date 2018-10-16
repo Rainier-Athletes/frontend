@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getReportingPeriods } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import PointTrackerSummary from '../point-tracker-summary/point-tracker-summary';
 import * as pointTrackerActions from '../../actions/point-tracker';
-import waitingGif from '../../assets/loading_icon_2.gif';
 
 import './point-tracker-form.scss';
 
@@ -96,9 +96,9 @@ const emptyPointTracker = {
 };
 
 const names = {
-  turnedIn: 'Point sheet >25% complete: ',
+  turnedIn: 'Point sheet (> 25% complete): ',
   lost: 'Point sheet lost',
-  incomplete: 'Point sheet <25% completed',
+  incomplete: 'Point sheet (< 25% completed)',
   absent: 'Student reported absent',
   other: 'Other',
   mentorGrantedPlayingTimeComments: 'Mentor Granted Playing Time Explanation',
@@ -141,12 +141,15 @@ class PointTrackerForm extends React.Component {
       newState = lastPointTracker || emptyPointTracker;
       newState.student = `${selectedStudent._id}`;
       newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
-      newState.isElementaryStudent = selectedStudent.studentData.school.find(s => s.currentSchool === s.isElementarySchool);
-      
-      // elementray has no tutorial so pop it from the empty point tracker
+      newState.isElementaryStudent = selectedStudent.studentData.school
+        && selectedStudent.studentData.school.length
+        ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool
+        : false;
+      // elementary has no tutorial so pop it from the empty point tracker
       if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
       newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
       newState.synopsisSaved = false;
+      newState.mentorGrantedPlayingTime = '';
       return newState;
     });
   }
@@ -430,7 +433,6 @@ class PointTrackerForm extends React.Component {
   commNotes = (com, row) => {
     return (<textarea
       rows="2"
-      cols="80"
       wrap="hard"
       required={this.state.communications[row].other}
       placeholder={this.state.communications[row].other ? 'Please explain choice of Other' : ''}
@@ -483,17 +485,17 @@ class PointTrackerForm extends React.Component {
             </div>
           ))}
           <div className="survey-question-container">
-            <label className="title" htmlFor="oneTeamNotes">One Team Notes</label>
-                    <textarea
-                      name="One Team Notes"
-                      onChange={ this.handleOneTeamNotesChange }
-                      value={ this.state.oneTeamNotes }
-                      placeholder={this.state.oneTeam.other ? 'Please explain selection of Other' : ''}
-                      required={this.state.oneTeam.other}
-                      rows="2"
-                      cols="80"
-                      wrap="hard"
-                    />
+            <span className="title" htmlFor="oneTeamNotes">One Team Notes</span>
+                <textarea
+                  name="One Team Notes"
+                  onChange={ this.handleOneTeamNotesChange }
+                  value={ this.state.oneTeamNotes }
+                  placeholder={this.state.oneTeam.other ? 'Please explain selection of Other' : ''}
+                  required={this.state.oneTeam.other}
+                  rows="2"
+                  cols="80"
+                  wrap="hard"
+                />
           </div>
         </div>
     </fieldset>
@@ -514,12 +516,14 @@ class PointTrackerForm extends React.Component {
                         type="radio"
                         name="turned-in"
                         value="true"
+                        className="inline"
                         checked={this.state.pointSheetStatus.turnedIn ? 'checked' : ''}
                         onChange={this.handlePointSheetTurnedInChange}/> Yes
                       <input
                         type="radio"
                         name="turned-in"
                         value="false"
+                        className="inline"
                         checked={!this.state.pointSheetStatus.turnedIn ? 'checked' : ''}
                         onChange={this.handlePointSheetTurnedInChange}/> No
                     {/* </label> */}
@@ -544,17 +548,17 @@ class PointTrackerForm extends React.Component {
             }
             { !this.state.pointSheetStatus.turnedIn
               ? <div className="survey-question-container">
-                <label className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status Notes</label>
-                        <textarea
-                          name="pointSheetStatusNotes"
-                          placeholder={this.state.pointSheetStatus.other ? 'Please explain selected status...' : ''}
-                          onChange={ this.handlePointSheetNotesChange }
-                          value={ this.state.pointSheetStatusNotes }
-                          required={this.state.pointSheetStatus.other}
-                          rows="2"
-                          cols="80"
-                          wrap="hard"
-                        />
+                <span className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status Notes</span>
+                    <textarea
+                      name="pointSheetStatusNotes"
+                      placeholder={this.state.pointSheetStatus.other ? 'Please explain selected status...' : ''}
+                      onChange={ this.handlePointSheetNotesChange }
+                      value={ this.state.pointSheetStatusNotes }
+                      required={this.state.pointSheetStatus.other}
+                      rows="2"
+                      cols="80"
+                      wrap="hard"
+                    />
               </div>
               : '' }
         </div>
@@ -565,9 +569,9 @@ class PointTrackerForm extends React.Component {
       <fieldset>
         <span className="title">Communication Touch Points</span>
         <div className="survey-questions">
-          <table className="comm-table">
+          <table className="table">
             <thead>
-              <tr className='comm-table-header'>
+              <tr>
                 <th>RA Core Pillar</th>
                 <th>Face-To-Face</th>
                 <th>Digital</th>
@@ -608,7 +612,7 @@ class PointTrackerForm extends React.Component {
             <span className="name">{ this.calcPlayingTime() } </span>
           </div>
           <div className="col-md-6">
-            <label className="title" htmlFor="mentorGrantedPlayingTime">Optional Mentor Granted Playing Time:</label>
+            <span className="title" htmlFor="mentorGrantedPlayingTime">Optional Mentor Granted Playing Time:</span>
             <select
               name="mentorGrantedPlayingTime"
               onChange={ this.handlePlayingTimeChange }
@@ -663,9 +667,8 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
-    return (
-      <div className="modal-backdrop">
-        <div className="points-tracker panel point-tracker-modal">
+    const pointTrackerForm = (
+      <div className="points-tracker panel point-tracker-modal">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -692,8 +695,7 @@ class PointTrackerForm extends React.Component {
                 />
                 { synopsisCommentsJSX }
                 <div className="modal-footer">
-                  { this.state.waitingOnSaves ? <img src={waitingGif} alt="waiting" /> : <button className="btn btn-secondary" type="submit">Submit Point Tracker</button> }
-                  { this.state.synopsisSaved ? <PointTrackerSummary pointTracker={this.state}/> : null }
+                  { this.state.waitingOnSaves ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> : <button className="btn btn-secondary" type="submit">Submit Point Tracker</button> }
                 </div>
 
               </form>
@@ -702,6 +704,11 @@ class PointTrackerForm extends React.Component {
           </div>
         </div>
       </div>
+    );
+
+    return (
+      <div className="modal-backdrop">
+        { this.state.synopsisSaved ? <PointTrackerSummary pointTracker={this.state} onClose={ this.props.buttonClick }/> : pointTrackerForm }
       </div>
     );
   }

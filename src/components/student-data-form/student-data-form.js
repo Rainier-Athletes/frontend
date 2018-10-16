@@ -165,7 +165,7 @@ class StudentDataForm extends React.Component {
 
   handleGuardianChange = (e) => {
     const { id } = e.target;
-    const idx = id.split('-')[2]; // id is formatted _id-n-arrayidx
+    const idx = id.split('-')[2]; // id is _id-n-arrayidx
     const prop = e.target.getAttribute('prop');
     const newState = Object.assign({}, this.state);
     const { family } = newState;

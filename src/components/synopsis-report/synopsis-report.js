@@ -43,51 +43,37 @@ export default function SynopsisReport(props) {
             <td key={ `${subject._id.toString()}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
             <td key={ `${subject._id.toString()}${row}6` }>{ Math.round(((subject.scoring.stamps * 2 + subject.scoring.halfStamps) / maxPointsPossible(subject)) * 100)}</td>
           </tr>
-        </thead>
-        <tbody>
-        {
-          pointTracker.subjects.map((subject, i) => {
-            const teacherName = subject.teacher ? `${subject.teacher.firstName} ${subject.teacher.lastName}` : '';
+        ))}
+      </tbody>
+    </table>
+    </React.Fragment>;
 
-            return (
-              <tr key={ i }>
-                <td>{ teacherName }</td>
-                <td>{ subject.subjectName }</td>
-                <td>{ subject.grade }</td>
-                <td>{ subject.scoring.stamps }</td>
-                <td>{ subject.scoring.halfStamps }</td>
-                <td>{ subject.scoring.excusedDays }</td>
-                <td>{ 0 }</td>
-              </tr>
-            );
-          })
-        }
-        </tbody>
-      </table>
+  const pointTrackerHTML = <React.Fragment>
+    <body>
+      <div className="image">
+        <img style={{ WebkitUserSelect: 'none' }} src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png" /> 
+      </div>
+      <h3>Report for {pointTracker.title}</h3>
+      <h3>{studentsSchool}</h3>
+      {scoreTableJSX}
+      <h3>Playing Time Earned</h3>
+      <p>{pointTracker.earnedPlayingTime}</p>
+      {playingTimeOverride
+        ? <div><h3>Mentor Granted Playing Time</h3><p>{pointTracker.mentorGrantedPlayingTime}</p></div>
+        : null}
+      {playingTimeOverride
+        ? <div><h3>Mentor&#39;s Comments re Playing Time</h3><p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p></div>
+        : null}
+      <h3>Student Action Items</h3>      
+      <p>{pointTracker.synopsisComments.studentActionItems}</p>
+      <h3>Sports Update</h3>      
+      <p>{pointTracker.synopsisComments.sportsUpdate}</p>
+      <h3>Additional Comments</h3>      
+      <p>{pointTracker.synopsisComments.additionalComments}</p>
+    </body>
+  </React.Fragment>;
 
-      <h3>Table Key</h3>
-      <p>Stamps = 2 points (RA goal achieved in class)</p>
-      <p>X = 1 point (RA goal not achieved, constructive conversation took place</p>
-      <p>Blank = 0 points (no teacher/student conversation took place)</p>
-
-      <p>Based on these points, { pointTracker.studentName } earned playing time amounting to { pointTracker.earnedPlayingTime } in the upcoming game. { pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime ? `${pointTracker.studentName}'s mentor has selected playing time of ${pointTracker.mentorGrantedPlayingTime} however. "${pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}"` : '' }</p>
-
-      <h3>Student Action Items</h3>
-      <p>{ pointTracker.synopsisComments.studentActionItems }</p>
-
-      <h3>Sports Update</h3>
-      <p>{ pointTracker.synopsisComments.sportsUpdate }</p>
-
-      <p>Please feel free to respond to this message directly with any questions or concerns!</p>
-
-      <p>{ pointTracker.synopsisComments.additionalComments }</p>
-
-      <p>Best,</p>
-
-      <p>RA {student.studentData.school.length > 0 ? studentsSchool.schoolName : null } Mentor</p>
-
-    </div>
-  );
+  return pointTrackerHTML;
 }
 
 SynopsisReport.propTypes = {

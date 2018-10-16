@@ -51,7 +51,7 @@ class PointTrackerSummary extends React.Component {
               <span>{pointTracker.mentorGrantedPlayingTime}</span>
               <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
               <br />
-              <span className="title">Student Action Items</span>
+              <span className="title">Student Action Items:</span>
               <p>{pointTracker.synopsisComments.studentActionItems}</p>
             </div>
 

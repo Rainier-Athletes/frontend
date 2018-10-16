@@ -17,7 +17,7 @@ export default function SynopsisReport(props) {
   );  
   
   // styling for this html is in actions/point-tracker.js 
-  const scoreTableJSX = <React.Fragment>
+  const scoreTableJSX = (
     <table className="scoring-table">
       <thead>
         <tr>
@@ -43,8 +43,6 @@ export default function SynopsisReport(props) {
             <td key={ `${subject._id.toString()}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
             <td key={ `${subject._id.toString()}${row}6` }>{ Math.round(((subject.scoring.stamps * 2 + subject.scoring.halfStamps) / maxPointsPossible(subject)) * 100)}</td>
           </tr>
-        </thead>
-        <tbody>
         {
           pointTracker.subjects.map((subject, i) => {
             const teacherName = subject.teacher ? `${subject.teacher.firstName} ${subject.teacher.lastName}` : '';
@@ -64,27 +62,28 @@ export default function SynopsisReport(props) {
         }
         </tbody>
       </table>
+      )
+        <div>
+          <h3>Table Key</h3>
+            <p>Stamps = 2 points (RA goal achieved in class)</p>
+            <p>X = 1 point (RA goal not achieved, constructive conversation took place</p>
+            <p>Blank = 0 points (no teacher/student conversation took place)</p>
+            
+            <p>Based on these points, { pointTracker.studentName } earned playing time amounting to { pointTracker.earnedPlayingTime } in the upcoming game. { pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime ? `${pointTracker.studentName}'s mentor has selected playing time of ${pointTracker.mentorGrantedPlayingTime} however. "${pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}"` : '' }</p>
 
-      <h3>Table Key</h3>
-      <p>Stamps = 2 points (RA goal achieved in class)</p>
-      <p>X = 1 point (RA goal not achieved, constructive conversation took place</p>
-      <p>Blank = 0 points (no teacher/student conversation took place)</p>
+          <h3>Student Action Items</h3>
+            <p>{ pointTracker.synopsisComments.studentActionItems }</p>
 
-      <p>Based on these points, { pointTracker.studentName } earned playing time amounting to { pointTracker.earnedPlayingTime } in the upcoming game. { pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime ? `${pointTracker.studentName}'s mentor has selected playing time of ${pointTracker.mentorGrantedPlayingTime} however. "${pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}"` : '' }</p>
+          <h3>Sports Update</h3>
+            <p>{ pointTracker.synopsisComments.sportsUpdate }</p>
 
-      <h3>Student Action Items</h3>
-      <p>{ pointTracker.synopsisComments.studentActionItems }</p>
+            <p>Please feel free to respond to this message directly with any questions or concerns!</p>
 
-      <h3>Sports Update</h3>
-      <p>{ pointTracker.synopsisComments.sportsUpdate }</p>
+            <p>{ pointTracker.synopsisComments.additionalComments }</p>
 
-      <p>Please feel free to respond to this message directly with any questions or concerns!</p>
+            <p>Best,</p>
 
-      <p>{ pointTracker.synopsisComments.additionalComments }</p>
-
-      <p>Best,</p>
-
-      <p>RA {student.studentData.school.length > 0 ? studentsSchool.schoolName : null } Mentor</p>
+            <p>RA {student.studentData.school.length > 0 ? studentsSchool.schoolName : null } Mentor</p>
 
     </div>
   );

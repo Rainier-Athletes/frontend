@@ -55,6 +55,7 @@ export const fetchPointTrackers = studentIds => (store) => { // eslint-disable-l
 const pointTrackerToHTML = (pointTracker, student) => {
   const synopsisReport = <SynopsisReport pointTracker={pointTracker} student={student}/>;
 
+  // this css styles the html created by SynopsisReport component (synopsis-report.js)
   return (
     `<style>
     img { 

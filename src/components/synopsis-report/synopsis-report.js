@@ -5,7 +5,6 @@ import './synopsis-report.scss';
 export default function SynopsisReport(props) {
   const { pointTracker, student } = props;
 
-  // const submitterName = `${pointTracker.mentor.firstName} ${pointTracker.mentor.lastName}`;
   let studentsSchool = student.studentData.school.find(s => s.currentSchool);
   studentsSchool = studentsSchool ? studentsSchool.schoolName : '';
   const isMiddleSchool = studentsSchool ? !studentsSchool.isElementarySchool : true;

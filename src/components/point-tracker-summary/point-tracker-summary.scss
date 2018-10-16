@@ -68,7 +68,25 @@
         fill: white !important;
       }
     }
-
-
   }
+}
+
+.fade:not(.show) {
+  opacity: 1 !important;
+}
+
+.tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+
+.tooltip.top .tooltip-arrow {
+    bottom: -5px;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px 5px 0;
+    border-top-color: #000;
 }

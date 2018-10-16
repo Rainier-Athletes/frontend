@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './point-tracker-summary.scss';
 
@@ -17,7 +18,14 @@ class PointTrackerSummary extends React.Component {
   }
 
   render() {
+    const tooltip = (
+      <Tooltip id="tooltip">
+        Don&#39;t forget to paste into Basecamp!
+      </Tooltip>
+    );
+
     const { pointTracker } = this.props;
+
     return (
       <div className="panel summary-modal">
         <div className="modal-dialog">
@@ -49,9 +57,11 @@ class PointTrackerSummary extends React.Component {
 
             <div className="modal-footer">
               <a role="button" className="btn btn-secondary" href={pointTracker.synopsisLink} target="_blank">Full synopsis report on Google Drive</a>
-              <button type="submit" className="btn btn-primary" onClick={this.handleCopy}>
-                <FontAwesomeIcon icon="copy" className="fa-1x copy"/>
-              </button>
+              <OverlayTrigger placement="top" trigger="click" rootClose overlay={tooltip}>
+                <button type="submit" className="btn btn-primary" onClick={this.handleCopy}>
+                  <FontAwesomeIcon icon="copy" className="fa-1x copy"/>
+                </button>
+              </OverlayTrigger>
             </div>
           </div>
         </div>

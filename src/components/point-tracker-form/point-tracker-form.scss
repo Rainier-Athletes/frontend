@@ -48,11 +48,15 @@ select {
 .survey-question-container {
   width: 100%;
   clear: both;
+  line-height: 18px;
+
+  .inline {
+    margin-left: 12px;
+  }
 }
 
 .survey-questions {
   display: inline-block;
-  width: 50%;
 }
 
 .survey-questions-2 {
@@ -75,7 +79,6 @@ select {
 .survey-questions label {
   display: inline-block;
   margin-bottom: 0;
-  margin-left: 10px;
   vertical-align: middle;
 }
 
@@ -157,4 +160,9 @@ select {
 textarea {
   display: block;
   margin-bottom: 1.5em !important;
+}
+
+.column {
+  bottom: -1.2em;
+  position: relative;
 }

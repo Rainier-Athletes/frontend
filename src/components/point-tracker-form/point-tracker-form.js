@@ -96,9 +96,9 @@ const emptyPointTracker = {
 };
 
 const names = {
-  turnedIn: 'Point sheet >25% complete: ',
+  turnedIn: 'Point sheet (> 25% complete): ',
   lost: 'Point sheet lost',
-  incomplete: 'Point sheet <25% completed',
+  incomplete: 'Point sheet (< 25% completed)',
   absent: 'Student reported absent',
   other: 'Other',
   mentorGrantedPlayingTimeComments: 'Mentor Granted Playing Time Explanation',
@@ -141,9 +141,9 @@ class PointTrackerForm extends React.Component {
       newState = lastPointTracker || emptyPointTracker;
       newState.student = `${selectedStudent._id}`;
       newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
-      newState.isElementaryStudent = selectedStudent.studentData.school 
+      newState.isElementaryStudent = selectedStudent.studentData.school
         && selectedStudent.studentData.school.length
-        ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool 
+        ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool
         : false;
       // elementary has no tutorial so pop it from the empty point tracker
       if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
@@ -486,17 +486,17 @@ class PointTrackerForm extends React.Component {
             </div>
           ))}
           <div className="survey-question-container">
-            <label className="title" htmlFor="oneTeamNotes">One Team Notes</label>
-                    <textarea
-                      name="One Team Notes"
-                      onChange={ this.handleOneTeamNotesChange }
-                      value={ this.state.oneTeamNotes }
-                      placeholder={this.state.oneTeam.other ? 'Please explain selection of Other' : ''}
-                      required={this.state.oneTeam.other}
-                      rows="2"
-                      cols="80"
-                      wrap="hard"
-                    />
+            <span className="title" htmlFor="oneTeamNotes">One Team Notes</span>
+                <textarea
+                  name="One Team Notes"
+                  onChange={ this.handleOneTeamNotesChange }
+                  value={ this.state.oneTeamNotes }
+                  placeholder={this.state.oneTeam.other ? 'Please explain selection of Other' : ''}
+                  required={this.state.oneTeam.other}
+                  rows="2"
+                  cols="80"
+                  wrap="hard"
+                />
           </div>
         </div>
     </fieldset>
@@ -517,12 +517,14 @@ class PointTrackerForm extends React.Component {
                         type="radio"
                         name="turned-in"
                         value="true"
+                        className="inline"
                         checked={this.state.pointSheetStatus.turnedIn ? 'checked' : ''}
                         onChange={this.handlePointSheetTurnedInChange}/> Yes
                       <input
                         type="radio"
                         name="turned-in"
                         value="false"
+                        className="inline"
                         checked={!this.state.pointSheetStatus.turnedIn ? 'checked' : ''}
                         onChange={this.handlePointSheetTurnedInChange}/> No
                     {/* </label> */}
@@ -547,17 +549,17 @@ class PointTrackerForm extends React.Component {
             }
             { !this.state.pointSheetStatus.turnedIn
               ? <div className="survey-question-container">
-                <label className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status Notes</label>
-                        <textarea
-                          name="pointSheetStatusNotes"
-                          placeholder={this.state.pointSheetStatus.other ? 'Please explain selected status...' : ''}
-                          onChange={ this.handlePointSheetNotesChange }
-                          value={ this.state.pointSheetStatusNotes }
-                          required={this.state.pointSheetStatus.other}
-                          rows="2"
-                          cols="80"
-                          wrap="hard"
-                        />
+                <span className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status Notes</span>
+                    <textarea
+                      name="pointSheetStatusNotes"
+                      placeholder={this.state.pointSheetStatus.other ? 'Please explain selected status...' : ''}
+                      onChange={ this.handlePointSheetNotesChange }
+                      value={ this.state.pointSheetStatusNotes }
+                      required={this.state.pointSheetStatus.other}
+                      rows="2"
+                      cols="80"
+                      wrap="hard"
+                    />
               </div>
               : '' }
         </div>
@@ -611,7 +613,7 @@ class PointTrackerForm extends React.Component {
             <span className="name">{ this.calcPlayingTime() } </span>
           </div>
           <div className="col-md-6">
-            <label className="title" htmlFor="mentorGrantedPlayingTime">Optional Mentor Granted Playing Time:</label>
+            <span className="title" htmlFor="mentorGrantedPlayingTime">Optional Mentor Granted Playing Time:</span>
             <select
               name="mentorGrantedPlayingTime"
               onChange={ this.handlePlayingTimeChange }

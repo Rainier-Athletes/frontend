@@ -73,6 +73,7 @@
   .title {
     text-transform: uppercase;
     color: #A9A9A9;
+    margin-top: 12px;
     font-weight: 600;
   }
 
@@ -119,7 +120,7 @@
     width: 1em !important;
 
     & > path {
-      fill: #a9a9a9;
+      fill: #e9e9e9;
     }
   }
 }

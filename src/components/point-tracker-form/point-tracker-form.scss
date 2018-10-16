@@ -102,19 +102,20 @@ select {
     }
 
 
-    .submit-report{
+    .btn-secondary {
       background: $color-button-green;
       padding: $pad;
-      border: none;
+      border: 1px solid $color-brand-green;
       border-radius: 3px;
       font-family: $font-primary;
-      font-weight: bold;
+      font-weight: 600;
       color: $color-white;
-      font-size: 16px;
+      font-size: 12px;
 
       &:hover {
-        background: $color-button-focus;
-        color: $color-black;
+        background: white;
+        color: $color-brand-green;
+        border: 1px solid $color-brand-green;
       }
 
       &:visited {

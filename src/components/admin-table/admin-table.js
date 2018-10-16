@@ -272,13 +272,23 @@ class AdminTable extends React.Component {
   };
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    console.log('handleGridRowsUpdate', fromRow, toRow, updated);
+    const validRoles = {
+      a: 'admin',
+      c: 'coach',
+      f: 'family',
+      m: 'mentor',
+      t: 'teacher',
+    };
     const rows = this.state.rows.slice();
     const newRows = this.state.newRows.slice();
     const updatedRows = this.state.updatedRows.slice();
 
-    // shift enumerated fields to lowercase to match enum validation.
-    if (updated.role) updated.role = updated.role.toLowerCase();
+    // validate role field based on first char of input string
+    if (updated.role) {
+      updated.role = validRoles[updated.role.toLowerCase()[0]]
+        ? validRoles[updated.role.toLowerCase()[0]]
+        : '';
+    }
     
     for (let i = fromRow; i <= toRow; i++) {
       const rowToUpdate = rows[i];

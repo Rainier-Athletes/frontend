@@ -64,7 +64,7 @@ export default class PointTrackerTable extends React.Component {
       </div>
       <div className="col-md-4">
         <div className="add-subject">
-          <button type="button" className="add-subject-btn add-subject" onClick={ this.handleCreateSubject }>Add new subject</button>
+          <button type="button" className="add-subject-btn add-subject" onClick={ this.handleCreateSubject }>Add New Subject</button>
         </div>
       </div>
     </div>

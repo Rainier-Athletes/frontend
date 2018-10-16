@@ -96,19 +96,19 @@ const emptyPointTracker = {
 };
 
 const names = {
-  turnedIn: 'Point sheet (> 25% complete): ',
-  lost: 'Point sheet lost',
-  incomplete: 'Point sheet (< 25% completed)',
-  absent: 'Student reported absent',
+  turnedIn: 'Point Sheet (> 25% complete): ',
+  lost: 'Point Sheet Lost',
+  incomplete: 'Point Sheet (< 25% completed)',
+  absent: 'Student Reported Absent',
   other: 'Other',
-  mentorGrantedPlayingTimeComments: 'Mentor Granted Playing Time Explanation',
-  studentActionItems: 'Student Action Items',
-  sportsUpdate: 'Sports Update',
-  additionalComments: 'Additional Comments',
-  wednesdayCheckin: 'Wednesday Checkin',
-  mentorMeal: 'Mentor meal',
-  sportsGame: 'Sports game meet up',
-  communityEvent: 'RA Comm. Event meet up',
+  mentorGrantedPlayingTimeComments: 'Mentor Granted Playing Time Explanation:',
+  studentActionItems: 'Student Action Items:',
+  sportsUpdate: 'Sports Update:',
+  additionalComments: 'Additional Comments:',
+  wednesdayCheckin: 'Wednesday Check-In',
+  mentorMeal: 'Mentor Meal',
+  sportsGame: 'Sports Game Meet-Up',
+  communityEvent: 'RA Comm. Event Meet-Up',
   iepSummerReview: 'IEP/Summer Review Meeting',
 };
 
@@ -371,12 +371,12 @@ class PointTrackerForm extends React.Component {
     const tokenPercentage = totalTokensEarned / totalTokensPossible;
     // console.log('totalTokensEarned', totalTokensEarned, 'tokenPercentage', tokenPercentage);
 
-    let earnedPlayingTime = 'None of game';
-    if (tokenPercentage >= 0.35) earnedPlayingTime = 'One quarter';
-    if (tokenPercentage >= 0.55) earnedPlayingTime = 'Two quarters';
-    if (tokenPercentage >= 0.65) earnedPlayingTime = 'Three quarters';
-    if (tokenPercentage >= 0.75) earnedPlayingTime = 'All but start';
-    if (tokenPercentage >= 0.8) earnedPlayingTime = 'Entire game';
+    let earnedPlayingTime = 'None of Game';
+    if (tokenPercentage >= 0.35) earnedPlayingTime = 'One Quarter';
+    if (tokenPercentage >= 0.55) earnedPlayingTime = 'Two Quarters';
+    if (tokenPercentage >= 0.65) earnedPlayingTime = 'Three Quarters';
+    if (tokenPercentage >= 0.75) earnedPlayingTime = 'All but Start';
+    if (tokenPercentage >= 0.8) earnedPlayingTime = 'Entire Game';
     if (earnedPlayingTime !== this.state.earnedPlayingTime) {
       this.setState({
         ...this.state,
@@ -470,7 +470,7 @@ class PointTrackerForm extends React.Component {
 
     const oneTeamJSX = (
       <fieldset>
-        <span className="title">One Team Face-to-Face Meet Ups</span>
+        <span className="title">One Team Face-to-Face Meet-Ups</span>
         <div className="survey-questions">
         {Object.keys(this.state.oneTeam)
           .filter(keyName => names[keyName])
@@ -618,13 +618,13 @@ class PointTrackerForm extends React.Component {
               onChange={ this.handlePlayingTimeChange }
               value={ this.state.mentorGrantedPlayingTime }
               >
-              <option value="" defaultValue>Select playing time override</option>
+              <option value="" defaultValue>Select playing time override:</option>
               <option value="Entire game">Entire Game</option>
-              <option value="All but start">All but start</option>
-              <option value="Three quarters">Three quarters</option>
-              <option value="Two quarters">Two quarters</option>
-              <option value="One quarter">One quarter</option>
-              <option value="None of game">None of game</option>
+              <option value="All but start">All but Start</option>
+              <option value="Three quarters">Three Quarters</option>
+              <option value="Two quarters">Two Quarters</option>
+              <option value="One quarter">One Quarter</option>
+              <option value="None of game">None of Game</option>
             </select>
           </div>
         </div>

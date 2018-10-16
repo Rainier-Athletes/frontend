@@ -101,14 +101,31 @@ class AdminExtract extends React.Component {
     return undefined;
   }
 
+  createCoachesReportCsv = () => {
+    // return JSON.stringify(this.state.coachesReport, null, 4);
+    let csv = '"coach"';
+    const coaches = Object.keys(this.state.coachesReport);
+    const otherHeadings = Object.keys(this.state.coachesReport[coaches[0]][0]);
+    csv = otherHeadings.reduce((acc, curr) => `${acc}, "${curr}"`, csv);
+    csv += '\n';
+    for (let coach = 0; coach < coaches.length; coach++) {
+      for (let player = 0; player < coaches[coach].length; player++) {
+        csv += `"${coaches[coach]}"`;
+        for (let key = 0; key < otherHeadings.length; key++) {
+          csv += `,"${this.state.coachesReport[coaches[coach]][player][otherHeadings[key]]}"`;
+        }
+        csv += '\n';
+      }
+    }
+    return csv;
+  }
+
   csvFileSavedResponseJSX = () => {
     let responseJSX;
     if (!this.state.error) {
-      // console.log('this.state.csvLink', this.state.csvLink);
-      // console.log('this.state.coaches', this.state.coachesReport);
       responseJSX = this.state.csvLink
         ? <h5>CSV Extract File URL: <a href={this.state.csvLink} target="blank" rel="noopener noreferrer">{this.state.csvLink}</a></h5>
-        : <div><h5>Coaches Report Data</h5><p>{JSON.stringify(this.state.coachesReport, null, 4)}</p></div>;
+        : <div dangerouslySetInnerHTML={{ __html: this.state.coachesReport }} />;
     } else if (this.state.error.status === 404) {
       responseJSX = <h5>No data found in the date range provided. Try a different range or try the request again if you are sure there is data available.</h5>;
     } else {

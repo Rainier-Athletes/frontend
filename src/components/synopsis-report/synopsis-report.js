@@ -15,8 +15,8 @@ export default function SynopsisReport(props) {
     ? (40 - subject.scoring.excusedDays * 8) 
     : 8 - subject.scoring.excusedDays * 2
   );  
-  
-  // styling for this html is in actions/point-tracker.js .js .js WTF?! 
+
+  // styling for this html is in actions/point-tracker.js
   const scoreTableJSX = <React.Fragment>
     <table className="scoring-table">
       <thead>
@@ -76,6 +76,7 @@ export default function SynopsisReport(props) {
             <p>{pointTracker.synopsisComments.sportsUpdate}</p>
           <h3>Additional Comments</h3>      
             <p>{pointTracker.synopsisComments.additionalComments}</p>
+
     </body>
   </React.Fragment>;
 

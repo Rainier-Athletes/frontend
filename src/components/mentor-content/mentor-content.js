@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as util from '../../lib/utils';
 
 import './_mentor-content.scss';
@@ -53,20 +54,39 @@ class MentorContent extends React.Component {
         <div className="profile-primary row">
           <div>
             <span className="info name">{ student.firstName } { student.lastName } </span>
-            <span className="icon">{ student.studentData ? util.convertDateToValue(student.studentData.dateOfBirth) : null } </span>
-            <span className="icon">{ student.studentData ? currentSchoolName : null } </span>
+            <span>
+              <FontAwesomeIcon icon="birthday-cake" className="fa-2x"/>
+              { student.studentData ? util.convertDateToValue(student.studentData.dateOfBirth) : null }
+            </span>
+            <span>
+              <FontAwesomeIcon icon="school" className="fa-2x"/>
+              { student.studentData ? currentSchoolName : null }
+            </span>
           </div>
         </div>
         <div className="row">
           <div className="col-md-6">
+
             <span className="title">Contact</span>
-            <span className="icon">{ student.phone } </span>
-            <span className="icon">{ student.primaryEmail } </span>
+            <span>
+              <FontAwesomeIcon icon="phone" className="fa-2x"/>
+              { student.phone }
+            </span>
+            <span>
+              <FontAwesomeIcon icon="at" className="fa-2x"/>
+              { student.primaryEmail }
+            </span>
           </div>
           <div className="col-md-6">
             <span className="title">Synergy Account</span>
-            <span className="icon">{haveData ? student.studentData.synergy.username : ''}</span>
-            <span className="icon">{haveData ? Buffer.from(student.studentData.synergy.password, 'base64').toString() : ''}</span>
+            <span>
+              <FontAwesomeIcon icon="user" className="fa-2x"/>
+              {haveData ? student.studentData.synergy.username : ''}
+            </span>
+            <span>
+              <FontAwesomeIcon icon="key" className="fa-2x"/>
+              {haveData ? Buffer.from(student.studentData.synergy.password, 'base64').toString() : ''}
+            </span>
           </div>
         </div>
         <div className="row">

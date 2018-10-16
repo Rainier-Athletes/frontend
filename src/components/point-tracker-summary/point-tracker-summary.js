@@ -56,7 +56,7 @@ class PointTrackerSummary extends React.Component {
             </div>
 
             <div className="modal-footer">
-              <a role="button" className="btn btn-secondary" href={pointTracker.synopsisLink} target="_blank">Full synopsis report on Google Drive</a>
+              <a role="button" className="btn btn-secondary" href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">Full synopsis report on Google Drive</a>
               <OverlayTrigger placement="top" trigger="click" rootClose overlay={tooltip}>
                 <button type="submit" className="btn btn-primary" onClick={this.handleCopy}>
                   <FontAwesomeIcon icon="copy" className="fa-1x copy"/>

@@ -269,7 +269,7 @@ class StudentDataForm extends React.Component {
             id="sport"
             type="text"
             label="Sport (baseball, soccer, etc): "
-            placeholder="Enter new sport"
+            placeholder="Enter New Sport"
             value={this.state.sports.length ? this.state.sports[0].sport : ''}
             onChange={this.handleSportFieldChange}
           />
@@ -279,7 +279,7 @@ class StudentDataForm extends React.Component {
             id="team"
             type="text"
             label="Team name: "
-            placeholder="Enter new team name"
+            placeholder="Enter New Team Name"
             value={this.state.sports.length ? this.state.sports[0].team : ''}
             onChange={this.handleSportFieldChange}
           />
@@ -289,7 +289,7 @@ class StudentDataForm extends React.Component {
             id="league"
             type="text"
             label="League: "
-            placeholder="Enter new team&rsquo;s league"
+            placeholder="Enter New Team&rsquo;s League"
             value={this.state.sports.length ? this.state.sports[0].league : ''}
             onChange={this.handleSportFieldChange}
           />
@@ -299,7 +299,7 @@ class StudentDataForm extends React.Component {
             id="teamCalendarUrl"
             type="text"
             label="Team Calendar URL: "
-            placeholder="Enter new team&rsquo;s calendar link"
+            placeholder="Enter Link to Team&rsquo;s Calendar"
             value={this.state.sports.length ? this.state.sports[0].teamCalendarUrl : ''}
             onChange={this.handleSportFieldChange}
           />
@@ -320,7 +320,7 @@ class StudentDataForm extends React.Component {
           <FormGroup controlId={`current-sport-${i}`} key={`current-sport-${i}`}>
             <h4>{`${sport.team} (${sport.sport}), ${sport.league} league`}</h4>
             <a href={sport.teamCalendarUrl ? sport.teamCalendarUrl : '#'}
-              alt="team calendar url"
+              alt="Team Calendar Url"
               target="_blank"
               rel="noopener noreferrer"
               className="team-calendar-url">
@@ -331,7 +331,7 @@ class StudentDataForm extends React.Component {
               id={i}
               onChange={this.handleSportStatusChange}
               >
-              Currently playing
+              Currently Playing
             </Checkbox>
           </FormGroup>
         ))
@@ -360,7 +360,7 @@ class StudentDataForm extends React.Component {
                     id="gender"
                     type="text"
                     label="Gender"
-                    placeholder="Enter student&rsquo;s gender"
+                    placeholder="Enter Student&rsquo;s Gender"
                     value={this.state.gender ? this.state.gender : ''}
                     onChange={this.handleTextFieldChange}
                   />
@@ -388,7 +388,7 @@ class StudentDataForm extends React.Component {
                     id="grade"
                     type="text"
                     label="Grade"
-                    placeholder="Enter student's grade in school"
+                    placeholder="Enter Student&rsquo;s Grade in School"
                     value={this.state.grade ? this.state.grade : 0}
                     onChange={this.handleTextFieldChange}
                   />
@@ -447,7 +447,7 @@ class StudentDataForm extends React.Component {
                     key="googleCalendarUrl"
                     type="text"
                     label="Google Calendar URL"
-                    placeholder="Enter student&rsquo;s Google calendar url"
+                    placeholder="Enter Student&rsquo;s Google Calendar URL"
                     value={this.state.googleCalendarUrl ? this.state.googleCalendarUrl : ''}
                     onChange={this.handleTextFieldChange}
                   />
@@ -458,7 +458,7 @@ class StudentDataForm extends React.Component {
                     key="googleDocsUrl"
                     type="text"
                     label="Google Docs URL"
-                    placeholder="Enter student&rsquo;s Google documents url"
+                    placeholder="Enter Student&rsquo;s Google Documents URL"
                     value={this.state.googleDocsUrl ? this.state.googleDocsUrl : ''}
                     onChange={this.handleTextFieldChange}
                   />
@@ -471,7 +471,7 @@ class StudentDataForm extends React.Component {
                     key="username"
                     type="text"
                     label="Synergy Username"
-                    placeholder="Synergy username"
+                    placeholder="Synergy Username"
                     value={this.state.synergy.username ? this.state.synergy.username : ''}
                     onChange={this.handleSynergyChange}
                   />

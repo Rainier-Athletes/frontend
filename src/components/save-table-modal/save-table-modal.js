@@ -18,14 +18,14 @@ class SaveTableModal extends React.Component {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title title">New and updated profiles</h5>
+              <h5 className="modal-title title">New and Updated Profiles</h5>
               <button type="button" className="close" onClick={ this.props.onClose } data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
 
             <div className="modal-body">
-              <label className="title">New profiles</label>
+              <label className="title">New Profiles</label>
               {
                 this.props.newRows.filter(p => p !== null).length > 0 ? <span className="red-circle">{this.props.newRows.filter(p => p !== null).length}</span> : null
               }
@@ -59,8 +59,8 @@ class SaveTableModal extends React.Component {
               <table className="table save-table">
                 <thead>
                   <tr>
-                    <th>Firstname</th>
-                    <th>Lastname</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Primary Email</th>
                     <th>Role</th>
                   </tr>

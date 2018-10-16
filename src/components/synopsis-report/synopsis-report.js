@@ -15,7 +15,7 @@ export default function SynopsisReport(props) {
     ? (40 - subject.scoring.excusedDays * 8) 
     : 8 - subject.scoring.excusedDays * 2
   );  
-  
+
   // styling for this html is in actions/point-tracker.js
   const scoreTableJSX = <React.Fragment>
     <table className="scoring-table">
@@ -53,23 +53,30 @@ export default function SynopsisReport(props) {
       <div className="image">
         <img style={{ WebkitUserSelect: 'none' }} src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png" /> 
       </div>
-      <h3>Report for {pointTracker.title}</h3>
-      <h3>{studentsSchool}</h3>
-      {scoreTableJSX}
-      <h3>Playing Time Earned</h3>
-      <p>{pointTracker.earnedPlayingTime}</p>
-      {playingTimeOverride
-        ? <div><h3>Mentor Granted Playing Time</h3><p>{pointTracker.mentorGrantedPlayingTime}</p></div>
-        : null}
-      {playingTimeOverride
-        ? <div><h3>Mentor&#39;s Comments re Playing Time</h3><p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p></div>
-        : null}
-      <h3>Student Action Items</h3>      
-      <p>{pointTracker.synopsisComments.studentActionItems}</p>
-      <h3>Sports Update</h3>      
-      <p>{pointTracker.synopsisComments.sportsUpdate}</p>
-      <h3>Additional Comments</h3>      
-      <p>{pointTracker.synopsisComments.additionalComments}</p>
+          <h3>Report for: {pointTracker.title}</h3>
+          <h3>{studentsSchool}</h3>
+            {scoreTableJSX}
+          <h3>Playing Time Earned: </h3>
+            <p>{pointTracker.earnedPlayingTime}</p>
+              {playingTimeOverride
+                ? <div>
+                    <h3>Mentor Granted Playing Time</h3>
+                      <p>{pointTracker.mentorGrantedPlayingTime}</p>
+                  </div>
+                : null}
+              {playingTimeOverride
+                ? <div>
+                    <h3>Mentor&#39;s Comments re: Playing Time</h3>
+                      <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
+                  </div>
+                : null}
+          <h3>Student Action Items</h3>      
+            <p>{pointTracker.synopsisComments.studentActionItems}</p>
+          <h3>Sports Update</h3>      
+            <p>{pointTracker.synopsisComments.sportsUpdate}</p>
+          <h3>Additional Comments</h3>      
+            <p>{pointTracker.synopsisComments.additionalComments}</p>
+
     </body>
   </React.Fragment>;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as util from '../../lib/utils';
 
 import './_mentor-content.scss';
 
@@ -52,7 +53,7 @@ class MentorContent extends React.Component {
         <div className="profile-primary row">
           <div>
             <span className="info name">{ student.firstName } { student.lastName } </span>
-            <span className="icon">{ student.studentData ? student.studentData.dateOfBirth : null } </span>
+            <span className="icon">{ student.studentData ? util.convertDateToValue(student.studentData.dateOfBirth) : null } </span>
             <span className="icon">{ student.studentData ? currentSchoolName : null } </span>
           </div>
         </div>

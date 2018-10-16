@@ -12,3 +12,7 @@
 .modal-backdrop {
   background-color: rgba(0,0,0,0.6) !important;
 }
+
+button:focus {
+    outline: none !important;
+}

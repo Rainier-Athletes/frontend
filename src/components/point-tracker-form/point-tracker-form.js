@@ -433,7 +433,6 @@ class PointTrackerForm extends React.Component {
   commNotes = (com, row) => {
     return (<textarea
       rows="2"
-      cols="80"
       wrap="hard"
       required={this.state.communications[row].other}
       placeholder={this.state.communications[row].other ? 'Please explain choice of Other' : ''}
@@ -570,9 +569,9 @@ class PointTrackerForm extends React.Component {
       <fieldset>
         <span className="title">Communication Touch Points</span>
         <div className="survey-questions">
-          <table className="comm-table">
+          <table className="table">
             <thead>
-              <tr className='comm-table-header'>
+              <tr>
                 <th>RA Core Pillar</th>
                 <th>Face-To-Face</th>
                 <th>Digital</th>

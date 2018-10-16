@@ -548,8 +548,8 @@ class AdminTable extends React.Component {
           onClose={this.toggleSaveTableModal}
           onSubmit={this.handleUpdateTable}>
         </SaveTableModal>
-        {this.state.sdIsOpen
-          ? <StudentDataModal onClose={this.toggleSdModal} studentId={this.state.studentSelected}></StudentDataModal> : null}
+        { this.state.sdIsOpen
+          ? <StudentDataModal onClose={this.toggleSdModal()} onCancel={this.toggleSdModal(true)} studentId={this.state.studentSelected}></StudentDataModal> : null }
         <Prompt when={this.state.gridModified} message="Unsaved changes. Are you sure you want to leave?" />
         <ReactDataGrid
           ref={ node => this.grid = node }

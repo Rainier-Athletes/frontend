@@ -277,6 +277,7 @@ class AdminTable extends React.Component {
       c: 'coach',
       f: 'family',
       m: 'mentor',
+      s: 'student',
       t: 'teacher',
     };
     const rows = this.state.rows.slice();

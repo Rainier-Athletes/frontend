@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getReportingPeriods } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import PointTrackerSummary from '../point-tracker-summary/point-tracker-summary';
 import * as pointTrackerActions from '../../actions/point-tracker';
-import waitingGif from '../../assets/loading_icon_2.gif';
 
 import './point-tracker-form.scss';
 
@@ -667,9 +667,8 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
-    return (
-      <div className="modal-backdrop">
-        <div className="points-tracker panel point-tracker-modal">
+    const pointTrackerForm = (
+      <div className="points-tracker panel point-tracker-modal">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -696,8 +695,7 @@ class PointTrackerForm extends React.Component {
                 />
                 { synopsisCommentsJSX }
                 <div className="modal-footer">
-                  { this.state.waitingOnSaves ? <img src={waitingGif} alt="waiting" /> : <button className="btn btn-secondary" type="submit">Submit Point Tracker</button> }
-                  { this.state.synopsisSaved ? <PointTrackerSummary pointTracker={this.state}/> : null }
+                  { this.state.waitingOnSaves ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> : <button className="btn btn-secondary" type="submit">Submit Point Tracker</button> }
                 </div>
 
               </form>
@@ -706,6 +704,11 @@ class PointTrackerForm extends React.Component {
           </div>
         </div>
       </div>
+    );
+
+    return (
+      <div className="modal-backdrop">
+        { this.state.synopsisSaved ? <PointTrackerSummary pointTracker={this.state} onClose={ this.props.buttonClick }/> : pointTrackerForm }
       </div>
     );
   }

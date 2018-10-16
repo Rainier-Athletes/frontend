@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPhone, faAt, faUser, faKey, faBirthdayCake, faSchool } from '@fortawesome/free-solid-svg-icons'; //eslint-disable-line
+import { faPhone, faAt, faUser, faKey, faBirthdayCake, faSchool, faSpinner, faCopy} from '@fortawesome/free-solid-svg-icons'; //eslint-disable-line
 
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Mentor from '../mentor/mentor';
@@ -15,7 +15,7 @@ import * as routes from '../../lib/routes';
 
 import './app.scss';
 
-library.add(faPhone, faAt, faUser, faKey, faBirthdayCake, faSchool);
+library.add(faPhone, faAt, faUser, faKey, faBirthdayCake, faSchool, faSpinner, faCopy);
 
 const AdminUser = Auth(['admin']);
 const MentorUser = Auth(['mentor', 'admin']);

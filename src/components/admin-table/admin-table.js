@@ -277,7 +277,7 @@ class AdminTable extends React.Component {
     const newRows = this.state.newRows.slice();
     const updatedRows = this.state.updatedRows.slice();
 
-    // shift enumerated fields to lowercase to match enum validation.
+    // shift enumerated fields to lowercase
     if (updated.role) updated.role = updated.role.toLowerCase();
     
     for (let i = fromRow; i <= toRow; i++) {

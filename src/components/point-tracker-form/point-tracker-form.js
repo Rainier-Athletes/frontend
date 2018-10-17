@@ -139,7 +139,7 @@ class PointTrackerForm extends React.Component {
     this.setState((prevState) => {
       let newState = { ...prevState };
       newState = lastPointTracker || emptyPointTracker;
-      newState.student = `${selectedStudent._id}`;
+      newState.student = selectedStudent;
       newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
       newState.isElementaryStudent = selectedStudent.studentData.school
         && selectedStudent.studentData.school.length
@@ -323,8 +323,8 @@ class PointTrackerForm extends React.Component {
 
     // console.groupCollapsed('calcPlayingTime');
     const { subjects } = this.state;
-    const studentsFiltered = this.props.students.filter(s => s._id.toString() === this.state.student.toString());
-    const student = studentsFiltered[0];
+    // const studentsFiltered = this.props.students.filter(s => s._id.toString() === this.state.student.toString());
+    const { student } = this.state;
 
     let isElementarySchool = null;
     if (student.studentData.school.length > 0) {

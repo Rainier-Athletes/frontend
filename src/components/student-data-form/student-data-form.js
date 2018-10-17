@@ -241,7 +241,7 @@ class StudentDataForm extends React.Component {
             id="new-school"
             type="text"
             label="New school"
-            placeholder="Enter student's new school"
+            placeholder="Enter student&rsqup;s new school"
             value={this.state.school.length ? this.state.school[0].schoolName : ''}
             onChange={this.handleSchoolChange}
           />
@@ -269,7 +269,7 @@ class StudentDataForm extends React.Component {
             id="sport"
             type="text"
             label="Sport (baseball, soccer, etc): "
-            placeholder="Enter New Sport"
+            placeholder="Enter new sport"
             value={this.state.sports.length ? this.state.sports[0].sport : ''}
             onChange={this.handleSportFieldChange}
           />
@@ -279,7 +279,7 @@ class StudentDataForm extends React.Component {
             id="team"
             type="text"
             label="Team name: "
-            placeholder="Enter New Team Name"
+            placeholder="Enter new team name"
             value={this.state.sports.length ? this.state.sports[0].team : ''}
             onChange={this.handleSportFieldChange}
           />
@@ -289,7 +289,7 @@ class StudentDataForm extends React.Component {
             id="league"
             type="text"
             label="League: "
-            placeholder="Enter New Team&rsquo;s League"
+            placeholder="Enter new team&rsquo;s league"
             value={this.state.sports.length ? this.state.sports[0].league : ''}
             onChange={this.handleSportFieldChange}
           />
@@ -299,7 +299,7 @@ class StudentDataForm extends React.Component {
             id="teamCalendarUrl"
             type="text"
             label="Team Calendar URL: "
-            placeholder="Enter Link to Team&rsquo;s Calendar"
+            placeholder="Enter link to new team&rsquo;s calendar"
             value={this.state.sports.length ? this.state.sports[0].teamCalendarUrl : ''}
             onChange={this.handleSportFieldChange}
           />
@@ -360,7 +360,7 @@ class StudentDataForm extends React.Component {
                     id="gender"
                     type="text"
                     label="Gender"
-                    placeholder="Enter Student&rsquo;s Gender"
+                    placeholder="Enter student&rsquo;s gender"
                     value={this.state.gender ? this.state.gender : ''}
                     onChange={this.handleTextFieldChange}
                   />
@@ -388,7 +388,7 @@ class StudentDataForm extends React.Component {
                     id="grade"
                     type="text"
                     label="Grade"
-                    placeholder="Enter Student&rsquo;s Grade in School"
+                    placeholder="Enter student&rsquo;s grade in school"
                     value={this.state.grade ? this.state.grade : 0}
                     onChange={this.handleTextFieldChange}
                   />
@@ -447,7 +447,7 @@ class StudentDataForm extends React.Component {
                     key="googleCalendarUrl"
                     type="text"
                     label="Google Calendar URL"
-                    placeholder="Enter Student&rsquo;s Google Calendar URL"
+                    placeholder="Enter student&rsquo;s Google calendar url"
                     value={this.state.googleCalendarUrl ? this.state.googleCalendarUrl : ''}
                     onChange={this.handleTextFieldChange}
                   />
@@ -458,7 +458,7 @@ class StudentDataForm extends React.Component {
                     key="googleDocsUrl"
                     type="text"
                     label="Google Docs URL"
-                    placeholder="Enter Student&rsquo;s Google Documents URL"
+                    placeholder="Enter student&rsquo;s Google documents url"
                     value={this.state.googleDocsUrl ? this.state.googleDocsUrl : ''}
                     onChange={this.handleTextFieldChange}
                   />
@@ -471,7 +471,7 @@ class StudentDataForm extends React.Component {
                     key="username"
                     type="text"
                     label="Synergy Username"
-                    placeholder="Synergy Username"
+                    placeholder="Synergy username"
                     value={this.state.synergy.username ? this.state.synergy.username : ''}
                     onChange={this.handleSynergyChange}
                   />
@@ -482,7 +482,7 @@ class StudentDataForm extends React.Component {
                     key="password"
                     type="password"
                     label="Synergy Password"
-                    placeholder="Synergy Password"
+                    placeholder="Synergy password"
                     value={this.state.synergy.password ? Buffer.from(this.state.synergy.password, 'base64') : ''}
                     onChange={this.handleSynergyChange}
                   />

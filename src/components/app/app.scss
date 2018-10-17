@@ -1,5 +1,30 @@
 @import '../../style/vars';
 
+html, 
+body {   
+  height: 100%; 
+} 
+body { 
+  display: flex;   
+  flex-direction: column; 
+}
+ 
+.content { 
+  flex: 1 0 auto; 
+} 
+
+.footer {   
+  height: 40px;
+  flex-shrink: 0; 
+  background-color: #59AACE;
+  color: white;
+  // padding-top: -20px;
+
+  &:hover {
+    color: #E9E9E9;
+  }
+}
+
 .svg-inline--fa.fa-w-10 {
     width: 2em;
 }

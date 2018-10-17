@@ -62,11 +62,12 @@ export const fetchStudentData = studentId => (store) => { // eslint-disable-line
 
 export const updateStudentData = studentData => (store) => {
   const { token } = store.getState();
+  const ptId = studentData.lastPointTracker._id || '';
 
   return superagent.put(`${API_URL}${routes.STUDENT_DATA_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .send(studentData)
+    .send({ ...studentData, lastPointTracker: ptId })
     .then((res) => {
       return store.dispatch(setStudentData(res.body));
     })

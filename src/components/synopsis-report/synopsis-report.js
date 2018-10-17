@@ -5,12 +5,12 @@ import './synopsis-report.scss';
 export default function SynopsisReport(props) {
   const { pointTracker, student } = props;
 
-  let studentsSchool = student.studentData.school.find(s => s.currentSchool);
-  studentsSchool = studentsSchool ? studentsSchool.schoolName : '';
+  const studentsSchool = student.studentData.school.find(s => s.currentSchool);
+  const studentsSchoolName = studentsSchool ? studentsSchool.schoolName : '';
   const isMiddleSchool = studentsSchool ? !studentsSchool.isElementarySchool : true;
   const playingTimeOverride = pointTracker.mentorGrantedPlayingTime !== '' 
     && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime;
-  
+
   const maxPointsPossible = subject => (subject.subjectName.toLowerCase() !== 'tutorial' 
     ? (40 - subject.scoring.excusedDays * 8) 
     : 8 - subject.scoring.excusedDays * 2
@@ -33,15 +33,15 @@ export default function SynopsisReport(props) {
       </thead>
       <tbody>
         {pointTracker.subjects.map((subject, row) => (
-          <tr key={ subject._id.toString() }>
-            {isMiddleSchool ? <td>{ subject.teacher.lastName }</td> : ''}
-            <td key={ `${subject._id.toString()}${row}1` }>{ subject.subjectName }</td>
+          <tr key={ subject.subjectName }>
+            {isMiddleSchool ? <td>{ subject.subjectName.toLowerCase() !== 'tutorial' ? subject.teacher.lastName : '' }</td> : ''}
+            <td key={ `${subject.subjectName}${row}1` }>{ subject.subjectName }</td>
             {isMiddleSchool ? <td>{ subject.grade }</td> : ''}
-            <td key={ `${subject._id.toString()}${row}2` } >{ subject.scoring.excusedDays} </td>
-            <td key={ `${subject._id.toString()}${row}3` }>{ subject.scoring.stamps }</td>
-            <td key={ `${subject._id.toString()}${row}4` }>{ subject.scoring.halfStamps }</td>
-            <td key={ `${subject._id.toString()}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
-            <td key={ `${subject._id.toString()}${row}6` }>{ Math.round(((subject.scoring.stamps * 2 + subject.scoring.halfStamps) / maxPointsPossible(subject)) * 100)}</td>
+            <td key={ `${subject.subjectName}${row}2` } >{ subject.scoring.excusedDays} </td>
+            <td key={ `${subject.subjectName}${row}3` }>{ subject.scoring.stamps }</td>
+            <td key={ `${subject.subjectName}${row}4` }>{ subject.scoring.halfStamps }</td>
+            <td key={ `${subject.subjectName}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
+            <td key={ `${subject.subjectName}${row}6` }>{ Math.round(((subject.scoring.stamps * 2 + subject.scoring.halfStamps) / maxPointsPossible(subject)) * 100)}</td>
           </tr>
         ))}
       </tbody>
@@ -54,7 +54,7 @@ export default function SynopsisReport(props) {
         <img style={{ WebkitUserSelect: 'none' }} src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png" /> 
       </div>
           <h3>Report for: {pointTracker.title}</h3>
-          <h3>{studentsSchool}</h3>
+          <h3>{studentsSchoolName}</h3>
             {scoreTableJSX}
           <h3>Playing Time Earned: </h3>
             <p>{pointTracker.earnedPlayingTime}</p>

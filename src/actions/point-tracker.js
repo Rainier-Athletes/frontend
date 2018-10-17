@@ -29,12 +29,11 @@ export const createPointTracker = pointTracker => (store) => {
   console.log('createPointTracker sending report', pointTracker.title);
   
   const studentId = pointTracker.student._id.toString();
-  // pointTracker.student = studentId;
 
   return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .send({ ...pointTracker, student: studentId }) // circular errors from this send
+    .send({ ...pointTracker, student: studentId }) // this to prevent circular JSON
     .then((res) => {
       return store.dispatch(setPointTracker(res.body));
     })
@@ -100,7 +99,7 @@ const pointTrackerToHTML = (pointTracker, student) => {
 
 export const createSynopsisReport = pointTracker => (store) => {
   const { token } = store.getState();
-  const { student } = pointTracker; // store.getState().students.find(s => s._id.toString() === pointTracker.student.toString());
+  const { student } = pointTracker; 
 
   const data = {
     name: pointTracker.studentName,

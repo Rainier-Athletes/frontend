@@ -11,10 +11,15 @@ export default function SynopsisReport(props) {
   const playingTimeOverride = pointTracker.mentorGrantedPlayingTime !== '' 
     && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime;
 
-  const maxPointsPossible = subject => (subject.subjectName.toLowerCase() !== 'tutorial' 
-    ? (40 - subject.scoring.excusedDays * 8) 
-    : 8 - subject.scoring.excusedDays * 2
-  );  
+  const pointPercentage = (subject) => {
+    const { excusedDays, stamps, halfStamps } = subject.scoring;
+    const maxPointsPossible = subject.subjectName.toLowerCase() !== 'tutorial' 
+      ? (40 - excusedDays * 8) 
+      : 8 - excusedDays * 2;
+    const pointsEarned = 2 * stamps + halfStamps;
+    const percentage = pointsEarned / maxPointsPossible;
+    return Math.round((percentage * 100));
+  };
 
   // styling for this html is in actions/point-tracker.js
   const scoreTableJSX = <React.Fragment>
@@ -41,7 +46,7 @@ export default function SynopsisReport(props) {
             <td key={ `${subject.subjectName}${row}3` }>{ subject.scoring.stamps }</td>
             <td key={ `${subject.subjectName}${row}4` }>{ subject.scoring.halfStamps }</td>
             <td key={ `${subject.subjectName}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
-            <td key={ `${subject.subjectName}${row}6` }>{ Math.round(((subject.scoring.stamps * 2 + subject.scoring.halfStamps) / maxPointsPossible(subject)) * 100)}</td>
+            <td key={ `${subject.subjectName}${row}6` }>{ pointPercentage(subject) }</td>
           </tr>
         ))}
       </tbody>

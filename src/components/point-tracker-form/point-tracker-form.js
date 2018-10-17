@@ -274,7 +274,7 @@ class PointTrackerForm extends React.Component {
       delete pointTracker._id;
 
       this.setState({ ...this.state, waitingOnSaves: true });
-      this.props.createPointTracker(pointTracker);
+      this.props.createPointTracker({ ...pointTracker });
       this.props.createSynopsisReport(pointTracker);
 
       this.setState({ pointTracker: emptyPointTracker });

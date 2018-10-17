@@ -18,14 +18,11 @@ class AdminDashboard extends React.Component {
     
     this.state = {
       show: '/admindashboard',
-    };
-    console.log('AdminDashboard props', props);
-    console.log('AdminDashboard constructor state', this.state); 
+    }; 
   }
 
   handleSidebarClick = (e) => {
     const show = e.currentTarget.getAttribute('show');
-    console.log('sidebarClick show:', show, 'this.state.show', this.state.show);
     switch (show) {
       case routes.POINTS_TRACKER_ROUTE:
         return this.setState({ show: routes.POINTS_TRACKER_ROUTE });
@@ -37,7 +34,6 @@ class AdminDashboard extends React.Component {
   }
 
   render() {
-    console.log('render this.state', this.state);
     if (this.state.show === routes.ADMIN_DATA_ROUTE) {
       return (
         <div>

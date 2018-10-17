@@ -1,0 +1,104 @@
+@import '../../style/vars';
+
+.summary-modal {
+  position: absolute;
+  height: 85vh;
+  overflow: scroll;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px rgba(0,0,0, 0.3) !important;
+  margin-top: 22vh !important;
+
+  .modal-content {
+    border: none;
+  }
+
+  .modal-body {
+    padding: 1.5em 0;
+  }
+
+  .modal-header {
+    padding: 0;
+  }
+
+  .modal-transition {
+    transition: all 0.4s ease;
+  }
+
+  &.panel {
+    height: auto !important;
+  }
+
+  .modal-dialog {
+    margin: 0 !important;
+    width: 60vw;
+  }
+
+  .title {
+    text-transform: uppercase;
+    color: #A9A9A9;
+    font-weight: 600;
+  }
+
+  span, select {
+    display: block;
+  }
+
+  .close > span {
+    line-height: 11px;
+    font-size: 3em;
+    margin-bottom: 0;
+  }
+
+  .btn-primary {
+    border: 2px #66afe9 solid;
+    background-color: white;
+    font-weight: 600;
+
+    .copy > path {
+      fill: #66afe9 !important;
+    }
+
+    &:hover {
+      background-color: #66afe9;
+      border: 2px #66afe9 solid !important;
+
+      path {
+        fill: white !important;
+      }
+    }
+  }
+
+  .btn-secondary {
+    background-color: $color-brand-green;
+    font-size: 12px;
+    font-weight: 600;
+    border: 0.5px solid $color-brand-green !important;
+  
+    &:hover {
+      background-color: white;
+      color: $color-brand-green;
+    }
+  }
+}
+
+.fade:not(.show) {
+  opacity: 1 !important;
+}
+
+.tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+
+.tooltip.top .tooltip-arrow {
+    bottom: -5px;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px 5px 0;
+    border-top-color: #000;
+}

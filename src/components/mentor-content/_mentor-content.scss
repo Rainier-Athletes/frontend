@@ -38,7 +38,7 @@
     background-color: #0B9444;
     color: white;
   }
-  
+
 }
 
 .student-profile, .point-tracker-modal {
@@ -73,6 +73,7 @@
   .title {
     text-transform: uppercase;
     color: #A9A9A9;
+    margin-top: 12px;
     font-weight: 600;
   }
 
@@ -111,6 +112,15 @@
     &:hover {
       background-color: #66afe9;
       color: white;
+    }
+  }
+
+  svg {
+    margin: 0 12px 0 4px;
+    width: 1em !important;
+
+    & > path {
+      fill: #A1CEE4;
     }
   }
 }

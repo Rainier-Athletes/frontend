@@ -22,7 +22,7 @@ const MentorUser = Auth(['mentor', 'admin']);
 
 const Footer = () => (
   <footer className="footer">
-    <p><a href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website">©2018 Rainier Athletes</a></p>
+    <p><a className="footer-link" href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website">©2018 Rainier Athletes</a></p>
   </footer>
 );
 

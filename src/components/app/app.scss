@@ -17,11 +17,14 @@ body {
   height: 40px;
   flex-shrink: 0; 
   background-color: #59AACE;
-  color: white;
-  // padding-top: -20px;
+  color: #E9E9E9;
 
-  &:hover {
-    color: #E9E9E9;
+  .footer-link {
+
+    &:active {
+      color: white;
+      text-decoration: none;
+    }
   }
 }
 

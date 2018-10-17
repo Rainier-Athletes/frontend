@@ -5,12 +5,12 @@ import './synopsis-report.scss';
 export default function SynopsisReport(props) {
   const { pointTracker, student } = props;
 
-  let studentsSchool = student.studentData.school.find(s => s.currentSchool);
-  studentsSchool = studentsSchool ? studentsSchool.schoolName : '';
+  const studentsSchool = student.studentData.school.find(s => s.currentSchool);
+  const studentsSchoolName = studentsSchool ? studentsSchool.schoolName : '';
   const isMiddleSchool = studentsSchool ? !studentsSchool.isElementarySchool : true;
   const playingTimeOverride = pointTracker.mentorGrantedPlayingTime !== '' 
     && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime;
-  
+
   const maxPointsPossible = subject => (subject.subjectName.toLowerCase() !== 'tutorial' 
     ? (40 - subject.scoring.excusedDays * 8) 
     : 8 - subject.scoring.excusedDays * 2
@@ -54,7 +54,7 @@ export default function SynopsisReport(props) {
         <img style={{ WebkitUserSelect: 'none' }} src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png" /> 
       </div>
           <h3>Report for: {pointTracker.title}</h3>
-          <h3>{studentsSchool}</h3>
+          <h3>{studentsSchoolName}</h3>
             {scoreTableJSX}
           <h3>Playing Time Earned: </h3>
             <p>{pointTracker.earnedPlayingTime}</p>

@@ -4,7 +4,7 @@ import './synopsis-report.scss';
 
 export default function SynopsisReport(props) {
   const { pointTracker, student } = props;
-
+  debugger;
   let studentsSchool = student.studentData.school.find(s => s.currentSchool);
   studentsSchool = studentsSchool ? studentsSchool.schoolName : '';
   const isMiddleSchool = studentsSchool ? !studentsSchool.isElementarySchool : true;
@@ -33,15 +33,15 @@ export default function SynopsisReport(props) {
       </thead>
       <tbody>
         {pointTracker.subjects.map((subject, row) => (
-          <tr key={ subject._id.toString() }>
-            {isMiddleSchool ? <td>{ subject.teacher.lastName }</td> : ''}
-            <td key={ `${subject._id.toString()}${row}1` }>{ subject.subjectName }</td>
+          <tr key={ subject.subjectName }>
+            {isMiddleSchool ? <td>{ subject.subjectName.toLowerCase() !== 'tutorial' ? subject.teacher.lastName : '' }</td> : ''}
+            <td key={ `${subject.subjectName}${row}1` }>{ subject.subjectName }</td>
             {isMiddleSchool ? <td>{ subject.grade }</td> : ''}
-            <td key={ `${subject._id.toString()}${row}2` } >{ subject.scoring.excusedDays} </td>
-            <td key={ `${subject._id.toString()}${row}3` }>{ subject.scoring.stamps }</td>
-            <td key={ `${subject._id.toString()}${row}4` }>{ subject.scoring.halfStamps }</td>
-            <td key={ `${subject._id.toString()}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
-            <td key={ `${subject._id.toString()}${row}6` }>{ Math.round(((subject.scoring.stamps * 2 + subject.scoring.halfStamps) / maxPointsPossible(subject)) * 100)}</td>
+            <td key={ `${subject.subjectName}${row}2` } >{ subject.scoring.excusedDays} </td>
+            <td key={ `${subject.subjectName}${row}3` }>{ subject.scoring.stamps }</td>
+            <td key={ `${subject.subjectName}${row}4` }>{ subject.scoring.halfStamps }</td>
+            <td key={ `${subject.subjectName}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
+            <td key={ `${subject.subjectName}${row}6` }>{ Math.round(((subject.scoring.stamps * 2 + subject.scoring.halfStamps) / maxPointsPossible(subject)) * 100)}</td>
           </tr>
         ))}
       </tbody>

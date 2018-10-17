@@ -4,7 +4,7 @@ import './synopsis-report.scss';
 
 export default function SynopsisReport(props) {
   const { pointTracker, student } = props;
-  debugger;
+
   let studentsSchool = student.studentData.school.find(s => s.currentSchool);
   studentsSchool = studentsSchool ? studentsSchool.schoolName : '';
   const isMiddleSchool = studentsSchool ? !studentsSchool.isElementarySchool : true;

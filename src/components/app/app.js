@@ -35,9 +35,9 @@ export default class App extends React.Component {
           </div>
         </BrowserRouter>
         <footer className="footer">
-           <a href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website"> ©2018 Rainier Athletes | </a>
-           <a href="https://github.com/Rainier-Athletes" alt="Link to GitHub repository">CodeFellows</a>
-        </footer> */
+           <a className="footer-links" href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website"> ©2018 Rainier Athletes | </a>
+           <a className="footer-links" href="https://github.com/Rainier-Athletes" alt="Link to GitHub repository">CodeFellows</a>
+        </footer>
       </div>
     );
   }

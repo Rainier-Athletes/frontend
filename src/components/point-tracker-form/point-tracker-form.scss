@@ -103,7 +103,7 @@ select {
 
 
     .btn-secondary {
-      background: $color-button-green;
+      background-color: $color-button-green;
       padding: $pad;
       border: 1px solid $color-brand-green;
       border-radius: 3px;
@@ -113,13 +113,13 @@ select {
       font-size: 12px;
 
       &:hover {
-        background: white;
+        background-color: white;
         color: $color-brand-green;
         border: 1px solid $color-brand-green;
       }
 
       &:active {
-        background: $color-brand-green;
+        background-color: $color-brand-green;
         color: white;
       }
   }

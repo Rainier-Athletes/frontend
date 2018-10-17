@@ -15,13 +15,13 @@ p.infoText {
 }
 
 .react-grid-Grid {
-  height: 81vh !important;
+  height: 77vh !important;
 }
 
 .react-grid-Container {
   position: relative;
   top: 3.5em;
-  max-width: 1366px;
+  max-width: auto;
   margin: auto !important;
 
   .rdg-cell-expand {

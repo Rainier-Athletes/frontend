@@ -241,7 +241,7 @@ class StudentDataForm extends React.Component {
             id="new-school"
             type="text"
             label="New school"
-            placeholder="Enter student's new school"
+            placeholder="Enter student&rsqup;s new school"
             value={this.state.school.length ? this.state.school[0].schoolName : ''}
             onChange={this.handleSchoolChange}
           />
@@ -299,7 +299,7 @@ class StudentDataForm extends React.Component {
             id="teamCalendarUrl"
             type="text"
             label="Team Calendar URL: "
-            placeholder="Enter new team&rsquo;s calendar link"
+            placeholder="Enter link to new team&rsquo;s calendar"
             value={this.state.sports.length ? this.state.sports[0].teamCalendarUrl : ''}
             onChange={this.handleSportFieldChange}
           />
@@ -320,7 +320,7 @@ class StudentDataForm extends React.Component {
           <FormGroup controlId={`current-sport-${i}`} key={`current-sport-${i}`}>
             <h4>{`${sport.team} (${sport.sport}), ${sport.league} league`}</h4>
             <a href={sport.teamCalendarUrl ? sport.teamCalendarUrl : '#'}
-              alt="team calendar url"
+              alt="Team Calendar Url"
               target="_blank"
               rel="noopener noreferrer"
               className="team-calendar-url">
@@ -331,7 +331,7 @@ class StudentDataForm extends React.Component {
               id={i}
               onChange={this.handleSportStatusChange}
               >
-              Currently playing
+              Currently Playing
             </Checkbox>
           </FormGroup>
         ))
@@ -388,7 +388,7 @@ class StudentDataForm extends React.Component {
                     id="grade"
                     type="text"
                     label="Grade"
-                    placeholder="Enter student's grade in school"
+                    placeholder="Enter student&rsquo;s grade in school"
                     value={this.state.grade ? this.state.grade : 0}
                     onChange={this.handleTextFieldChange}
                   />
@@ -482,7 +482,7 @@ class StudentDataForm extends React.Component {
                     key="password"
                     type="password"
                     label="Synergy Password"
-                    placeholder="Synergy Password"
+                    placeholder="Synergy password"
                     value={this.state.synergy.password ? Buffer.from(this.state.synergy.password, 'base64') : ''}
                     onChange={this.handleSynergyChange}
                   />

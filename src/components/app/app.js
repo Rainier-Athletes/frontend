@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleDown, faUserPlus } from '@fortawesome/free-solid-svg-icons'; //eslint-disable-line
+import { faPhone, faAt, faUser, faKey, faBirthdayCake, faSchool, faSpinner, faCopy} from '@fortawesome/free-solid-svg-icons'; //eslint-disable-line
 
 import AuthRedirect from '../auth-redirect/auth-redirect';
 import Mentor from '../mentor/mentor';
@@ -15,7 +15,7 @@ import * as routes from '../../lib/routes';
 
 import './app.scss';
 
-library.add(faAngleDown, faUserPlus);
+library.add(faPhone, faAt, faUser, faKey, faBirthdayCake, faSchool, faSpinner, faCopy);
 
 const AdminUser = Auth(['admin']);
 const MentorUser = Auth(['mentor', 'admin']);
@@ -35,9 +35,9 @@ export default class App extends React.Component {
           </div>
         </BrowserRouter>
         <footer className="footer">
-           <a href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website"> ©2018 Rainier Athletes | </a>
-           <a href="https://github.com/Rainier-Athletes" alt="Link to GitHub repository">CodeFellows</a>
-        </footer> */
+           <a className="footer-links" href="https://www.rainierathletes.org" alt="Link to Rainier Athletes website"> ©2018 Rainier Athletes | </a>
+           <a className="footer-links" href="https://github.com/Rainier-Athletes" alt="Link to GitHub repository">CodeFellows</a>
+        </footer>
       </div>
     );
   }

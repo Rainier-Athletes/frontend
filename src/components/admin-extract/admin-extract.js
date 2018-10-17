@@ -14,7 +14,7 @@ const defaultExport = {
 };
 
 const mapStateToProps = state => ({
-  csvLink: state.csvExtractLink,
+  csvResult: state.csvExtract,
   error: state.error,
 });
 
@@ -34,12 +34,13 @@ class AdminExtract extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.csvLink !== prevProps.csvLink) {
+    if (this.props.csvResult !== prevProps.csvResult) {
       this.setState({
         ...this.state,
         csvFileSaved: true,
         waitingOnSave: false,
-        csvLink: this.props.csvLink,
+        csvLink: this.props.csvResult.link || '',
+        coachesReport: this.props.csvResult.coaches || {},
         error: null,
       });
     }
@@ -80,7 +81,11 @@ class AdminExtract extends React.Component {
     let extractCommand;
     switch (e.target.id) {
       case 'extract':
-        extractCommand = `${this.state.exportSource}?from=${this.state.exportFrom}&to=${this.state.exportTo}`;
+        if (this.state.exportSource !== 'coachesreport') {
+          extractCommand = `${this.state.exportSource}?from=${this.state.exportFrom}&to=${this.state.exportTo}`;
+        } else {
+          extractCommand = `${this.state.exportSource}?from=2018-10-16&to=2018-10-16`; // dates ignored in this case
+        }
         this.setState({ ...this.state, waitingOnSave: true });
         this.props.createCsvExtract(extractCommand);
         break;
@@ -96,10 +101,35 @@ class AdminExtract extends React.Component {
     return undefined;
   }
 
+  createCoachesReportCsv = () => {
+    // return JSON.stringify(this.state.coachesReport, null, 4);
+    let csv = '"coach"';
+    const coaches = Object.keys(this.state.coachesReport);
+    const otherHeadings = Object.keys(this.state.coachesReport[coaches[0]][0]);
+    csv = otherHeadings.reduce((acc, curr) => `${acc}, "${curr}"`, csv);
+    csv += '\n';
+    for (let coach = 0; coach < coaches.length; coach++) {
+      for (let player = 0; player < coaches[coach].length; player++) {
+        csv += `"${coaches[coach]}"`;
+        for (let key = 0; key < otherHeadings.length; key++) {
+          csv += `,"${this.state.coachesReport[coaches[coach]][player][otherHeadings[key]]}"`;
+        }
+        csv += '\n';
+      }
+    }
+    return csv;
+  }
+
   csvFileSavedResponseJSX = () => {
     let responseJSX;
     if (!this.state.error) {
-      responseJSX = <h5>CSV Extract File URL: <a href={this.state.csvLink}>{this.state.csvLink}</a></h5>;
+      responseJSX = this.state.csvLink
+        ? <h5>CSV Extract File URL: <a href={this.state.csvLink} target="blank" rel="noopener noreferrer">{this.state.csvLink}</a></h5>
+        : <div>
+            <h5>Coaches Mailmerge Data</h5>
+            <div dangerouslySetInnerHTML={{ __html: this.state.coachesReport }} />
+            <h5><br />Select the text above then copy and paste into a Google Sheets spreadsheet.</h5>
+          </div>;
     } else if (this.state.error.status === 404) {
       responseJSX = <h5>No data found in the date range provided. Try a different range or try the request again if you are sure there is data available.</h5>;
     } else {
@@ -117,16 +147,21 @@ class AdminExtract extends React.Component {
             <option value="" selected="true" disabled>-- select data source -- </option> 
             <option value="pointstracker" key="pointstracker">Point Tracker Forms</option>
             <option value="studentdata" key="studentdata">Student Data</option>
+            <option value="coachesreport" key="coachesreport">Coaches Mailmerge Report</option>
           </select>
         </div>
-        <div className="fieldwrap">
-          <label className="title" htmlFor="from">Starting date:</label>
-          <input type="date" id="from" />
-        </div>
-        <div className="fieldwrap">
-          <label className="title" htmlFor="to">Ending date:</label>
-          <input type="date" id="to" />
-        </div>
+        {this.state.exportSource !== 'coachesreport'
+          ? <div className="fieldwrap">
+              <label className="title" htmlFor="from">Starting date:</label>
+              <input type="date" id="from" />
+            </div>
+          : null}
+        {this.state.exportSource !== 'coachesreport'
+          ? <div className="fieldwrap">
+              <label className="title" htmlFor="to">Ending date:</label>
+              <input type="date" id="to" />
+            </div>
+          : null}
         { this.state.waitingOnSave 
           ? <h5>Waiting...</h5> 
           : <button 
@@ -145,7 +180,7 @@ class AdminExtract extends React.Component {
 }
 
 AdminExtract.propTypes = {
-  csvLink: PropTypes.string,
+  csvResult: PropTypes.object,
   createCsvExtract: PropTypes.func,
   error: PropTypes.object,
 };

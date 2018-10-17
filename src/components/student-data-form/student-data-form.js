@@ -185,7 +185,7 @@ class StudentDataForm extends React.Component {
 
     this.setState({ waitingOnSave: true }); // react state
     this.props.setWaitingOnSave(this.state); // redux store
-    debugger;
+
     if (this.state._id) { // existing doc, update it
       return this.props.updateStudentData(this.state);
     }

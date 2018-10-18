@@ -16,7 +16,7 @@ export const clearCsvExtractLink = () => ({
   type: 'CSV_EXTRACT_LINK_CLEAR',
 });
 
-// exportCommandString: [pointstracker | studentdata]?from=<date>&to=<date>
+// exportCommandString: [[pointstracker | studentdata]?from=<date>&to=<date>] | coachesreport ]
 export const createCsvExtract = extractCommandString => (store) => {
   const { token } = store.getState();
 

@@ -15,6 +15,9 @@ body {
 
 .footer {   
   height: 40px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
   flex-shrink: 0; 
   background-color: #59AACE;
   color: #E9E9E9;

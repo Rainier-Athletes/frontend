@@ -57,20 +57,19 @@ export default function SynopsisReport(props) {
           if (subject.subjectName.toLowerCase() === 'tutorial') {
             return (
             <tr key={ subject.subjectName }>
-              {isMiddleSchool ? <td>{ subject.subjectName.toLowerCase() !== 'tutorial' ? subject.teacher.lastName : '' }</td> : ''}
+              {isMiddleSchool ? <td></td> : ''}
               <td key={ `${subject.subjectName}${row}1` }>{ subject.subjectName }</td>
-              {isMiddleSchool ? <td>{ subject.grade }</td> : ''}
+              <td></td>
               <td key={ `${subject.subjectName}${row}2` } >{ subject.scoring.excusedDays} </td>
               <td key={ `${subject.subjectName}${row}3` }>{ subject.scoring.stamps }</td>
               <td key={ `${subject.subjectName}${row}4` }>{ subject.scoring.halfStamps }</td>
               <td key={ `${subject.subjectName}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
               <td key={ `${subject.subjectName}${row}6` }>{ pointPercentage(subject) }</td>
             </tr>
-            )
+            );
           }
-        })
-
-        }
+          return undefined;
+        })}
       </tbody>
     </table>
     </React.Fragment>;

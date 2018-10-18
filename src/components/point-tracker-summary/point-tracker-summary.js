@@ -55,7 +55,7 @@ class PointTrackerSummary extends React.Component {
               <p>{pointTracker.synopsisComments.studentActionItems}</p>
               <br />
               <span className="title">Full Synposis Report on Google Drive</span>
-              <a href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">{pointTracker.synopsisLink}</a>
+              <a href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">Link to Point Tracker</a>
             </div>
 
             <div className="modal-footer">

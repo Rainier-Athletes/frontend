@@ -10,6 +10,7 @@ Code Fellows Summer 401 Cohort was invited to take the current processes and imp
 ### CLIENT BRANDING
 ##### Logo
 ![](src/assets/rainier-logo-100px.png)
+![](src/assets/rainier-logo-horizontal.png)
 
 ##### Typography
 Rainier Athletes website currently uses Proxima Nova in a variety of font styles, and Adobe Garamond Pro. The client is interested in rebranding and the Admin/Mentor portal has been designed using the Google Font Raleway. To be added in future will be League Gothic (webfont will need to be purchased).

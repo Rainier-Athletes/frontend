@@ -99,10 +99,11 @@ const pointTrackerToHTML = (pointTracker, student) => {
 
 export const createSynopsisReport = pointTracker => (store) => {
   const { token } = store.getState();
-  const { student } = pointTracker; 
+  const { student, studentName, title } = pointTracker; 
 
   const data = {
-    name: pointTracker.studentName,
+    name: studentName,
+    title,
     html: pointTrackerToHTML(pointTracker, student),
   };
 

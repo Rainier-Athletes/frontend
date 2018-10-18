@@ -150,6 +150,7 @@ class PointTrackerForm extends React.Component {
       newState.title = `${newState.studentName} ${getReportingPeriods()[1]}`;
       newState.synopsisSaved = false;
       newState.mentorGrantedPlayingTime = '';
+      newState.teachers = this.props.content.studentData.teachers;
       return newState;
     });
   }
@@ -303,7 +304,7 @@ class PointTrackerForm extends React.Component {
       const newState = { ...prevState };
       const newSubject = {
         subjectName,
-        teacher: this.props.teachers.find(t => t._id.toString() === teacherId.toString()),
+        teacher: this.state.teachers.find(t => t.teacher._id.toString() === teacherId.toString()).teacher,
         scoring: {
           excusedDays: '',
           stamps: '',
@@ -321,9 +322,7 @@ class PointTrackerForm extends React.Component {
   calcPlayingTime = () => {
     if (!this.state.student) return null;
 
-    // console.groupCollapsed('calcPlayingTime');
     const { subjects } = this.state;
-    // const studentsFiltered = this.props.students.filter(s => s._id.toString() === this.state.student.toString());
     const { student } = this.state;
 
     let isElementarySchool = null;
@@ -336,22 +335,18 @@ class PointTrackerForm extends React.Component {
     const totalTutorialTokens = isElementarySchool ? 0 : 4;
     const totalGradeTokens = isElementarySchool ? 0 : numberOfPeriods;
     const totalTokensPossible = totalClassTokens + totalGradeTokens + totalTutorialTokens;
-    // console.log('token data:', totalClassTokens, totalTutorialTokens, totalGradeTokens, totalTokensPossible);
 
     const totalEarnedTokens = subjects.map((subject) => {
       const { grade, subjectName } = subject;
       // halfStamps are "X"s from the scoring sheet
       const { excusedDays, stamps, halfStamps } = subject.scoring;
-      // console.log('form data:', isElementarySchool, subjectName, excusedDays, stamps, halfStamps, grade);
 
       let pointsPossible = 40 - (excusedDays * 8);
       if (subjectName.toLowerCase() === 'tutorial') pointsPossible = 8 - (excusedDays * 2);
       if (isElementarySchool && subjectName.toLowerCase() === 'tutorial') pointsPossible = 0;
-      // console.log('pointsPossible', pointsPossible);
 
       const totalClassPointsEarned = (2 * stamps) + halfStamps;
       const classPointPercentage = totalClassPointsEarned / pointsPossible;
-      // console.log('totalClassPointsEarned', totalClassPointsEarned, 'classPointPercentage', classPointPercentage);
 
       let classTokensEarned = 0;
       if (classPointPercentage >= 0.50) classTokensEarned = 1;
@@ -362,14 +357,12 @@ class PointTrackerForm extends React.Component {
       if (!isElementarySchool && grade === 'C') gradeTokensEarned = 1;
 
       const totalTokensEarned = classTokensEarned + gradeTokensEarned;
-      // console.log('classTokens', classTokensEarned, 'gradeTokens', gradeTokensEarned, 'totalTokens', totalTokensEarned);
-      // console.log('.map w/in calc playing time:', subject.scoring);
+
       return totalTokensEarned;
     });
 
     const totalTokensEarned = totalEarnedTokens.reduce((acc, cur) => acc + cur, 0);
     const tokenPercentage = totalTokensEarned / totalTokensPossible;
-    // console.log('totalTokensEarned', totalTokensEarned, 'tokenPercentage', tokenPercentage);
 
     let earnedPlayingTime = 'None of Game';
     if (tokenPercentage >= 0.35) earnedPlayingTime = 'One Quarter';
@@ -383,8 +376,7 @@ class PointTrackerForm extends React.Component {
         earnedPlayingTime,
       });
     }
-    // console.log('earnedPlayingTime', earnedPlayingTime);
-    // console.groupEnd('calcPlayingTime');
+
     return earnedPlayingTime;
   }
 
@@ -715,27 +707,19 @@ class PointTrackerForm extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  students: state.students,
-  teachers: state.teachers,
   synopsisReportLink: state.synopsisReportLink,
 });
 
 const mapDispatchToProps = dispatch => ({
   createPointTracker: pointTracker => dispatch(pointTrackerActions.createPointTracker(pointTracker)),
   createSynopsisReport: pointTracker => dispatch(pointTrackerActions.createSynopsisReport(pointTracker)),
-  clearSynopsisReportLink: () => dispatch(pointTrackerActions.clearSynopsisReportLink()),
 });
 
 PointTrackerForm.propTypes = {
-  students: PropTypes.array,
-  teachers: PropTypes.array,
   synopsisReportLink: PropTypes.string,
   handleChange: PropTypes.func,
   createPointTracker: PropTypes.func,
   createSynopsisReport: PropTypes.func,
-  clearSynopsisReportLink: PropTypes.func,
-  fetchStudents: PropTypes.func,
-  fetchTeachers: PropTypes.func,
   buttonClick: PropTypes.func,
   content: PropTypes.object,
 };

@@ -1,5 +1,33 @@
 @import '../../style/vars';
 
+html, 
+body {   
+  height: 100%; 
+} 
+body { 
+  display: flex;   
+  flex-direction: column; 
+}
+ 
+.content { 
+  flex: 1 0 auto; 
+} 
+
+.footer {   
+  height: 40px;
+  flex-shrink: 0; 
+  background-color: #59AACE;
+  color: #E9E9E9;
+
+  .footer-link {
+
+    &:active {
+      color: white;
+      text-decoration: none;
+    }
+  }
+}
+
 .svg-inline--fa.fa-w-10 {
     width: 2em;
 }

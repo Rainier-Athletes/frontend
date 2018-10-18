@@ -84,7 +84,7 @@ class AdminExtract extends React.Component {
         if (this.state.exportSource !== 'coachesreport') {
           extractCommand = `${this.state.exportSource}?from=${this.state.exportFrom}&to=${this.state.exportTo}`;
         } else {
-          extractCommand = `${this.state.exportSource}?from=2018-10-16&to=2018-10-16`; // dates ignored in this case
+          extractCommand = this.state.exportSource; 
         }
         this.setState({ ...this.state, waitingOnSave: true });
         this.props.createCsvExtract(extractCommand);
@@ -99,25 +99,6 @@ class AdminExtract extends React.Component {
       default:
     }
     return undefined;
-  }
-
-  createCoachesReportCsv = () => {
-    // return JSON.stringify(this.state.coachesReport, null, 4);
-    let csv = '"coach"';
-    const coaches = Object.keys(this.state.coachesReport);
-    const otherHeadings = Object.keys(this.state.coachesReport[coaches[0]][0]);
-    csv = otherHeadings.reduce((acc, curr) => `${acc}, "${curr}"`, csv);
-    csv += '\n';
-    for (let coach = 0; coach < coaches.length; coach++) {
-      for (let player = 0; player < coaches[coach].length; player++) {
-        csv += `"${coaches[coach]}"`;
-        for (let key = 0; key < otherHeadings.length; key++) {
-          csv += `,"${this.state.coachesReport[coaches[coach]][player][otherHeadings[key]]}"`;
-        }
-        csv += '\n';
-      }
-    }
-    return csv;
   }
 
   csvFileSavedResponseJSX = () => {
@@ -171,7 +152,7 @@ class AdminExtract extends React.Component {
             onClick={this.handleExtractButton}>
             Create CSV Extract
             </button> }
-        { this.state.csvFileSaved 
+        { this.state.csvFileSaved && !this.state.waitingOnSave
           ? this.csvFileSavedResponseJSX()
           : null }
       </form>

@@ -37,18 +37,23 @@ export default function SynopsisReport(props) {
         </tr>
       </thead>
       <tbody>
-        {pointTracker.subjects.map((subject, row) => (
-          <tr key={ subject.subjectName }>
-            {isMiddleSchool ? <td>{ subject.subjectName.toLowerCase() !== 'tutorial' ? subject.teacher.lastName : '' }</td> : ''}
-            <td key={ `${subject.subjectName}${row}1` }>{ subject.subjectName }</td>
-            {isMiddleSchool ? <td>{ subject.grade }</td> : ''}
-            <td key={ `${subject.subjectName}${row}2` } >{ subject.scoring.excusedDays} </td>
-            <td key={ `${subject.subjectName}${row}3` }>{ subject.scoring.stamps }</td>
-            <td key={ `${subject.subjectName}${row}4` }>{ subject.scoring.halfStamps }</td>
-            <td key={ `${subject.subjectName}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
-            <td key={ `${subject.subjectName}${row}6` }>{ pointPercentage(subject) }</td>
-          </tr>
-        ))}
+        {pointTracker.subjects.map((subject, row) => {
+          if (subject.subjectName.toLowerCase() !== 'tutorial') {
+            return (
+            <tr key={ subject.subjectName }>
+              {isMiddleSchool ? <td>{ subject.subjectName.toLowerCase() !== 'tutorial' ? subject.teacher.lastName : '' }</td> : ''}
+              <td key={ `${subject.subjectName}${row}1` }>{ subject.subjectName }</td>
+              {isMiddleSchool ? <td>{ subject.grade }</td> : ''}
+              <td key={ `${subject.subjectName}${row}2` } >{ subject.scoring.excusedDays} </td>
+              <td key={ `${subject.subjectName}${row}3` }>{ subject.scoring.stamps }</td>
+              <td key={ `${subject.subjectName}${row}4` }>{ subject.scoring.halfStamps }</td>
+              <td key={ `${subject.subjectName}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
+              <td key={ `${subject.subjectName}${row}6` }>{ pointPercentage(subject) }</td>
+            </tr>
+            );
+          }
+        })}
+
       </tbody>
     </table>
     </React.Fragment>;

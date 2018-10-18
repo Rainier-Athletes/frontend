@@ -290,7 +290,7 @@ class AdminTable extends React.Component {
         ? validRoles[updated.role.toLowerCase()[0]]
         : '';
     }
-    
+
     for (let i = fromRow; i <= toRow; i++) {
       const rowToUpdate = rows[i];
       const updatedRow = update(rowToUpdate, { $merge: updated });

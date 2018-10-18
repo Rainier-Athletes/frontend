@@ -171,7 +171,7 @@ class AdminExtract extends React.Component {
             onClick={this.handleExtractButton}>
             Create CSV Extract
             </button> }
-        { this.state.csvFileSaved 
+        { this.state.csvFileSaved && !this.state.waitingOnSave
           ? this.csvFileSavedResponseJSX()
           : null }
       </form>

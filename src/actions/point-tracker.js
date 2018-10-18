@@ -28,10 +28,12 @@ export const createPointTracker = pointTracker => (store) => {
 
   console.log('createPointTracker sending report', pointTracker.title);
   
+  const studentId = pointTracker.student._id.toString();
+
   return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .send(pointTracker)
+    .send({ ...pointTracker, student: studentId }) // this to prevent circular JSON
     .then((res) => {
       return store.dispatch(setPointTracker(res.body));
     })
@@ -55,27 +57,41 @@ export const fetchPointTrackers = studentIds => (store) => { // eslint-disable-l
 const pointTrackerToHTML = (pointTracker, student) => {
   const synopsisReport = <SynopsisReport pointTracker={pointTracker} student={student}/>;
 
+  // this css styles the html created in components/synopsis-report
   return (
     `<style>
-
-      body {
-        padding: 20px;
-        margin: 20px;
-        border-radius: 30px;
-        border: 2px solid #e8e8e8;
-      }
-
-      h1, h2, h3, p {
-        font-style:bold;
-        font-family: helvetica;
-        color:#089444;
-      }
-
-      p {
-        font-family: Arial;
-        color:#1186B4;
-      }
-
+    img { 
+      width: 200px; 
+    }
+    .image {
+      padding-left: 20px;
+      padding-top: 10px;
+      padding-bottom: 12px;
+      height: 20px;
+      background: #1f1f1f;
+      width: 500px;
+      border-radius: 30px;
+    }
+    body {
+      padding: 20px;
+      margin: '0px;
+      border-radius: 30px;
+      border: 2px solid #e8e8e8;      
+    }
+    h1, h2, h3 {
+      font-style: bold;
+      font-family: "Raleway", Helvetica;
+      color: '089444;
+    }
+    p {
+      font-family: "Raleway", Helvetica;
+      color: #1186B4;
+    }
+    table {
+      font-family: "Raleway", Helvetica;
+      color: #1186B4;
+      font-size: 0.8em;
+    }
     </style>
     ${ReactDOMServer.renderToString(synopsisReport)}
   `);
@@ -83,10 +99,11 @@ const pointTrackerToHTML = (pointTracker, student) => {
 
 export const createSynopsisReport = pointTracker => (store) => {
   const { token } = store.getState();
-  const student = store.getState().students.find(s => s._id.toString() === pointTracker.student.toString());
+  const { student, studentName, title } = pointTracker; 
 
   const data = {
-    name: pointTracker.studentName,
+    name: studentName,
+    title,
     html: pointTrackerToHTML(pointTracker, student),
   };
 

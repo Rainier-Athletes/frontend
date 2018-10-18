@@ -10,15 +10,12 @@ p.infoText {
   margin: 1em 0 !important;
 }
 
-.react-grid-Canvas, .react-grid-Grid {
-  height: 77vh !important;
-}
-
 .react-grid-Container {
   position: relative;
   top: 3.5em;
   max-width: 1366px;
   margin: auto !important;
+  padding-bottom: 20px !important;
 
   .rdg-cell-expand {
     top: 0px;
@@ -622,9 +619,9 @@ p.infoText {
 
 .updateBtn {
   background: white;
-  border: 1px solid #59AACE;
+  border: 1px solid $color-brand-blue;
   font-family: $font-primary;
-  color: #1186B4;
+  color: $color-brand-blue;
   font-size: 12px;
   position: relative;
   text-shadow: rgb(206, 206, 206);
@@ -632,23 +629,140 @@ p.infoText {
 }
 
 .updateBtn:hover {
-  background-color: #1186B4;
+  background-color: $color-brand-blue;
   color: white;
-  border: 1px solid r#1186B4;
+  border: 1px solid $color-brand-blue;
 }
 
 .saveAlert {
-  background-color: $color-error;
+  background-color: $color-brand-blue;
   color: white;
-  font-weight: 700;
-  border-color: gray;
 }
+
+.saveAlert::after {
+  position: absolute;
+  content: '';
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #c0272f;
+  top: -10px;
+  right: -10px;
+}
+
 .saveAlert:hover {
-  background: #CF0021;
+  background: #176584;
+  border: 1px solid #176584;
 }
 
 .tools > button {
   padding: 0.5em;
   border-radius: 0.5em;
   margin-right: 1em;
+}
+
+
+div.react-grid-HeaderCell .input-sm {
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    max-width : 100%;
+    border : 1px solid #ddd;
+}
+
+div.react-grid-HeaderCell:hover
+{
+  z-index:9999;
+  overflow:visible;
+
+  .Select-placeholder {
+    line-height: 30px;
+    margin-left: 8px;
+  }
+
+  input {
+    background-color: white;
+  }
+}
+
+div.react-grid-HeaderCell:hover input:not(.Select-input)
+{
+  max-width: 250px;
+  width: 250px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+div.react-grid-HeaderCell div.input-sm
+{
+  display : none;
+}
+
+div.react-grid-HeaderCell:hover .Select div.Select-Value
+{
+  clear:both;
+}
+
+div.react-grid-HeaderCell .Select-control
+{
+    width: 100%;
+}
+
+div.react-grid-HeaderCell:hover .Select .Select-control,
+div.react-grid-HeaderCell:hover .Select .Select-menu-outer
+{
+    width: max-content;
+    min-width: 250px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+div.react-grid-HeaderCell:hover .Select .Select-control .Select-value
+{
+    float: left;
+    clear: left;
+    margin-right : 20px;
+}
+
+div.react-grid-HeaderCell:hover .Select .Select-multi-value-wrapper
+{
+    padding : 5px;
+    padding-top : 40px;
+}
+
+div.react-grid-HeaderCell:hover .Select div.Select-input
+{
+    position : absolute;
+    left : 0;
+    width:max-content;
+    min-width : 220px;
+    margin-top : -35px;
+    margin-right : 20px;
+    margin-left: 4px;
+    border : 1px solid #ddd;
+    padding-right: 5px;
+}
+
+div.react-grid-HeaderCell:hover .Select--multi .Select-arrow-zone,
+div.react-grid-HeaderCell:hover .Select--multi .Select-clear-zone
+{
+    margin-left: 5px;
+    position : absolute;
+}
+
+div.react-grid-HeaderCell:hover .Select--multi .Select-arrow-zone
+{
+  right : -3px;
+  top : 7px;
+}
+
+div.react-grid-HeaderCell:hover .Select--multi .Select-clear-zone
+{
+  right : 3px;
+  bottom : 3px;
+}
+
+div.react-grid-HeaderCell:hover .Select--multi .Select-control .Select-value
+{
+  max-height : 22px;
 }

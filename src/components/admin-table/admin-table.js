@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import ConnectionModal from '../connection-modal/connection-modal';
 import './admin-table.scss';
 import StudentDataModal from '../student-data-form/student-data-form';
+import SaveTableModal from '../save-table-modal/save-table-modal';
 
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';
@@ -166,6 +167,7 @@ class AdminTable extends React.Component {
       gridModified: false,
       isOpen: false, // for the modal
       sdIsOpen: false, // for student data form modal
+      saveTableIsOpen: false, // for save table modal
     };
   }
 
@@ -226,7 +228,7 @@ class AdminTable extends React.Component {
     profile.studentData.teachers.forEach((teacher) => {
       if (teacher.teacher.active && teacher.currentTeacher) childArr.push(teacher.teacher);
     });
-    
+
     return childArr;
   };
 
@@ -270,11 +272,25 @@ class AdminTable extends React.Component {
   };
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    console.log('handleGridRowsUpdate', fromRow, toRow, updated);
+    const validRoles = {
+      a: 'admin',
+      c: 'coach',
+      f: 'family',
+      m: 'mentor',
+      s: 'student',
+      t: 'teacher',
+    };
     const rows = this.state.rows.slice();
     const newRows = this.state.newRows.slice();
     const updatedRows = this.state.updatedRows.slice();
 
+    // validate role field based on first char of input string
+    if (updated.role) {
+      updated.role = validRoles[updated.role.toLowerCase()[0]]
+        ? validRoles[updated.role.toLowerCase()[0]]
+        : '';
+    }
+    
     for (let i = fromRow; i <= toRow; i++) {
       const rowToUpdate = rows[i];
       const updatedRow = update(rowToUpdate, { $merge: updated });
@@ -289,12 +305,12 @@ class AdminTable extends React.Component {
         // this.setState({ updatedRows });
       }
     }
-    this.setState({ 
-      rows, 
-      newRows, 
-      updatedRows, 
-      gridModified: true, 
-      originalRows: rows, 
+    this.setState({
+      rows,
+      newRows,
+      updatedRows,
+      gridModified: true,
+      originalRows: rows,
     });
   }
 
@@ -353,7 +369,7 @@ class AdminTable extends React.Component {
 
     return this.state.rows[index];
   };
-  
+
   getRows = () => {
     return Selectors.getRows(this.state);
   };
@@ -366,7 +382,7 @@ class AdminTable extends React.Component {
     const rows = this.getRows();
     return rows[rowIdx];
   };
-  
+
   handleCreate = (profile) => {
     this.props.createProfile(profile);
   }
@@ -380,7 +396,7 @@ class AdminTable extends React.Component {
     event.preventDefault();
     const selected = this.state.selectedIndexes.sort((a, b) => b - a); // sort selection in inverse order
     const rows = this.state.rows.slice(0);
-    
+
     // check for connections on rows selected for deactivation
     let activeConnections = false;
     for (let index = 0; index < selected.length; index++) {
@@ -397,7 +413,7 @@ class AdminTable extends React.Component {
       if (rows[i]._id) this.props.deleteProfile(rows[i]);
     }
 
-    // now delete rows from grid in sorted (inverse) order 
+    // now delete rows from grid in sorted (inverse) order
     // so as to not mess up indexes and delete the wrong row(s)
     let { counter } = this.state; // handle special case of deleting rows just added
     let addedRows = this.state.newRows.slice(); // same here
@@ -412,10 +428,10 @@ class AdminTable extends React.Component {
 
     const gridModified = !(counter === 0 && this.state.updatedRows.length === 0);
     this.onRowsDeselected(selected); // clear selection boxes
-    this.setState({ 
-      rows, 
-      newRows: addedRows, 
-      counter, 
+    return this.setState({
+      rows,
+      newRows: addedRows,
+      counter,
       gridModified,
     });
   }
@@ -466,11 +482,11 @@ class AdminTable extends React.Component {
 
     newRows.forEach(row => this.handleCreate(row));
     updatedRows.forEach(row => this.handleUpdate(row));
-    this.setState({ 
-      gridModified: false, 
-      updatedRows: [], 
-      newRows: [], 
-      counters: 0, 
+    this.setState({
+      gridModified: false,
+      updatedRows: [],
+      newRows: [],
+      counters: 0,
     });
     this.createRows() // refresh state with updated rows from db
       .then(() => {
@@ -505,13 +521,22 @@ class AdminTable extends React.Component {
     });
   }
 
-  toggleSdModal = () => {
-    if (!this.state.studentSelected) return undefined;
-
+  toggleSaveTableModal = () => {
     return this.setState({
-      sdIsOpen: !this.state.sdIsOpen,
+      saveTableIsOpen: !this.state.saveTableIsOpen,
     });
   }
+
+  toggleSdModal = (cancelled = false) => () => {
+    if (!this.state.studentSelected) return undefined;
+    const sdWasOpen = this.state.sdIsOpen;
+    this.setState({
+      sdIsOpen: !this.state.sdIsOpen,
+    });
+    if (sdWasOpen && !cancelled) return window.location.reload();
+    return undefined;
+  };
+
 
   handleDetach = () => {
     const selected = this.state.selectedIndexes;
@@ -532,8 +557,15 @@ class AdminTable extends React.Component {
           show={this.state.isOpen}
           onClose={this.toggleModal}>
         </ConnectionModal>
-        {this.state.sdIsOpen
-          ? <StudentDataModal onClose={this.toggleSdModal} studentId={this.state.studentSelected}></StudentDataModal> : null}
+        <SaveTableModal
+          show={this.state.saveTableIsOpen}
+          newRows={this.state.newRows}
+          updatedRows={this.state.updatedRows}
+          onClose={this.toggleSaveTableModal}
+          onSubmit={this.handleUpdateTable}>
+        </SaveTableModal>
+        { this.state.sdIsOpen
+          ? <StudentDataModal onClose={this.toggleSdModal()} onCancel={this.toggleSdModal(true)} studentId={this.state.studentSelected}></StudentDataModal> : null }
         <Prompt when={this.state.gridModified} message="Unsaved changes. Are you sure you want to leave?" />
         <ReactDataGrid
           ref={ node => this.grid = node }
@@ -545,9 +577,9 @@ class AdminTable extends React.Component {
           onGridRowsUpdated={this.handleGridRowsUpdated}
           toolbar={
             <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
-              <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.handleUpdateTable }>Save Table</button>
+              <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.toggleSaveTableModal }>Save Table</button>
               <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
-              <button className="modalBtn" onClick={this.toggleSdModal}>Access Student Data*</button>
+              <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data*</button>
               <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
               <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
               <p className="infoText">*To access a student's data, click the checkbox next to student name, then click the Access Student Data button.</p>
@@ -583,7 +615,6 @@ AdminTable.propTypes = {
   updateProfile: PropTypes.func,
   createProfile: PropTypes.func,
   deleteProfile: PropTypes.func,
-  history: PropTypes.array,
   deleteRelationship: PropTypes.func,
 };
 

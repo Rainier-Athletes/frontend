@@ -2,7 +2,7 @@
 
 .point-tracker-modal {
     position: absolute;
-    height: 85vh;
+    height: 77vh;
     overflow: scroll;
     left: 50%;
     -webkit-transform: translateX(-50%);
@@ -48,11 +48,15 @@ select {
 .survey-question-container {
   width: 100%;
   clear: both;
+  line-height: 18px;
+
+  .inline {
+    margin-left: 12px;
+  }
 }
 
 .survey-questions {
   display: inline-block;
-  width: 50%;
 }
 
 .survey-questions-2 {
@@ -75,33 +79,8 @@ select {
 .survey-questions label {
   display: inline-block;
   margin-bottom: 0;
-  margin-left: 10px;
   vertical-align: middle;
 }
-
-.comm-table {
-  table{
-    border: 1px solid black;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    table-layout: fixed;
-  }
-
-  th, td {
-    border: 1px solid black;
-    padding: 4px 15px;
-  }
-
-  th {
-    font-weight: bold;
-    text-align: center;
-  }
-
-  .comm-table-header {
-    background-color: lightgrey;
-  }
-}
-
 
 .points-tracker {
 
@@ -123,24 +102,26 @@ select {
     }
 
 
-    .submit-report{
-      background: $color-button-green;
+    .btn-secondary {
+      background-color: $color-button-green;
       padding: $pad;
-      border: none;
+      border: 1px solid $color-brand-green;
       border-radius: 3px;
       font-family: $font-primary;
-      font-weight: bold;
+      font-weight: 600;
       color: $color-white;
-      font-size: 16px;
+      font-size: 12px;
 
       &:hover {
-        background: $color-button-focus;
-        color: $color-black;
+        background-color: white;
+        color: $color-brand-green;
+        border: 1px solid $color-brand-green;
       }
 
-      &:visited {
-        background: $color-button-active;
-    }
+      &:active {
+        background-color: $color-brand-green;
+        color: white;
+      }
   }
 
   .synopsis {
@@ -157,4 +138,25 @@ select {
 textarea {
   display: block;
   margin-bottom: 1.5em !important;
+}
+
+.column {
+  bottom: -1.2em;
+  position: relative;
+}
+
+.table {
+  th {
+    width: 200px;
+  }
+
+  textarea {
+    width: 100%;
+  }
+}
+
+.fa-spin {
+  path {
+    fill: #6c757d !important;
+  }
 }

@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 
 import * as studentDataActions from '../../actions/student-data';
 import LoadingSpinner from '../spinner/spinner';
+import * as util from '../../lib/utils';
 
 import './student-data-form.scss';
 
@@ -26,7 +27,7 @@ const emptyStudentData = {
   gender: '',
   school: [],
   dateOfBirth: undefined,
-  grade: undefined,
+  grade: 0,
   synopsisReportArchiveUrl: '',
   googleCalendarUrl: '',
   googleDocsUrl: '',
@@ -164,11 +165,11 @@ class StudentDataForm extends React.Component {
 
   handleGuardianChange = (e) => {
     const { id } = e.target;
+    const idx = id.split('-')[2]; // id is _id-n-arrayidx
     const prop = e.target.getAttribute('prop');
     const newState = Object.assign({}, this.state);
     const { family } = newState;
-    const memberIdx = family.map(m => m.member._id).indexOf(id);
-    family[memberIdx][prop] = !family[memberIdx][prop];
+    family[idx][prop] = !family[idx][prop];
     this.setState(newState);
   }
 
@@ -240,7 +241,7 @@ class StudentDataForm extends React.Component {
             id="new-school"
             type="text"
             label="New school"
-            placeholder="Enter student's new school"
+            placeholder="Enter student&rsqup;s new school"
             value={this.state.school.length ? this.state.school[0].schoolName : ''}
             onChange={this.handleSchoolChange}
           />
@@ -298,7 +299,7 @@ class StudentDataForm extends React.Component {
             id="teamCalendarUrl"
             type="text"
             label="Team Calendar URL: "
-            placeholder="Enter new team&rsquo;s calendar link"
+            placeholder="Enter link to new team&rsquo;s calendar"
             value={this.state.sports.length ? this.state.sports[0].teamCalendarUrl : ''}
             onChange={this.handleSportFieldChange}
           />
@@ -319,7 +320,7 @@ class StudentDataForm extends React.Component {
           <FormGroup controlId={`current-sport-${i}`} key={`current-sport-${i}`}>
             <h4>{`${sport.team} (${sport.sport}), ${sport.league} league`}</h4>
             <a href={sport.teamCalendarUrl ? sport.teamCalendarUrl : '#'}
-              alt="team calendar url"
+              alt="Team Calendar Url"
               target="_blank"
               rel="noopener noreferrer"
               className="team-calendar-url">
@@ -330,7 +331,7 @@ class StudentDataForm extends React.Component {
               id={i}
               onChange={this.handleSportStatusChange}
               >
-              Currently playing
+              Currently Playing
             </Checkbox>
           </FormGroup>
         ))
@@ -341,12 +342,13 @@ class StudentDataForm extends React.Component {
     );
 
     return (
-      <div className="panel student-data-modal">
+      <div className="modal-backdrop">
+        <div className="panel student-data-modal">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title title">Student Profile</h5>
-              <button type="button" className="close" onClick={ this.props.onClose } data-dismiss="modal" aria-label="Close">
+              <button type="button" className="close" onClick={ this.props.onCancel } data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -366,9 +368,9 @@ class StudentDataForm extends React.Component {
                 <Col componentClass={ControlLabel} md={6}>
                   <this.FieldGroup
                     id="dateOfBirth"
-                    type="text"
+                    type="date"
                     label="Date of Birth"
-                    value={this.state.dateOfBirth ? this.state.dateOfBirth : ''}
+                    value={this.state.dateOfBirth ? util.convertDateToValue(this.state.dateOfBirth) : ''}
                     onChange={this.handleTextFieldChange}
                   />
                 </Col>
@@ -386,8 +388,8 @@ class StudentDataForm extends React.Component {
                     id="grade"
                     type="text"
                     label="Grade"
-                    placeholder="Enter student's grade in school"
-                    value={this.state.grade ? this.state.grade : ''}
+                    placeholder="Enter student&rsquo;s grade in school"
+                    value={this.state.grade ? this.state.grade : 0}
                     onChange={this.handleTextFieldChange}
                   />
                 </Col>
@@ -402,7 +404,7 @@ class StudentDataForm extends React.Component {
                         inline
                         checked={this.state.family[i].weekdayGuardian}
                         className="checkbox"
-                        id={`${f.member._id.toString()}-1`}
+                        id={`${f.member._id.toString()}-1-${i}`}
                         prop="weekdayGuardian"
                         onChange={this.handleGuardianChange}
                         >Weekday guardian</Checkbox>
@@ -410,7 +412,7 @@ class StudentDataForm extends React.Component {
                         inline
                         checked={this.state.family[i].weekendGuardian}
                         className="checkbox"
-                        id={`${f.member._id.toString()}-2`}
+                        id={`${f.member._id.toString()}-2-${i}`}
                         prop="weekendGuardian"
                         onChange={this.handleGuardianChange}
                         >Weekend guardian</Checkbox>
@@ -480,7 +482,7 @@ class StudentDataForm extends React.Component {
                     key="password"
                     type="password"
                     label="Synergy Password"
-                    placeholder="Synergy Password"
+                    placeholder="Synergy password"
                     value={this.state.synergy.password ? Buffer.from(this.state.synergy.password, 'base64') : ''}
                     onChange={this.handleSynergyChange}
                   />
@@ -491,12 +493,13 @@ class StudentDataForm extends React.Component {
                 ? <Button type="submit" className="btn btn-secondary" id="submit-student-data">Submit</Button>
                 : <LoadingSpinner />
               }
-              <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onClose}>Cancel</Button>
+              <Button type="reset" className="cancelBtn" id="cancel-student-data" onClick={this.props.onCancel}>Cancel</Button>
               </div>
             </form>
             </div>
           </div>
         </div>
+      </div>
       </div>
     );
   }
@@ -512,6 +515,7 @@ StudentDataForm.propTypes = {
   updateStudentData: PropTypes.func,
   createStudentData: PropTypes.func,
   onClose: PropTypes.func,
+  onCancel: PropTypes.func,
   setWaitingOnSave: PropTypes.func,
   waitingOnSave: PropTypes.bool,
 };

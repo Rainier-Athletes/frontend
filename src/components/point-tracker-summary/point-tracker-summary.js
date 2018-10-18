@@ -41,22 +41,24 @@ class PointTrackerSummary extends React.Component {
               <h4>{pointTracker.title}</h4>
               <br />
               <span className="title">
-                Playing Time Earned:
+                Playing Time Earned
               </span>
               <span> {pointTracker.earnedPlayingTime}</span>
               <br />
               <span className="title">
-                Mentor Granted Playing Time:
+                Mentor Granted Playing Time
               </span>
               <span>{pointTracker.mentorGrantedPlayingTime}</span>
               <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
               <br />
-              <span className="title">Student Action Items:</span>
+              <span className="title">Student Action Items</span>
               <p>{pointTracker.synopsisComments.studentActionItems}</p>
+              <br />
+              <span className="title">Full Synposis Report on Google Drive</span>
+              <a href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">{pointTracker.synopsisLink}</a>
             </div>
 
             <div className="modal-footer">
-              <a role="button" className="btn btn-secondary" href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">Full synopsis report on Google Drive</a>
               <OverlayTrigger placement="top" trigger="click" rootClose overlay={tooltip}>
                 <button type="submit" className="btn btn-primary" onClick={this.handleCopy}>
                   <FontAwesomeIcon icon="copy" className="fa-1x copy"/>

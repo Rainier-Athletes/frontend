@@ -39,7 +39,7 @@
 
 select {
   background-color: $gray;
-  display: inline-block;
+  display: block;
   width: 200px;
   height: 3em;
   padding: 10px;
@@ -56,6 +56,7 @@ select {
 }
 
 .survey-questions {
+  width: 100%;
   display: inline-block;
 }
 
@@ -137,6 +138,7 @@ select {
 
 textarea {
   display: block;
+  width: 100%;
   margin-bottom: 1.5em !important;
 }
 

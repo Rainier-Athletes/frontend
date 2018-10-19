@@ -11,6 +11,7 @@ import './_mentor.scss';
 
 const mapStateToProps = state => ({
   myStudents: state.myStudents,
+  myProfile: state.myProfile,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -23,6 +24,7 @@ class Mentor extends React.Component {
     this.state = {
       content: {},
       modal: false,
+      subPT: false,
       selected: -1,
     };
   }
@@ -47,6 +49,7 @@ class Mentor extends React.Component {
         ...this.state,
         content: this.props.myStudents[i],
         selected: i,
+        subPT: false,
       });
     }
   }
@@ -71,12 +74,38 @@ class Mentor extends React.Component {
     return 'loading';
   }
 
-  handleButtonClick = () => {
-    if (this.state.modal) {
-      this.setState({ modal: false });
-    } else {
-      this.setState({ modal: true });
+  checkRole() {
+    if (this.props.myProfile) {
+      if (this.props.myProfile.role === 'admin') {
+        return (
+          <React.Fragment>
+            <hr />
+            <li
+              className={ this.state.selected === 0 ? 'nav-item selected' : 'nav-item' }
+              onClick={ this.handleSubPT }>
+              <a className="nav-link">
+                Fill Point Tracker as Substitute
+              </a>
+            </li>
+          </React.Fragment>
+        );
+      }
     }
+
+    return null;
+  }
+
+  handleButtonClick = () => {
+    this.setState({ modal: !this.state.modal });
+  }
+
+  handleSubPT = () => {
+    this.setState({
+      ...this.state,
+      content: {},
+      selected: -1,
+      subPT: !this.state.subPT,
+    });
   }
 
   render() {
@@ -84,8 +113,8 @@ class Mentor extends React.Component {
       <React.Fragment>
         <div className="container-fluid">
           <div className="row">
-          <Sidebar content={ this.fetchStudents() }/>
-          <MentorContent content={ this.state.content } buttonClick={ this.handleButtonClick }>
+          <Sidebar content={ this.fetchStudents() } role={ this.checkRole() }/>
+          <MentorContent content={ this.state.content } subPT={ this.state.subPT } buttonClick={ this.handleButtonClick } >
             {
               this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
             }
@@ -100,6 +129,7 @@ class Mentor extends React.Component {
 Mentor.propTypes = {
   fetchMyStudents: PropTypes.func,
   myStudents: PropTypes.array,
+  myProfile: PropTypes.object,
 };
 
 

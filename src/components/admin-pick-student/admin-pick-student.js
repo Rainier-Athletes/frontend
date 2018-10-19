@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
+import './admin-pick-student.scss';
+
 const mapStateToProps = state => ({
   students: state.students,
 });
@@ -30,7 +32,7 @@ class AdminPickStudent extends React.Component {
 
   render() {
     return (
-    <React.Fragment>
+    <div className="container pick-student">
       {
         this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
       }
@@ -57,12 +59,13 @@ class AdminPickStudent extends React.Component {
               }
             </select>
         </div>
+        <br />
         <div>
           Note: Only students with associated student data are listed.
         </div>
 
       </form>
-    </React.Fragment>
+    </div>
     );
   }
 }

@@ -26,7 +26,7 @@ const emptyStudentData = {
   family: [],
   gender: '',
   school: [],
-  dateOfBirth: undefined,
+  dateOfBirth: '',
   grade: 0,
   synopsisReportArchiveUrl: '',
   googleCalendarUrl: '',

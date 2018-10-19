@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const renderIf = (test, trueComponent, falseComponent = null) => {
   return test ? trueComponent : falseComponent;
 };
@@ -29,48 +31,33 @@ const cookieDelete = (key) => {
 
 const convertDateToValue = (inputDate) => {
   let date;
+  const dateFormat = 'YYYY[-]MM[-]DD';
+
   if (inputDate instanceof Date) {
     date = inputDate.toISOString();
   } else {
     date = inputDate;
   }
   
-  if (!inputDate) return null; // handle null inputs
+  const dateOnly = date.replace(/T.+/, ''); // strip off time portion
 
-  // replacing '-' with '/' gets around the timezone issue that skews
-  // dates by a day depending on the current time of day in your
-  // current location.
-  const dt = new Date(date.replace(/-/g, '/').replace(/T.+/, ''));
-  const year = dt.getFullYear().toString();
-  const month = (dt.getMonth() + 1).toString().padStart(2, '0');
-  const day = dt.getDate().toString().padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  date = moment(dateOnly);
+
+  const formattedDate = date.format(dateFormat);
+
+  return formattedDate;
 };
 
-const getNextFridayDateString = (date) => {
-  // find the friday following the given date
-  let workingDate = date;
-  if (!(date instanceof Date)) workingDate = new Date(date);
-  
-  const day = workingDate.getDay();
-  const today = workingDate.getDate();
-  const delta = day > 5 ? 7 + 5 - day : 5 - day;
-  workingDate.setDate(today + delta);
+const getReportingPeriods = () => {
+  let monday = moment().isoWeekday(1).subtract(14, 'days');
+  let sunday = moment().isoWeekday(0).subtract(7, 'days');
 
-  return convertDateToValue(workingDate);
-};
-
-const getReportingPeriods = (date = Date.now()) => {
-  let friday = new Date(`${getNextFridayDateString(date)} 00:00:00`);
-  friday = new Date(friday).setDate(new Date(friday).getDate() - 14);
-  let monday = new Date(friday).setDate(new Date(friday).getDate() - 4);
-  let sunday = new Date(friday).setDate(new Date(friday).getDate() + 2);
   const reportingPeriods = [];
-
+  const dateFormat = 'YYYY[-]MM[-]DD';
   for (let i = 0; i < 3; i++) {
-    reportingPeriods.push(`${new Date(monday).toDateString()} to ${new Date(sunday).toDateString()}`);
-    monday = new Date(monday).setDate(new Date(monday).getDate() + 7);
-    sunday = new Date(sunday).setDate(new Date(sunday).getDate() + 7);
+    reportingPeriods.push(`${monday.format(dateFormat)} to ${sunday.format(dateFormat)}`);
+    monday = monday.add(7, 'days');
+    sunday = sunday.add(7, 'days');
   }
   
   return reportingPeriods;
@@ -82,6 +69,5 @@ export {
   cookieFetch, 
   cookieDelete,
   convertDateToValue,
-  getNextFridayDateString,
   getReportingPeriods,
 }; 

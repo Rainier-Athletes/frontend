@@ -49,6 +49,7 @@ class Mentor extends React.Component {
         ...this.state,
         content: this.props.myStudents[i],
         selected: i,
+        subPT: false,
       });
     }
   }
@@ -95,19 +96,16 @@ class Mentor extends React.Component {
   }
 
   handleButtonClick = () => {
-    if (this.state.modal) {
-      this.setState({ modal: false });
-    } else {
-      this.setState({ modal: true });
-    }
+    this.setState({ modal: !this.state.modal });
   }
 
   handleSubPT = () => {
-    if (this.state.subPT) {
-      this.setState({ subPT: false });
-    } else {
-      this.setState({ subPT: true });
-    }
+    this.setState({
+      ...this.state,
+      content: {},
+      selected: -1,
+      subPT: !this.state.subPT,
+    });
   }
 
   render() {

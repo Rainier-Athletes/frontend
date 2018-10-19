@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import PointTrackerForm from '../point-tracker-form/point-tracker-form';
 
 const mapStateToProps = state => ({
   students: state.students,
@@ -9,44 +10,57 @@ const mapStateToProps = state => ({
 class AdminPickStudent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      content: undefined,
+      modal: false,
+    };
   }
 
   handleChange = (e) => {
-    const modal = !this.state.modal;
     this.setState({
       content: this.props.students.find(s => s._id.toString() === e.target.value),
-      modal,
     });
+  }
+
+  handleButtonClick = () => {
+    this.setState({ modal: !this.state.modal });
   }
 
   render() {
     return (
-    <form onChange={this.props.onChange}>
-      <div className="field-wrap dropdown">
-        <label className="title" htmlFor="student">Select student:</label>
-          <select type="student" required>
-            <option value="" selected="true" disabled> -- select a student -- </option>
-            {
-              this.props.students
-                .filter(s => s.studentData) // only show students with defined studentData object
-                .sort((p1, p2) => {
-                  if (p1.lastName > p2.lastName) return 1;
-                  if (p1.lastName < p2.lastName) return -1;
-                  return 0;
-                })
-                .map((p) => {
-                  return <option key={p._id} value={p._id}>
-                    {p.lastName}, {p.firstName}
-                  </option>;
-                })
-            }
-          </select>
-      </div>
-      <div>
-        Note: Only students with associated student data are listed.
-      </div>
-    </form>
+    <React.Fragment>
+      {
+        this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
+      }
+      <button type="submit" className="linkToPT" onClick={ this.handleButtonClick }>
+          Point Tracker
+      </button>
+      <form onChange={ this.handleChange }>
+        <div className="field-wrap dropdown">
+            <select type="student" required>
+              <option value="" selected="true" disabled> -- select a student -- </option>
+              {
+                this.props.students
+                  .filter(s => s.studentData) // only show students with defined studentData object
+                  .sort((p1, p2) => {
+                    if (p1.lastName > p2.lastName) return 1;
+                    if (p1.lastName < p2.lastName) return -1;
+                    return 0;
+                  })
+                  .map((p) => {
+                    return <option key={p._id} value={p._id}>
+                      {p.lastName}, {p.firstName}
+                    </option>;
+                  })
+              }
+            </select>
+        </div>
+        <div>
+          Note: Only students with associated student data are listed.
+        </div>
+
+      </form>
+    </React.Fragment>
     );
   }
 }

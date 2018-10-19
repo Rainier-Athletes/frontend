@@ -1,16 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AdminPickStudent from '../admin-pick-student/admin-pick-student';
 import * as util from '../../lib/utils';
 
 import './_mentor-content.scss';
-
-const mapStateToProps = state => ({
-  students: state.students,
-});
-
 
 class MentorContent extends React.Component {
   render() {
@@ -126,7 +120,7 @@ class MentorContent extends React.Component {
 
     return (
       <React.Fragment>
-      <div role="main" className="col-md-8 panel">
+      <div role="main" className="col-md-8 panel content-panel">
         <div className="sidebar-sticky">
           <a className="nav-link disabled sidebar-heading">
             { this.props.subPT ? 'Select Student' : 'Student Profile' }
@@ -158,6 +152,7 @@ MentorContent.propTypes = {
   btnClick: PropTypes.func,
   children: PropTypes.node,
   buttonClick: PropTypes.func,
+  subPT: PropTypes.boolean,
 };
 
-export default connect(mapStateToProps)(MentorContent);
+export default MentorContent;

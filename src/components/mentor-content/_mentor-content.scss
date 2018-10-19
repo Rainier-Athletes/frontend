@@ -1,5 +1,9 @@
 @import '../../style/vars';
 
+.content-panel {
+  overflow: inherit !important;
+}
+
 .panel {
     background-color: white;
     border-radius: 6px;

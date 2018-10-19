@@ -52,6 +52,7 @@ export default function SynopsisReport(props) {
             </tr>
             );
           }
+          return undefined;
         })}
         {isMiddleSchool
           ? pointTracker.subjects.map((subject, row) => {

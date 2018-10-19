@@ -15,10 +15,10 @@ const mapStateToProps = state => ({
 class AdminDashboard extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       show: '/admindashboard',
-    }; 
+    };
   }
 
   handleSidebarClick = (e) => {
@@ -46,7 +46,7 @@ class AdminDashboard extends React.Component {
         <div className="container-fluid">
           <div className="row">
           <AdminSidebar onClick={ this.handleSidebarClick } />
-          <AdminContent show={ this.state.show } students={this.props.students} />
+          <AdminTable />
           </div>
         </div>
       </React.Fragment>

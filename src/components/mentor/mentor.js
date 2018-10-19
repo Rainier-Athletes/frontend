@@ -11,6 +11,7 @@ import './_mentor.scss';
 
 const mapStateToProps = state => ({
   myStudents: state.myStudents,
+  myProfile: state.myProfile,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -56,9 +57,9 @@ class Mentor extends React.Component {
       return this.props.myStudents.map((student, i) => {
         return (
           <li
-            className={ this.state.selected === i.toString() ? 'nav-item selected' : 'nav-item' }
+            className={ this.state.selected === (i + 1).toString() ? 'nav-item selected' : 'nav-item' }
             key={student._id}
-            data-index={i}
+            data-index={i + 1}
             onClick={ this.handleSidebarClick.bind(this) }>
             <a className="nav-link">
               { student.firstName } { student.lastName }
@@ -69,6 +70,26 @@ class Mentor extends React.Component {
     }
 
     return 'loading';
+  }
+
+  checkRole() {
+    if (this.props.myProfile.role === 'admin') {
+      return (
+        <React.Fragment>
+        <hr />
+        <li
+          className={ this.state.selected === 0 ? 'nav-item selected' : 'nav-item' }
+          data-index={0}
+          onClick={ this.handleSidebarClick.bind(this) }>
+          <a className="nav-link">
+            Fill Point Tracker as Substitute
+          </a>
+        </li>
+        </React.Fragment>
+      );
+    }
+
+    return null;
   }
 
   handleButtonClick = () => {
@@ -84,7 +105,7 @@ class Mentor extends React.Component {
       <React.Fragment>
         <div className="container-fluid">
           <div className="row">
-          <Sidebar content={ this.fetchStudents() }/>
+          <Sidebar content={ this.fetchStudents() } role={ this.checkRole() }/>
           <MentorContent content={ this.state.content } buttonClick={ this.handleButtonClick }>
             {
               this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
@@ -100,6 +121,7 @@ class Mentor extends React.Component {
 Mentor.propTypes = {
   fetchMyStudents: PropTypes.func,
   myStudents: PropTypes.array,
+  myProfile: PropTypes.object,
 };
 
 

@@ -23,7 +23,7 @@ class AdminPickStudent extends React.Component {
   }
 
   handleButtonClick = () => {
-    if (Object.keys(this.content).length > 0) {
+    if (Object.keys(this.state.content).length > 0) {
       this.setState({ modal: !this.state.modal });
     }
   }

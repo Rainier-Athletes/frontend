@@ -69,14 +69,14 @@ const pointTrackerToHTML = (pointTracker, student) => {
       padding-bottom: 12px;
       height: 20px;
       background: #1f1f1f;
-      width: 500px;
+      width: 450px; // 500px;
       border-radius: 30px;
     }
     body {
       padding: 20px;
       margin: '0px;
-      border-radius: 30px;
-      border: 2px solid #e8e8e8;      
+      // border-radius: 30px;
+      // border: 2px solid #e8e8e8;      
     }
     h1, h2, h3 {
       font-style: bold;
@@ -87,10 +87,16 @@ const pointTrackerToHTML = (pointTracker, student) => {
       font-family: "Raleway", Helvetica;
       color: #1186B4;
     }
-    table {
+    table, td, th {
       font-family: "Raleway", Helvetica;
       color: #1186B4;
       font-size: 0.8em;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    table {
+      margin-left: auto;
+      margin-right: auto;
     }
     </style>
     ${ReactDOMServer.renderToString(synopsisReport)}

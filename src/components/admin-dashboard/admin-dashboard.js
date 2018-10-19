@@ -46,7 +46,7 @@ class AdminDashboard extends React.Component {
         <div className="container-fluid">
           <div className="row">
           <AdminSidebar onClick={ this.handleSidebarClick } />
-          <AdminTable />
+          <AdminContent show={ this.state.show } students={this.props.students} />
           </div>
         </div>
       </React.Fragment>

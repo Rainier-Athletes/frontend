@@ -24,6 +24,7 @@ class Mentor extends React.Component {
     this.state = {
       content: {},
       modal: false,
+      subPT: false,
       selected: -1,
     };
   }
@@ -57,9 +58,9 @@ class Mentor extends React.Component {
       return this.props.myStudents.map((student, i) => {
         return (
           <li
-            className={ this.state.selected === (i + 1).toString() ? 'nav-item selected' : 'nav-item' }
+            className={ this.state.selected === i.toString() ? 'nav-item selected' : 'nav-item' }
             key={student._id}
-            data-index={i + 1}
+            data-index={i}
             onClick={ this.handleSidebarClick.bind(this) }>
             <a className="nav-link">
               { student.firstName } { student.lastName }
@@ -73,20 +74,21 @@ class Mentor extends React.Component {
   }
 
   checkRole() {
-    if (this.props.myProfile.role === 'admin') {
-      return (
-        <React.Fragment>
-        <hr />
-        <li
-          className={ this.state.selected === 0 ? 'nav-item selected' : 'nav-item' }
-          data-index={0}
-          onClick={ this.handleSidebarClick.bind(this) }>
-          <a className="nav-link">
-            Fill Point Tracker as Substitute
-          </a>
-        </li>
-        </React.Fragment>
-      );
+    if (this.props.myProfile) {
+      if (this.props.myProfile.role === 'admin') {
+        return (
+          <React.Fragment>
+            <hr />
+            <li
+              className={ this.state.selected === 0 ? 'nav-item selected' : 'nav-item' }
+              onClick={ this.handleSubPT }>
+              <a className="nav-link">
+                Fill Point Tracker as Substitute
+              </a>
+            </li>
+          </React.Fragment>
+        );
+      }
     }
 
     return null;
@@ -100,13 +102,21 @@ class Mentor extends React.Component {
     }
   }
 
+  handleSubPT = () => {
+    if (this.state.subPT) {
+      this.setState({ subPT: false });
+    } else {
+      this.setState({ subPT: true });
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="container-fluid">
           <div className="row">
           <Sidebar content={ this.fetchStudents() } role={ this.checkRole() }/>
-          <MentorContent content={ this.state.content } buttonClick={ this.handleButtonClick }>
+          <MentorContent content={ this.state.content } subPT={ this.state.subPT } buttonClick={ this.handleButtonClick } >
             {
               this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
             }

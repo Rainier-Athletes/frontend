@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const renderIf = (test, trueComponent, falseComponent = null) => {
   return test ? trueComponent : falseComponent;
 };
@@ -47,10 +49,18 @@ const convertDateToValue = (inputDate) => {
   return `${year}-${month}-${day}`;
 };
 
+const toLocalTime = (time = Date.now()) => {
+  const d = new Date(time);
+  const offset = (new Date().getTimezoneOffset() / 60) * -1;
+  const n = new Date(d.getTime() + offset);
+  console.log('toLocalTime offset, n', offset, n.toDateString());
+  return n;
+};
+
 const getNextFridayDateString = (date) => {
   // find the friday following the given date
   let workingDate = date;
-  if (!(date instanceof Date)) workingDate = new Date(date);
+  // if (!(date instanceof Date)) workingDate = new Date(date);
   
   const day = workingDate.getDay();
   const today = workingDate.getDate();
@@ -60,11 +70,14 @@ const getNextFridayDateString = (date) => {
   return convertDateToValue(workingDate);
 };
 
-const getReportingPeriods = (date = Date.now()) => {
-  let friday = new Date(`${getNextFridayDateString(date)} 00:00:00`);
+const getReportingPeriods = () => {
+  debugger;
+  let friday = moment().isoWeekday(5); // getNextFridayDateString(moment());
   friday = new Date(friday).setDate(new Date(friday).getDate() - 14);
   let monday = new Date(friday).setDate(new Date(friday).getDate() - 4);
   let sunday = new Date(friday).setDate(new Date(friday).getDate() + 2);
+  monday = moment().isoWeekday(1).subtract(14, 'days');
+  sunday = moment().isoWeekday(0).subtract(7, 'days');
   const reportingPeriods = [];
 
   for (let i = 0; i < 3; i++) {

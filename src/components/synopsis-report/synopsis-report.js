@@ -81,7 +81,7 @@ export default function SynopsisReport(props) {
       <div className="image">
         <img style={{ WebkitUserSelect: 'none' }} src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png" /> 
       </div>
-          <h3>Report for: {pointTracker.title}</h3>
+          <h3>{pointTracker.title}</h3>
           <h3>{studentsSchoolName}</h3>
             {scoreTableJSX}
           <h3>Playing Time Earned: </h3>

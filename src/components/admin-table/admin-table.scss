@@ -8,6 +8,7 @@ p.infoText {
   max-width: 1366px;
   margin: auto;
   top: 84px;
+  overflow: inherit !important;
   position: relative;
   height: inherit !important;
   padding: 0 0 1.5em 0 !important;
@@ -15,11 +16,27 @@ p.infoText {
   .top-toolbar {
     padding: 14px;
     background-color: #59AACE;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 
     button {
       padding: 0.5em;
       border-radius: 0.5em;
       margin-right: 1em;
+    }
+
+    .toolbar-btn {
+      background: #1186B4;
+      border: 1px solid #1186B4;
+      font-family: "Raleway", Helvetica, Arial, sans-serif;
+      color: white;
+      font-size: 12px;
+      position: relative;
+
+      &:hover {
+        background: #04668c;
+        border: 1px solid #04668c;
+      }
     }
   }
 }
@@ -615,9 +632,9 @@ p.infoText {
 
 .modalBtn {
   background: white;
-  border: 1px solid #089444;
+  border: 1px solid $color-brand-blue;
   font-family: $font-primary;
-  color: #089444;
+  color: $color-brand-blue;
   font-size: 12px;
   margin-bottom: .3em;
   position: relative;
@@ -626,9 +643,9 @@ p.infoText {
 }
 
 .modalBtn:hover {
-  background-color: #089444;
+  background-color: $color-brand-blue;
   color: white;
-  border: 1px solid #089444;
+  border: 1px solid $color-brand-blue;
 }
 
 .deleteBtn:hover {
@@ -644,24 +661,19 @@ p.infoText {
 }
 
 .updateBtn {
-  background: white;
-  border: 1px solid $color-brand-blue;
+  background-color: $color-brand-green;
+  border: 1px solid $color-brand-green;
   font-family: $font-primary;
-  color: $color-brand-blue;
+  color: white;
   font-size: 12px;
   position: relative;
   text-shadow: rgb(206, 206, 206);
 }
 
 .updateBtn:hover {
-  background-color: $color-brand-blue;
+  background-color: #097b39;
   color: white;
-  border: 1px solid $color-brand-blue;
-}
-
-.saveAlert {
-  background-color: $color-brand-blue;
-  color: white;
+  border: 1px solid #097b39;
 }
 
 .saveAlert::after {
@@ -676,8 +688,8 @@ p.infoText {
 }
 
 .saveAlert:hover {
-  background: #176584;
-  border: 1px solid #176584;
+  background: #097b39;
+  border: 1px solid #097b39;
 }
 
 .tools > button {

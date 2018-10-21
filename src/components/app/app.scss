@@ -1,25 +1,24 @@
 @import '../../style/vars';
 
-html, 
-body {   
-  height: 100%; 
-} 
-body { 
-  display: flex;   
-  flex-direction: column; 
+html,
+body {
+  height: 100%;
 }
- 
-.content { 
-  flex: 1 0 auto; 
-} 
+body {
+  display: flex;
+  flex-direction: column;
+}
 
-.footer {   
+.content {
+  flex: 1 0 auto;
+}
+
+.footer {
   height: 40px;
   position: fixed;
   bottom: 0;
   right: 0;
   flex-shrink: 0; 
-  background-color: #59AACE;
   color: #E9E9E9;
 
   .footer-link {

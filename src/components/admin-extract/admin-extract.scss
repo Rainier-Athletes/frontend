@@ -22,6 +22,10 @@
     padding: 0;
   }
 
+  .modal-footer {
+    max-width: 200px;
+  }
+
   .modal-transition {
     transition: all 0.4s ease;
   }

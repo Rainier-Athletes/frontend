@@ -1,6 +1,7 @@
 import React from 'react';
 import { Prompt } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
@@ -559,6 +560,12 @@ class AdminTable extends React.Component {
 
   /*eslint-disable*/
   render() {
+    const tooltip = (
+      <Tooltip id="tooltip">
+        Select student first
+      </Tooltip>
+    );
+
     return (
       <React.Fragment>
         <div className="panel admin-table">
@@ -581,8 +588,8 @@ class AdminTable extends React.Component {
             ? <StudentDataModal onClose={this.toggleSdModal()} onCancel={this.toggleSdModal(true)} studentId={this.state.studentSelected}></StudentDataModal> : null }
           <Prompt when={this.state.gridModified} message="Unsaved changes. Are you sure you want to leave?" />
           <div className="top-toolbar">
-            <button className="toolbar-btn" onClick={ this.toggleAdminExtractModal }>Export CSV</button>
             <button className="toolbar-btn">Import CSV</button>
+            <button className="toolbar-btn" onClick={ this.toggleAdminExtractModal }>Export CSV</button>
             <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.toggleSaveTableModal }>Save Table</button>
           </div>
           <ReactDataGrid
@@ -595,11 +602,12 @@ class AdminTable extends React.Component {
             onGridRowsUpdated={this.handleGridRowsUpdated}
             toolbar={
               <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
-                <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
-                <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data*</button>
+                <button className="modalBtn" onClick={this.toggleModal}>+ Connection</button>
+                <OverlayTrigger placement="top" trigger="click" rootClose overlay={tooltip}>
+                  <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data</button>
+                </OverlayTrigger>
                 <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
                 <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
-                <p className="infoText">*To access a student's data, click the checkbox next to student name, then click the Access Student Data button.</p>
               </Toolbar>
             }
             enableRowSelect={true}

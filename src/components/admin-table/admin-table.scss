@@ -20,7 +20,7 @@ p.infoText {
     border-top-right-radius: 6px;
 
     button {
-      padding: 0.5em;
+      padding: 0.4em 1em;
       border-radius: 0.5em;
       margin-right: 1em;
     }
@@ -74,6 +74,8 @@ p.infoText {
 
   .react-grid-Main {
     outline: 0;
+    top: -1.5em;
+    position: relative; 
   }
 
   .react-grid-Toolbar .btn {
@@ -639,7 +641,6 @@ p.infoText {
   margin-bottom: .3em;
   position: relative;
   text-shadow: rgb(206, 206, 206);
-  width: 12em;
 }
 
 .modalBtn:hover {
@@ -693,7 +694,7 @@ p.infoText {
 }
 
 .tools > button {
-  padding: 0.5em;
+  padding: 0.4em 1em;
   border-radius: 0.5em;
   margin-right: 1em;
 }

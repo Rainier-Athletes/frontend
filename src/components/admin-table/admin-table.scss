@@ -10,7 +10,18 @@ p.infoText {
   top: 84px;
   position: relative;
   height: inherit !important;
-  padding: 1.5em 0 !important;
+  padding: 0 0 1.5em 0 !important;
+
+  .top-toolbar {
+    padding: 14px;
+    background-color: #59AACE;
+
+    button {
+      padding: 0.5em;
+      border-radius: 0.5em;
+      margin-right: 1em;
+    }
+  }
 }
 
 .react-grid-Toolbar .tools {
@@ -640,7 +651,6 @@ p.infoText {
   font-size: 12px;
   position: relative;
   text-shadow: rgb(206, 206, 206);
-  width: 7em;
 }
 
 .updateBtn:hover {

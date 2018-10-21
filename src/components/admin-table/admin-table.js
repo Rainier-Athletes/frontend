@@ -8,6 +8,7 @@ import ConnectionModal from '../connection-modal/connection-modal';
 import './admin-table.scss';
 import StudentDataModal from '../student-data-form/student-data-form';
 import SaveTableModal from '../save-table-modal/save-table-modal';
+import AdminExtract from '../admin-extract/admin-extract';
 
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';
@@ -168,6 +169,7 @@ class AdminTable extends React.Component {
       isOpen: false, // for the modal
       sdIsOpen: false, // for student data form modal
       saveTableIsOpen: false, // for save table modal
+      adminExtractIsOpen: false, // admin extract modal
     };
   }
 
@@ -527,6 +529,12 @@ class AdminTable extends React.Component {
     });
   }
 
+  toggleAdminExtractModal = () => {
+    return this.setState({
+      adminExtractIsOpen: !this.state.adminExtractIsOpen,
+    });
+  }
+
   toggleSdModal = (cancelled = false) => () => {
     if (!this.state.studentSelected) return undefined;
     const sdWasOpen = this.state.sdIsOpen;
@@ -565,9 +573,18 @@ class AdminTable extends React.Component {
             onClose={this.toggleSaveTableModal}
             onSubmit={this.handleUpdateTable}>
           </SaveTableModal>
+          <AdminExtract
+            show={this.state.adminExtractIsOpen}
+            onClose={this.toggleAdminExtractModal}
+          />
           { this.state.sdIsOpen
             ? <StudentDataModal onClose={this.toggleSdModal()} onCancel={this.toggleSdModal(true)} studentId={this.state.studentSelected}></StudentDataModal> : null }
           <Prompt when={this.state.gridModified} message="Unsaved changes. Are you sure you want to leave?" />
+          <div className="top-toolbar">
+            <button className="importBtn" onClick={ this.toggleAdminExtractModal }>Export CSV</button>
+            <button className="exportBtn">Import CSV</button>
+            <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.toggleSaveTableModal }>Save Table</button>
+          </div>
           <ReactDataGrid
             ref={ node => this.grid = node }
             enableCellSelect={true}
@@ -578,7 +595,6 @@ class AdminTable extends React.Component {
             onGridRowsUpdated={this.handleGridRowsUpdated}
             toolbar={
               <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
-                <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.toggleSaveTableModal }>Save Table</button>
                 <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
                 <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data*</button>
                 <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>

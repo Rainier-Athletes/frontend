@@ -1,0 +1,76 @@
+@import '../../style/vars';
+
+.extract-modal {
+  position: absolute;
+  height: 77vh;
+  overflow: scroll;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px rgba(0,0,0, 0.3) !important;
+  margin-top: 22vh !important;
+
+  .modal-content {
+    border: none;
+  }
+
+  .modal-body {
+    padding: 1.5em 0;
+  }
+
+  .modal-header {
+    padding: 0;
+  }
+
+  .modal-transition {
+    transition: all 0.4s ease;
+  }
+
+  &.panel {
+    height: auto !important;
+  }
+
+  .modal-dialog {
+    margin: 0 !important;
+  }
+
+  .title {
+    text-transform: uppercase;
+    color: #A9A9A9;
+    font-weight: 600;
+    display: block;
+  }
+
+  .fieldwrap {
+    margin-bottom: 18px;
+
+    input {
+      width: 200px;
+    }
+  }
+
+  span, select {
+    display: block;
+    line-height: 30px;
+    height: 40px;
+  }
+
+  .close > span {
+    line-height: 11px;
+    font-size: 3em;
+    margin-bottom: 0;
+  }
+
+  .btn-secondary {
+    background-color: $color-brand-green;
+    font-weight: 600;
+    border: 0.5px solid $color-brand-green;
+
+    &:hover {
+      background-color: white;
+      color: $color-brand-green;
+      font-weight: 600;
+      border: 0.5px solid $color-brand-green;
+    }
+  }
+}

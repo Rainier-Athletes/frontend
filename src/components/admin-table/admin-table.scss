@@ -4,6 +4,15 @@ p.infoText {
   font-size: 12px;
 }
 
+.admin-table {
+  max-width: 1366px;
+  margin: auto;
+  top: 84px;
+  position: relative;
+  height: inherit !important;
+  padding: 1.5em 0 !important;
+}
+
 .react-grid-Toolbar .tools {
   float: left;
   width: 100%;
@@ -11,11 +20,7 @@ p.infoText {
 }
 
 .react-grid-Container {
-  position: relative;
-  top: 3.5em;
-  max-width: 1366px;
-  margin: auto !important;
-  padding-bottom: 20px !important;
+  max-width: 1364px;
 
   .rdg-cell-expand {
     top: 0px;
@@ -29,8 +34,18 @@ p.infoText {
   }
 
   .react-grid-Toolbar {
-    border-color: none;
+    border-style: none;
     height: 100px;
+  }
+
+  .react-grid-Grid {
+    border: 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .react-grid-Main {
+    outline: 0;
   }
 
   .react-grid-Toolbar .btn {

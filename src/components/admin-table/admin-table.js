@@ -597,7 +597,7 @@ class AdminTable extends React.Component {
             enableCellSelect={true}
             onGridSort={this.handleGridSort}
             columns={this.getColumns()}
-            rowGetter={ this.rowGetter }
+            rowGetter={this.rowGetter}
             rowsCount={this.getSize()}
             onGridRowsUpdated={this.handleGridRowsUpdated}
             toolbar={

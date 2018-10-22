@@ -1,6 +1,7 @@
 import React from 'react';
 import { Prompt } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
@@ -8,6 +9,7 @@ import ConnectionModal from '../connection-modal/connection-modal';
 import './admin-table.scss';
 import StudentDataModal from '../student-data-form/student-data-form';
 import SaveTableModal from '../save-table-modal/save-table-modal';
+import AdminExtract from '../admin-extract/admin-extract';
 
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';
@@ -168,6 +170,7 @@ class AdminTable extends React.Component {
       isOpen: false, // for the modal
       sdIsOpen: false, // for student data form modal
       saveTableIsOpen: false, // for save table modal
+      adminExtractIsOpen: false, // admin extract modal
     };
   }
 
@@ -527,6 +530,12 @@ class AdminTable extends React.Component {
     });
   }
 
+  toggleAdminExtractModal = () => {
+    return this.setState({
+      adminExtractIsOpen: !this.state.adminExtractIsOpen,
+    });
+  }
+
   toggleSdModal = (cancelled = false) => () => {
     if (!this.state.studentSelected) return undefined;
     const sdWasOpen = this.state.sdIsOpen;
@@ -551,60 +560,77 @@ class AdminTable extends React.Component {
 
   /*eslint-disable*/
   render() {
+    const tooltip = (
+      <Tooltip id="tooltip">
+        Select student first
+      </Tooltip>
+    );
+
     return (
       <React.Fragment>
-        <ConnectionModal
-          show={this.state.isOpen}
-          onClose={this.toggleModal}>
-        </ConnectionModal>
-        <SaveTableModal
-          show={this.state.saveTableIsOpen}
-          newRows={this.state.newRows}
-          updatedRows={this.state.updatedRows}
-          onClose={this.toggleSaveTableModal}
-          onSubmit={this.handleUpdateTable}>
-        </SaveTableModal>
-        { this.state.sdIsOpen
-          ? <StudentDataModal onClose={this.toggleSdModal()} onCancel={this.toggleSdModal(true)} studentId={this.state.studentSelected}></StudentDataModal> : null }
-        <Prompt when={this.state.gridModified} message="Unsaved changes. Are you sure you want to leave?" />
-        <ReactDataGrid
-          ref={ node => this.grid = node }
-          enableCellSelect={true}
-          onGridSort={this.handleGridSort}
-          columns={this.getColumns()}
-          rowGetter={ this.rowGetter }
-          rowsCount={this.getSize()}
-          onGridRowsUpdated={this.handleGridRowsUpdated}
-          toolbar={
-            <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
-              <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.toggleSaveTableModal }>Save Table</button>
-              <button className="modalBtn" onClick={this.toggleModal}>+ Add A Connection</button>
-              <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data*</button>
-              <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
-              <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
-              <p className="infoText">*To access a student's data, click the checkbox next to student name, then click the Access Student Data button.</p>
-            </Toolbar>
-          }
-          enableRowSelect={true}
-          onRowSelect={this.onRowSelect}
-          rowSelection={{
-            showCheckbox: true,
-            enableShiftSelect: true,
-            onRowsSelected: this.onRowsSelected,
-            onRowsDeselected: this.onRowsDeselected,
-            selectBy: {
-              indexes: this.state.selectedIndexes,
-            },
-          }}
-          getSubRowDetails={this.getSubRowDetails}
-          onCellExpand={this.onCellExpand}
-          rowHeight={40}
-          minHeight={600}
-          rowScrollTimeout={200}
-          onAddFilter={this.handleFilterChange}
-          getValidFilterValues={this.getValidFilterValues}
-          onClearFilters={this.handleOnClearFilters}
+        <div className="panel admin-table">
+          <ConnectionModal
+            show={this.state.isOpen}
+            onClose={this.toggleModal}>
+          </ConnectionModal>
+          <SaveTableModal
+            show={this.state.saveTableIsOpen}
+            newRows={this.state.newRows}
+            updatedRows={this.state.updatedRows}
+            onClose={this.toggleSaveTableModal}
+            onSubmit={this.handleUpdateTable}>
+          </SaveTableModal>
+          <AdminExtract
+            show={this.state.adminExtractIsOpen}
+            onClose={this.toggleAdminExtractModal}
           />
+          { this.state.sdIsOpen
+            ? <StudentDataModal onClose={this.toggleSdModal()} onCancel={this.toggleSdModal(true)} studentId={this.state.studentSelected}></StudentDataModal> : null }
+          <Prompt when={this.state.gridModified} message="Unsaved changes. Are you sure you want to leave?" />
+          <div className="top-toolbar">
+            <button className="toolbar-btn">Import CSV</button>
+            <button className="toolbar-btn" onClick={ this.toggleAdminExtractModal }>Export CSV</button>
+            <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.toggleSaveTableModal }>Save Table</button>
+          </div>
+          <ReactDataGrid
+            ref={ node => this.grid = node }
+            enableCellSelect={true}
+            onGridSort={this.handleGridSort}
+            columns={this.getColumns()}
+            rowGetter={ this.rowGetter }
+            rowsCount={this.getSize()}
+            onGridRowsUpdated={this.handleGridRowsUpdated}
+            toolbar={
+              <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
+                <button className="modalBtn" onClick={this.toggleModal}>+ Connection</button>
+                <OverlayTrigger placement="top" trigger="click" rootClose overlay={tooltip}>
+                  <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data</button>
+                </OverlayTrigger>
+                <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
+                <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
+              </Toolbar>
+            }
+            enableRowSelect={true}
+            onRowSelect={this.onRowSelect}
+            rowSelection={{
+              showCheckbox: true,
+              enableShiftSelect: true,
+              onRowsSelected: this.onRowsSelected,
+              onRowsDeselected: this.onRowsDeselected,
+              selectBy: {
+                indexes: this.state.selectedIndexes,
+              },
+            }}
+            getSubRowDetails={this.getSubRowDetails}
+            onCellExpand={this.onCellExpand}
+            rowHeight={40}
+            minHeight={600}
+            rowScrollTimeout={200}
+            onAddFilter={this.handleFilterChange}
+            getValidFilterValues={this.getValidFilterValues}
+            onClearFilters={this.handleOnClearFilters}
+            />
+        </div>
       </React.Fragment>
     );
   }

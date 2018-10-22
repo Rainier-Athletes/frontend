@@ -110,6 +110,19 @@ const pointTrackerToHTML = (pointTracker, student) => {
       margin-left: auto;
       margin-right: auto;
     }
+    .row {
+      display: block;
+      width: 100%;
+      height: 80px;
+    }
+    .left {
+      float: left;
+    }
+    .right {
+      float: left;
+      margin-left: 130px;
+    }
+
     </style>
     ${ReactDOMServer.renderToString(synopsisReport)}
   `);

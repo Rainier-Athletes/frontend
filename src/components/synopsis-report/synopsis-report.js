@@ -86,20 +86,26 @@ export default function SynopsisReport(props) {
           <h2>{pointTracker.title.split(' ').slice(2).join(' ')}</h2>
           <h3>{studentsSchoolName}</h3>
             {scoreTableJSX}
-          <h3>Playing Time Earned</h3>
-            <p>{pointTracker.earnedPlayingTime}</p>
+          <div className="row">
+            <div className="left">
+              <h3>Playing Time Earned</h3>
+              <p>{pointTracker.earnedPlayingTime}</p>
+            </div>
+            <div className="right">
               {playingTimeOverride
                 ? <div>
                     <h3>Mentor Granted Playing Time</h3>
                       <p>{pointTracker.mentorGrantedPlayingTime}</p>
                   </div>
                 : null}
-              {playingTimeOverride
-                ? <div>
-                    <h3>Mentor&#39;s Comments re: Playing Time</h3>
-                      <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
-                  </div>
-                : null}
+            </div>
+          </div>
+                {playingTimeOverride
+                  ? <div>
+                      <h3>Mentor&#39;s Comments re: Playing Time</h3>
+                        <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
+                    </div>
+                  : null}
           <h3>Student Action Items</h3>
             <p>{pointTracker.synopsisComments.studentActionItems}</p>
           <h3>Sports Update</h3>

@@ -190,6 +190,8 @@ class AdminExtract extends React.Component {
 }
 
 AdminExtract.propTypes = {
+  show: PropTypes.func,
+  onClose: PropTypes.func,
   csvResult: PropTypes.object,
   createCsvExtract: PropTypes.func,
   error: PropTypes.object,

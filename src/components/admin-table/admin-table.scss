@@ -25,7 +25,21 @@ p.infoText {
       margin-right: 1em;
     }
 
-    .toolbar-btn {
+    .toolbar-btn-import {
+      background: grey;
+      border: 1px solid grey;
+      font-family: "Raleway", Helvetica, Arial, sans-serif;
+      color: white;
+      font-size: 12px;
+      position: relative;
+
+      &:hover {
+        background: grey;
+        border: 1px solid grey;
+      }
+    }
+
+    .toolbar-btn-export {
       background: #1186B4;
       border: 1px solid #1186B4;
       font-family: "Raleway", Helvetica, Arial, sans-serif;

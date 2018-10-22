@@ -2,13 +2,12 @@
 
 .summary-modal {
   position: absolute;
-  height: 77vh;
+  max-height: 77vh;
   overflow: scroll;
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
   box-shadow: 0 0 12px rgba(0,0,0, 0.3) !important;
-  margin-top: 22vh !important;
 
   .modal-content {
     border: none;
@@ -75,7 +74,7 @@
     font-size: 12px;
     font-weight: 600;
     border: 0.5px solid $color-brand-green !important;
-  
+
     &:hover {
       background-color: white;
       color: $color-brand-green;

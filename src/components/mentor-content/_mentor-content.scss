@@ -1,9 +1,5 @@
 @import '../../style/vars';
 
-.content-panel {
-  overflow: inherit !important;
-}
-
 .container {
   padding-left: 10px !important;
 }
@@ -50,7 +46,6 @@
 }
 
 .student-profile, .point-tracker-modal {
-  overflow: scroll;
 
   span {
     display: block;

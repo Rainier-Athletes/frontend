@@ -6,15 +6,15 @@ export default function SynopsisReport(props) {
   const { pointTracker, student } = props;
 
   const studentsSchool = student.studentData.school.find(s => s.currentSchool);
-  const studentsSchoolName = studentsSchool ? studentsSchool.schoolName : '';
+  const studentsSchoolName = studentsSchool ? studentsSchool.schoolName : 'Score Table';
   const isMiddleSchool = studentsSchool ? !studentsSchool.isElementarySchool : true;
-  const playingTimeOverride = pointTracker.mentorGrantedPlayingTime !== '' 
+  const playingTimeOverride = pointTracker.mentorGrantedPlayingTime !== ''
     && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime;
 
   const pointPercentage = (subject) => {
     const { excusedDays, stamps, halfStamps } = subject.scoring;
-    const maxPointsPossible = subject.subjectName.toLowerCase() !== 'tutorial' 
-      ? (40 - excusedDays * 8) 
+    const maxPointsPossible = subject.subjectName.toLowerCase() !== 'tutorial'
+      ? (40 - excusedDays * 8)
       : 8 - excusedDays * 2;
     const pointsEarned = 2 * stamps + halfStamps;
     const percentage = pointsEarned / maxPointsPossible;
@@ -80,30 +80,37 @@ export default function SynopsisReport(props) {
   const pointTrackerHTML = <React.Fragment>
     <body>
       <div className="image">
-        <img style={{ WebkitUserSelect: 'none' }} src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png" /> 
+        <img style={{ WebkitUserSelect: 'none' }} src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png" />
       </div>
-          <h3>{pointTracker.title}</h3>
+          <h1>{pointTracker.title.split(' ').slice(0, 2).join(' ')}</h1>
+          <h2>{pointTracker.title.split(' ').slice(2).join(' ')}</h2>
           <h3>{studentsSchoolName}</h3>
             {scoreTableJSX}
-          <h3>Playing Time Earned: </h3>
-            <p>{pointTracker.earnedPlayingTime}</p>
+          <div className="row">
+            <div className="left">
+              <h3>Playing Time Earned</h3>
+              <p>{pointTracker.earnedPlayingTime}</p>
+            </div>
+            <div className="right">
               {playingTimeOverride
                 ? <div>
                     <h3>Mentor Granted Playing Time</h3>
                       <p>{pointTracker.mentorGrantedPlayingTime}</p>
                   </div>
                 : null}
-              {playingTimeOverride
-                ? <div>
-                    <h3>Mentor&#39;s Comments re: Playing Time</h3>
-                      <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
-                  </div>
-                : null}
-          <h3>Student Action Items</h3>      
+            </div>
+          </div>
+                {playingTimeOverride
+                  ? <div>
+                      <h3>Mentor&#39;s Comments re: Playing Time</h3>
+                        <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
+                    </div>
+                  : null}
+          <h3>Student Action Items</h3>
             <p>{pointTracker.synopsisComments.studentActionItems}</p>
-          <h3>Sports Update</h3>      
+          <h3>Sports Update</h3>
             <p>{pointTracker.synopsisComments.sportsUpdate}</p>
-          <h3>Additional Comments</h3>      
+          <h3>Additional Comments</h3>
             <p>{pointTracker.synopsisComments.additionalComments}</p>
 
     </body>

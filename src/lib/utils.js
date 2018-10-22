@@ -33,12 +33,14 @@ const convertDateToValue = (inputDate) => {
   let date;
   const dateFormat = 'YYYY[-]MM[-]DD';
 
+  if (!inputDate) return null;
+
   if (inputDate instanceof Date) {
     date = inputDate.toISOString();
   } else {
     date = inputDate;
   }
-  
+
   const dateOnly = date.replace(/T.+/, ''); // strip off time portion
 
   date = moment(dateOnly);
@@ -59,15 +61,15 @@ const getReportingPeriods = () => {
     monday = monday.add(7, 'days');
     sunday = sunday.add(7, 'days');
   }
-  
+
   return reportingPeriods;
 };
 
-export { 
-  renderIf, 
-  devLogger, 
-  cookieFetch, 
+export {
+  renderIf,
+  devLogger,
+  cookieFetch,
   cookieDelete,
   convertDateToValue,
   getReportingPeriods,
-}; 
+};

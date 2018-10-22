@@ -7,7 +7,6 @@ import AuthRedirect from '../auth-redirect/auth-redirect';
 import Mentor from '../mentor/mentor';
 import Navbar from '../navbar/navbar';
 import Dashboard from '../dashboard/dashboard';
-import AdminDashboard from '../admin-dashboard/admin-dashboard';
 import AdminTable from '../admin-table/admin-table';
 import Auth from '../auth/auth';
 
@@ -35,8 +34,7 @@ export default class App extends React.Component {
             <Navbar />
             <Dashboard />
             <Route exact path="*" component={AuthRedirect} />
-            <Route exact path={routes.ADMIN_DASHBOARD_ROUTE} component={ AdminUser(AdminDashboard) } />
-            <Route exact path={routes.ADMIN_DATA_ROUTE} component={ AdminUser(AdminTable) } />
+            <Route exact path={routes.ADMIN_ROUTE} component={ AdminUser(AdminTable) } />
             <Route exact path={routes.MENTOR_ROUTE} component={ MentorUser(Mentor) } />
           </div>
         </BrowserRouter>

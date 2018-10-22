@@ -67,7 +67,7 @@ class Navbar extends React.Component {
   }
 
   renderAdmin = () => {
-    return <React.Fragment><li className="nav-item"><Link to="/mentor" className="nav-link">Mentor</Link></li><li className="nav-item"><Link to="/admindashboard" className="nav-link">Admin</Link></li></React.Fragment>;
+    return <React.Fragment><li className="nav-item"><Link to="/mentor" className="nav-link">Mentor</Link></li><li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li></React.Fragment>;
   }
 
   determineRole = () => {

@@ -1,12 +1,30 @@
 @import '../../style/vars';
 
-html,
-body {
+html, body {
   height: 100%;
 }
+
 body {
   display: flex;
   flex-direction: column;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: gray;
+}
+
+::-webkit-scrollbar-corner {
+  display: none;
 }
 
 .content {
@@ -18,7 +36,7 @@ body {
   position: fixed;
   bottom: 0;
   right: 0;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   color: #E9E9E9;
 
   .footer-link {

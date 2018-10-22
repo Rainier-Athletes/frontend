@@ -45,6 +45,25 @@
     }
   }
 
+  .dropdown-toggle {
+    cursor: pointer;
+  }
+
+  .dropdown-item {
+    background-color: white;
+    color: black;
+
+    &:hover {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    &:active {
+      background-color: #464040;
+      color: white;
+    }
+  }
+
   li {
     padding: 10px;
   }

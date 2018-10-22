@@ -27,7 +27,7 @@ export const createPointTracker = pointTracker => (store) => {
   const { token } = store.getState();
 
   console.log('createPointTracker sending report', pointTracker.title);
-  
+
   const studentId = pointTracker.student._id.toString();
 
   return superagent.post(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
@@ -53,46 +53,58 @@ export const fetchPointTrackers = studentIds => (store) => { // eslint-disable-l
       return store.dispatch(setPointTrackers(pointTrackers));
     });
 };
-  
+
 const pointTrackerToHTML = (pointTracker, student) => {
   const synopsisReport = <SynopsisReport pointTracker={pointTracker} student={student}/>;
 
   // this css styles the html created in components/synopsis-report
   return (
     `<style>
-    img { 
-      width: 200px; 
+    img {
+      width: 200px;
     }
     .image {
-      padding-left: 20px;
-      padding-top: 10px;
-      padding-bottom: 12px;
       height: 20px;
       background: #1f1f1f;
-      width: 450px; // 500px;
-      border-radius: 30px;
+      width: 100%;
+      padding: 10px 20px 15px 10px;
+      margin-bottom: 24px;
     }
     body {
+      font-family: "Raleway", Helvetica;
+      color: #000;
       padding: 20px;
-      margin: '0px;
-      // border-radius: 30px;
-      // border: 2px solid #e8e8e8;      
+      margin: 0px;
+      font-size: 11px;
+      line-height: 18px;
+      font-weight: 300;
     }
-    h1, h2, h3 {
-      font-style: bold;
-      font-family: "Raleway", Helvetica;
-      color: '089444;
+    h3 {
+      text-transform: uppercase;
+      color: #A9A9A9;
+      font-weight: 700;
+      font-size: 10px;
+      margin-top: 24px;
     }
-    p {
+    table {
       font-family: "Raleway", Helvetica;
-      color: #1186B4;
-    }
-    table, td, th {
-      font-family: "Raleway", Helvetica;
-      color: #1186B4;
-      font-size: 0.8em;
-      border: 1px solid black;
       border-collapse: collapse;
+      font-size: 11px;
+      line-height: 20px;
+      font-weight: 300;
+
+      table-layout: auto;
+      width: 100%;
+    }
+    th {
+      border-bottom: 2px solid #ddd;
+      table-layout: auto;
+      text-align: left;
+      font-weight: 400;
+    }
+    td {
+      table-layout: auto;
+      text-align: left;
     }
     table {
       margin-left: auto;
@@ -105,7 +117,7 @@ const pointTrackerToHTML = (pointTracker, student) => {
 
 export const createSynopsisReport = pointTracker => (store) => {
   const { token } = store.getState();
-  const { student, studentName, title } = pointTracker; 
+  const { student, studentName, title } = pointTracker;
 
   const data = {
     name: studentName,

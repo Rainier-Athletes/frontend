@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import * as extractActions from '../../actions/extract';
+
+import './admin-extract.scss';
 
 const defaultExport = {
   exportSource: '',
@@ -84,16 +87,16 @@ class AdminExtract extends React.Component {
         if (this.state.exportSource !== 'coachesreport') {
           extractCommand = `${this.state.exportSource}?from=${this.state.exportFrom}&to=${this.state.exportTo}`;
         } else {
-          extractCommand = this.state.exportSource; 
+          extractCommand = this.state.exportSource;
         }
         this.setState({ ...this.state, waitingOnSave: true });
         this.props.createCsvExtract(extractCommand);
         break;
       case 'cancel':
-        this.setState({ 
-          ...this.state, 
-          show: 'nada', 
-          ...defaultExport, 
+        this.setState({
+          ...this.state,
+          show: 'nada',
+          ...defaultExport,
         });
         break;
       default:
@@ -105,57 +108,83 @@ class AdminExtract extends React.Component {
     let responseJSX;
     if (!this.state.error) {
       responseJSX = this.state.csvLink
-        ? <h5>CSV Extract File URL: <a href={this.state.csvLink} target="blank" rel="noopener noreferrer">{this.state.csvLink}</a></h5>
+        ? <a className="btn btn-secondary" href={this.state.csvLink} role="button" target="blank" rel="noopener noreferrer">Link to CSV File</a>
         : <div>
             <h5>Coaches Mailmerge Data</h5>
             <div dangerouslySetInnerHTML={{ __html: this.state.coachesReport }} />
             <h5><br />Select the text above then copy and paste into a Google Sheets spreadsheet.</h5>
           </div>;
     } else if (this.state.error.status === 404) {
-      responseJSX = <h5>No data found in the date range provided. Try a different range or try the request again if you are sure there is data available.</h5>;
+      responseJSX = <h6>No data found in the date range provided. Try a different range or try the request again if you are sure there is data available.</h6>;
     } else {
-      responseJSX = <h5>Unexpected error saving CSV. Status: {this.error.status}, Message: {this.error.message}</h5>;
+      responseJSX = <h6>Unexpected error saving CSV. Status: {this.error.status}, Message: {this.error.message}</h6>;
     }
     return responseJSX;
   };
 
   render() {
+    if (!this.props.show) {
+      return null;
+    }
+
+    const extractButton = (
+      this.state.waitingOnSave
+        ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/>
+        : <button
+          className="btn btn-secondary"
+          type="submit"
+          id="extract"
+          onClick={this.handleExtractButton}>
+          Create CSV Extract
+          </button>
+    );
+
     return (
-      <form onChange={this.exportFormChange}>
-        <div className="fieldwrap dropdown">
-          <label className="title" htmlFor="data-source">Exported data source:</label>
-          <select type="text" id="data-source"required>
-            <option value="" selected="true" disabled>-- select data source -- </option> 
-            <option value="pointstracker" key="pointstracker">Point Tracker Forms</option>
-            <option value="studentdata" key="studentdata">Student Data</option>
-            <option value="coachesreport" key="coachesreport">Coaches Mailmerge Report</option>
-          </select>
-        </div>
-        {this.state.exportSource !== 'coachesreport'
-          ? <div className="fieldwrap">
-              <label className="title" htmlFor="from">Starting date:</label>
-              <input type="date" id="from" />
+      <div className="modal-backdrop">
+        <div className="panel extract-modal">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title title">Export as CSV</h5>
+                <button type="button" className="close" onClick={ this.props.onClose } data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div className="modal-body">
+                <form onChange={this.exportFormChange}>
+                  <div className="fieldwrap dropdown">
+                    <label className="title" htmlFor="data-source">Exported data source:</label>
+                    <select type="text" id="data-source"required>
+                      <option value="" selected="true" disabled>-- select data source -- </option>
+                      <option value="pointstracker" key="pointstracker">Point Tracker Forms</option>
+                      <option value="studentdata" key="studentdata">Student Data</option>
+                      <option value="coachesreport" key="coachesreport">Coaches Mailmerge Report</option>
+                    </select>
+                  </div>
+                  {this.state.exportSource !== 'coachesreport'
+                    ? <div className="fieldwrap">
+                        <label className="title" htmlFor="from">Starting date:</label>
+                        <input type="date" id="from" />
+                      </div>
+                    : null}
+                  {this.state.exportSource !== 'coachesreport'
+                    ? <div className="fieldwrap">
+                        <label className="title" htmlFor="to">Ending date:</label>
+                        <input type="date" id="to" />
+                      </div>
+                    : null}
+                    <div className="modal-footer">
+                      { this.state.csvFileSaved && !this.state.waitingOnSave
+                        ? this.csvFileSavedResponseJSX()
+                        : extractButton }
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          : null}
-        {this.state.exportSource !== 'coachesreport'
-          ? <div className="fieldwrap">
-              <label className="title" htmlFor="to">Ending date:</label>
-              <input type="date" id="to" />
-            </div>
-          : null}
-        { this.state.waitingOnSave 
-          ? <h5>Waiting...</h5> 
-          : <button 
-            className="btn btn-secondary" 
-            type="submit" 
-            id="extract"
-            onClick={this.handleExtractButton}>
-            Create CSV Extract
-            </button> }
-        { this.state.csvFileSaved && !this.state.waitingOnSave
-          ? this.csvFileSavedResponseJSX()
-          : null }
-      </form>
+          </div>
+      </div>
     );
   }
 }

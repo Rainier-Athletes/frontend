@@ -588,8 +588,8 @@ class AdminTable extends React.Component {
             ? <StudentDataModal onClose={this.toggleSdModal()} onCancel={this.toggleSdModal(true)} studentId={this.state.studentSelected}></StudentDataModal> : null }
           <Prompt when={this.state.gridModified} message="Unsaved changes. Are you sure you want to leave?" />
           <div className="top-toolbar">
-            <button className="toolbar-btn">Import CSV</button>
-            <button className="toolbar-btn" onClick={ this.toggleAdminExtractModal }>Export CSV</button>
+            <button className="toolbar-btn-import">Import CSV</button>
+            <button className="toolbar-btn-export" onClick={ this.toggleAdminExtractModal }>Export CSV</button>
             <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.toggleSaveTableModal }>Save Table</button>
           </div>
           <ReactDataGrid

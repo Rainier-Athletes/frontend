@@ -9,24 +9,6 @@ body {
   flex-direction: column;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  display: none;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: gray;
-}
-
-::-webkit-scrollbar-corner {
-  display: none;
-}
-
 .content {
   flex: 1 0 auto;
 }
@@ -63,4 +45,24 @@ body {
 
 button:focus {
     outline: none !important;
+}
+
+.panel {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: lightgray;
+  }
+
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
 }

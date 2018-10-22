@@ -157,7 +157,7 @@ class PointTrackerForm extends React.Component {
 
   handleTitleChange = (event) => {
     const newState = { ...this.state, synopsisSaved: false };
-    newState.title = `${newState.studentName} ${event.target.value}`;
+    newState.title = `${newState.studentName}: ${event.target.value}`;
     this.setState(newState);
   }
 

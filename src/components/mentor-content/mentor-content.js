@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AdminPickStudent from '../admin-pick-student/admin-pick-student';
 import * as util from '../../lib/utils';
 
 import './_mentor-content.scss';
@@ -119,10 +120,10 @@ class MentorContent extends React.Component {
 
     return (
       <React.Fragment>
-      <div role="main" className="col-md-8 panel">
+      <div role="main" className="col-md-8 panel content-panel">
         <div className="sidebar-sticky">
           <a className="nav-link disabled sidebar-heading">
-            Student Profile
+            { this.props.subPT ? 'Select Student' : 'Student Profile' }
           </a>
           {
             Object.keys(student).length !== 0 ? <button type="submit" className="linkToPT" onClick={ this.props.buttonClick }>
@@ -131,6 +132,9 @@ class MentorContent extends React.Component {
           }
           {
             student.studentData ? studentProfile : null
+          }
+          {
+            this.props.subPT ? <AdminPickStudent /> : null
           }
         </div>
       </div>
@@ -148,6 +152,7 @@ MentorContent.propTypes = {
   btnClick: PropTypes.func,
   children: PropTypes.node,
   buttonClick: PropTypes.func,
+  subPT: PropTypes.boolean,
 };
 
 export default MentorContent;

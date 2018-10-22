@@ -11,7 +11,7 @@ class Sidebar extends React.Component {
       selected: null,
     };
   }
-  
+
   render() {
     return (
       <nav className="col-md-3 d-md-block sidebar">
@@ -25,6 +25,9 @@ class Sidebar extends React.Component {
             {
               this.props.content
             }
+            {
+              this.props.role
+            }
           </ul>
         </div>
       </nav>
@@ -34,6 +37,7 @@ class Sidebar extends React.Component {
 
 Sidebar.propTypes = {
   content: PropTypes.node,
+  role: PropTypes.node,
 };
 
 export default Sidebar;

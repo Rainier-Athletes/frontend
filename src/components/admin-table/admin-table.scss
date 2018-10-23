@@ -670,8 +670,8 @@ p.infoText {
 .alertArea .grid-alert {
   display: inline;
   cursor: none;
-  color: red;
-  font-weight: 600;
+  color: #c0272f;
+  font-weight: 900;
   text-decoration: underline;
   }
 
@@ -706,12 +706,12 @@ p.infoText {
 .saveAlert::after {
   position: absolute;
   content: '';
-  width: 25px;
-  height: 25px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background-color: #c0272f;
-  top: -10px;
-  right: -10px;
+  top: -5px;
+  right: -5px;
 }
 
 .saveAlert:hover {

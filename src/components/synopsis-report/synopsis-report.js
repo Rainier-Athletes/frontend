@@ -76,6 +76,23 @@ export default function SynopsisReport(props) {
       </tbody>
     </table>
     </React.Fragment>;
+  
+  const playingTimeJSX = <React.Fragment>
+    <div className="row">
+      <div className="left">
+        <h3>Playing Time Earned</h3>
+        <p>{pointTracker.earnedPlayingTime}</p>
+      </div>
+      <div className="right">
+        {playingTimeOverride
+          ? <div>
+              <h3>Mentor Granted Playing Time</h3>
+                <p>{pointTracker.mentorGrantedPlayingTime}</p>
+            </div>
+          : null}
+      </div>
+    </div>
+  </React.Fragment>;
 
   const pointTrackerHTML = <React.Fragment>
     <body>
@@ -86,20 +103,8 @@ export default function SynopsisReport(props) {
           <h2>{pointTracker.title.split(':')[1].trim()}</h2>
           <h3>{studentsSchoolName}</h3>
             {scoreTableJSX}
-          <div className="row">
-            <div className="left">
-              <h3>Playing Time Earned</h3>
-              <p>{pointTracker.earnedPlayingTime}</p>
-            </div>
-            <div className="right">
-              {playingTimeOverride
-                ? <div>
-                    <h3>Mentor Granted Playing Time</h3>
-                      <p>{pointTracker.mentorGrantedPlayingTime}</p>
-                  </div>
-                : null}
-            </div>
-          </div>
+            {playingTimeJSX}
+          
                 {playingTimeOverride
                   ? <div>
                       <h3>Mentor&#39;s Comments re: Playing Time</h3>

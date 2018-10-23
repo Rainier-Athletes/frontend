@@ -1,7 +1,6 @@
 import React from 'react';
 import { Prompt } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
@@ -171,6 +170,9 @@ class AdminTable extends React.Component {
       sdIsOpen: false, // for student data form modal
       saveTableIsOpen: false, // for save table modal
       adminExtractIsOpen: false, // admin extract modal
+      selectStudentFirstMsg: false,
+      removeActiveConnectionsMsg: false,
+      saveTableBeforeConnectingMsg: false,
     };
   }
 
@@ -399,7 +401,7 @@ class AdminTable extends React.Component {
     event.preventDefault();
     const selected = this.state.selectedIndexes.sort((a, b) => b - a); // sort selection in inverse order
     const rows = this.state.rows.slice(0);
-
+    const newState = { removeActiveConnectionsMsg: false };
     // check for connections on rows selected for deactivation
     let activeConnections = false;
     for (let index = 0; index < selected.length; index++) {
@@ -407,9 +409,12 @@ class AdminTable extends React.Component {
       if (rows[i].children && rows[i].children.length) activeConnections = true;
       if (activeConnections) break;
     }
+
     if (activeConnections) {
-      return alert('Please remove all active connections from selected rows before deleting.');
+      newState.removeActiveConnectionsMsg = true;
+      return this.setState(newState);
     }
+    this.setState(newState);
 
     for (let index = 0; index < selected.length; index++) {
       const i = selected[index];
@@ -518,9 +523,11 @@ class AdminTable extends React.Component {
   };
 
   toggleModal = () => {
-    if (this.state.gridModified) return alert('Please save changes to table before adding new connection.');
+    if (this.state.gridModified) return this.setState({ saveTableBeforeConnectingMsg: true });
+
     return this.setState({
       isOpen: !this.state.isOpen,
+      saveTableBeforeConnectingMsg: false,
     });
   }
 
@@ -537,11 +544,14 @@ class AdminTable extends React.Component {
   }
 
   toggleSdModal = (cancelled = false) => () => {
-    if (!this.state.studentSelected) return undefined;
+    if (!this.state.studentSelected) return this.setState({ selectStudentFirstMsg: true });
+
     const sdWasOpen = this.state.sdIsOpen;
     this.setState({
       sdIsOpen: !this.state.sdIsOpen,
+      selectStudentFirstMsg: false,
     });
+
     if (sdWasOpen && !cancelled) return window.location.reload();
     return undefined;
   };
@@ -560,12 +570,25 @@ class AdminTable extends React.Component {
 
   /*eslint-disable*/
   render() {
-    const tooltip = (
-      <Tooltip id="tooltip">
-        Select student first
-      </Tooltip>
-    );
-
+    const gridAlertMessageJSX = () => {
+      if (this.state.selectStudentFirstMsg) {
+        return <div className="grid-alert">
+          <p>Select a student first.</p>
+        </div>;
+      }
+      if (this.state.removeActiveConnectionsMsg) {
+        return <div className="grid-alert">
+          <p>Please remove all active connections from selected rows before deleting.</p>
+        </div>;
+      }
+      if (this.state.saveTableBeforeConnectingMsg) {
+        return <div className="grid-alert">
+          <p>Please save table before adding new connections.</p>
+        </div>;
+      }
+      return null;
+    }
+    
     return (
       <React.Fragment>
         <div className="panel admin-table">
@@ -601,14 +624,15 @@ class AdminTable extends React.Component {
             rowsCount={this.getSize()}
             onGridRowsUpdated={this.handleGridRowsUpdated}
             toolbar={
+              <React.Fragment>
               <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
                 <button className="modalBtn" onClick={this.toggleModal}>+ Connection</button>
-                <OverlayTrigger placement="top" trigger="click" rootClose overlay={tooltip}>
                   <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data</button>
-                </OverlayTrigger>
                 <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
                 <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
               </Toolbar>
+              {gridAlertMessageJSX()}
+              </React.Fragment>
             }
             enableRowSelect={true}
             onRowSelect={this.onRowSelect}

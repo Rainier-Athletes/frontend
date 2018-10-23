@@ -574,10 +574,10 @@ class AdminTable extends React.Component {
         return <p className="grid-alert">Select a student first.</p>;
       }
       if (this.state.removeActiveConnectionsMsg) {
-        return <p className="grid-alert">Please remove all active connections from selected rows before deleting.</p>;
+        return <p className="grid-alert">Remove active connections from selected rows before deleting.</p>;
       }
       if (this.state.saveTableBeforeConnectingMsg) {
-        return <p className="grid-alert">Please save table before adding new connections.</p>;
+        return <p className="grid-alert">Save table before adding new connections.</p>;
       }
       return null;
     };

@@ -181,7 +181,7 @@ class AdminTable extends React.Component {
   }
 
   willTransitionFrom(component, transition) {
-    if (this.state.gridModified && !window.confirm('Unsaved changes! Are you sure you want to leave?')) {
+    if (this.state.gridModified && !window.confirm('Unsaved changes! Are you sure you want to leave?')) { //eslint-disable-line
       transition.abort();
     }
   }

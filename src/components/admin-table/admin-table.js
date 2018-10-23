@@ -568,27 +568,21 @@ class AdminTable extends React.Component {
     this.props.deleteRelationship(query);
   }
 
-  /*eslint-disable*/
   render() {
     const gridAlertMessageJSX = () => {
       if (this.state.selectStudentFirstMsg) {
-        return <div className="grid-alert">
-          <p>Select a student first.</p>
-        </div>;
+        return <p className="grid-alert">Select a student first.</p>;
       }
       if (this.state.removeActiveConnectionsMsg) {
-        return <div className="grid-alert">
-          <p>Please remove all active connections from selected rows before deleting.</p>
-        </div>;
+        return <p className="grid-alert">Please remove all active connections from selected rows before deleting.</p>;
       }
       if (this.state.saveTableBeforeConnectingMsg) {
-        return <div className="grid-alert">
-          <p>Please save table before adding new connections.</p>
-        </div>;
+        return <p className="grid-alert">Please save table before adding new connections.</p>;
       }
       return null;
-    }
+    };
     
+    /*eslint-disable*/
     return (
       <React.Fragment>
         <div className="panel admin-table">
@@ -624,15 +618,13 @@ class AdminTable extends React.Component {
             rowsCount={this.getSize()}
             onGridRowsUpdated={this.handleGridRowsUpdated}
             toolbar={
-              <React.Fragment>
               <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
                 <button className="modalBtn" onClick={this.toggleModal}>+ Connection</button>
-                  <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data</button>
+                <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data</button>
+                <button className="alertArea" >{gridAlertMessageJSX()}</button>
                 <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
                 <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
               </Toolbar>
-              {gridAlertMessageJSX()}
-              </React.Fragment>
             }
             enableRowSelect={true}
             onRowSelect={this.onRowSelect}

@@ -667,6 +667,13 @@ p.infoText {
   border: 1px solid $color-brand-blue;
 }
 
+.alertArea .grid-alert {
+  display: inline;
+  cursor: none;
+  color: red;
+  font-weight: 600;
+  }
+
 .deleteBtn:hover {
   background-color: #b13636;
   color: white;

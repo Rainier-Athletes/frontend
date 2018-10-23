@@ -82,8 +82,8 @@ export default function SynopsisReport(props) {
       <div className="image">
         <img style={{ WebkitUserSelect: 'none' }} src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png" />
       </div>
-          <h1>{pointTracker.title.split(' ').slice(0, 2).join(' ')}</h1>
-          <h2>{pointTracker.title.split(' ').slice(2).join(' ')}</h2>
+          <h1>{pointTracker.title.split(':')[0]}</h1>
+          <h2>{pointTracker.title.split(':')[1].trim()}</h2>
           <h3>{studentsSchoolName}</h3>
             {scoreTableJSX}
           <div className="row">

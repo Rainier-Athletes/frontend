@@ -117,7 +117,7 @@ class MentorContent extends React.Component {
         </div>
       </div>
     );
-    console.log(this.props.subPT);
+    
     return (
       <React.Fragment>
       <div role="main" className="col-md-8 panel content-panel" style={ { overflow: this.props.subPT ? 'inherit' : 'scroll' } }>

@@ -627,7 +627,7 @@ class AdminTable extends React.Component {
               <React.Fragment>
               <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
                 <button className="modalBtn" onClick={this.toggleModal}>+ Connection</button>
-                  <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data</button>
+                <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data</button>
                 <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
                 <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
               </Toolbar>

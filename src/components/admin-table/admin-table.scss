@@ -637,6 +637,11 @@ p.infoText {
   float: right;
 }
 
+.grey {
+  color: grey;
+  border: 1px solid grey;
+}
+
 .deleteConnectionBtn {
   background: white;
   border: 1px solid #e6eaec;
@@ -679,6 +684,12 @@ p.infoText {
   background-color: #3d3d3d;
   color: white;
   border: 1px solid #b13636;
+}
+
+.grey:hover {
+  color: grey;
+  border: 1px solid grey;
+  background-color: white;
 }
 
 .deleteConnectionBtn:hover {

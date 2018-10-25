@@ -399,6 +399,8 @@ class AdminTable extends React.Component {
 
   handleDelete = (event) => {
     event.preventDefault();
+    if (Object.keys(this.state.filters).length > 0) return null;
+
     const selected = this.state.selectedIndexes.sort((a, b) => b - a); // sort selection in inverse order
     const rows = this.state.rows.slice(0);
     const newState = { removeActiveConnectionsMsg: false };
@@ -622,7 +624,13 @@ class AdminTable extends React.Component {
                 <button className="modalBtn" onClick={this.toggleModal}>+ Connection</button>
                 <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data</button>
                 <button className="alertArea" >{gridAlertMessageJSX()}</button>
-                <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
+                <button 
+                  className={ Object.keys(this.state.filters).length === 0 
+                    ? "deleteBtn" 
+                    : "deleteBtn grey" }
+                  onClick={ this.handleDelete }>
+                  Delete Row
+                </button>
                 <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
               </Toolbar>
             }

@@ -59,6 +59,12 @@ class ConnectionModal extends React.Component {
       return null;
     }
 
+    const sortCallback = (a, b) => {
+      if (a.lastName.toLowerCase() > b.lastName.toLowerCase()) return 1;
+      if (a.lastName.toLowerCase() < b.lastName.toLowerCase()) return -1;
+      return 0;
+    };
+
     return (
       <div className="modal-backdrop">
         <div className="panel connection-modal">
@@ -79,11 +85,7 @@ class ConnectionModal extends React.Component {
                       <option value="" selected="true" disabled> -- select a student -- </option>
                       {
                         this.props.profile.filter(p => p.role === 'student')
-                          .sort((p1, p2) => {
-                            if (p1.lastName > p2.lastName) return 1;
-                            if (p1.lastName < p2.lastName) return -1;
-                            return 0;
-                          })
+                          .sort(sortCallback)
                           .map((p) => {
                             return <option key={p._id} value={p._id}>
                               {p.lastName}, {p.firstName}
@@ -109,11 +111,7 @@ class ConnectionModal extends React.Component {
                       <option value="" selected="true" disabled> -- select a connection -- </option>
                       {
                         this.props.profile.filter(p => p.role === this.state.role)
-                          .sort((p1, p2) => {
-                            if (p1.lastName > p2.lastName) return 1;
-                            if (p1.lastName < p2.lastName) return -1;
-                            return 0;
-                          }).map((p) => {
+                          .sort(sortCallback).map((p) => {
                             return <option key={p._id} value={p._id} role={p.role}>
                                 {p.lastName}, {p.firstName} - {p.role}
                               </option>;

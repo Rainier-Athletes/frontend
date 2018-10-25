@@ -637,6 +637,11 @@ p.infoText {
   float: right;
 }
 
+.grey {
+  color: grey;
+  border: 1px solid grey;
+}
+
 .deleteConnectionBtn {
   background: white;
   border: 1px solid #e6eaec;
@@ -667,10 +672,24 @@ p.infoText {
   border: 1px solid $color-brand-blue;
 }
 
+.alertArea .grid-alert {
+  display: inline;
+  cursor: none;
+  color: #c0272f;
+  font-weight: 900;
+  text-decoration: underline;
+  }
+
 .deleteBtn:hover {
-  background-color: #b13636;
+  background-color: #3d3d3d;
   color: white;
   border: 1px solid #b13636;
+}
+
+.grey:hover {
+  color: grey;
+  border: 1px solid grey;
+  background-color: white;
 }
 
 .deleteConnectionBtn:hover {
@@ -698,12 +717,12 @@ p.infoText {
 .saveAlert::after {
   position: absolute;
   content: '';
-  width: 25px;
-  height: 25px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background-color: #c0272f;
-  top: -10px;
-  right: -10px;
+  top: -5px;
+  right: -5px;
 }
 
 .saveAlert:hover {

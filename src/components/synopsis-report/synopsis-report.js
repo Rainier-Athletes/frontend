@@ -76,36 +76,72 @@ export default function SynopsisReport(props) {
       </tbody>
     </table>
     </React.Fragment>;
+  
+  const sportsInfoJSX = <React.Fragment>
+    <h3>Team Information</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>Sport</th>
+          <th>League</th>
+          <th>Calendar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {student.studentData.sports.filter(s => s.currentlyPlaying).map((sport, i) => (
+          <tr key={sport.sport}>
+            <td key={`${sport.team}${i}`}>{sport.team}</td>
+            <td key={`${sport.sport}${i}`}>{sport.sport}</td>
+            <td key={`${sport.league}${i}`}>{sport.league}</td>
+            <td key={`calendar${i}`}><a href={sport.teamCalendarUrl} target="_blank" rel="noopener noreferrer">Calendar</a></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </React.Fragment>;
+
+  const studentCalendarJSX = <React.Fragment>
+    <h3><a href={student.studentData.googleCalendarUrl} target="_blank" rel="noopener noreferrer">Student&rsquo;s Google Calendar</a></h3>
+  </React.Fragment>;
+
+  const playingTimeJSX = <React.Fragment>
+    <div className="row">
+      <div className="left">
+        <h3>Playing Time Earned</h3>
+        <p>{pointTracker.earnedPlayingTime}</p>
+      </div>
+      <div className="right">
+        {playingTimeOverride
+          ? <div>
+              <h3>Mentor Granted Playing Time</h3>
+                <p>{pointTracker.mentorGrantedPlayingTime}</p>
+            </div>
+          : null}
+      </div>
+    </div>
+  </React.Fragment>;
+
+  const mentorCommentsJSX = playingTimeOverride
+    ? <div>
+        <h3>Mentor&#39;s Comments re: Playing Time</h3>
+          <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
+      </div>
+    : null;
 
   const pointTrackerHTML = <React.Fragment>
     <body>
       <div className="image">
         <img style={{ WebkitUserSelect: 'none' }} src="http://portal.rainierathletes.org/2dbb0b1d137e14479018b5023d904dec.png" />
       </div>
-          <h1>{pointTracker.title.split(' ').slice(0, 2).join(' ')}</h1>
-          <h2>{pointTracker.title.split(' ').slice(2).join(' ')}</h2>
+          <h1>{pointTracker.title.split(':')[0]}</h1>
+          <h2>{pointTracker.title.split(':')[1].trim()}</h2>
           <h3>{studentsSchoolName}</h3>
-            {scoreTableJSX}
-          <div className="row">
-            <div className="left">
-              <h3>Playing Time Earned</h3>
-              <p>{pointTracker.earnedPlayingTime}</p>
-            </div>
-            <div className="right">
-              {playingTimeOverride
-                ? <div>
-                    <h3>Mentor Granted Playing Time</h3>
-                      <p>{pointTracker.mentorGrantedPlayingTime}</p>
-                  </div>
-                : null}
-            </div>
-          </div>
-                {playingTimeOverride
-                  ? <div>
-                      <h3>Mentor&#39;s Comments re: Playing Time</h3>
-                        <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
-                    </div>
-                  : null}
+          {scoreTableJSX}
+          {studentCalendarJSX}
+          {sportsInfoJSX}
+          {playingTimeJSX} 
+          {mentorCommentsJSX}        
           <h3>Student Action Items</h3>
             <p>{pointTracker.synopsisComments.studentActionItems}</p>
           <h3>Sports Update</h3>

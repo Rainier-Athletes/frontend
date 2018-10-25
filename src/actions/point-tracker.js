@@ -26,7 +26,7 @@ export const clearSynopsisReportLink = () => ({
 export const createPointTracker = pointTracker => (store) => {
   const { token } = store.getState();
 
-  console.log('createPointTracker sending report', pointTracker.title);
+  console.log('createPointTracker sending report', pointTracker.title);  //eslint-disable-line
 
   const studentId = pointTracker.student._id.toString();
 
@@ -38,7 +38,7 @@ export const createPointTracker = pointTracker => (store) => {
       return store.dispatch(setPointTracker(res.body));
     })
     .catch((err) => {
-      console.error('createPointTracker error:', err);
+      console.error('createPointTracker error:', err);  //eslint-disable-line
     });
 };
 

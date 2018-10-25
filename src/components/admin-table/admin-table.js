@@ -1,7 +1,6 @@
 import React from 'react';
 import { Prompt } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import ReactDataGrid from 'react-data-grid';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
@@ -171,6 +170,9 @@ class AdminTable extends React.Component {
       sdIsOpen: false, // for student data form modal
       saveTableIsOpen: false, // for save table modal
       adminExtractIsOpen: false, // admin extract modal
+      selectStudentFirstMsg: false,
+      removeActiveConnectionsMsg: false,
+      saveTableBeforeConnectingMsg: false,
     };
   }
 
@@ -179,7 +181,7 @@ class AdminTable extends React.Component {
   }
 
   willTransitionFrom(component, transition) {
-    if (this.state.gridModified && !window.confirm('Unsaved changes! Are you sure you want to leave?')) {
+    if (this.state.gridModified && !window.confirm('Unsaved changes! Are you sure you want to leave?')) { //eslint-disable-line
       transition.abort();
     }
   }
@@ -397,9 +399,11 @@ class AdminTable extends React.Component {
 
   handleDelete = (event) => {
     event.preventDefault();
+    if (Object.keys(this.state.filters).length > 0) return null;
+
     const selected = this.state.selectedIndexes.sort((a, b) => b - a); // sort selection in inverse order
     const rows = this.state.rows.slice(0);
-
+    const newState = { removeActiveConnectionsMsg: false };
     // check for connections on rows selected for deactivation
     let activeConnections = false;
     for (let index = 0; index < selected.length; index++) {
@@ -407,9 +411,12 @@ class AdminTable extends React.Component {
       if (rows[i].children && rows[i].children.length) activeConnections = true;
       if (activeConnections) break;
     }
+
     if (activeConnections) {
-      return alert('Please remove all active connections from selected rows before deleting.');
+      newState.removeActiveConnectionsMsg = true;
+      return this.setState(newState);
     }
+    this.setState(newState);
 
     for (let index = 0; index < selected.length; index++) {
       const i = selected[index];
@@ -518,9 +525,11 @@ class AdminTable extends React.Component {
   };
 
   toggleModal = () => {
-    if (this.state.gridModified) return alert('Please save changes to table before adding new connection.');
+    if (this.state.gridModified) return this.setState({ saveTableBeforeConnectingMsg: true });
+
     return this.setState({
       isOpen: !this.state.isOpen,
+      saveTableBeforeConnectingMsg: false,
     });
   }
 
@@ -537,11 +546,14 @@ class AdminTable extends React.Component {
   }
 
   toggleSdModal = (cancelled = false) => () => {
-    if (!this.state.studentSelected) return undefined;
+    if (!this.state.studentSelected) return this.setState({ selectStudentFirstMsg: true });
+
     const sdWasOpen = this.state.sdIsOpen;
     this.setState({
       sdIsOpen: !this.state.sdIsOpen,
+      selectStudentFirstMsg: false,
     });
+
     if (sdWasOpen && !cancelled) return window.location.reload();
     return undefined;
   };
@@ -558,14 +570,21 @@ class AdminTable extends React.Component {
     this.props.deleteRelationship(query);
   }
 
-  /*eslint-disable*/
   render() {
-    const tooltip = (
-      <Tooltip id="tooltip">
-        Select student first
-      </Tooltip>
-    );
-
+    const gridAlertMessageJSX = () => {
+      if (this.state.selectStudentFirstMsg) {
+        return <p className="grid-alert">Select a student first.</p>;
+      }
+      if (this.state.removeActiveConnectionsMsg) {
+        return <p className="grid-alert">Remove active connections from selected rows before deleting.</p>;
+      }
+      if (this.state.saveTableBeforeConnectingMsg) {
+        return <p className="grid-alert">Save table before adding new connections.</p>;
+      }
+      return null;
+    };
+    
+    /*eslint-disable*/
     return (
       <React.Fragment>
         <div className="panel admin-table">
@@ -603,10 +622,15 @@ class AdminTable extends React.Component {
             toolbar={
               <Toolbar onAddRow={ this.handleAddRow } enableFilter={ true }>
                 <button className="modalBtn" onClick={this.toggleModal}>+ Connection</button>
-                <OverlayTrigger placement="top" trigger="click" rootClose overlay={tooltip}>
-                  <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data</button>
-                </OverlayTrigger>
-                <button className="deleteBtn" onClick={ this.handleDelete }>Delete Row</button>
+                <button className="modalBtn" onClick={this.toggleSdModal()}>Access Student Data</button>
+                <button className="alertArea" >{gridAlertMessageJSX()}</button>
+                <button 
+                  className={ Object.keys(this.state.filters).length === 0 
+                    ? "deleteBtn" 
+                    : "deleteBtn grey" }
+                  onClick={ this.handleDelete }>
+                  Delete Row
+                </button>
                 <button className="deleteConnectionBtn" onClick={ this.handleDetach }>Remove Connection</button>
               </Toolbar>
             }

@@ -117,10 +117,10 @@ class MentorContent extends React.Component {
         </div>
       </div>
     );
-
+    
     return (
       <React.Fragment>
-      <div role="main" className="col-md-8 panel content-panel">
+      <div role="main" className="col-md-8 panel content-panel" style={ { overflow: this.props.subPT ? 'inherit' : 'scroll' } }>
         <div className="sidebar-sticky">
           <a className="nav-link disabled sidebar-heading">
             { this.props.subPT ? 'Select Student' : 'Student Profile' }

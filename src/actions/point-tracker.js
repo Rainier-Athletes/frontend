@@ -2,6 +2,7 @@ import superagent from 'superagent';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import SynopsisReport from '../components/synopsis-report/synopsis-report';
+import * as profileActions from './profile';
 import * as routes from '../lib/routes';
 
 export const setPointTracker = pointTracker => ({
@@ -23,6 +24,18 @@ export const clearSynopsisReportLink = () => ({
   type: 'SYNOPSIS_REPORT_LINK_CLEAR',
 });
 
+export const fetchPointTrackers = () => (store) => { // eslint-disable-line
+  const { token } = store.getState();
+
+  return superagent.get(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
+    .set('Authorization', `Bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .then((res) => {
+      const pointTrackers = res.body;
+      return store.dispatch(setPointTrackers(pointTrackers));
+    });
+};
+
 export const createPointTracker = pointTracker => (store) => {
   const { token } = store.getState();
 
@@ -34,23 +47,11 @@ export const createPointTracker = pointTracker => (store) => {
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send({ ...pointTracker, student: studentId }) // this to prevent circular JSON
-    .then((res) => {
-      return store.dispatch(setPointTracker(res.body));
+    .then(() => {
+      return store.dispatch(profileActions.fetchStudentsReq());
     })
     .catch((err) => {
       console.error('createPointTracker error:', err);  //eslint-disable-line
-    });
-};
-
-export const fetchPointTrackers = studentIds => (store) => { // eslint-disable-line
-  const { token } = store.getState();
-
-  return superagent.get(`${API_URL}${routes.POINTS_TRACKER_ROUTE}`)
-    .set('Authorization', `Bearer ${token}`)
-    .set('Content-Type', 'application/json')
-    .then((res) => {
-      const pointTrackers = res.body;
-      return store.dispatch(setPointTrackers(pointTrackers));
     });
 };
 

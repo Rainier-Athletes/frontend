@@ -108,7 +108,7 @@ export default function SynopsisReport(props) {
   const playingTimeJSX = <React.Fragment>
     <div className="row">
       <div className="left">
-        <h3>Playing Time Earned</h3>
+        <h3>Game Eligibility Earned</h3>
         <p>{pointTracker.earnedPlayingTime}</p>
       </div>
       <div className="right">

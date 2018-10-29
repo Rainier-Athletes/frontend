@@ -319,6 +319,14 @@ class PointTrackerForm extends React.Component {
     });
   }
 
+  saveSubjectTable = (e) => {
+    e.preventDefault();
+    const pointTracker = { ...this.state };
+    delete pointTracker._id;
+    this.setState({ ...this.state, waitingOnSaves: true });
+    this.props.createPointTracker({ ...pointTracker });
+  }
+
   calcPlayingTime = () => {
     if (!this.state.student) return null;
 
@@ -684,6 +692,8 @@ class PointTrackerForm extends React.Component {
                   deleteSubject= { this.deleteSubject }
                   createSubject={ this.createSubject }
                   isElementaryStudent={this.state.isElementaryStudent}
+                  myRole={this.props.myRole}
+                  saveSubjectTable={this.saveSubjectTable}
                 />
                 { synopsisCommentsJSX }
                 <div className="modal-footer">
@@ -708,6 +718,7 @@ class PointTrackerForm extends React.Component {
 
 const mapStateToProps = state => ({
   synopsisReportLink: state.synopsisReportLink,
+  myRole: state.myProfile.role,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -722,6 +733,7 @@ PointTrackerForm.propTypes = {
   createSynopsisReport: PropTypes.func,
   buttonClick: PropTypes.func,
   content: PropTypes.object,
+  myRole: PropTypes.string,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointTrackerForm);

@@ -97,6 +97,14 @@ export default class PointTrackerTable extends React.Component {
               { this.props.isElementaryStudent ? null : <label>Grade</label> }
             </div>
             { subjectsJSX }
+            { this.props.myRole === 'admin' 
+              ? <button 
+                type="submit" 
+                className="save-subjects add-subject-btn add-subject"
+                onClick={this.props.saveSubjectTable}>
+                Save Subjects
+                </button>
+              : null }
           </div>
         </div>
       </div>
@@ -111,4 +119,6 @@ PointTrackerTable.propTypes = {
   createSubject: PropTypes.func,
   deleteSubject: PropTypes.func,
   isElementaryStudent: PropTypes.bool,
+  myRole: PropTypes.string,
+  saveSubjectTable: PropTypes.func,
 };

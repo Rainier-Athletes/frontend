@@ -323,7 +323,6 @@ class PointTrackerForm extends React.Component {
   saveSubjectTable = () => {
     const pointTracker = { ...this.state };
     delete pointTracker._id;
-    this.setState({ ...this.state, waitingOnSaves: true });
     this.props.createPointTracker({ ...pointTracker });
   }
 

@@ -27,7 +27,7 @@ export default class PointTrackerTable extends React.Component {
   handleCreateSubject = () => {
     if (this.state.subjectName && this.state.teacherId) {
       this.props.createSubject(this.state.subjectName, this.state.teacherId);
-      this.setState(() => defaultState);
+      this.setState({ ...defaultState, editing: this.state.editing });
     }
   }
 

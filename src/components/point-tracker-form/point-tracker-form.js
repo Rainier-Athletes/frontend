@@ -503,8 +503,8 @@ class PointTrackerForm extends React.Component {
 
     const pointSheetStatusJSX = (
       <fieldset>
-        <span className="title">Point Sheet Status</span>
         <div className="survey-questions">
+        <span className="title">Point Sheet Status</span>
           {Object.keys(this.state.pointSheetStatus)
             .filter(keyName => names[keyName])
             .map((statusQuestion, i) => {
@@ -603,7 +603,7 @@ class PointTrackerForm extends React.Component {
       </fieldset>
     );
 
-    // add back in calc plauing time calc below
+    // add back in calc playing time calc below
     const playingTimeJSX = (
       <React.Fragment>
         <div className="row">

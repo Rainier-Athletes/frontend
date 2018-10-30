@@ -3,7 +3,7 @@
 .point-table {
 
   .labels {
-    width: 20em;
+    width: 50%;
     font-size: 12px;
     text-align: right;
     color: gray;
@@ -36,6 +36,10 @@
     }
   }
 
+.row {
+  margin-bottom: 20px;
+}
+
   input {
     &:nth-of-type(1) {
       border-top-left-radius: 6px;
@@ -61,6 +65,8 @@
 }
 
 .row-labels label {
+  position: static;
+  // padding-top: 20px;
   margin-bottom: 0px;
   color: gray;
   padding: 0 !important;
@@ -83,9 +89,10 @@
 }
 
 .edit-subjects {
+  position: relative;
   display: inline !important;
-  margin-bottom: 12px;
-  margin-top: 14px;
+  padding-bottom: 20px;
+  // margin-top: 14px;
   text-transform: uppercase;
   color: #A9A9A9;
   font-weight: 600;

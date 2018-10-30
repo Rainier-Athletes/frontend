@@ -71,7 +71,7 @@ export default class PointTrackerTable extends React.Component {
           type="text"
           placeholder="Subject Name"
           name="subjectName"
-          value= { this.state.subjectName }
+          value={ this.state.subjectName }
           onChange={ this.handleChange }
         />
       </div>

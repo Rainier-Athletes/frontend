@@ -7,6 +7,7 @@ import './point-tracker-table.scss';
 const defaultState = {
   subjectName: '',
   teacherId: '',
+  editing: false,
 };
 
 export default class PointTrackerTable extends React.Component {
@@ -28,6 +29,18 @@ export default class PointTrackerTable extends React.Component {
       this.props.createSubject(this.state.subjectName, this.state.teacherId);
       this.setState(() => defaultState);
     }
+  }
+
+  toggleEditing = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({ editing: !this.state.editing });
+  }
+
+  saveSubjectTable = (e) => {
+    e.preventDefault();
+    this.setState({ editing: !this.state.editing });
+    this.props.saveSubjectTable();
   }
 
   render() {
@@ -78,6 +91,7 @@ export default class PointTrackerTable extends React.Component {
           handleSubjectChange={ this.props.handleSubjectChange }
           deleteSubject={ this.props.deleteSubject }
           isElementaryStudent={ this.props.isElementaryStudent }
+          editing={ this.state.editing }
         />
       );
     });
@@ -85,8 +99,14 @@ export default class PointTrackerTable extends React.Component {
     return (
       <div className="row">
         <div className="col-md-12">
-          <span className="title">Point Sheet</span>
-          { addNewSubjectJSX }
+          <span className="edit-subjects">Point Sheet</span>
+          {!this.state.editing
+            ? <button className="edit-subjects edit-subjects-btn"
+              onClick={this.toggleEditing}>
+              Edit Subjects
+            </button>
+            : null }
+          { this.state.editing ? addNewSubjectJSX : null }
           <div className="point-table">
             <div className="row-labels">
               <label>Teacher</label>
@@ -97,11 +117,11 @@ export default class PointTrackerTable extends React.Component {
               { this.props.isElementaryStudent ? null : <label>Grade</label> }
             </div>
             { subjectsJSX }
-            { this.props.myRole === 'admin' 
+            { this.state.editing  
               ? <button 
                 type="submit" 
                 className="save-subjects add-subject-btn add-subject"
-                onClick={this.props.saveSubjectTable}>
+                onClick={this.saveSubjectTable}>
                 Save Subjects
                 </button>
               : null }

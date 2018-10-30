@@ -82,6 +82,23 @@
   width: 90%;
 }
 
+.edit-subjects {
+  display: inline !important;
+  margin-bottom: 12px;
+  margin-top: 14px;
+  text-transform: uppercase;
+  color: #A9A9A9;
+  font-weight: 600;
+}
+
+.edit-subjects-btn {
+  text-transform: none;
+  text-decoration: underline;
+  color: $color-brand-blue;
+  margin-left: 10px;
+  // height: 1em;
+}
+
 .add-subject-btn {
   background-color: $color-white;
   color: $color-brand-blue;

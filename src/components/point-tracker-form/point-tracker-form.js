@@ -320,8 +320,7 @@ class PointTrackerForm extends React.Component {
     });
   }
 
-  saveSubjectTable = (e) => {
-    e.preventDefault();
+  saveSubjectTable = () => {
     const pointTracker = { ...this.state };
     delete pointTracker._id;
     this.setState({ ...this.state, waitingOnSaves: true });
@@ -605,7 +604,7 @@ class PointTrackerForm extends React.Component {
     );
 
     // add back in calc plauing time calc below
-    const playingTime = (
+    const playingTimeJSX = (
       <React.Fragment>
         <div className="row">
           <div className="col-md-6">
@@ -685,7 +684,6 @@ class PointTrackerForm extends React.Component {
                 { communicationPillarsTableJSX }
                 { oneTeamJSX }
                 { pointSheetStatusJSX }
-                { playingTime }
                 <PointTrackerTable
                   handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.subjects }
@@ -696,6 +694,7 @@ class PointTrackerForm extends React.Component {
                   myRole={this.props.myRole}
                   saveSubjectTable={this.saveSubjectTable}
                 />
+                { playingTimeJSX }
                 { synopsisCommentsJSX }
                 <div className="modal-footer">
                   { this.state.waitingOnSaves ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> : <button className="btn btn-secondary" type="submit">Submit Point Tracker</button> }

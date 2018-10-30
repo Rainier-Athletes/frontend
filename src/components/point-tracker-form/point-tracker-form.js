@@ -320,11 +320,9 @@ class PointTrackerForm extends React.Component {
     });
   }
 
-  saveSubjectTable = (e) => {
-    e.preventDefault();
+  saveSubjectTable = () => {
     const pointTracker = { ...this.state };
     delete pointTracker._id;
-    this.setState({ ...this.state, waitingOnSaves: true });
     this.props.createPointTracker({ ...pointTracker });
   }
 
@@ -504,8 +502,8 @@ class PointTrackerForm extends React.Component {
 
     const pointSheetStatusJSX = (
       <fieldset>
-        <span className="title">Point Sheet Status</span>
         <div className="survey-questions">
+        <span className="title">Point Sheet Status</span>
           {Object.keys(this.state.pointSheetStatus)
             .filter(keyName => names[keyName])
             .map((statusQuestion, i) => {
@@ -604,8 +602,8 @@ class PointTrackerForm extends React.Component {
       </fieldset>
     );
 
-    // add back in calc plauing time calc below
-    const playingTime = (
+    // add back in calc playing time calc below
+    const playingTimeJSX = (
       <React.Fragment>
         <div className="row">
           <div className="col-md-6">
@@ -685,7 +683,6 @@ class PointTrackerForm extends React.Component {
                 { communicationPillarsTableJSX }
                 { oneTeamJSX }
                 { pointSheetStatusJSX }
-                { playingTime }
                 <PointTrackerTable
                   handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.subjects }
@@ -696,6 +693,7 @@ class PointTrackerForm extends React.Component {
                   myRole={this.props.myRole}
                   saveSubjectTable={this.saveSubjectTable}
                 />
+                { playingTimeJSX }
                 { synopsisCommentsJSX }
                 <div className="modal-footer">
                   { this.state.waitingOnSaves ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> : <button className="btn btn-secondary" type="submit">Submit Point Tracker</button> }

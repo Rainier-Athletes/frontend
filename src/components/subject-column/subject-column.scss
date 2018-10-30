@@ -7,7 +7,24 @@ svg > path {
     width: 2em;
 }
 
-.column-rows {
+.grid-input {
+  width: 100%;
+}
+
+.grid-cell {
+  align-self: center;
+}
+
+.grid-cell-hidden {
+  visibility: hidden;
+}
+
+.grid-cell-delete {
+  justify-self: center;
+  align-self: center;
+}
+
+// .column-rows {
   // display: inline-block;
   // height: 3em;
   // width: 5em;
@@ -15,11 +32,11 @@ svg > path {
   // margin: .2em;
   // text-align: center;
   // font-size: 16px;
-}
+// }
 
-.column data input {
-  // margin-bottom: 5px;
-}
+// .column data input {
+//   // margin-bottom: 5px;
+// }
 
 .invalid-scores {
   background: red;

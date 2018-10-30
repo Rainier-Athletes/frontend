@@ -1,16 +1,19 @@
 @import '../../style/vars';
 
 .point-table {
-    display: grid;
-    grid-template-columns: repeat(9, 10%);
-    grid-gap: 5px;
-    grid-template-rows: repeat(6, 50px);
-    grid-auto-flow: column;
-    width: 100%;
+  display: grid;
+  grid-gap: 5px;
+  grid-auto-flow: column;
+  width: 100%;
 
-    .label {
-      grid-column: 1;
-    }
+  .grid-label {
+    align-self: center;
+    font-weight: bold;
+  }
+
+  .grid-cell-hidden {
+    visibility: hidden;
+  }
 
   .labels {
     width: 50%;
@@ -25,16 +28,26 @@
     margin: 0;
   }
 
-  * {
-    // display: inline-block;
-    // height: 3em;
-    // width: 5em;
-    // padding: .5em;
-    // margin: .1em;
-    // margin-right: 0.5em;
-    // font-weight: bold;
-    // border-radius: 0;
-  }
+  // * {
+  //   display: inline-block;
+  //   height: 3em;
+  //   width: 5em;
+  //   padding: .5em;
+  //   margin: .1em;
+  //   margin-right: 0.5em;
+  //   font-weight: bold;
+  //   border-radius: 0;
+  // }
+}
+
+.elementary-table {
+  grid-template-columns: repeat(5, 15%);
+  grid-template-rows: 2em 2em repeat(4, 3em);
+}
+
+.middleschool-table {
+  grid-template-columns: repeat(9, 10%);
+  grid-template-rows: 2em 2em repeat(5, 3em);
 }
 
 .column {
@@ -64,28 +77,28 @@
 }
 
 .new-subject {
-  // float: center;
-  // display: inline-block;
+  float: center;
+  display: inline-block;
 }
 
 .row-labels {
-  // position: relative;
-  // bottom: 2.75em;
+  position: relative;
+  bottom: 2.75em;
   line-height: 1;
 }
 
 .row-labels label {
   position: static;
-  // padding-top: 20px;
+  padding-top: 20px;
   margin-bottom: 0px;
   color: gray;
-  // padding: 0 !important;
+  padding: 0 !important;
 }
 
 .data-entry {
-  // display: block;
-  // width: 75vw;
-  // max-width: 1024px;
+  display: block;
+  width: 75vw;
+  max-width: 1024px;
 }
 
 .synopsis {
@@ -96,13 +109,14 @@
 .add-subject {
   height: 3em;
   width: 95%;
+  margin-bottom: 1em;
 }
 
 .edit-subjects {
   position: relative;
   display: inline !important;
   padding-bottom: 20px;
-  // margin-top: 14px;
+  margin-top: 14px;
   text-transform: uppercase;
   color: #A9A9A9;
   font-weight: 600;
@@ -113,7 +127,7 @@
   text-decoration: underline;
   color: $color-brand-blue;
   margin-left: 10px;
-  // height: 1em;
+  height: 1em;
 }
 
 .add-subject-btn {

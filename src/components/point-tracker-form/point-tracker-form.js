@@ -609,7 +609,7 @@ class PointTrackerForm extends React.Component {
       <React.Fragment>
         <div className="row">
           <div className="col-md-6">
-            <span className="title">Playing Time Earned</span>
+            <span className="title">Game Eligibility Earned</span>
             <span className="name">{ this.calcPlayingTime() } </span>
           </div>
           <div className="col-md-6">

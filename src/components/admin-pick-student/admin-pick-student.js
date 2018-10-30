@@ -7,6 +7,7 @@ import './admin-pick-student.scss';
 
 const mapStateToProps = state => ({
   students: state.students,
+  // pointTrackers: state.pointTrackers,
 });
 
 class AdminPickStudent extends React.Component {
@@ -16,6 +17,15 @@ class AdminPickStudent extends React.Component {
       content: undefined,
       modal: false,
     };
+  }
+
+  componentDidUpdate = () => {
+    // update state.content if corresponding props.student data has updated
+    const { content } = this.state;
+    if (content.studentData.lastPointTracker.updatedAt 
+      < this.props.students.find(s => s._id.toString() === content._id.toString()).studentData.lastPointTracker.updatedAt) {
+      this.setState({ content: this.props.students.find(s => s._id.toString() === content._id.toString()) });
+    }
   }
 
   handleChange = (e) => {

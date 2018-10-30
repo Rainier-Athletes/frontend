@@ -41,7 +41,7 @@ class PointTrackerSummary extends React.Component {
               <h4>{pointTracker.title}</h4>
               <br />
               <span className="title">
-                Playing Time Earned
+                Game Eligibility Earned
               </span>
               <span> {pointTracker.earnedPlayingTime}</span>
               <br />

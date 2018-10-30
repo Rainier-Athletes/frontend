@@ -320,6 +320,12 @@ class PointTrackerForm extends React.Component {
     });
   }
 
+  saveSubjectTable = () => {
+    const pointTracker = { ...this.state };
+    delete pointTracker._id;
+    this.props.createPointTracker({ ...pointTracker });
+  }
+
   calcPlayingTime = () => {
     if (!this.state.student) return null;
 
@@ -496,8 +502,8 @@ class PointTrackerForm extends React.Component {
 
     const pointSheetStatusJSX = (
       <fieldset>
-        <span className="title">Point Sheet Status</span>
         <div className="survey-questions">
+        <span className="title">Point Sheet Status</span>
           {Object.keys(this.state.pointSheetStatus)
             .filter(keyName => names[keyName])
             .map((statusQuestion, i) => {
@@ -596,12 +602,12 @@ class PointTrackerForm extends React.Component {
       </fieldset>
     );
 
-    // add back in calc plauing time calc below
-    const playingTime = (
+    // add back in calc playing time calc below
+    const playingTimeJSX = (
       <React.Fragment>
         <div className="row">
           <div className="col-md-6">
-            <span className="title">Playing Time Earned</span>
+            <span className="title">Game Eligibility Earned</span>
             <span className="name">{ this.calcPlayingTime() } </span>
           </div>
           <div className="col-md-6">
@@ -677,7 +683,6 @@ class PointTrackerForm extends React.Component {
                 { communicationPillarsTableJSX }
                 { oneTeamJSX }
                 { pointSheetStatusJSX }
-                { playingTime }
                 <PointTrackerTable
                   handleSubjectChange={ this.handleSubjectChange }
                   subjects={ this.state.subjects }
@@ -685,7 +690,10 @@ class PointTrackerForm extends React.Component {
                   deleteSubject= { this.deleteSubject }
                   createSubject={ this.createSubject }
                   isElementaryStudent={this.state.isElementaryStudent}
+                  myRole={this.props.myRole}
+                  saveSubjectTable={this.saveSubjectTable}
                 />
+                { playingTimeJSX }
                 { synopsisCommentsJSX }
                 <div className="modal-footer">
                   { this.state.waitingOnSaves ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> : <button className="btn btn-secondary" type="submit">Submit Point Tracker</button> }
@@ -709,6 +717,7 @@ class PointTrackerForm extends React.Component {
 
 const mapStateToProps = state => ({
   synopsisReportLink: state.synopsisReportLink,
+  myRole: state.myProfile.role,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -723,6 +732,7 @@ PointTrackerForm.propTypes = {
   createSynopsisReport: PropTypes.func,
   buttonClick: PropTypes.func,
   content: PropTypes.object,
+  myRole: PropTypes.string,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointTrackerForm);

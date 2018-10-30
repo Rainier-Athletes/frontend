@@ -40,7 +40,9 @@ export default function SubjectColumn(props) {
           value={ props.subject.grade }
           required={props.subject.subjectName.toLowerCase() !== 'tutorial'}
         />}
-      <button type="button" onClick={ handleDelete }>x</button>
+      { props.editing
+        ? <button type="button" onClick={ handleDelete }>x</button>
+        : null }
     </div>
   );
 }
@@ -50,4 +52,5 @@ SubjectColumn.propTypes = {
   handleSubjectChange: PropTypes.func,
   deleteSubject: PropTypes.func,
   isElementaryStudent: PropTypes.bool,
+  editing: PropTypes.bool,
 };

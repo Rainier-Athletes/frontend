@@ -1,12 +1,22 @@
 @import '../../style/vars';
 
 .point-table {
+    display: grid;
+    grid-template-columns: repeat(9, 10%);
+    grid-gap: 5px;
+    grid-template-rows: repeat(6, 50px);
+    grid-auto-flow: column;
+    width: 100%;
+
+    .label {
+      grid-column: 1;
+    }
 
   .labels {
-    width: 20em;
-    font-size: 12px;
-    text-align: right;
-    color: gray;
+    // width: 20em;
+    // font-size: 12px;
+    // text-align: right;
+    // color: gray;
   }
 
   input::-webkit-outer-spin-button,
@@ -16,14 +26,14 @@
   }
 
   * {
-    display: inline-block;
-    height: 3em;
-    width: 5em;
-    padding: .5em;
-    margin: .1em;
-    margin-right: 0.5em;
-    font-weight: bold;
-    border-radius: 0;
+    // display: inline-block;
+    // height: 3em;
+    // width: 5em;
+    // padding: .5em;
+    // margin: .1em;
+    // margin-right: 0.5em;
+    // font-weight: bold;
+    // border-radius: 0;
   }
 }
 
@@ -51,25 +61,25 @@
 
 .new-subject {
   // float: center;
-  display: inline-block;
+  // display: inline-block;
 }
 
 .row-labels {
-  position: relative;
-  bottom: 2.75em;
+  // position: relative;
+  // bottom: 2.75em;
   line-height: 1;
 }
 
 .row-labels label {
-  margin-bottom: 0px;
+  // margin-bottom: 0px;
   color: gray;
-  padding: 0 !important;
+  // padding: 0 !important;
 }
 
 .data-entry {
-  display: block;
-  width: 75vw;
-  max-width: 1024px;
+  // display: block;
+  // width: 75vw;
+  // max-width: 1024px;
 }
 
 .synopsis {
@@ -79,7 +89,7 @@
 
 .add-subject {
   height: 3em;
-  width: 90%;
+  width: 95%;
 }
 
 .edit-subjects {

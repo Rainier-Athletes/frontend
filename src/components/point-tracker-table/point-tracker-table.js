@@ -83,16 +83,16 @@ export default class PointTrackerTable extends React.Component {
     </div>
     );
 
-    const subjectsJSX = this.props.subjects.map((subject) => {
+    const subjectsJSX = this.props.subjects.map((subject, i) => {
       return (
-        <SubjectColumn
+        i === 0 ? <SubjectColumn
           key={ `${subject.subjectName}-${subject.teacher}` }
           subject={ subject }
           handleSubjectChange={ this.props.handleSubjectChange }
           deleteSubject={ this.props.deleteSubject }
           isElementaryStudent={ this.props.isElementaryStudent }
           editing={ this.state.editing }
-        />
+        /> : null 
       );
     });
 
@@ -106,17 +106,21 @@ export default class PointTrackerTable extends React.Component {
               Edit Subjects
             </button>
             : null }
-          { this.state.editing ? addNewSubjectJSX : null }
+          <div>
+          { this.state.editing ? addNewSubjectJSX : <p>---</p> }
+          </div>
           <div className="point-table">
-            <div className="row-labels">
-              <label>Teacher</label>
-              <label>Subject</label>
-              <label>Periods Missed</label>
-              <label>Num. of Stamps</label>
-              <label>Num. of Xs</label>
-              { this.props.isElementaryStudent ? null : <label>Grade</label> }
-            </div>
+            {/* <div className="row-labels"> */}
+              <div>Teacher</div>
+              <div>Subject</div>
+              <div>Periods Missed</div>
+              <div>Num. of Stamps</div>
+              <div>Num. of Xs</div>
+              { this.props.isElementaryStudent ? null : <div>Grade</div> }
+            {/* </div> */}
             { subjectsJSX }
+          </div>
+          <div className="row">
             { this.state.editing  
               ? <button 
                 type="submit" 
@@ -124,7 +128,7 @@ export default class PointTrackerTable extends React.Component {
                 onClick={this.saveSubjectTable}>
                 Save Subjects
                 </button>
-              : null }
+              : <p>---</p> }
           </div>
         </div>
       </div>

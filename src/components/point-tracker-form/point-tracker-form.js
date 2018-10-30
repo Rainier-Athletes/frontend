@@ -469,8 +469,8 @@ class PointTrackerForm extends React.Component {
 
     const oneTeamJSX = (
       <fieldset>
-        <span className="title">One Team Face-to-Face Meet-Ups</span>
         <div className="survey-questions">
+        <span className="title">One Team Face-to-Face Meet-Ups</span>
         {Object.keys(this.state.oneTeam)
           .filter(keyName => names[keyName])
           .map((oneTeamQuestion, i) => (

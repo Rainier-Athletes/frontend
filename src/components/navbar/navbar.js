@@ -104,7 +104,7 @@ class Navbar extends React.Component {
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link help" href="https://docs.google.com/presentation/d/e/2PACX-1vTRSMVBEvObOl1sCKPmXMChP8A4eZScVmrRrzS6mDw0Imi5LkbFd1sSgqDS-QEPcBD-gvBFwmanrPIC/pub?start=true&loop=false&delayms=3000"alt="Help Documentation" target="_blank" rel="noopener noreferrer">Help</a>
+              <a className="nav-link help" href="https://docs.google.com/presentation/d/e/2PACX-1vTRSMVBEvObOl1sCKPmXMChP8A4eZScVmrRrzS6mDw0Imi5LkbFd1sSgqDS-QEPcBD-gvBFwmanrPIC/pub"alt="Help Documentation" target="_blank" rel="noopener noreferrer">Help</a>
             </li>
           </ul>
         </div>

@@ -579,7 +579,7 @@ class PointTrackerForm extends React.Component {
                 </th>
                 <th>
                   Digital
-                  <TooltipItem id={'tooltip-corepillar'} text={'Communication through basecamp, text, email, etc.'}/>
+                  <TooltipItem id={'tooltip-corepillar'} text={'Communication through basecamp, text msg, email, etc.'}/>
                 </th>
                 <th>
                   Phone Call

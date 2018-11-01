@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getReportingPeriods } from '../../lib/utils';
 import PointTrackerTable from '../point-tracker-table/point-tracker-table';
 import PointTrackerSummary from '../point-tracker-summary/point-tracker-summary';
+import TooltipItem from '../tooltip/tooltip';
 import * as pointTrackerActions from '../../actions/point-tracker';
 
 import './point-tracker-form.scss';
@@ -572,9 +573,18 @@ class PointTrackerForm extends React.Component {
             <thead>
               <tr>
                 <th>RA Core Pillar</th>
-                <th>Face-To-Face</th>
-                <th>Digital</th>
-                <th>Phone Call</th>
+                <th>
+                  Face-To-Face
+                  <TooltipItem id={'tooltip-corepillar'} text={'In person communication'}/>
+                </th>
+                <th>
+                  Digital
+                  <TooltipItem id={'tooltip-corepillar'} text={'Communication through basecamp, text, email, etc.'}/>
+                </th>
+                <th>
+                  Phone Call
+                  <TooltipItem id={'tooltip-corepillar'} text={'Digital communication through voice or video'}/>
+                </th>
                 <th>Other</th>
               </tr>
             </thead>

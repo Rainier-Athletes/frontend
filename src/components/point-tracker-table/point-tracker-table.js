@@ -92,7 +92,7 @@ export default class PointTrackerTable extends React.Component {
           deleteSubject={ this.props.deleteSubject }
           isElementaryStudent={ this.props.isElementaryStudent }
           editing={ this.state.editing }
-        />
+        /> 
       );
     });
 
@@ -106,17 +106,22 @@ export default class PointTrackerTable extends React.Component {
               Edit Subjects
             </button>
             : null }
+          <div>
           { this.state.editing ? addNewSubjectJSX : null }
-          <div className="point-table">
-            <div className="row-labels">
-              <label>Teacher</label>
-              <label>Subject</label>
-              <label>Periods Missed</label>
-              <label>Num. of Stamps</label>
-              <label>Num. of Xs</label>
-              { this.props.isElementaryStudent ? null : <label>Grade</label> }
-            </div>
+          </div>
+          <div className={this.props.isElementaryStudent 
+            ? 'point-table elementary-table' 
+            : 'point-table middleschool-table'}>
+              <div className="grid-label">Teacher</div>
+              <div className="grid-label">Subject</div>
+              <div className="grid-label">Excused</div>
+              <div className="grid-label">Stamps</div>
+              <div className="grid-label">X&apos;s</div>
+              {this.props.isElementaryStudent ? null : <div className="grid-label">Grade</div>}
+              <div className="grid-cell grid-cell-delete"></div>
             { subjectsJSX }
+          </div>
+          <div className="row">
             { this.state.editing  
               ? <button 
                 type="submit" 

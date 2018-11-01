@@ -42,8 +42,9 @@ class MentorContent extends React.Component {
       <div className="current-family" key={f._id}>
         <span className="label">Name: {`${f.member.firstName} ${f.member.lastName}`}</span>
         <span className="label">Student Residence: {f.weekdayGuardian ? 'weekdays' : ''} {f.weekendGuardian ? 'weekends' : ''}</span>
-        <span className="label">{f.member.cellPhone ? `Cell: ${f.member.cellPhone}` : `Phone: ${f.member.phone}`}</span>
-        <span className="label">Email: <a
+        <span className="label">Cell: {f.member.cellPhone ? f.member.cellPhone : ''}</span>
+        <span className="label">Phone: {f.member.phone ? f.member.phone : ''}</span>
+        <span className="label">Primary email: <a
           href={f.member.primaryEmail ? `mailto:${f.member.primaryEmail}` : '#'}
           target="_blank"
           rel="noopener noreferrer">{f.member.primaryEmail}</a></span>

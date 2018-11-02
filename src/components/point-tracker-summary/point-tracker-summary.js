@@ -45,12 +45,14 @@ class PointTrackerSummary extends React.Component {
               </span>
               <span> {pointTracker.earnedPlayingTime}</span>
               <br />
-              <span className="title">
-                Mentor Granted Playing Time
-              </span>
-              <span>{pointTracker.mentorGrantedPlayingTime}</span>
-              <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
-              <br />
+              {pointTracker.mentorGrantedPlayingTime 
+                ? <React.Fragment> 
+                <span className="title">Mentor Granted Playing Time</span>
+                <span>{pointTracker.mentorGrantedPlayingTime}</span>
+                <br />
+                <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
+                <br /> </React.Fragment> 
+                : null}
               <span className="title">Student Action Items</span>
               <p>{pointTracker.synopsisComments.studentActionItems}</p>
               <br />

@@ -151,6 +151,7 @@ class PointTrackerForm extends React.Component {
       newState.title = `${newState.studentName}: ${getReportingPeriods()[1]}`;
       newState.synopsisSaved = false;
       newState.mentorGrantedPlayingTime = '';
+      newState.synopsisComments.mentorGrantedPlayingTimeComments = '';
       newState.teachers = this.props.content.studentData.teachers;
       return newState;
     });

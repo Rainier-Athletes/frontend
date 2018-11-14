@@ -22,7 +22,8 @@ class AdminPickStudent extends React.Component {
   componentDidUpdate = () => {
     // update state.content if corresponding props.student data has updated
     const { content } = this.state;
-    if (content.studentData.lastPointTracker.updatedAt 
+    if (content.studentData.lastPointTracker 
+      && content.studentData.lastPointTracker.updatedAt 
       < this.props.students.find(s => s._id.toString() === content._id.toString()).studentData.lastPointTracker.updatedAt) {
       this.setState({ content: this.props.students.find(s => s._id.toString() === content._id.toString()) });
     }

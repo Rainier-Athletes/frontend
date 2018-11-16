@@ -24,6 +24,7 @@ const emptyPointTracker = {
     },
     grade: '',
   }],
+  mentorMadeScheduledCheckin: false,
   communications: [
     {
       with: 'Student',
@@ -146,6 +147,7 @@ class PointTrackerForm extends React.Component {
         && selectedStudent.studentData.school.length
         ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool
         : false;
+      newState.mentorMadeScheduledCheckin = -1;
       // elementary has no tutorial so pop it from the empty point tracker
       if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
       newState.title = `${newState.studentName}: ${getReportingPeriods()[1]}`;
@@ -207,6 +209,12 @@ class PointTrackerForm extends React.Component {
       newState.subjects = newSubjects;
       return newState;
     });
+  }
+
+  handleMentorMadeScheduledCheckinChange = (event) => {
+    const newState = Object.assign({}, this.state);
+    newState.mentorMadeScheduledCheckin = parseInt(event.target.value, 10);
+    this.setState(newState);
   }
 
   handlePointSheetTurnedInChange = (event) => {
@@ -470,6 +478,28 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
+    const mentorMadeScheduledCheckinJSX = (
+      <div className="mentor-met-container" key='mentorMadeCheckin'>
+        <label htmlFor="made-meeting">Did you meet your student at your regularly scheduled check in?</label>
+          <input
+            type="radio"
+            name="made-meeting"
+            value="1"
+            className="inline"
+            checked={this.state.mentorMadeScheduledCheckin === 1 ? 'checked' : ''}
+            required
+            onChange={this.handleMentorMadeScheduledCheckinChange}/> Yes
+          <input
+            type="radio"
+            name="made-meeting"
+            value="0"
+            className="inline"
+            checked={this.state.mentorMadeScheduledCheckin === 0 ? 'checked' : ''}
+            requried
+            onChange={this.handleMentorMadeScheduledCheckinChange}/> No
+      </div>
+    );
+
     const oneTeamJSX = (
       <fieldset>
         <div className="survey-questions">
@@ -692,6 +722,7 @@ class PointTrackerForm extends React.Component {
             <div className="modal-body">
               <form className="data-entry container" onSubmit={ this.handleSubmit }>
                 { selectOptionsJSX }
+                { mentorMadeScheduledCheckinJSX }
                 { communicationPillarsTableJSX }
                 { oneTeamJSX }
                 { pointSheetStatusJSX }

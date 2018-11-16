@@ -43,7 +43,17 @@ select {
   width: 200px;
   height: 3em;
   padding: 10px;
+}
+
+.mentor-met-container {
+  width: 100%;
+  clear: both;
+  line-height: 18px;
+  margin-top: 18px;
+  .inline {
+    margin-left: 12px;
   }
+}
 
 .survey-question-container {
   width: 100%;

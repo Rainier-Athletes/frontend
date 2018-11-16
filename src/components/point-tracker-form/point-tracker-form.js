@@ -166,7 +166,7 @@ class PointTrackerForm extends React.Component {
   handleSubjectChange = (event) => {
     event.persist();
 
-    const validGrades = ['A', 'B', 'C', 'D', 'F', ''];
+    const validGrades = ['A', 'B', 'C', 'D', 'F', '', 'N'];
 
     const { name } = event.target;
 
@@ -180,6 +180,7 @@ class PointTrackerForm extends React.Component {
             const newSubject = { ...subject };
             if (categoryName === 'grade') {
               newSubject.grade = validGrades.includes(event.target.value.toUpperCase()) ? event.target.value.toUpperCase() : '';
+              if (newSubject.grade === 'N') newSubject.grade = 'N/A';
               if (subjectName.toLowerCase() === 'tutorial') newSubject.grade = '';
             } else if (categoryName === 'excusedDays') {
               newSubject.scoring.excusedDays = Math.min(Math.max(parseInt(event.target.value, 10), 0), 5);
@@ -362,7 +363,7 @@ class PointTrackerForm extends React.Component {
       if (classPointPercentage >= 0.75) classTokensEarned = 2;
 
       let gradeTokensEarned = 0;
-      if (!isElementarySchool && ['A', 'B'].includes(grade)) gradeTokensEarned = 2;
+      if (!isElementarySchool && ['A', 'B', 'N/A'].includes(grade)) gradeTokensEarned = 2;
       if (!isElementarySchool && grade === 'C') gradeTokensEarned = 1;
 
       const totalTokensEarned = classTokensEarned + gradeTokensEarned;

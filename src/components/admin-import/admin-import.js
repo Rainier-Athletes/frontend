@@ -4,20 +4,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import * as extractActions from '../../actions/extract';
 
-import './admin-extract.scss';
+import './admin-import.scss';
 
-const defaultExport = {
-  exportSource: '',
-  exportFrom: '',
-  exportTo: '',
+const defaultImport = {
+  importSource: '',
+  importType: '',
   waitingOnSave: false,
-  csvFileSaved: false,
+  csvFileRead: false,
   error: null,
-  csvLink: '',
 };
 
 const mapStateToProps = state => ({
-  csvResult: state.csvExtract,
+  csvResult: state.csvImport,
   error: state.error,
 });
 
@@ -26,77 +24,79 @@ const mapDispatchToProps = dispatch => ({
   // clearCsvExtractLink: () => dispatch(exportActions.clearCsvExtractLink()),
 });
 
-class AdminExtract extends React.Component {
+class AdminImport extends React.Component {
   constructor(props) {
     super(props);
-    this.state = defaultExport;
+    this.state = defaultImport;
   }
 
   componentDidMount = () => {
-    this.setState({ csvFileSaved: false, waitingOnSave: false });
+    this.setState({ csvFileRead: false, waitingOnSave: false });
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.csvResult !== prevProps.csvResult) {
       this.setState({
         ...this.state,
-        csvFileSaved: true,
+        csvFileRead: true,
         waitingOnSave: false,
-        csvLink: this.props.csvResult.link || '',
-        coachesReport: this.props.csvResult.coaches || {},
         error: null,
       });
     }
     if (this.props.error !== prevProps.error) {
       this.setState({
         ...this.state,
-        csvFileSaved: true,
+        csvFileRead: true,
         waitingOnSave: false,
-        csvLink: '',
         error: this.props.error,
       });
     }
   }
 
-  exportFormChange = (e) => {
+  importFormChange = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log('importFormChange');
+    console.log(e.target);
+    console.log(e.target.files);
     let keyName;
+    let value;
     switch (e.target.id) {
       case 'data-source':
-        keyName = 'exportSource';
+        keyName = 'importSource';
+        value = e.target.files[0].name;
         break;
-      case 'from':
-        keyName = 'exportFrom';
-        break;
-      case 'to':
-        keyName = 'exportTo';
+      case 'data-type':
+        keyName = 'importType';
+        value = e.target.value;
         break;
       default:
     }
-    return this.setState({ [keyName]: e.target.value, csvFileSaved: false });
+    return this.setState({ [keyName]: value, csvFileRead: false });
   }
 
-  handleExtractButton = (e) => {
+  handleImportButton = (e) => {
     e.stopPropagation();
     e.preventDefault();
-
-    let extractCommand;
+    console.log('handleImportButton e.target.id', e.target.id);
+    let importCommand;
     switch (e.target.id) {
-      case 'extract':
-        if (this.state.exportSource !== 'coachesreport') {
-          extractCommand = `${this.state.exportSource}?from=${this.state.exportFrom}&to=${this.state.exportTo}`;
-        } else {
-          extractCommand = this.state.exportSource;
+      case 'import':
+        if (this.state.importType === 'profiles') {
+          importCommand = `import ${this.state.importSource} as ${this.state.importType}`;
+        } else if (this.state.importType === 'connections') {
+          importCommand = `import ${this.state.importSource} as ${this.state.importType}`;
         }
         this.setState({ ...this.state, waitingOnSave: true });
-        this.props.createCsvExtract(extractCommand);
+        console.log(importCommand);
+        console.log(e);
+        // this.props.createCsvExtract(extractCommand);
         break;
       case 'cancel':
         this.setState({
           ...this.state,
           show: 'nada',
-          ...defaultExport,
+          ...defaultImport,
         });
         break;
       default:
@@ -123,78 +123,70 @@ class AdminExtract extends React.Component {
   };
 
   render() {
+    console.log('admin-import props.show', this.props.show);
     if (!this.props.show) {
       return null;
     }
 
-    const extractButton = (
+    const importButton = (
       this.state.waitingOnSave
         ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/>
         : <button
           className="btn btn-secondary"
           type="submit"
-          id="extract"
-          onClick={this.handleExtractButton}>
-          Create CSV Extract
+          id="import"
+          onClick={this.handleImportButton}>
+          Import CSV File
           </button>
     );
 
     return (
       <div className="modal-backdrop">
-        <div className="panel extract-modal">
+        <div className="panel import-modal">
           <div className="modal-dialog">
             <div className="modal-content">
+
               <div className="modal-header">
-                <h5 className="modal-title title">Export as CSV</h5>
+                <h5 className="modal-title title">Import CSV Data</h5>
                 <button type="button" className="close" onClick={ this.props.onClose } data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
 
               <div className="modal-body">
-                <form onChange={this.exportFormChange}>
+                <form onChange={this.importFormChange}>
                   <div className="fieldwrap dropdown">
-                    <label className="title" htmlFor="data-source">Exported data source:</label>
-                    <select type="text" id="data-source"required>
-                      <option value="" selected="true" disabled>-- select data source -- </option>
-                      <option value="pointstracker" key="pointstracker">Point Tracker Forms</option>
-                      <option value="studentdata" key="studentdata">Student Data</option>
-                      <option value="coachesreport" key="coachesreport">Coaches Mailmerge Report</option>
+                    <label className="title" htmlFor="data-type">Import data type:</label>
+                    <select type="text" id="data-type"required>
+                      <option value="" selected="true" disabled>-- select data type -- </option>
+                      <option value="profiles" key="profiles">Profiles</option>
+                      <option value="connections" key="connections">Connections</option>
                     </select>
                   </div>
-                  {this.state.exportSource !== 'coachesreport'
-                    ? <div className="fieldwrap">
-                        <label className="title" htmlFor="from">Starting date:</label>
-                        <input type="date" id="from" />
-                      </div>
-                    : null}
-                  {this.state.exportSource !== 'coachesreport'
-                    ? <div className="fieldwrap">
-                        <label className="title" htmlFor="to">Ending date:</label>
-                        <input type="date" id="to" />
-                      </div>
-                    : null}
-                    <div className="modal-footer">
-                      { this.state.csvFileSaved && !this.state.waitingOnSave
-                        ? this.csvFileSavedResponseJSX()
-                        : extractButton }
-                    </div>
-                  </form>
-                </div>
+                  <div className="fieldwrap">
+                    <label className="title" htmlFor="data-source">CSV File:</label>
+                    <input type="file" id="data-source" />
+                  </div>
+                  <div className="modal-footer">
+                    { this.state.csvFileRead && !this.state.waitingOnSave
+                      ? this.csvFileReadResponseJSX()
+                      : importButton }
+                  </div>
+                </form>
               </div>
+
             </div>
           </div>
+        </div>
       </div>
     );
   }
 }
 
-AdminExtract.propTypes = {
+AdminImport.propTypes = {
   show: PropTypes.bool,
   onClose: PropTypes.func,
-  csvResult: PropTypes.object,
-  createCsvExtract: PropTypes.func,
   error: PropTypes.object,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminExtract);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminImport);

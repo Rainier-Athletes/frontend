@@ -9,6 +9,7 @@ import './admin-table.scss';
 import StudentDataModal from '../student-data-form/student-data-form';
 import SaveTableModal from '../save-table-modal/save-table-modal';
 import AdminExtract from '../admin-extract/admin-extract';
+import AdminImport from '../admin-import/admin-import';
 
 import * as profileActions from '../../actions/profile';
 import * as relationshipActions from '../../actions/relationship';
@@ -169,6 +170,7 @@ class AdminTable extends React.Component {
       isOpen: false, // for the modal
       sdIsOpen: false, // for student data form modal
       saveTableIsOpen: false, // for save table modal
+      adminImportIsOpen: false, // admin import modal
       adminExtractIsOpen: false, // admin extract modal
       selectStudentFirstMsg: false,
       removeActiveConnectionsMsg: false,
@@ -539,6 +541,13 @@ class AdminTable extends React.Component {
     });
   }
 
+  toggleAdminImportModal = () => {
+    console.log('toggleAdminImportModal to ', !this.state.adminImportIsOpen);
+    return this.setState({
+      adminImportIsOpen: !this.state.adminImportIsOpen,
+    });
+  }
+
   toggleAdminExtractModal = () => {
     return this.setState({
       adminExtractIsOpen: !this.state.adminExtractIsOpen,
@@ -599,6 +608,10 @@ class AdminTable extends React.Component {
             onClose={this.toggleSaveTableModal}
             onSubmit={this.handleUpdateTable}>
           </SaveTableModal>
+          <AdminImport
+            show={this.state.adminImportIsOpen}
+            onClose={this.toggleAdminImportModal}
+          />
           <AdminExtract
             show={this.state.adminExtractIsOpen}
             onClose={this.toggleAdminExtractModal}
@@ -607,7 +620,7 @@ class AdminTable extends React.Component {
             ? <StudentDataModal onClose={this.toggleSdModal()} onCancel={this.toggleSdModal(true)} studentId={this.state.studentSelected}></StudentDataModal> : null }
           <Prompt when={this.state.gridModified} message="Unsaved changes. Are you sure you want to leave?" />
           <div className="top-toolbar">
-            <button className="toolbar-btn-import">Import CSV</button>
+            <button className="toolbar-btn-import" onClick={ this.toggleAdminImportModal }>Import CSV</button>
             <button className="toolbar-btn-export" onClick={ this.toggleAdminExtractModal }>Export CSV</button>
             <button className={`updateBtn ${this.state.gridModified ? 'saveAlert' : ''}`} onClick={ this.toggleSaveTableModal }>Save Table</button>
           </div>

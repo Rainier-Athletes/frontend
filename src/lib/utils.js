@@ -1,17 +1,17 @@
 import moment from 'moment';
 
-const renderIf = (test, trueComponent, falseComponent = null) => {
+export const renderIf = (test, trueComponent, falseComponent = null) => {
   return test ? trueComponent : falseComponent;
 };
 
-const devLogger = (...args) => {
+export const devLogger = (...args) => {
   if (process.env.NODE_ENV !== 'production') {
     return console.log(...args); // eslint-disable-line
   }
   return null;
 };
 
-const cookieFetch = (key) => {
+export const cookieFetch = (key) => {
   const cookies = document.cookie
     .split(';')
     .map(str => str.split('='))
@@ -25,11 +25,11 @@ const cookieFetch = (key) => {
   return cookies[key];
 };
 
-const cookieDelete = (key) => {
+export const cookieDelete = (key) => {
   document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 };
 
-const convertDateToValue = (inputDate) => {
+export const convertDateToValue = (inputDate) => {
   let date;
   const dateFormat = 'YYYY[-]MM[-]DD';
 
@@ -50,7 +50,7 @@ const convertDateToValue = (inputDate) => {
   return formattedDate;
 };
 
-const getReportingPeriods = () => {
+export const getReportingPeriods = () => {
   let monday = moment().isoWeekday(1).subtract(14, 'days');
   let sunday = moment().isoWeekday(0).subtract(7, 'days');
 
@@ -65,51 +65,41 @@ const getReportingPeriods = () => {
   return reportingPeriods;
 };
 
-const csvUpload = (fileUpload) => {
-  // const fileUpload = document.getElementById('fileUpload'); 
+const importProfiles = (profiles) => {
+  console.log('importing', profiles.length, 'profiles');
+};
+
+const importConnections = (connections) => {
+  console.log('importing', connections.length, 'connections');  
+};
+
+export const csvUpload = (fileType, fileUpload) => { 
   const regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
-  
-  if (regex.test(fileUpload.value.toLowerCase())) { 
+
+  if (regex.test(fileUpload.name.toLowerCase())) { 
     if (typeof (FileReader) !== 'undefined') { 
       const reader = new FileReader();
   
-      reader.onload = (e) => {  
-        const table = document.createElement('table');
-  
+      reader.onload = (e) => { 
         const rows = e.target.result.split('\n');
-        
-        for (let i = 0; i < rows.length; i++) {       
-          const row = table.insertRow(-1);
-          
-          const cells = rows[i].split(',');
-          
+        const headerLabels = rows[0].split(',');
+        const data = [];
+        for (let i = 1; i < rows.length; i++) {                
+          const cells = rows[i].split(','); 
+          const rowObj = {};        
           for (let j = 0; j < cells.length; j++) {          
-            const cell = row.insertCell(-1);
-            
-            cell.innerHTML = cells[j];   
-          }  
+            rowObj[headerLabels[j]] = cells[j];
+          }
+          data.push(rowObj);
         }
-        const dvCSV = document.getElementById('dvCSV');
-
-        dvCSV.innerHTML = '';
-
-        dvCSV.appendChild(table);
+        if (fileType === 'profiles') return importProfiles(data);
+        if (fileType === 'connections') return importConnections(data);
       };  
-      reader.readAsText(fileUpload.files[0]);
+      reader.readAsText(fileUpload);
     } else {
       alert('This browser does not support HTML5.');
     }
   } else {
     alert('Please upload a valid CSV file.');
   }
-}
-
-
-export {
-  renderIf,
-  devLogger,
-  cookieFetch,
-  cookieDelete,
-  convertDateToValue,
-  getReportingPeriods,
 };

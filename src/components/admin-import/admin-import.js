@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
-import * as extractActions from '../../actions/extract';
+import * as profileActions from '../../actions/profile';
+import { csvUpload } from '../../lib/utils';
 
 import './admin-import.scss';
 
@@ -20,8 +21,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createCsvExtract: extractCommand => dispatch(extractActions.createCsvExtract(extractCommand)),
-  // clearCsvExtractLink: () => dispatch(exportActions.clearCsvExtractLink()),
+  updateProfile: profile => dispatch(profileActions.updateProfileReq(profile)),
+  createProfile: profile => dispatch(profileActions.createProfileReq(profile)),
 });
 
 class AdminImport extends React.Component {
@@ -64,11 +65,11 @@ class AdminImport extends React.Component {
     switch (e.target.id) {
       case 'data-source':
         keyName = 'importSource';
-        value = e.target.files[0].name;
+        value = e.target.files[0]; // eslint-disable-line
         break;
       case 'data-type':
         keyName = 'importType';
-        value = e.target.value;
+        value = e.target.value; // eslint-disable-line
         break;
       default:
     }
@@ -89,8 +90,7 @@ class AdminImport extends React.Component {
         }
         this.setState({ ...this.state, waitingOnSave: true });
         console.log(importCommand);
-        console.log(e);
-        // this.props.createCsvExtract(extractCommand);
+        csvUpload(this.state.importType, this.state.importSource);
         break;
       case 'cancel':
         this.setState({

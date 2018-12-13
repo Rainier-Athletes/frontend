@@ -57,9 +57,7 @@ class AdminImport extends React.Component {
   importFormChange = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('importFormChange');
-    console.log(e.target);
-    console.log(e.target.files);
+
     let keyName;
     let value;
     switch (e.target.id) {
@@ -76,22 +74,110 @@ class AdminImport extends React.Component {
     return this.setState({ [keyName]: value, csvFileRead: false });
   }
 
+  _uploadProfileData = ({ profiles, studentData }) => {
+    console.log('_uploadProfileData');
+    console.log(profiles);
+    console.log(studentData);
+  }
+
+  _uploadConnections = (connections) => {
+    console.log('_uploadConnections');
+    console.log(connections);
+  }
+
+  _importProfiles = (data) => {
+    // firstName lastName	primaryEmail	role	street	apt	city	state	zip	cellPhone	phone	gender	dateOfBirth	schoolName	isElementarySchool	grade
+    const profiles = [];
+    const studentData = [];
+    data.forEach((person) => {
+      const profile = {};
+      profile.firstName = person.firstName;
+      profile.lastName = person.lastName;
+      profile.primaryEmail = person.primaryEmail;
+      profile.role = person.role.toLowerCase();
+      profile.street = person.street;
+      profile.apt = person.apt;
+      profile.city = person.city;
+      profile.state = person.state;
+      profile.zip = person.zip;
+      profile.cellPhone = person.cellPhone;
+      profile.phone = person.phone;
+
+      const studentInfo = {};
+      studentInfo.gender = person.gender;
+      studentInfo.dateOfBirth = person.dateOfBirth;
+      studentInfo.school = {
+        schoolName: person.schoolName,
+        isElementarySchool: person.isElementarySchool.toUpperCase() === 'TRUE',
+        currentSchool: true,
+      };
+      studentInfo.grade = person.grade;
+      studentInfo.primaryEmail = person.primaryEmail; // not a prop of studentData but want to keep it for ID purposes
+
+      profiles.push(profile);
+      if (profile.role === 'student') {
+        studentData.push(studentInfo);
+      }
+    });
+    return { profiles, studentData };
+  };
+
+  _importConnections = (data) => {
+    const connections = [];
+    data.forEach((conn) => {
+      const c = {};
+      c.adultPrimaryEmail = conn.adultPrimaryEmail;
+      c.role = conn.adultRole.toLowerCase();
+      c.studentPrimaryEmail = conn.studentPrimaryEmail;
+      connections.push(c);
+    });
+    // console.log('imported connections', connections);
+    return connections;
+  }
+
+  _csvUpload = (fileType, fileUpload) => { 
+    const regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+
+    if (regex.test(fileUpload.name.toLowerCase())) { 
+      if (typeof (FileReader) !== 'undefined') { 
+        const reader = new FileReader();
+    
+        reader.onload = (e) => { 
+          const rows = e.target.result.split('\n');
+          const headerLabels = rows[0].split(',');
+          const data = [];
+
+          for (let i = 1; i < rows.length; i++) {                
+            const cells = rows[i].split(','); 
+            const rowObj = {};        
+            for (let j = 0; j < cells.length; j++) {          
+              rowObj[headerLabels[j].trim()] = cells[j];
+            }
+            data.push(rowObj);
+          }
+          // console.log('raw data', data);
+          if (fileType === 'profiles') return this._uploadProfileData(this._importProfiles(data));
+          if (fileType === 'connections') return this._uploadConnections(this._importConnections(data));
+
+          return undefined;
+        };  
+        reader.readAsText(fileUpload);
+      } else {
+        alert('This browser does not support HTML5.');
+      }
+    } else {
+      alert('Please upload a valid CSV file.');
+    }
+  };
+
   handleImportButton = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log('handleImportButton e.target.id', e.target.id);
-    let importCommand;
+
     switch (e.target.id) {
       case 'import':
-        if (this.state.importType === 'profiles') {
-          importCommand = `import ${this.state.importSource} as ${this.state.importType}`;
-        } else if (this.state.importType === 'connections') {
-          importCommand = `import ${this.state.importSource} as ${this.state.importType}`;
-        }
         this.setState({ ...this.state, waitingOnSave: true });
-        console.log(importCommand);
-        csvUpload(this.state.importType, this.state.importSource);
-        break;
+        return this._csvUpload(this.state.importType, this.state.importSource);
       case 'cancel':
         this.setState({
           ...this.state,
@@ -123,7 +209,6 @@ class AdminImport extends React.Component {
   };
 
   render() {
-    console.log('admin-import props.show', this.props.show);
     if (!this.props.show) {
       return null;
     }

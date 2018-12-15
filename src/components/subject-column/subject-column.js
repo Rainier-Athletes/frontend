@@ -40,8 +40,8 @@ export default function SubjectColumn(props) {
           value={ props.subject.grade }
           required={props.subject.subjectName.toLowerCase() !== 'tutorial'}/>
       </div>}
-      <div className={props.editing ? 'grid-cell-delete' : 'grid-cell-hidden'}>
-        <button type="button" onClick={ handleDelete }>X</button>
+      <div className={props.editing && props.subject.subjectName.toLowerCase() !== 'tutorial' ? 'grid-cell-delete' : 'grid-cell-hidden'}>
+          <button type="button" onClick={ handleDelete }>X</button>
       </div>
     </React.Fragment>
   );

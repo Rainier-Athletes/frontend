@@ -22,8 +22,9 @@ const emptyPointTracker = {
       stamps: 0,
       halfStamps: 0,
     },
-    grade: '',
+    grade: 'N/A',
   }],
+  mentorMadeScheduledCheckin: false,
   communications: [
     {
       with: 'Student',
@@ -146,6 +147,7 @@ class PointTrackerForm extends React.Component {
         && selectedStudent.studentData.school.length
         ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool
         : false;
+      newState.mentorMadeScheduledCheckin = -1;
       // elementary has no tutorial so pop it from the empty point tracker
       if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
       newState.title = `${newState.studentName}: ${getReportingPeriods()[1]}`;
@@ -166,7 +168,7 @@ class PointTrackerForm extends React.Component {
   handleSubjectChange = (event) => {
     event.persist();
 
-    const validGrades = ['A', 'B', 'C', 'D', 'F', ''];
+    const validGrades = ['A', 'B', 'C', 'D', 'F', '', 'N/A'];
 
     const { name } = event.target;
 
@@ -180,7 +182,7 @@ class PointTrackerForm extends React.Component {
             const newSubject = { ...subject };
             if (categoryName === 'grade') {
               newSubject.grade = validGrades.includes(event.target.value.toUpperCase()) ? event.target.value.toUpperCase() : '';
-              if (subjectName.toLowerCase() === 'tutorial') newSubject.grade = '';
+              if (subjectName.toLowerCase() === 'tutorial') newSubject.grade = 'N/A';
             } else if (categoryName === 'excusedDays') {
               newSubject.scoring.excusedDays = Math.min(Math.max(parseInt(event.target.value, 10), 0), 5);
             } else {
@@ -206,6 +208,12 @@ class PointTrackerForm extends React.Component {
       newState.subjects = newSubjects;
       return newState;
     });
+  }
+
+  handleMentorMadeScheduledCheckinChange = (event) => {
+    const newState = Object.assign({}, this.state);
+    newState.mentorMadeScheduledCheckin = parseInt(event.target.value, 10);
+    this.setState(newState);
   }
 
   handlePointSheetTurnedInChange = (event) => {
@@ -362,7 +370,7 @@ class PointTrackerForm extends React.Component {
       if (classPointPercentage >= 0.75) classTokensEarned = 2;
 
       let gradeTokensEarned = 0;
-      if (!isElementarySchool && ['A', 'B'].includes(grade)) gradeTokensEarned = 2;
+      if (!isElementarySchool && ['A', 'B', 'N/A'].includes(grade)) gradeTokensEarned = 2;
       if (!isElementarySchool && grade === 'C') gradeTokensEarned = 1;
 
       const totalTokensEarned = classTokensEarned + gradeTokensEarned;
@@ -466,6 +474,28 @@ class PointTrackerForm extends React.Component {
             ))}
           </select>
         </div>
+      </div>
+    );
+
+    const mentorMadeScheduledCheckinJSX = (
+      <div className="mentor-met-container" key='mentorMadeCheckin'>
+        <label htmlFor="made-meeting">Did you meet your student at your regularly scheduled check in?</label>
+          <input
+            type="radio"
+            name="made-meeting"
+            value="1"
+            className="inline"
+            checked={this.state.mentorMadeScheduledCheckin === 1 ? 'checked' : ''}
+            required
+            onChange={this.handleMentorMadeScheduledCheckinChange}/> Yes
+          <input
+            type="radio"
+            name="made-meeting"
+            value="0"
+            className="inline"
+            checked={this.state.mentorMadeScheduledCheckin === 0 ? 'checked' : ''}
+            requried
+            onChange={this.handleMentorMadeScheduledCheckinChange}/> No
       </div>
     );
 
@@ -691,6 +721,7 @@ class PointTrackerForm extends React.Component {
             <div className="modal-body">
               <form className="data-entry container" onSubmit={ this.handleSubmit }>
                 { selectOptionsJSX }
+                { mentorMadeScheduledCheckinJSX }
                 { communicationPillarsTableJSX }
                 { oneTeamJSX }
                 { pointSheetStatusJSX }

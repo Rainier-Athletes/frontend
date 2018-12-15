@@ -22,7 +22,7 @@ const emptyPointTracker = {
       stamps: 0,
       halfStamps: 0,
     },
-    grade: '',
+    grade: 'N/A',
   }],
   mentorMadeScheduledCheckin: false,
   communications: [
@@ -168,7 +168,7 @@ class PointTrackerForm extends React.Component {
   handleSubjectChange = (event) => {
     event.persist();
 
-    const validGrades = ['A', 'B', 'C', 'D', 'F', '', 'N'];
+    const validGrades = ['A', 'B', 'C', 'D', 'F', '', 'N/A'];
 
     const { name } = event.target;
 
@@ -182,8 +182,7 @@ class PointTrackerForm extends React.Component {
             const newSubject = { ...subject };
             if (categoryName === 'grade') {
               newSubject.grade = validGrades.includes(event.target.value.toUpperCase()) ? event.target.value.toUpperCase() : '';
-              if (newSubject.grade === 'N') newSubject.grade = 'N/A';
-              if (subjectName.toLowerCase() === 'tutorial') newSubject.grade = '';
+              if (subjectName.toLowerCase() === 'tutorial') newSubject.grade = 'N/A';
             } else if (categoryName === 'excusedDays') {
               newSubject.scoring.excusedDays = Math.min(Math.max(parseInt(event.target.value, 10), 0), 5);
             } else {

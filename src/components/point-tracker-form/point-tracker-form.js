@@ -767,7 +767,9 @@ class PointTrackerForm extends React.Component {
 
                 { synopsisCommentsJSX }
                 <div className="modal-footer">
-                  { this.state.waitingOnSaves ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> : <h3><button className="btn btn-secondary" type="submit">Submit Point Tracker</button>  to Core Community</h3> }
+                  { this.state.waitingOnSaves 
+                    ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> 
+                    : <h3><button className="btn btn-secondary" type="submit">Submit Full Report</button>  to Student&#39;s Core Community</h3> }
                 </div>
 
               </form>

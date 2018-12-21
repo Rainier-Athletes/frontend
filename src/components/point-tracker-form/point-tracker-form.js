@@ -25,7 +25,7 @@ const emptyPointTracker = {
     grade: 'N/A',
   }],
   playingTimeOnly: true,
-  mentorMadeScheduledCheckin: false,
+  mentorMadeScheduledCheckin: -1,
   communications: [
     {
       with: 'Student',
@@ -157,6 +157,10 @@ class PointTrackerForm extends React.Component {
       newState.mentorGrantedPlayingTime = '';
       newState.synopsisComments.mentorGrantedPlayingTimeComments = '';
       newState.pointSheetStatusNotes = '';
+      newState.pointSheetStatus.lost = false;
+      newState.pointSheetStatus.incomplete = false;
+      newState.pointSheetStatus.absent = false;
+      newState.pointSheetStatus.other = false;
       newState.teachers = this.props.content.studentData.teachers;
       return newState;
     });
@@ -276,6 +280,20 @@ class PointTrackerForm extends React.Component {
     });
   }
 
+  validPlayingTime = (pointTracker) => {
+    const playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime;
+    const commentsMade = !!pointTracker.synopsisComments.mentorGrantedPlayingTimeComments;
+    const metWithMentee = pointTracker.mentorMadeScheduledCheckin !== -1;
+    const pointSheetStatusOK = pointTracker.pointSheetStatus.turnedIn
+      || (!pointTracker.pointSheetStatus.turnedIn
+        && (pointTracker.pointSheetStatus.lost
+          || pointTracker.pointSheetStatus.incomplete
+          || pointTracker.pointSheetStatus.absent
+          || (pointTracker.pointSheetStatus.other && !!pointTracker.pointSheetStatusNotes)));
+
+    return playingTimeGranted && commentsMade && metWithMentee && pointSheetStatusOK;
+  }
+
   validScores = (subjects) => {
     return subjects.every(subject => (
       subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4
@@ -286,7 +304,7 @@ class PointTrackerForm extends React.Component {
     event.preventDefault();
     const pointTracker = this.state;
     pointTracker.playingTimeOnly = false;
-    if (this.validScores(pointTracker.subjects)) {
+    if (this.validPlayingTime(pointTracker) && this.validScores(pointTracker.subjects)) {
       delete pointTracker._id;
 
       this.setState({ ...this.state, waitingOnSaves: true });
@@ -302,7 +320,8 @@ class PointTrackerForm extends React.Component {
   handlePlayingTimeSubmit = (event) => {
     event.preventDefault();
     const pointTracker = this.state;
-    if (true) { // make call to form validator function here
+    // debugger;
+    if (this.validPlayingTime(pointTracker)) {
       pointTracker.playingTimeOnly = true;
       this.setState({ ...this.state, waitingOnSaves: true });
       this.props.createPointTracker({ ...pointTracker });

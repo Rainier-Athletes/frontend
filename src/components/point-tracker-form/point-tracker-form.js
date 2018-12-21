@@ -158,7 +158,6 @@ class PointTrackerForm extends React.Component {
       newState.synopsisComments.mentorGrantedPlayingTimeComments = '';
       newState.pointSheetStatusNotes = '';
       newState.teachers = this.props.content.studentData.teachers;
-      console.log('cdm.......');
       return newState;
     });
   }
@@ -283,9 +282,10 @@ class PointTrackerForm extends React.Component {
     ));
   }
 
-  handleSubmit = (event) => {
+  handleFullReportSubmit = (event) => {
     event.preventDefault();
     const pointTracker = this.state;
+    pointTracker.playingTimeOnly = false;
     if (this.validScores(pointTracker.subjects)) {
       delete pointTracker._id;
 
@@ -296,6 +296,20 @@ class PointTrackerForm extends React.Component {
       this.setState({ pointTracker: emptyPointTracker });
     } else {
       alert('Errors in scores. Please correct before saving.'); // eslint-disable-line
+    }
+  }
+
+  handlePlayingTimeSubmit = (event) => {
+    event.preventDefault();
+    const pointTracker = this.state;
+    if (true) { // make call to form validator function here
+      pointTracker.playingTimeOnly = true;
+      this.setState({ ...this.state, waitingOnSaves: true });
+      this.props.createPointTracker({ ...pointTracker });
+      this.props.createSynopsisReport(pointTracker);
+      this.setState({ pointTracker: emptyPointTracker });
+    } else {
+      alert('Please provide required information before submitting playing time.'); // eslint-disable-line
     }
   }
 
@@ -490,7 +504,7 @@ class PointTrackerForm extends React.Component {
             value="1"
             className="inline"
             checked={this.state.mentorMadeScheduledCheckin === 1 ? 'checked' : ''}
-            required
+            required="true"
             onChange={this.handleMentorMadeScheduledCheckinChange}/> Yes
           <input
             type="radio"
@@ -498,7 +512,7 @@ class PointTrackerForm extends React.Component {
             value="0"
             className="inline"
             checked={this.state.mentorMadeScheduledCheckin === 0 ? 'checked' : ''}
-            requried
+            requried="true"
             onChange={this.handleMentorMadeScheduledCheckinChange}/> No
       </div>
     );
@@ -575,7 +589,6 @@ class PointTrackerForm extends React.Component {
                     required={!this.state.pointSheetStatus.turnedIn}
                     onChange= { this.handlePointSheetStatusChange }
                     checked={ this.state.pointSheetStatus.statusQuestion }/>{ names[statusQuestion] }
-                  {/* <label htmlFor={ statusQuestion }>{ names[statusQuestion] }</label> */}
                 </div>
                 : null
               );
@@ -702,8 +715,12 @@ class PointTrackerForm extends React.Component {
 
     const submitPlayingTimeOnlyJSX = (
       <div className="synopsis">
-        <h3>No time for full report? <button className="btn btn-secondary" type="submit">Submit Playing Time Only</button></h3>
-        <p>Plan on completing the Core Community sections by the end of the week. </p>
+        { this.state.waitingOnSaves 
+          ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> 
+          : <React.Fragment>
+              <h3>No time for full report? <button type="submit" onClick={ this.handlePlayingTimeSubmit } className="btn btn-secondary" id="playing-time-only">Submit Playing Time Only</button></h3>
+              <p>Plan on completing the Core Community sections by the end of the week. </p> 
+            </React.Fragment> }
       </div>
     );
 
@@ -743,7 +760,7 @@ class PointTrackerForm extends React.Component {
             </div>
 
             <div className="modal-body">
-              <form className="data-entry container" onSubmit={ this.handleSubmit }>
+              <form className="data-entry container">
                 { selectOptionsJSX }
                 { mentorMadeScheduledCheckinJSX }
                 { pointSheetStatusJSX }
@@ -769,7 +786,7 @@ class PointTrackerForm extends React.Component {
                 <div className="modal-footer">
                   { this.state.waitingOnSaves 
                     ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> 
-                    : <h3><button className="btn btn-secondary" type="submit">Submit Full Report</button>  to Student&#39;s Core Community</h3> }
+                    : <h3><button onClick={ this.handleFullReportSubmit } className="btn btn-secondary" id="full-report" type="submit">Submit Full Report</button>  to Student&#39;s Core Community</h3> }
                 </div>
 
               </form>

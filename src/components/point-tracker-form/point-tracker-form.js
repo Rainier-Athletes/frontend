@@ -86,6 +86,7 @@ const emptyPointTracker = {
     lost: false,
     incomplete: false,
     absent: false,
+    other: false,
   },
   pointSheetStatusNotes: '',
   earnedPlayingTime: '',
@@ -149,7 +150,7 @@ class PointTrackerForm extends React.Component {
         ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool
         : false;
       newState.mentorMadeScheduledCheckin = -1;
-      newState.playingTimeOnly = true;
+      newState.playingTimeOnly = false;
       // elementary has no tutorial so pop it from the empty point tracker
       if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
       newState.title = `${newState.studentName}: ${getReportingPeriods()[1]}`;
@@ -162,6 +163,10 @@ class PointTrackerForm extends React.Component {
       newState.pointSheetStatus.absent = false;
       newState.pointSheetStatus.other = false;
       newState.teachers = this.props.content.studentData.teachers;
+      newState.playingTimeGranted = true;
+      newState.commentsMade = true;
+      newState.metWithMentee = true;
+      newState.pointSheetStatusOK = true;
       return newState;
     });
   }
@@ -281,8 +286,16 @@ class PointTrackerForm extends React.Component {
   }
 
   validPlayingTime = (pointTracker) => {
-    const playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime;
-    const commentsMade = !!pointTracker.synopsisComments.mentorGrantedPlayingTimeComments;
+    let playingTimeGranted;
+    if (pointTracker.playingTimeOnly) {
+      playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime;
+    } else {
+      playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime;
+    }
+    // const playingTimeGranted = !pointTracker.playingTimeOnly || !!pointTracker.mentorGrantedPlayingTime || pointTracker.pointSheetStatus.turnedIn;
+    const commentsRequired = pointTracker.playingTimeOnly
+      || (!!pointTracker.mentorGrantedPlayingTime && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime);
+    const commentsMade = !!pointTracker.synopsisComments.mentorGrantedPlayingTimeComments || !commentsRequired;
     const metWithMentee = pointTracker.mentorMadeScheduledCheckin !== -1;
     const pointSheetStatusOK = pointTracker.pointSheetStatus.turnedIn
       || (!pointTracker.pointSheetStatus.turnedIn
@@ -290,6 +303,13 @@ class PointTrackerForm extends React.Component {
           || pointTracker.pointSheetStatus.incomplete
           || pointTracker.pointSheetStatus.absent
           || (pointTracker.pointSheetStatus.other && !!pointTracker.pointSheetStatusNotes)));
+
+    this.setState({
+      playingTimeGranted,
+      commentsMade,
+      metWithMentee,
+      pointSheetStatusOK,
+    });
 
     return playingTimeGranted && commentsMade && metWithMentee && pointSheetStatusOK;
   }
@@ -320,9 +340,8 @@ class PointTrackerForm extends React.Component {
   handlePlayingTimeSubmit = (event) => {
     event.preventDefault();
     const pointTracker = this.state;
-    // debugger;
+    pointTracker.playingTimeOnly = true;
     if (this.validPlayingTime(pointTracker)) {
-      pointTracker.playingTimeOnly = true;
       this.setState({ ...this.state, waitingOnSaves: true });
       this.props.createPointTracker({ ...pointTracker });
       this.props.createSynopsisReport(pointTracker);
@@ -516,7 +535,7 @@ class PointTrackerForm extends React.Component {
 
     const mentorMadeScheduledCheckinJSX = (
       <div className="mentor-met-container" key='mentorMadeCheckin'>
-        <label htmlFor="made-meeting">Did you meet your student at your regularly scheduled check in?</label>
+        <label className={this.state.metWithMentee ? '' : 'required'} htmlFor="made-meeting">Did you meet your student at your regularly scheduled check in?</label>
           <input
             type="radio"
             name="made-meeting"
@@ -572,7 +591,7 @@ class PointTrackerForm extends React.Component {
     const pointSheetStatusJSX = (
       <fieldset>
         <div className="survey-questions">
-        <span className="title">Point Sheet Status</span>
+        <span className={`title ${this.state.pointSheetStatusOK ? '' : 'required'}`}>Point Sheet Status</span>
           {Object.keys(this.state.pointSheetStatus)
             .filter(keyName => names[keyName])
             .map((statusQuestion, i) => {
@@ -615,7 +634,7 @@ class PointTrackerForm extends React.Component {
             }
             { !this.state.pointSheetStatus.turnedIn
               ? <div className="survey-question-container">
-                <span className="title" htmlFor="pointSheetStatusNotes">Point Sheet Status Notes</span>
+                <span className={`title ${this.state.pointSheetStatusOK || !this.state.pointSheetStatus.other || (this.state.pointSheetStatus.other && !!this.state.pointSheetStatusNotes) ? '' : 'required'}`} htmlFor="pointSheetStatusNotes">Point Sheet Status Notes</span>
                     <textarea
                       name="pointSheetStatusNotes"
                       placeholder={this.state.pointSheetStatus.other ? 'Please explain selected status...' : ''}
@@ -690,7 +709,7 @@ class PointTrackerForm extends React.Component {
             </div>
             : null }
           <div className="col-md-6">
-            <span className="title" htmlFor="mentorGrantedPlayingTime">
+            <span className={`title ${this.state.playingTimeGranted ? '' : 'required'}`} htmlFor="mentorGrantedPlayingTime">
               Mentor Granted Playing Time { !this.state.pointSheetStatus.turnedIn ? '(Required)' : '' } :</span>
             <select
               name="mentorGrantedPlayingTime"
@@ -714,10 +733,11 @@ class PointTrackerForm extends React.Component {
       <div className="synopsis">
         {
           (!this.state.pointSheetStatus.turnedIn
+            || this.state.playingTimeOnly
             || (this.state.mentorGrantedPlayingTime !== '' 
             && this.state.mentorGrantedPlayingTime !== this.state.earnedPlayingTime))
             ? <div key="mentorGrantedPlayingTimeComments">
-                <label className="title" htmlFor="mentorGrantedPlayingTimeComments">Mentor Granted Playing Time Explanation (Required):</label>
+                <label className={`title ${this.state.commentsMade ? '' : 'required'}`} htmlFor="mentorGrantedPlayingTimeComments">Mentor Granted Playing Time Explanation (Required):</label>
                 <textarea
                   name="mentorGrantedPlayingTimeComments"
                   onChange={ this.handleSynopsisCommentChange }

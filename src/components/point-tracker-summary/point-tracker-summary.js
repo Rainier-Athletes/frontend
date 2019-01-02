@@ -31,7 +31,7 @@ class PointTrackerSummary extends React.Component {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title title">Point Tracker Summary</h5>
+              <h5 className="modal-title title">{ pointTracker.playingTimeOnly ? 'Mentor Granted Playing Time' : 'Point Tracker Summary' }</h5>
               <button type="button" className="close" onClick={ this.props.onClose } data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -40,24 +40,33 @@ class PointTrackerSummary extends React.Component {
             <div className="modal-body" id="body">
               <h4>{pointTracker.title}</h4>
               <br />
-              <span className="title">
-                Game Eligibility Earned
-              </span>
-              <span> {pointTracker.earnedPlayingTime}</span>
+              { !pointTracker.playingTimeOnly 
+                ? <React.Fragment>
+                  <span className="title">
+                  Game Eligibility Earned
+                  </span>
+                  <span> {pointTracker.earnedPlayingTime}</span>
+                </React.Fragment>
+                : null }
               <br />
               {pointTracker.mentorGrantedPlayingTime 
                 ? <React.Fragment> 
                 <span className="title">Mentor Granted Playing Time</span>
                 <span>{pointTracker.mentorGrantedPlayingTime}</span>
                 <br />
+                <span className="title">Mentor Comments</span>
                 <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
                 <br /> </React.Fragment> 
                 : null}
-              <span className="title">Student Action Items</span>
-              <p>{pointTracker.synopsisComments.studentActionItems}</p>
-              <br />
-              <span className="title">Full Synopsis Report on Google Drive</span>
-              <a href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">Link to Point Tracker</a>
+              {!pointTracker.playingTimeOnly
+                ? <React.Fragment>
+                    <span className="title">Student Action Items</span>
+                    <p>{pointTracker.synopsisComments.studentActionItems}</p>
+                    <br />
+                    <span className="title">Full Synopsis Report on Google Drive</span>
+                    <a href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">Link to Point Tracker</a>
+                </React.Fragment>
+                : null }
             </div>
 
             <div className="modal-footer">

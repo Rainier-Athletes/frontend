@@ -18,7 +18,8 @@ export default function SubjectColumn(props) {
         Object.keys(props.subject.scoring)
           .map((markType, i) => {
             const { excusedDays, stamps, halfStamps } = props.subject.scoring;
-            const validScores = excusedDays ? (stamps + halfStamps) <= (20 - excusedDays * 4) : true;
+            const validScores = props.subject.scoring[markType] !== null && props.subject.scoring[markType] !== ''
+              && excusedDays >= 0 ? (stamps + halfStamps) <= (20 - excusedDays * 4) : false;
             return (
               <div className="grid-cell" key={ i }><input
                 type="number"
@@ -34,7 +35,7 @@ export default function SubjectColumn(props) {
         : <div className="grid-cell">
         <input
           type="text"
-          className="grid-input"
+          className={props.subject.grade !== null && props.subject.grade !== '' ? 'grid-input' : 'grid-input invalid-scores'}
           onChange={ props.handleSubjectChange }
           name={ `${props.subject.subjectName}-grade` }
           value={ props.subject.grade }

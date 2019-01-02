@@ -290,7 +290,7 @@ class PointTrackerForm extends React.Component {
     if (pointTracker.playingTimeOnly) {
       playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime;
     } else {
-      playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime;
+      playingTimeGranted = true; // !!pointTracker.mentorGrantedPlayingTime && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime;
     }
     // const playingTimeGranted = !pointTracker.playingTimeOnly || !!pointTracker.mentorGrantedPlayingTime || pointTracker.pointSheetStatus.turnedIn;
     const commentsRequired = pointTracker.playingTimeOnly
@@ -314,17 +314,22 @@ class PointTrackerForm extends React.Component {
     return playingTimeGranted && commentsMade && metWithMentee && pointSheetStatusOK;
   }
 
-  validScores = (subjects) => {
-    return subjects.every(subject => (
-      subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4
+  validScores = (pointTracker) => {
+    const goodSubjectStamps = pointTracker.subjects.every(subject => (
+      subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4 
     ));
+    const school = pointTracker.student.studentData.school.find(s => s.currentSchool);
+    const isElementaryStudent = school ? school.isElementarySchool : false;
+    const goodSubjectGrades = isElementaryStudent
+      || pointTracker.subjects.every(subject => subject.grade !== '');
+    return goodSubjectStamps && goodSubjectGrades;
   }
 
   handleFullReportSubmit = (event) => {
     event.preventDefault();
     const pointTracker = this.state;
     pointTracker.playingTimeOnly = false;
-    if (this.validPlayingTime(pointTracker) && this.validScores(pointTracker.subjects)) {
+    if (this.validPlayingTime(pointTracker) && this.validScores(pointTracker)) {
       delete pointTracker._id;
 
       this.setState({ ...this.state, waitingOnSaves: true });
@@ -342,6 +347,7 @@ class PointTrackerForm extends React.Component {
     const pointTracker = this.state;
     pointTracker.playingTimeOnly = true;
     if (this.validPlayingTime(pointTracker)) {
+      delete pointTracker._id;
       this.setState({ ...this.state, waitingOnSaves: true });
       this.props.createPointTracker({ ...pointTracker });
       this.props.createSynopsisReport(pointTracker);

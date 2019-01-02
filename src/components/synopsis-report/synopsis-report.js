@@ -44,11 +44,11 @@ export default function SynopsisReport(props) {
               {isMiddleSchool ? <td>{subject.teacher.lastName}</td> : ''}
               <td key={ `${subject.subjectName}${row}1` }>{ subject.subjectName }</td>
               {isMiddleSchool ? <td>{ subject.grade }</td> : ''}
-              <td key={ `${subject.subjectName}${row}2` } >{ subject.scoring.excusedDays} </td>
-              <td key={ `${subject.subjectName}${row}3` }>{ subject.scoring.stamps }</td>
-              <td key={ `${subject.subjectName}${row}4` }>{ subject.scoring.halfStamps }</td>
-              <td key={ `${subject.subjectName}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
-              <td key={ `${subject.subjectName}${row}6` }>{ pointPercentage(subject) }</td>
+              <td key={ `${subject.subjectName}${row}2` }>{ !pointTracker.playingTimeOnly ? subject.scoring.excusedDays : 'N/A' } </td>
+              <td key={ `${subject.subjectName}${row}3` }>{ !pointTracker.playingTimeOnly ? subject.scoring.stamps : 'N/A' }</td>
+              <td key={ `${subject.subjectName}${row}4` }>{ !pointTracker.playingTimeOnly ? subject.scoring.halfStamps : 'N/A' }</td>
+              <td key={ `${subject.subjectName}${row}5` }>{ !pointTracker.playingTimeOnly ? 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps : 'N/A' }</td>
+              <td key={ `${subject.subjectName}${row}6` }>{ !pointTracker.playingTimeOnly ? pointPercentage(subject) : 'N/A' }</td>
             </tr>
             );
           }
@@ -62,11 +62,11 @@ export default function SynopsisReport(props) {
                 {isMiddleSchool ? <td></td> : ''}
                 <td key={ `${subject.subjectName}${row}1` }>{ subject.subjectName }</td>
                 <td key={ `${subject.subjectName}${row}1.5` }>{ subject.grade }</td>
-                <td key={ `${subject.subjectName}${row}2` } >{ subject.scoring.excusedDays} </td>
-                <td key={ `${subject.subjectName}${row}3` }>{ subject.scoring.stamps }</td>
-                <td key={ `${subject.subjectName}${row}4` }>{ subject.scoring.halfStamps }</td>
-                <td key={ `${subject.subjectName}${row}5` }>{ 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps }</td>
-                <td key={ `${subject.subjectName}${row}6` }>{ pointPercentage(subject) }</td>
+                <td key={ `${subject.subjectName}${row}2` }>{ !pointTracker.playingTimeOnly ? subject.scoring.excusedDays : 'N/A' } </td>
+                <td key={ `${subject.subjectName}${row}3` }>{ !pointTracker.playingTimeOnly ? subject.scoring.stamps : 'N/A' }</td>
+                <td key={ `${subject.subjectName}${row}4` }>{ !pointTracker.playingTimeOnly ? subject.scoring.halfStamps : 'N/A' }</td>
+                <td key={ `${subject.subjectName}${row}5` }>{ !pointTracker.playingTimeOnly ? 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps : 'N/A' }</td>
+                <td key={ `${subject.subjectName}${row}6` }>{ !pointTracker.playingTimeOnly ? pointPercentage(subject) : 'N/A' }</td>
               </tr>
               );
             }
@@ -108,11 +108,15 @@ export default function SynopsisReport(props) {
   const playingTimeJSX = <React.Fragment>
     <div className="row">
       <div className="left">
-        <h3>Game Eligibility Earned</h3>
-        <p>{pointTracker.earnedPlayingTime}</p>
+        { !pointTracker.playingTimeOnly
+          ? <React.Fragment>
+            <h3>Game Eligibility Earned</h3>
+            <p>{pointTracker.earnedPlayingTime}</p>
+          </React.Fragment>
+          : null }
       </div>
-      <div className="right">
-        {playingTimeOverride
+      <div className={pointTracker.playingTimeOnly ? 'left' : 'right'}>
+        {playingTimeOverride || pointTracker.playingTimeOnly
           ? <div>
               <h3>Mentor Granted Playing Time</h3>
                 <p>{pointTracker.mentorGrantedPlayingTime}</p>
@@ -122,7 +126,7 @@ export default function SynopsisReport(props) {
     </div>
   </React.Fragment>;
 
-  const mentorCommentsJSX = playingTimeOverride
+  const mentorCommentsJSX = playingTimeOverride || pointTracker.playingTimeOnly
     ? <div>
         <h3>Mentor&#39;s Comments re: Playing Time</h3>
           <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>

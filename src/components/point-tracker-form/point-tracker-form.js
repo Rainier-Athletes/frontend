@@ -763,8 +763,8 @@ class PointTrackerForm extends React.Component {
         { this.state.waitingOnSaves 
           ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> 
           : <React.Fragment>
-              <h3>No time for full report? <button type="submit" onClick={ this.handlePlayingTimeSubmit } className="btn btn-secondary" id="playing-time-only">Submit Playing Time Only</button></h3>
-              <p>Plan on completing the Core Community sections by the end of the week. </p> 
+              <button type="submit" onClick={ this.handlePlayingTimeSubmit } className="btn btn-secondary" id="playing-time-only">Submit Playing Time Only</button>
+              <p>Please plan to complete the rest of the report by Synday evening and post Summary to Basecamp. </p> 
             </React.Fragment> }
       </div>
     );

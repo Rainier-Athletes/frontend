@@ -40,6 +40,10 @@ class PointTrackerSummary extends React.Component {
             <div className="modal-body" id="body">
               <h4>{pointTracker.title}</h4>
               <br />
+              { pointTracker.pointSheetStatus.turnedIn ? null
+                : <React.Fragment>
+                 <p>Point Sheet not turned in.</p>
+                 </React.Fragment> }
               { !pointTracker.playingTimeOnly 
                 ? <React.Fragment>
                   <span className="title">

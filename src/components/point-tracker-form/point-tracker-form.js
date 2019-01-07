@@ -798,7 +798,7 @@ class PointTrackerForm extends React.Component {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title title">Point Tracker Table</h5>
+              <h5 className="modal-title title">SYNOPSIS REPORT</h5>
               <button type="button" className="close" onClick={ this.props.buttonClick } data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>

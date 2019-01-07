@@ -141,6 +141,10 @@ export default function SynopsisReport(props) {
           <h1>{pointTracker.title.split(':')[0]}</h1>
           <h2>{pointTracker.title.split(':')[1].trim()}</h2>
           <h3>{studentsSchoolName}</h3>
+          { pointTracker.pointSheetStatus.turnedIn ? null
+            : <React.Fragment>
+              <p>Point Sheet not turned in.</p>
+              </React.Fragment> }
           {scoreTableJSX}
           {studentCalendarJSX}
           {sportsInfoJSX}

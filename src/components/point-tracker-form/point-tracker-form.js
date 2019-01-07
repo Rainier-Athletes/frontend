@@ -100,9 +100,9 @@ const emptyPointTracker = {
 };
 
 const names = {
-  turnedIn: 'Point Sheet (> 25% complete): ',
+  turnedIn: 'Point Sheet turned in and at least 25% complete: ',
   lost: 'Point Sheet Lost',
-  incomplete: 'Point Sheet (< 25% completed)',
+  incomplete: 'Point Sheet less than 25% completed',
   absent: 'Student Reported Absent',
   other: 'Other',
   mentorGrantedPlayingTimeComments: 'Mentor Granted Playing Time Explanation:',
@@ -228,6 +228,15 @@ class PointTrackerForm extends React.Component {
     this.setState(newState);
   }
 
+  _clearPtFields = (pointTracker) => {
+    pointTracker.subjects.forEach((subject) => {
+      subject.scoring.stamps = null;
+      subject.scoring.halfStamps = null;
+      subject.scoring.excusedDays = null;
+    });
+    Object.keys(pointTracker.synopsisComments).forEach((comment) => { pointTracker.synopsisComments[comment] = ''; });
+  }
+
   handlePointSheetTurnedInChange = (event) => {
     const newState = Object.assign({}, this.state);
     newState.pointSheetStatus.turnedIn = event.target.value === 'true';
@@ -236,6 +245,7 @@ class PointTrackerForm extends React.Component {
       keys.forEach((key) => {
         newState.pointSheetStatus[key] = false;
       });
+      this._clearPtFields(newState);
     }
     this.setState(newState);
   }
@@ -315,6 +325,8 @@ class PointTrackerForm extends React.Component {
   }
 
   validScores = (pointTracker) => {
+    if (!pointTracker.pointSheetStatus.turnedIn) return false;
+    
     const goodSubjectStamps = pointTracker.subjects.every(subject => (
       subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4 
     ));
@@ -541,7 +553,7 @@ class PointTrackerForm extends React.Component {
 
     const mentorMadeScheduledCheckinJSX = (
       <div className="mentor-met-container" key='mentorMadeCheckin'>
-        <label className={this.state.metWithMentee ? '' : 'required'} htmlFor="made-meeting">Did you meet your student at your regularly scheduled check in?</label>
+        <label className={this.state.metWithMentee ? '' : 'required'} htmlFor="made-meeting">Did you meet student at your regular check in?</label>
           <input
             type="radio"
             name="made-meeting"
@@ -811,8 +823,9 @@ class PointTrackerForm extends React.Component {
                 { pointSheetStatusJSX }
                 { playingTimeJSX }
                 { mentorGrantedPlayingTimeCommentsJSX }
-                { this.state.pointSheetStatus.turnedIn
-                  ? <PointTrackerTable
+                {/* { this.state.pointSheetStatus.turnedIn
+                  ? <PointTrackerTable */}
+                  <PointTrackerTable
                     handleSubjectChange={ this.handleSubjectChange }
                     subjects={ this.state.subjects }
                     teachers={ this.props.content.studentData.teachers }
@@ -822,7 +835,7 @@ class PointTrackerForm extends React.Component {
                     myRole={this.props.myRole}
                     saveSubjectTable={this.saveSubjectTable}
                   />
-                  : null }
+                  {/* : null } */}
                 { submitPlayingTimeOnlyJSX }
                 { communicationPillarsTableJSX }
                 { oneTeamJSX }

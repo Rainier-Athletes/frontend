@@ -45,23 +45,23 @@ class PointTrackerSummary extends React.Component {
                  <p>Point Sheet not turned in.</p>
                  </React.Fragment> }
               { !pointTracker.playingTimeOnly 
+                && pointTracker.pointSheetStatus.turnedIn 
+                && (pointTracker.mentorGrantedPlayingTime === '' || pointTracker.mentorGrantedPlayingTime === pointTracker.earnedPlayingTime)
                 ? <React.Fragment>
                   <span className="title">
                   Game Eligibility Earned
                   </span>
                   <span> {pointTracker.earnedPlayingTime}</span>
                 </React.Fragment>
-                : null }
+                : <React.Fragment>
+                  <span className="title">Mentor Granted Playing Time</span>
+                  <span>{pointTracker.mentorGrantedPlayingTime}</span>
+                  <br />
+                  <span className="title">Mentor Comments</span>
+                  <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
+                  <br /> 
+                  </React.Fragment> }
               <br />
-              {pointTracker.mentorGrantedPlayingTime 
-                ? <React.Fragment> 
-                <span className="title">Mentor Granted Playing Time</span>
-                <span>{pointTracker.mentorGrantedPlayingTime}</span>
-                <br />
-                <span className="title">Mentor Comments</span>
-                <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
-                <br /> </React.Fragment> 
-                : null}
               {!pointTracker.playingTimeOnly
                 ? <React.Fragment>
                     <span className="title">Student Action Items</span>

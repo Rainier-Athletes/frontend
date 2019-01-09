@@ -26,6 +26,7 @@ const emptyPointTracker = {
   }],
   playingTimeOnly: true,
   mentorMadeScheduledCheckin: -1,
+  studentMissedScheduledCheckin: -1,
   communications: [
     {
       with: 'Student',
@@ -150,6 +151,7 @@ class PointTrackerForm extends React.Component {
         ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool
         : false;
       newState.mentorMadeScheduledCheckin = -1;
+      newState.studentMissedScheduledCheckin = -1;
       newState.playingTimeOnly = false;
       // elementary has no tutorial so pop it from the empty point tracker
       if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
@@ -166,6 +168,7 @@ class PointTrackerForm extends React.Component {
       newState.playingTimeGranted = true;
       newState.commentsMade = true;
       newState.metWithMentee = true;
+      newState.studentMissedMentor = true;
       newState.pointSheetStatusOK = true;
       return newState;
     });
@@ -228,7 +231,13 @@ class PointTrackerForm extends React.Component {
     this.setState(newState);
   }
 
-  _clearPtFields = (pointTracker) => {
+  handleStudentMissedScheduledCheckinChange = (event) => {
+    const newState = Object.assign({}, this.state);
+    newState.studentMissedScheduledCheckin = parseInt(event.target.value, 10);
+    this.setState(newState);
+  }
+
+  clearPtFields = (pointTracker) => {
     pointTracker.subjects.forEach((subject) => {
       subject.scoring.stamps = null;
       subject.scoring.halfStamps = null;
@@ -245,7 +254,7 @@ class PointTrackerForm extends React.Component {
       keys.forEach((key) => {
         newState.pointSheetStatus[key] = false;
       });
-      this._clearPtFields(newState);
+      this.clearPtFields(newState);
     }
     this.setState(newState);
   }
@@ -300,13 +309,14 @@ class PointTrackerForm extends React.Component {
     if (pointTracker.playingTimeOnly) {
       playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime;
     } else {
-      playingTimeGranted = true; // !!pointTracker.mentorGrantedPlayingTime && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime;
+      playingTimeGranted = true; 
     }
-    // const playingTimeGranted = !pointTracker.playingTimeOnly || !!pointTracker.mentorGrantedPlayingTime || pointTracker.pointSheetStatus.turnedIn;
+    debugger;
     const commentsRequired = pointTracker.playingTimeOnly
       || (!!pointTracker.mentorGrantedPlayingTime && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime);
     const commentsMade = !!pointTracker.synopsisComments.mentorGrantedPlayingTimeComments || !commentsRequired;
     const metWithMentee = pointTracker.mentorMadeScheduledCheckin !== -1;
+    const studentMissedMentor = pointTracker.mentorMadeScheduledCheckin === 1 || (pointTracker.mentorMadeScheduledCheckin === 0 && pointTracker.studentMissedScheduledCheckin !== -1);
     const pointSheetStatusOK = pointTracker.pointSheetStatus.turnedIn
       || (!pointTracker.pointSheetStatus.turnedIn
         && (pointTracker.pointSheetStatus.lost
@@ -318,15 +328,16 @@ class PointTrackerForm extends React.Component {
       playingTimeGranted,
       commentsMade,
       metWithMentee,
+      studentMissedMentor,
       pointSheetStatusOK,
     });
 
-    return playingTimeGranted && commentsMade && metWithMentee && pointSheetStatusOK;
+    return playingTimeGranted && commentsMade && metWithMentee && studentMissedMentor && pointSheetStatusOK;
   }
 
   validScores = (pointTracker) => {
     if (!pointTracker.pointSheetStatus.turnedIn) return false;
-    
+
     const goodSubjectStamps = pointTracker.subjects.every(subject => (
       subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4 
     ));
@@ -350,7 +361,7 @@ class PointTrackerForm extends React.Component {
 
       this.setState({ pointTracker: emptyPointTracker });
     } else {
-      alert('Errors in scores. Please correct before saving.'); // eslint-disable-line
+      alert('Please provide required information before submitting full report.'); // eslint-disable-line
     }
   }
 
@@ -552,8 +563,9 @@ class PointTrackerForm extends React.Component {
     );
 
     const mentorMadeScheduledCheckinJSX = (
+      <React.Fragment>
       <div className="mentor-met-container" key='mentorMadeCheckin'>
-        <label className={this.state.metWithMentee ? '' : 'required'} htmlFor="made-meeting">Did you meet student at your regular check in?</label>
+        <label className={this.state.metWithMentee ? '' : 'required'} htmlFor="made-meeting">Did you meet student at your weekly check in?</label>
           <input
             type="radio"
             name="made-meeting"
@@ -571,6 +583,28 @@ class PointTrackerForm extends React.Component {
             requried="true"
             onChange={this.handleMentorMadeScheduledCheckinChange}/> No
       </div>
+      { this.state.mentorMadeScheduledCheckin === 0
+        ? <div className="mentor-met-container" key='studentMadeCheckin'>
+        <label className={this.state.studentMissedMentor ? '' : 'required'} htmlFor="missed-meeting">Who missed the checkin?</label>
+          <input
+            type="radio"
+            name="missed-meeting"
+            value="1"
+            className="inline"
+            checked={this.state.studentMissedScheduledCheckin === 1 ? 'checked' : ''}
+            required="true"
+            onChange={this.handleStudentMissedScheduledCheckinChange}/> Student
+          <input
+            type="radio"
+            name="missed-meeting"
+            value="0"
+            className="inline"
+            checked={this.state.studentMissedScheduledCheckin === 0 ? 'checked' : ''}
+            requried="true"
+            onChange={this.handleStudentMissedScheduledCheckinChange}/> Mentor
+        </div> 
+        : null }
+      </React.Fragment>
     );
 
     const oneTeamJSX = (
@@ -823,9 +857,9 @@ class PointTrackerForm extends React.Component {
                 { pointSheetStatusJSX }
                 { playingTimeJSX }
                 { mentorGrantedPlayingTimeCommentsJSX }
-                {/* { this.state.pointSheetStatus.turnedIn
-                  ? <PointTrackerTable */}
-                  <PointTrackerTable
+                { submitPlayingTimeOnlyJSX }
+                { this.state.pointSheetStatus.turnedIn
+                  ? <PointTrackerTable
                     handleSubjectChange={ this.handleSubjectChange }
                     subjects={ this.state.subjects }
                     teachers={ this.props.content.studentData.teachers }
@@ -835,8 +869,7 @@ class PointTrackerForm extends React.Component {
                     myRole={this.props.myRole}
                     saveSubjectTable={this.saveSubjectTable}
                   />
-                  {/* : null } */}
-                { submitPlayingTimeOnlyJSX }
+                  : null }
                 { communicationPillarsTableJSX }
                 { oneTeamJSX }
 

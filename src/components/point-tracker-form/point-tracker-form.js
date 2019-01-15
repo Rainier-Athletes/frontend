@@ -239,11 +239,11 @@ class PointTrackerForm extends React.Component {
 
   clearPtFields = (pointTracker) => {
     pointTracker.subjects.forEach((subject) => {
-      subject.scoring.stamps = null;
-      subject.scoring.halfStamps = null;
-      subject.scoring.excusedDays = null;
+      Object.assign(subject.scoring, emptyPointTracker.subjects[0].scoring);
     });
-    Object.keys(pointTracker.synopsisComments).forEach((comment) => { pointTracker.synopsisComments[comment] = ''; });
+    Object.assign(pointTracker.synopsisComments, emptyPointTracker.synopsisComments);
+    Object.assign(pointTracker.communications, emptyPointTracker.communications);
+    pointTracker.oneTeamNotes = emptyPointTracker.oneTeamNotes;
   }
 
   handlePointSheetTurnedInChange = (event) => {
@@ -306,13 +306,14 @@ class PointTrackerForm extends React.Component {
 
   validPlayingTime = (pointTracker) => {
     let playingTimeGranted;
-    if (pointTracker.playingTimeOnly) {
-      playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime;
-    } else {
-      playingTimeGranted = true; 
-    }
-    debugger;
+    // if (pointTracker.playingTimeOnly) {
+    //   playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime;
+    // } else {
+    //   playingTimeGranted = pointTracker.pointSheetStatus.turnedIn; 
+    // }
+    playingTimeGranted = pointTracker.pointSheetStatus.turnedIn || !!pointTracker.mentorGrantedPlayingTime;
     const commentsRequired = pointTracker.playingTimeOnly
+      || !pointTracker.pointSheetStatus.turnedIn
       || (!!pointTracker.mentorGrantedPlayingTime && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime);
     const commentsMade = !!pointTracker.synopsisComments.mentorGrantedPlayingTimeComments || !commentsRequired;
     const metWithMentee = pointTracker.mentorMadeScheduledCheckin !== -1;
@@ -352,7 +353,8 @@ class PointTrackerForm extends React.Component {
     event.preventDefault();
     const pointTracker = this.state;
     pointTracker.playingTimeOnly = false;
-    if (this.validPlayingTime(pointTracker) && this.validScores(pointTracker)) {
+    const valid = this.validPlayingTime(pointTracker);
+    if (valid && (pointTracker.pointSheetStatus.turnedIn ? this.validScores(pointTracker) : true)) {
       delete pointTracker._id;
 
       this.setState({ ...this.state, waitingOnSaves: true });
@@ -804,7 +806,7 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
-    const submitPlayingTimeOnlyJSX = (
+    const submitPlayingTimeOnlyButtonJSX = (
       <div className="synopsis">
         { this.state.waitingOnSaves 
           ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> 
@@ -857,7 +859,7 @@ class PointTrackerForm extends React.Component {
                 { pointSheetStatusJSX }
                 { playingTimeJSX }
                 { mentorGrantedPlayingTimeCommentsJSX }
-                { submitPlayingTimeOnlyJSX }
+                { submitPlayingTimeOnlyButtonJSX }
                 { this.state.pointSheetStatus.turnedIn
                   ? <PointTrackerTable
                     handleSubjectChange={ this.handleSubjectChange }

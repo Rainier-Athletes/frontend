@@ -25,52 +25,64 @@ class PointTrackerSummary extends React.Component {
     );
 
     const { pointTracker } = this.props;
+    const { playingTimeOnly } = pointTracker;
+
+    const playingTimeOnlyResponseJSX = (
+      <React.Fragment>
+        <p>Thank you for submitting your mentee&#39;s playing time.</p>
+        <p>Please remember to complete their full report by Sunday Evening</p>
+      </React.Fragment>
+    );
+
+    const fullReportResponseJSX = (
+      <React.Fragment>
+        <h4>{pointTracker.title}</h4>
+        {/* <br /> */}
+        { pointTracker.pointSheetStatus.turnedIn ? null
+          : <React.Fragment>
+            <p>Point Sheet not turned in.</p>
+            </React.Fragment> }
+        { pointTracker.pointSheetStatus.turnedIn 
+          && (pointTracker.mentorGrantedPlayingTime === '' || pointTracker.mentorGrantedPlayingTime === pointTracker.earnedPlayingTime)
+          ? <React.Fragment>
+            <span className="title">
+            Game Eligibility Earned
+            </span>
+            <span> {pointTracker.earnedPlayingTime}</span>
+          </React.Fragment>
+          : <React.Fragment>
+            <span className="title">Mentor Granted Playing Time</span>
+            <span>{pointTracker.mentorGrantedPlayingTime}</span>
+            <br />
+            <span className="title">Mentor Comments</span>
+            <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
+            <br /> 
+            </React.Fragment> }
+            <br />
+            <span className="title">Student Action Items</span>
+            <p>{pointTracker.synopsisComments.studentActionItems}</p>
+            <br />
+            <span className="title">Full Synopsis Report on Google Drive</span>
+            <a href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">Link to Point Tracker</a>
+          </React.Fragment>
+    );
 
     return (
       <div className="panel summary-modal">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title title">{ pointTracker.playingTimeOnly ? 'Mentor Granted Playing Time' : 'Point Tracker Summary' }</h5>
+              <h5 className="modal-title title">{ playingTimeOnly ? 'Playing Time Saved' : 'Point Tracker Summary' }</h5>
               <button type="button" className="close" onClick={ this.props.onClose } data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
 
             <div className="modal-body" id="body">
-              <h4>{pointTracker.title}</h4>
-              <br />
-              { pointTracker.pointSheetStatus.turnedIn ? null
-                : <React.Fragment>
-                 <p>Point Sheet not turned in.</p>
-                 </React.Fragment> }
-              { !pointTracker.playingTimeOnly 
-                && pointTracker.pointSheetStatus.turnedIn 
-                && (pointTracker.mentorGrantedPlayingTime === '' || pointTracker.mentorGrantedPlayingTime === pointTracker.earnedPlayingTime)
-                ? <React.Fragment>
-                  <span className="title">
-                  Game Eligibility Earned
-                  </span>
-                  <span> {pointTracker.earnedPlayingTime}</span>
-                </React.Fragment>
-                : <React.Fragment>
-                  <span className="title">Mentor Granted Playing Time</span>
-                  <span>{pointTracker.mentorGrantedPlayingTime}</span>
-                  <br />
-                  <span className="title">Mentor Comments</span>
-                  <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
-                  <br /> 
-                  </React.Fragment> }
-              <br />
-              {!pointTracker.playingTimeOnly
-                ? <React.Fragment>
-                    <span className="title">Student Action Items</span>
-                    <p>{pointTracker.synopsisComments.studentActionItems}</p>
-                    <br />
-                    <span className="title">Full Synopsis Report on Google Drive</span>
-                    <a href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">Link to Point Tracker</a>
-                </React.Fragment>
-                : null }
+              { playingTimeOnly
+                ? playingTimeOnlyResponseJSX
+                : fullReportResponseJSX
+              }
             </div>
 
             <div className="modal-footer">

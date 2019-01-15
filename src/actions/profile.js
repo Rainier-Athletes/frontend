@@ -61,6 +61,10 @@ export const fetchProfileReq = () => (store) => {
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .then((res) => {
+      const students = res.body.filter(profile => profile.role === 'student');
+      store.dispatch(setStudents(students));
+      const teachers = res.body.filter(profile => profile.role === 'teacher');
+      store.dispatch(setTeachers(teachers));
       return store.dispatch(setProfile(res.body));
     });
 };
@@ -88,19 +92,25 @@ export const deleteProfileReq = profile => (store) => {
 };
 
 export const fetchStudentsReq = studentIds => (store) => { // eslint-disable-line
-  const { token } = store.getState();
+  const { token, profiles } = store.getState();
+  if (profiles && profiles.length > 0) {
+    const students = profiles.filter(profile => profile.role === 'student');
+    return store.dispatch(setStudents(students));
+  }
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .then((res) => {
-      const profiles = res.body;
-      const students = profiles.filter(profile => profile.role === 'student');
+      store.dispatch(setProfile(res.body));
+      const resProfiles = res.body;
+      const students = resProfiles.filter(profile => profile.role === 'student');
       return store.dispatch(setStudents(students));
     });
 };
 
 export const fetchMyStudentsReq = studentIds => (store) => { // eslint-disable-line
   const { token } = store.getState();
+
   return superagent.get(`${API_URL}${routes.MYSTUDENTS_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
@@ -112,14 +122,20 @@ export const fetchMyStudentsReq = studentIds => (store) => { // eslint-disable-l
 };
 
 export const fetchTeachersReq = studentId => (store) => { // eslint-disable-line
-  const { token } = store.getState();
+  const { token, profiles } = store.getState();
+
+  if (profiles && profiles.length > 0) {
+    const teachers = profiles.filter(profile => profile.role === 'teacher');
+    return store.dispatch(setTeachers(teachers));
+  }
 
   return superagent.get(`${API_URL}${routes.PROFILE_ROUTE}`)
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .then((response) => {
-      const profiles = response.body;
-      const teachers = profiles.filter(profile => profile.role === 'teacher');
+      store.dispatch(setProfile(response.body));
+      const responseProfiles = response.body;
+      const teachers = responseProfiles.filter(profile => profile.role === 'teacher');
       return store.dispatch(setTeachers(teachers));
     });
 };

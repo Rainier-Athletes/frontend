@@ -157,7 +157,7 @@ class AdminExtract extends React.Component {
                     <label className="title" htmlFor="data-source">Exported data source:</label>
                     <select type="text" id="data-source"required>
                       <option value="" selected="true" disabled>-- select data source -- </option>
-                      <option value="pointstracker" key="pointstracker">Point Tracker Forms</option>
+                      <option value="pointstracker" key="pointstracker">Synopsis Reports</option>
                       <option value="studentdata" key="studentdata">Student Data</option>
                       <option value="coachesreport" key="coachesreport">Coaches Mailmerge Report</option>
                     </select>

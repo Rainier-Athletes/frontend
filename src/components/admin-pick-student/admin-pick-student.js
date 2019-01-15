@@ -48,7 +48,7 @@ class AdminPickStudent extends React.Component {
         this.state.modal ? <PointTrackerForm content={ this.state.content } buttonClick={ this.handleButtonClick } /> : null
       }
       <button type="submit" className="linkToPT" onClick={ this.handleButtonClick }>
-          Point Tracker
+          Synopsis Report
       </button>
       <form onChange={ this.handleChange }>
         <div className="field-wrap dropdown">

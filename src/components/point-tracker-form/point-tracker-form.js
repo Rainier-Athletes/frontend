@@ -26,6 +26,7 @@ const emptyPointTracker = {
   }],
   playingTimeOnly: true,
   mentorMadeScheduledCheckin: -1,
+  studentMissedScheduledCheckin: -1,
   communications: [
     {
       with: 'Student',
@@ -100,9 +101,9 @@ const emptyPointTracker = {
 };
 
 const names = {
-  turnedIn: 'Point Sheet (> 25% complete): ',
+  turnedIn: 'Point Sheet turned in and at least 25% complete: ',
   lost: 'Point Sheet Lost',
-  incomplete: 'Point Sheet (< 25% completed)',
+  incomplete: 'Point Sheet less than 25% completed',
   absent: 'Student Reported Absent',
   other: 'Other',
   mentorGrantedPlayingTimeComments: 'Mentor Granted Playing Time Explanation:',
@@ -150,6 +151,7 @@ class PointTrackerForm extends React.Component {
         ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool
         : false;
       newState.mentorMadeScheduledCheckin = -1;
+      newState.studentMissedScheduledCheckin = -1;
       newState.playingTimeOnly = false;
       // elementary has no tutorial so pop it from the empty point tracker
       if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
@@ -166,6 +168,7 @@ class PointTrackerForm extends React.Component {
       newState.playingTimeGranted = true;
       newState.commentsMade = true;
       newState.metWithMentee = true;
+      newState.studentMissedMentor = true;
       newState.pointSheetStatusOK = true;
       return newState;
     });
@@ -228,6 +231,21 @@ class PointTrackerForm extends React.Component {
     this.setState(newState);
   }
 
+  handleStudentMissedScheduledCheckinChange = (event) => {
+    const newState = Object.assign({}, this.state);
+    newState.studentMissedScheduledCheckin = parseInt(event.target.value, 10);
+    this.setState(newState);
+  }
+
+  clearPtFields = (pointTracker) => {
+    pointTracker.subjects.forEach((subject) => {
+      Object.assign(subject.scoring, emptyPointTracker.subjects[0].scoring);
+    });
+    Object.assign(pointTracker.synopsisComments, emptyPointTracker.synopsisComments);
+    Object.assign(pointTracker.communications, emptyPointTracker.communications);
+    pointTracker.oneTeamNotes = emptyPointTracker.oneTeamNotes;
+  }
+
   handlePointSheetTurnedInChange = (event) => {
     const newState = Object.assign({}, this.state);
     newState.pointSheetStatus.turnedIn = event.target.value === 'true';
@@ -236,6 +254,7 @@ class PointTrackerForm extends React.Component {
       keys.forEach((key) => {
         newState.pointSheetStatus[key] = false;
       });
+      this.clearPtFields(newState);
     }
     this.setState(newState);
   }
@@ -287,16 +306,18 @@ class PointTrackerForm extends React.Component {
 
   validPlayingTime = (pointTracker) => {
     let playingTimeGranted;
-    if (pointTracker.playingTimeOnly) {
-      playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime;
-    } else {
-      playingTimeGranted = true; // !!pointTracker.mentorGrantedPlayingTime && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime;
-    }
-    // const playingTimeGranted = !pointTracker.playingTimeOnly || !!pointTracker.mentorGrantedPlayingTime || pointTracker.pointSheetStatus.turnedIn;
+    // if (pointTracker.playingTimeOnly) {
+    //   playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime;
+    // } else {
+    //   playingTimeGranted = pointTracker.pointSheetStatus.turnedIn; 
+    // }
+    playingTimeGranted = pointTracker.pointSheetStatus.turnedIn || !!pointTracker.mentorGrantedPlayingTime;
     const commentsRequired = pointTracker.playingTimeOnly
+      || !pointTracker.pointSheetStatus.turnedIn
       || (!!pointTracker.mentorGrantedPlayingTime && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime);
     const commentsMade = !!pointTracker.synopsisComments.mentorGrantedPlayingTimeComments || !commentsRequired;
     const metWithMentee = pointTracker.mentorMadeScheduledCheckin !== -1;
+    const studentMissedMentor = pointTracker.mentorMadeScheduledCheckin === 1 || (pointTracker.mentorMadeScheduledCheckin === 0 && pointTracker.studentMissedScheduledCheckin !== -1);
     const pointSheetStatusOK = pointTracker.pointSheetStatus.turnedIn
       || (!pointTracker.pointSheetStatus.turnedIn
         && (pointTracker.pointSheetStatus.lost
@@ -308,13 +329,16 @@ class PointTrackerForm extends React.Component {
       playingTimeGranted,
       commentsMade,
       metWithMentee,
+      studentMissedMentor,
       pointSheetStatusOK,
     });
 
-    return playingTimeGranted && commentsMade && metWithMentee && pointSheetStatusOK;
+    return playingTimeGranted && commentsMade && metWithMentee && studentMissedMentor && pointSheetStatusOK;
   }
 
   validScores = (pointTracker) => {
+    if (!pointTracker.pointSheetStatus.turnedIn) return false;
+
     const goodSubjectStamps = pointTracker.subjects.every(subject => (
       subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4 
     ));
@@ -329,7 +353,8 @@ class PointTrackerForm extends React.Component {
     event.preventDefault();
     const pointTracker = this.state;
     pointTracker.playingTimeOnly = false;
-    if (this.validPlayingTime(pointTracker) && this.validScores(pointTracker)) {
+    const valid = this.validPlayingTime(pointTracker);
+    if (valid && (pointTracker.pointSheetStatus.turnedIn ? this.validScores(pointTracker) : true)) {
       delete pointTracker._id;
 
       this.setState({ ...this.state, waitingOnSaves: true });
@@ -338,7 +363,7 @@ class PointTrackerForm extends React.Component {
 
       this.setState({ pointTracker: emptyPointTracker });
     } else {
-      alert('Errors in scores. Please correct before saving.'); // eslint-disable-line
+      alert('Please provide required information before submitting full report.'); // eslint-disable-line
     }
   }
 
@@ -540,8 +565,9 @@ class PointTrackerForm extends React.Component {
     );
 
     const mentorMadeScheduledCheckinJSX = (
+      <React.Fragment>
       <div className="mentor-met-container" key='mentorMadeCheckin'>
-        <label className={this.state.metWithMentee ? '' : 'required'} htmlFor="made-meeting">Did you meet your student at your regularly scheduled check in?</label>
+        <label className={this.state.metWithMentee ? '' : 'required'} htmlFor="made-meeting">Did you meet student at your weekly check in?</label>
           <input
             type="radio"
             name="made-meeting"
@@ -559,6 +585,28 @@ class PointTrackerForm extends React.Component {
             requried="true"
             onChange={this.handleMentorMadeScheduledCheckinChange}/> No
       </div>
+      { this.state.mentorMadeScheduledCheckin === 0
+        ? <div className="mentor-met-container" key='studentMadeCheckin'>
+        <label className={this.state.studentMissedMentor ? '' : 'required'} htmlFor="missed-meeting">Who missed the checkin?</label>
+          <input
+            type="radio"
+            name="missed-meeting"
+            value="1"
+            className="inline"
+            checked={this.state.studentMissedScheduledCheckin === 1 ? 'checked' : ''}
+            required="true"
+            onChange={this.handleStudentMissedScheduledCheckinChange}/> Student
+          <input
+            type="radio"
+            name="missed-meeting"
+            value="0"
+            className="inline"
+            checked={this.state.studentMissedScheduledCheckin === 0 ? 'checked' : ''}
+            requried="true"
+            onChange={this.handleStudentMissedScheduledCheckinChange}/> Mentor
+        </div> 
+        : null }
+      </React.Fragment>
     );
 
     const oneTeamJSX = (
@@ -758,13 +806,13 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
-    const submitPlayingTimeOnlyJSX = (
+    const submitPlayingTimeOnlyButtonJSX = (
       <div className="synopsis">
         { this.state.waitingOnSaves 
           ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> 
           : <React.Fragment>
-              <h3>No time for full report? <button type="submit" onClick={ this.handlePlayingTimeSubmit } className="btn btn-secondary" id="playing-time-only">Submit Playing Time Only</button></h3>
-              <p>Plan on completing the Core Community sections by the end of the week. </p> 
+              <button type="submit" onClick={ this.handlePlayingTimeSubmit } className="btn btn-secondary" id="playing-time-only">Submit Playing Time Only</button>
+              <p>Please plan to complete the rest of the report by Synday evening and post Summary to Basecamp. </p> 
             </React.Fragment> }
       </div>
     );
@@ -798,7 +846,7 @@ class PointTrackerForm extends React.Component {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title title">Point Tracker Table</h5>
+              <h5 className="modal-title title">SYNOPSIS REPORT</h5>
               <button type="button" className="close" onClick={ this.props.buttonClick } data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -811,6 +859,7 @@ class PointTrackerForm extends React.Component {
                 { pointSheetStatusJSX }
                 { playingTimeJSX }
                 { mentorGrantedPlayingTimeCommentsJSX }
+                { submitPlayingTimeOnlyButtonJSX }
                 { this.state.pointSheetStatus.turnedIn
                   ? <PointTrackerTable
                     handleSubjectChange={ this.handleSubjectChange }
@@ -823,7 +872,6 @@ class PointTrackerForm extends React.Component {
                     saveSubjectTable={this.saveSubjectTable}
                   />
                   : null }
-                { submitPlayingTimeOnlyJSX }
                 { communicationPillarsTableJSX }
                 { oneTeamJSX }
 

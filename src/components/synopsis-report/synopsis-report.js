@@ -108,20 +108,17 @@ export default function SynopsisReport(props) {
   const playingTimeJSX = <React.Fragment>
     <div className="row">
       <div className="left">
-        { !pointTracker.playingTimeOnly
+        { !pointTracker.playingTimeOnly 
+          && pointTracker.pointSheetStatus.turnedIn
+          && (pointTracker.mentorGrantedPlayingTime === '' || pointTracker.mentorGrantedPlayingTime === pointTracker.earnedPlayingTime)
           ? <React.Fragment>
             <h3>Game Eligibility Earned</h3>
             <p>{pointTracker.earnedPlayingTime}</p>
           </React.Fragment>
-          : null }
-      </div>
-      <div className={pointTracker.playingTimeOnly ? 'left' : 'right'}>
-        {playingTimeOverride || pointTracker.playingTimeOnly
-          ? <div>
-              <h3>Mentor Granted Playing Time</h3>
-                <p>{pointTracker.mentorGrantedPlayingTime}</p>
-            </div>
-          : null}
+          : <React.Fragment>
+            <h3>Mentor Granted Playing Time</h3>
+            <p>{pointTracker.mentorGrantedPlayingTime}</p>
+        </React.Fragment> }
       </div>
     </div>
   </React.Fragment>;
@@ -141,6 +138,10 @@ export default function SynopsisReport(props) {
           <h1>{pointTracker.title.split(':')[0]}</h1>
           <h2>{pointTracker.title.split(':')[1].trim()}</h2>
           <h3>{studentsSchoolName}</h3>
+          { pointTracker.pointSheetStatus.turnedIn ? null
+            : <React.Fragment>
+              <p>Point Sheet not turned in.</p>
+              </React.Fragment> }
           {scoreTableJSX}
           {studentCalendarJSX}
           {sportsInfoJSX}

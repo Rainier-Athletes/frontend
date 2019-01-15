@@ -19,6 +19,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   doLogout: () => dispatch(authActions.logout()),
+  fetchProfiles: profile => dispatch(profileActions.fetchProfileReq(profile)),
   fetchMyProfile: profile => dispatch(profileActions.fetchMyProfileReq(profile)),
   fetchStudents: studentIds => dispatch(profileActions.fetchStudentsReq(studentIds)),
   fetchTeachers: studentIds => dispatch(profileActions.fetchTeachersReq(studentIds)),
@@ -45,12 +46,7 @@ class Navbar extends React.Component {
   }
 
   componentDidMount() {
-    Promise.all([
-      this.props.fetchMyProfile(),
-      this.props.fetchStudents(),
-      this.props.fetchTeachers(),
-    ])
-      .then(console.log) // eslint-disable-line
+    this.props.fetchMyProfile()
       .catch(console.error);  // eslint-disable-line
   }
 
@@ -130,6 +126,7 @@ Navbar.propTypes = {
   loggedIn: PropTypes.bool,
   doLogout: PropTypes.func,
   fetchMyProfile: PropTypes.func,
+  fetchProfiles: PropTypes.func,
   myProfile: PropTypes.object,
   fetchProfile: PropTypes.func,
   fetchStudents: PropTypes.func,

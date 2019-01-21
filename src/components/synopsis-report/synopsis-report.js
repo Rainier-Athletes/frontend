@@ -61,7 +61,7 @@ export default function SynopsisReport(props) {
               <tr key={ subject.subjectName }>
                 {isMiddleSchool ? <td></td> : ''}
                 <td key={ `${subject.subjectName}${row}1` }>{ subject.subjectName }</td>
-                <td key={ `${subject.subjectName}${row}1.5` }>{ subject.grade }</td>
+                <td key={ `${subject.subjectName}${row}1.5` }>{ '' }</td>
                 <td key={ `${subject.subjectName}${row}2` }>{ !pointTracker.playingTimeOnly ? subject.scoring.excusedDays : 'N/A' } </td>
                 <td key={ `${subject.subjectName}${row}3` }>{ !pointTracker.playingTimeOnly ? subject.scoring.stamps : 'N/A' }</td>
                 <td key={ `${subject.subjectName}${row}4` }>{ !pointTracker.playingTimeOnly ? subject.scoring.halfStamps : 'N/A' }</td>

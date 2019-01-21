@@ -56,7 +56,7 @@ export default class SubjectColumn extends React.Component {
             value={ this.props.subject.grade }
             required={this.props.subject.subjectName.toLowerCase() !== 'tutorial'}/>
         </div>}
-        <div className={this.gradeClassName(this.props.subject)}>
+        <div className={this.props.editing && this.props.subject.subjectName.toLowerCase() !== 'tutorial' ? 'grid-cell-delete' : 'grid-cell-hidden'}>
             <button type="button" onClick={ this.handleDelete }>X</button>
         </div>
       </React.Fragment>

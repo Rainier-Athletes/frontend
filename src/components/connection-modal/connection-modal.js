@@ -7,7 +7,7 @@ import * as relationshipActions from '../../actions/relationship';
 import './connection-modal.scss';
 
 const mapStateToProps = state => ({
-  profile: state.profile,
+  profile: state.profile ? state.profile.filter(p => p.active) : undefined,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -84,7 +84,7 @@ class ConnectionModal extends React.Component {
                     <select type="student" required>
                       <option value="" selected="true" disabled> -- select a student -- </option>
                       {
-                        this.props.profile.filter(p => p.role === 'student')
+                        this.props.profile.filter(p => p.role === 'student' && p.active === true)
                           .sort(sortCallback)
                           .map((p) => {
                             return <option key={p._id} value={p._id}>
@@ -110,7 +110,7 @@ class ConnectionModal extends React.Component {
                     <select type="connection-name" required>
                       <option value="" selected="true" disabled> -- select a connection -- </option>
                       {
-                        this.props.profile.filter(p => p.role === this.state.role)
+                        this.props.profile.filter(p => p.role === this.state.role && p.active === true)
                           .sort(sortCallback).map((p) => {
                             return <option key={p._id} value={p._id} role={p.role}>
                                 {p.lastName}, {p.firstName} - {p.role}

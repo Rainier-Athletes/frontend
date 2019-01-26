@@ -248,6 +248,7 @@ class AdminTable extends React.Component {
 
     return {
       _id: profile._id,
+      active: profile.active,
       avatar: profile.picture,
       firstName: profile.firstName,
       lastName: profile.lastName,
@@ -389,6 +390,8 @@ class AdminTable extends React.Component {
   };
 
   handleCreate = (profile) => {
+    profile.lastName = profile.lastName.trim();
+    profile.firstName = profile.firstName.trim();
     this.props.createProfile(profile);
   }
 
@@ -418,8 +421,10 @@ class AdminTable extends React.Component {
     }
     this.setState(newState);
 
+    debugger;
     for (let index = 0; index < selected.length; index++) {
       const i = selected[index];
+      rows[i].active = false;
       if (rows[i]._id) this.props.deleteProfile(rows[i]);
     }
 

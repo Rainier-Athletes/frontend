@@ -421,7 +421,6 @@ class AdminTable extends React.Component {
     }
     this.setState(newState);
 
-    debugger;
     for (let index = 0; index < selected.length; index++) {
       const i = selected[index];
       rows[i].active = false;

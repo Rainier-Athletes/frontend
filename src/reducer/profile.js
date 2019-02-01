@@ -1,9 +1,10 @@
 export default (state = null, { type, payload }) => {
+  let updatedProfiles;
   switch (type) {
     case 'PROFILE_SET':
       return payload;
     case 'PROFILE_DELETE':
-      const updatedProfiles = state.filter(profile => profile._id !== payload ); // eslint-disable-line
+      updatedProfiles = state.filter(profile => profile._id !== payload._id); 
       return updatedProfiles;
     case 'TOKEN_REMOVE':
       return null;

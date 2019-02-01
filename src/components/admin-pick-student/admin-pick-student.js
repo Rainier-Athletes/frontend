@@ -56,7 +56,7 @@ class AdminPickStudent extends React.Component {
               <option value="" selected="true" disabled> -- select a student -- </option>
               {
                 this.props.students
-                  .filter(s => s.studentData) // only show students with defined studentData object
+                  .filter(s => s.active && s.studentData) // only show students with defined studentData object
                   .sort((p1, p2) => {
                     if (p1.lastName > p2.lastName) return 1;
                     if (p1.lastName < p2.lastName) return -1;

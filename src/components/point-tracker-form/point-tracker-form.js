@@ -183,7 +183,7 @@ class PointTrackerForm extends React.Component {
   handleSubjectChange = (event) => {
     event.persist();
 
-    const validGrades = ['A', 'B', 'C', 'D', 'F', '', 'N/A'];
+    const validGrades = ['A', 'B', 'C', 'D', 'F', '', 'N', 'N/A'];
 
     const { name } = event.target;
 
@@ -197,6 +197,7 @@ class PointTrackerForm extends React.Component {
             const newSubject = { ...subject };
             if (categoryName === 'grade') {
               newSubject.grade = validGrades.includes(event.target.value.toUpperCase()) ? event.target.value.toUpperCase() : '';
+              if (newSubject.grade === 'N') newSubject.grade = 'N/A';
               if (subjectName.toLowerCase() === 'tutorial') newSubject.grade = 'N/A';
             } else if (categoryName === 'excusedDays') {
               newSubject.scoring.excusedDays = Math.min(Math.max(parseInt(event.target.value, 10), 0), 5);
@@ -305,13 +306,7 @@ class PointTrackerForm extends React.Component {
   }
 
   validPlayingTime = (pointTracker) => {
-    let playingTimeGranted;
-    // if (pointTracker.playingTimeOnly) {
-    //   playingTimeGranted = !!pointTracker.mentorGrantedPlayingTime;
-    // } else {
-    //   playingTimeGranted = pointTracker.pointSheetStatus.turnedIn; 
-    // }
-    playingTimeGranted = pointTracker.pointSheetStatus.turnedIn || !!pointTracker.mentorGrantedPlayingTime;
+    const playingTimeGranted = pointTracker.pointSheetStatus.turnedIn || !!pointTracker.mentorGrantedPlayingTime;
     const commentsRequired = pointTracker.playingTimeOnly
       || !pointTracker.pointSheetStatus.turnedIn
       || (!!pointTracker.mentorGrantedPlayingTime && pointTracker.mentorGrantedPlayingTime !== pointTracker.earnedPlayingTime);

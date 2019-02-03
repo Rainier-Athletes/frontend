@@ -859,7 +859,7 @@ class PointTrackerForm extends React.Component {
                   ? <PointTrackerTable
                     handleSubjectChange={ this.handleSubjectChange }
                     subjects={ this.state.subjects }
-                    teachers={ this.props.content.studentData.teachers }
+                    teachers={ this.props.content.studentData.teachers.filter(t => t.currentTeacher) }
                     deleteSubject= { this.deleteSubject }
                     createSubject={ this.createSubject }
                     isElementaryStudent={this.state.isElementaryStudent}

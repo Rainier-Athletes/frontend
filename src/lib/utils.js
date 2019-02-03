@@ -51,8 +51,8 @@ const convertDateToValue = (inputDate) => {
 };
 
 const getReportingPeriods = () => {
-  let monday = moment().isoWeekday(1).subtract(14, 'days');
-  let sunday = moment().isoWeekday(0).subtract(7, 'days');
+  let monday = moment().startOf('isoweek').subtract(7, 'days');
+  let sunday = moment(monday).add(6, 'days');
 
   const reportingPeriods = [];
   const dateFormat = 'YYYY[-]MM[-]DD';

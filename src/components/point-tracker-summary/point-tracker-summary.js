@@ -58,9 +58,30 @@ class PointTrackerSummary extends React.Component {
             <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
             <br /> 
             </React.Fragment> }
-            <br />
-            <span className="title">Student Action Items</span>
-            <p>{pointTracker.synopsisComments.studentActionItems}</p>
+            {pointTracker.synopsisComments.studentActionItems
+              ? <React.Fragment>
+                <br />
+                <span className="title">Student Action Items</span>
+                <p>{pointTracker.synopsisComments.studentActionItems}</p>
+                </React.Fragment>
+              : null
+            }
+            {pointTracker.synopsisComments.sportsUpdate 
+              ? <React.Fragment>
+                <br />
+                <span className="title">Sports Update</span>
+                <p>{pointTracker.synopsisComments.sportsUpdate}</p>
+                </React.Fragment>
+              : null
+            }
+            {pointTracker.oneTeamNotes
+              ? <React.Fragment>
+                <br />
+                <span className="title">One Team Notes</span>
+                <p>{pointTracker.oneTeamNotes}</p>
+                </React.Fragment>
+              : null
+            }
             <br />
             <span className="title">Full Synopsis Report on Google Drive</span>
             <a href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">Link to Point Tracker</a>

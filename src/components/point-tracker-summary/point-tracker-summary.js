@@ -58,12 +58,25 @@ class PointTrackerSummary extends React.Component {
             <p>{pointTracker.synopsisComments.mentorGrantedPlayingTimeComments}</p>
             <br /> 
             </React.Fragment> }
+            {pointTracker.synopsisComments.studentActionItems
+              ? <React.Fragment>
+                <br />
+                <span className="title">Student Action Items</span>
+                <p>{pointTracker.synopsisComments.studentActionItems}</p>
+                </React.Fragment>
+              : null
+            }
+            {pointTracker.synopsisComments.sportsUpdate 
+              ? <React.Fragment>
+                <br />
+                <span className="title">Sports Update</span>
+                <p>{pointTracker.synopsisComments.sportsUpdate}</p>
+                </React.Fragment>
+              : null
+            }
             <br />
-            <span className="title">Student Action Items</span>
-            <p>{pointTracker.synopsisComments.studentActionItems}</p>
-            <br />
-            <span className="title">Full Synopsis Report on Google Drive</span>
-            <a href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer">Link to Point Tracker</a>
+            Link To Full Synopsis Report (RA Points, Grades, Mentor Comments, etc): 
+            <a href={pointTracker.synopsisLink} target="_blank" rel="noopener noreferrer"> CLICK HERE</a>
           </React.Fragment>
     );
 
@@ -72,7 +85,7 @@ class PointTrackerSummary extends React.Component {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title title">{ playingTimeOnly ? 'Playing Time Saved' : 'Point Tracker Summary' }</h5>
+              <h5 className="modal-title title">{ playingTimeOnly ? 'Playing Time Saved' : 'Rainier Athletes Weekly Summary' }</h5>
               <button type="button" className="close" onClick={ this.props.onClose } data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>

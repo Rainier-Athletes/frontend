@@ -87,6 +87,9 @@ const pointTrackerToHTML = (pointTracker, student) => {
       font-size: 10px;
       margin-top: 24px;
     }
+    p {
+      white-space: pre-wrap;
+    }
     table {
       font-family: "Raleway", Helvetica;
       border-collapse: collapse;

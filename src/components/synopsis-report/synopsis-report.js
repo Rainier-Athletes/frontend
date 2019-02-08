@@ -47,7 +47,7 @@ export default function SynopsisReport(props) {
               <td key={ `${subject.subjectName}${row}2` }>{ !pointTracker.playingTimeOnly ? subject.scoring.excusedDays : 'N/A' } </td>
               <td key={ `${subject.subjectName}${row}3` }>{ !pointTracker.playingTimeOnly ? subject.scoring.stamps : 'N/A' }</td>
               <td key={ `${subject.subjectName}${row}4` }>{ !pointTracker.playingTimeOnly ? subject.scoring.halfStamps : 'N/A' }</td>
-              <td key={ `${subject.subjectName}${row}5` }>{ !pointTracker.playingTimeOnly ? 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps : 'N/A' }</td>
+              <td key={ `${subject.subjectName}${row}5` }>{ !pointTracker.playingTimeOnly ? 20 - subject.scoring.excusedDays * 4 - subject.scoring.stamps - subject.scoring.halfStamps : 'N/A' }</td>
               <td key={ `${subject.subjectName}${row}6` }>{ !pointTracker.playingTimeOnly ? pointPercentage(subject) : 'N/A' }</td>
             </tr>
             );
@@ -65,7 +65,7 @@ export default function SynopsisReport(props) {
                 <td key={ `${subject.subjectName}${row}2` }>{ !pointTracker.playingTimeOnly ? subject.scoring.excusedDays : 'N/A' } </td>
                 <td key={ `${subject.subjectName}${row}3` }>{ !pointTracker.playingTimeOnly ? subject.scoring.stamps : 'N/A' }</td>
                 <td key={ `${subject.subjectName}${row}4` }>{ !pointTracker.playingTimeOnly ? subject.scoring.halfStamps : 'N/A' }</td>
-                <td key={ `${subject.subjectName}${row}5` }>{ !pointTracker.playingTimeOnly ? 20 - subject.scoring.excusedDays - subject.scoring.stamps - subject.scoring.halfStamps : 'N/A' }</td>
+                <td key={ `${subject.subjectName}${row}5` }>{ !pointTracker.playingTimeOnly ? 20 - subject.scoring.excusedDays * 4 - subject.scoring.stamps - subject.scoring.halfStamps : 'N/A' }</td>
                 <td key={ `${subject.subjectName}${row}6` }>{ !pointTracker.playingTimeOnly ? pointPercentage(subject) : 'N/A' }</td>
               </tr>
               );

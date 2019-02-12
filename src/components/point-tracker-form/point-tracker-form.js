@@ -801,6 +801,20 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
+    const synergyJSX = (
+      <div className="col-md-6">
+        <span className="title">Synergy Account</span>
+        <span>
+          <FontAwesomeIcon icon="user" className="fa-2x"/>
+          {this.props.content && this.props.content.studentData.synergy.username}
+        </span>
+        <span>
+          <FontAwesomeIcon icon="key" className="fa-2x"/>
+          {this.props.content && Buffer.from(this.props.content.studentData.synergy.password, 'base64').toString()}
+        </span>
+      </div>
+    );
+
     const submitPlayingTimeOnlyButtonJSX = (
       <div className="synopsis">
         { this.state.waitingOnSaves 
@@ -867,6 +881,7 @@ class PointTrackerForm extends React.Component {
                     saveSubjectTable={this.saveSubjectTable}
                   />
                   : null }
+                { synergyJSX }
                 { communicationPillarsTableJSX }
                 { oneTeamJSX }
 

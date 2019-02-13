@@ -803,7 +803,10 @@ class PointTrackerForm extends React.Component {
 
     const synergyJSX = (
       <div className="col-md-6">
-        <span className="title">Synergy Account</span>
+        <span className="title"><a href="https://wa-bsd405-psv.edupoint.com/PXP2_Login_Student.aspx?regenerateSessionId=True"
+          alt="team calendar url"
+          target="_blank"
+          rel="noopener noreferrer">Synergy Account (Click to Visit)</a></span>
         <span>
           <FontAwesomeIcon icon="user" className="fa-2x"/>
           {this.props.content && this.props.content.studentData.synergy.username}

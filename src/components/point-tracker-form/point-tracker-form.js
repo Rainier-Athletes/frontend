@@ -137,13 +137,17 @@ class PointTrackerForm extends React.Component {
     }
   }
 
+  objectDeepCopy = (obj) => {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
   componentDidMount = () => {
     const selectedStudent = this.props.content;
     const { lastPointTracker } = selectedStudent.studentData;
 
     this.setState((prevState) => {
       let newState = { ...prevState };
-      newState = lastPointTracker || emptyPointTracker;
+      newState = lastPointTracker || this.objectDeepCopy(emptyPointTracker);
       newState.student = selectedStudent;
       newState.studentName = `${selectedStudent.firstName} ${selectedStudent.lastName}`;
       newState.isElementaryStudent = selectedStudent.studentData.school

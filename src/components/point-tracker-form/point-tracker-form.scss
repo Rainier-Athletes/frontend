@@ -176,3 +176,24 @@ textarea {
 .required {
   color: red !important;
 }
+
+.modal-footer {
+  flex-direction: column;
+  // justify-content: left !important;
+}
+
+.ms-select {
+  justify-content: center !important;
+  padding-bottom: 0px;
+
+  span {
+    padding-right: 5px;
+  }
+}
+
+.support-request-notes {
+  .title {
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+  }
+}

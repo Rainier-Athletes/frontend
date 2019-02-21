@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Select from 'react-select';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getReportingPeriods } from '../../lib/utils';
@@ -287,8 +288,8 @@ class PointTrackerForm extends React.Component {
     this.setState({ mentorSupportRequestNotes: event.target.value });
   }
 
-  handleSupportRequestChange = (event) => {
-    this.setState({ mentorSupportRequest: event.target.value });
+  handleSupportRequestChange = (item) => {
+    this.setState({ mentorSupportRequest: item.value });
   }
 
   handleOneTeamChange = (event) => {
@@ -870,19 +871,24 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
+    const rsOptions = [
+      { label: 'No', value: 'No' },
+      { label: 'Student Follow Up', value: 'Student Follow Up' },
+      { label: 'Technical Support', value: 'Technical Support' },
+      { label: 'Other', value: 'Other' },
+    ];
+
     const mentorSupportRequestJSX = (
       <div className="container">
         <div className="row ms-select">
         <span>Do you need additional support from RA staff? </span>
-        <select className="form-control col-md-3"
-          name="support-request"
+        <Select className="col-md-4 react-select"
           onChange={ this.handleSupportRequestChange }
-          value={ this.state.mentorSupportRequest || "No" }>
-          <option value="No">No</option>
-          <option value="Student Follow Up">Student Follow Up</option>
-          <option value="Technical Support">Technical Support</option>
-          <option value="Other">Other</option>
-        </select>
+          options={ rsOptions }
+          value={ this.state.mentorSupportRequest 
+            ? { label: this.state.mentorSupportRequest, value: this.state.mentorSupportRequest }
+            : { label: 'No', value: 'No' } }
+        />
         </div>
         { this.state.mentorSupportRequest !== 'No'
           ? <React.Fragment>
@@ -947,7 +953,7 @@ class PointTrackerForm extends React.Component {
                   { this.state.waitingOnSaves 
                     ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/>
                     : <React.Fragment>
-                      <div className="row">
+                      <div className="row submit-button-row">
                       <h3><button onClick={ this.handleFullReportSubmit } className="btn btn-secondary" id="full-report" type="submit">Submit Full Report</button>  to Student&#39;s Core Community</h3>
                       </div>
                       </React.Fragment>}

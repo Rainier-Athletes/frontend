@@ -189,11 +189,19 @@ textarea {
   span {
     padding-right: 5px;
   }
+
+  .react-select {
+    height: 20px;
+  }
 }
 
 .support-request-notes {
   .title {
-    padding-top: 0px !important;
+    padding-top: 25px !important;
     margin-top: 0px !important;
   }
+}
+
+.submit-button-row {
+  padding-top: 25px;
 }

@@ -334,7 +334,7 @@ class PointTrackerForm extends React.Component {
           || pointTracker.pointSheetStatus.absent
           || (pointTracker.pointSheetStatus.other && !!pointTracker.pointSheetStatusNotes)));
     const supportRequestNotesOK = this.state.mentorSupportRequest === 'No'
-          || (this.state.mentorSupportRuquest !== 'No' && this.state.mentorSupportRequestNotes !== '');
+          || (this.state.mentorSupportRequest !== 'No' && this.state.mentorSupportRequestNotes !== '');
     this.setState({
       playingTimeGranted,
       commentsMade,

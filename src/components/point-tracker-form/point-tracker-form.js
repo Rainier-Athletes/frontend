@@ -879,7 +879,7 @@ class PointTrackerForm extends React.Component {
       <div className="container">
         <div className="row ms-select">
         <span>Do you need additional support from RA staff? </span>
-        <select className={`form-control col-md-3 ${this.state.mentorSupportRequestOK ? '' : 'required'}`}
+        <select className={`col-md-3 ${this.state.mentorSupportRequestOK ? '' : 'required'}`}
           name="support-request"
           onChange={ this.handleSupportRequestChange }
           value={ this.state.mentorSupportRequest || '' }>

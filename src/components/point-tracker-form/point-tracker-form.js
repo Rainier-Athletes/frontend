@@ -878,8 +878,8 @@ class PointTrackerForm extends React.Component {
     const mentorSupportRequestJSX = (
       <div className="container">
         <div className="row ms-select">
-        <span>Do you need additional support from RA staff? </span>
-        <select className={`col-md-3 ${this.state.mentorSupportRequestOK ? '' : 'required'}`}
+        <span className={`col-md-5 ${this.state.mentorSupportRequestOK ? '' : 'required'}`}>Do you need additional support from RA staff? </span>
+        <select 
           name="support-request"
           onChange={ this.handleSupportRequestChange }
           value={ this.state.mentorSupportRequest || '' }>

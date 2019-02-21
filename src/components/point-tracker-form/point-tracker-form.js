@@ -174,6 +174,8 @@ class PointTrackerForm extends React.Component {
       newState.metWithMentee = true;
       newState.studentMissedMentor = true;
       newState.pointSheetStatusOK = true;
+      newState.mentorSupportRequest = 'No';
+      newState.mentorSupportRequestNotes = '';
       return newState;
     });
   }
@@ -281,6 +283,14 @@ class PointTrackerForm extends React.Component {
     this.setState({ pointSheetStatusNotes: event.target.value });
   }
 
+  handleSupportRequestNotesChange = (event) => {
+    this.setState({ mentorSupportRequestNotes: event.target.value });
+  }
+
+  handleSupportRequestChange = (event) => {
+    this.setState({ mentorSupportRequest: event.target.value });
+  }
+
   handleOneTeamChange = (event) => {
     const { name, checked } = event.target;
 
@@ -323,16 +333,19 @@ class PointTrackerForm extends React.Component {
           || pointTracker.pointSheetStatus.incomplete
           || pointTracker.pointSheetStatus.absent
           || (pointTracker.pointSheetStatus.other && !!pointTracker.pointSheetStatusNotes)));
-
+    const supportRequestNotesOK = this.state.mentorSupportRequest === 'No'
+          || (this.state.mentorSupportRuquest !== 'No' && this.state.mentorSupportRequestNotes !== '');
     this.setState({
       playingTimeGranted,
       commentsMade,
       metWithMentee,
       studentMissedMentor,
       pointSheetStatusOK,
+      supportRequestNotesOK,
     });
 
-    return playingTimeGranted && commentsMade && metWithMentee && studentMissedMentor && pointSheetStatusOK;
+    return playingTimeGranted && commentsMade && metWithMentee && studentMissedMentor && pointSheetStatusOK
+      && supportRequestNotesOK;
   }
 
   validScores = (pointTracker) => {
@@ -857,6 +870,43 @@ class PointTrackerForm extends React.Component {
       </div>
     );
 
+    const mentorSupportRequestJSX = (
+      <div className="container">
+        <div className="row ms-select">
+        <span>Do you need additional support from RA staff? </span>
+        <select className="form-control col-md-3"
+          name="support-request"
+          onChange={ this.handleSupportRequestChange }
+          value={ this.state.mentorSupportRequest }>
+          <option value="No">No</option>
+          <option value="Student Follow Up">Student Follow Up</option>
+          <option value="Technical Support">Technical Support</option>
+          <option value="Other">Other</option>
+        </select>
+        </div>
+        { this.state.mentorSupportRequest !== 'No'
+          ? <React.Fragment>
+            <div className="support-request-notes">
+              <label 
+                className={`title ${this.state.mentorSupportRequest !== 'No'
+                  && !this.state.mentorSupportRequestNotes ? 'required' : ''}`}
+                htmlFor="support-request-notes">
+                Please explain: </label>
+              <textarea
+                name="support-request-notes"
+                onChange={this.handleSupportRequestNotesChange}
+                value={this.state.mentorSupportRequestNotes}
+                rows="2"
+                cols="80"
+                wrap="hard"
+              />
+            </div>
+          </React.Fragment>
+          : null
+        }
+      </div>
+    );
+
     const pointTrackerForm = (
       <div className="points-tracker panel point-tracker-modal">
         <div className="modal-dialog">
@@ -891,12 +941,16 @@ class PointTrackerForm extends React.Component {
                 { synergyJSX }
                 { communicationPillarsTableJSX }
                 { oneTeamJSX }
-
                 { synopsisCommentsJSX }
                 <div className="modal-footer">
+                  { mentorSupportRequestJSX }
                   { this.state.waitingOnSaves 
-                    ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/> 
-                    : <h3><button onClick={ this.handleFullReportSubmit } className="btn btn-secondary" id="full-report" type="submit">Submit Full Report</button>  to Student&#39;s Core Community</h3> }
+                    ? <FontAwesomeIcon icon="spinner" className="fa-spin fa-2x"/>
+                    : <React.Fragment>
+                      <div className="row">
+                      <h3><button onClick={ this.handleFullReportSubmit } className="btn btn-secondary" id="full-report" type="submit">Submit Full Report</button>  to Student&#39;s Core Community</h3>
+                      </div>
+                      </React.Fragment>}
                 </div>
 
               </form>

@@ -877,7 +877,7 @@ class PointTrackerForm extends React.Component {
         <select className="form-control col-md-3"
           name="support-request"
           onChange={ this.handleSupportRequestChange }
-          value={ this.state.mentorSupportRequest }>
+          value={ this.state.mentorSupportRequest || "No" }>
           <option value="No">No</option>
           <option value="Student Follow Up">Student Follow Up</option>
           <option value="Technical Support">Technical Support</option>

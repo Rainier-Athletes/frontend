@@ -174,8 +174,10 @@ class PointTrackerForm extends React.Component {
       newState.metWithMentee = true;
       newState.studentMissedMentor = true;
       newState.pointSheetStatusOK = true;
-      newState.mentorSupportRequest = 'No';
+      newState.mentorSupportRequest = '';
+      newState.mentorSupportRequestOK = true;
       newState.mentorSupportRequestNotes = '';
+      newState.mentorSupportRequestNotesOK = true;
       return newState;
     });
   }
@@ -333,19 +335,21 @@ class PointTrackerForm extends React.Component {
           || pointTracker.pointSheetStatus.incomplete
           || pointTracker.pointSheetStatus.absent
           || (pointTracker.pointSheetStatus.other && !!pointTracker.pointSheetStatusNotes)));
-    const supportRequestNotesOK = this.state.mentorSupportRequest === 'No'
-          || (this.state.mentorSupportRequest !== 'No' && this.state.mentorSupportRequestNotes !== '');
+    const mentorSupportRequestOK = !!this.state.mentorSupportRequest;
+    const mentorSupportRequestNotesOK = this.state.mentorSupportRequest === 'No'
+          || (this.state.mentorSupportRequest !== 'No' && !!this.state.mentorSupportRequestNotes);
     this.setState({
       playingTimeGranted,
       commentsMade,
       metWithMentee,
       studentMissedMentor,
       pointSheetStatusOK,
-      supportRequestNotesOK,
+      mentorSupportRequestOK,
+      mentorSupportRequestNotesOK,
     });
 
     return playingTimeGranted && commentsMade && metWithMentee && studentMissedMentor && pointSheetStatusOK
-      && supportRequestNotesOK;
+      && mentorSupportRequestOK && mentorSupportRequestNotesOK;
   }
 
   validScores = (pointTracker) => {
@@ -873,23 +877,27 @@ class PointTrackerForm extends React.Component {
     const mentorSupportRequestJSX = (
       <div className="container">
         <div className="row ms-select">
-        <span>Do you need additional support from RA staff? </span>
-        <select className="form-control col-md-3"
-          name="support-request"
-          onChange={ this.handleSupportRequestChange }
-          value={ this.state.mentorSupportRequest || "No" }>
-          <option value="No">No</option>
-          <option value="Student Follow Up">Student Follow Up</option>
-          <option value="Technical Support">Technical Support</option>
-          <option value="Other">Other</option>
-        </select>
+          <div className="request-prompt-container">
+            <span className={`${this.state.mentorSupportRequestOK ? '' : 'required'}`}>Do you need additional support? </span>
+          </div>
+          <div className="request-dropdown-container">
+            <select 
+              name="support-request"
+              onChange={ this.handleSupportRequestChange }
+              value={ this.state.mentorSupportRequest || '' }>
+              <option value="">Pick One...</option>
+              <option value="No">No</option>
+              <option value="Student Follow Up">Student Follow Up</option>
+              <option value="Technical Support">Technical Support</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
         </div>
-        { this.state.mentorSupportRequest !== 'No'
+        <div className="support-request-notes">
+        { !!this.state.mentorSupportRequest && this.state.mentorSupportRequest !== 'No'
           ? <React.Fragment>
-            <div className="support-request-notes">
               <label 
-                className={`title ${this.state.mentorSupportRequest !== 'No'
-                  && !this.state.mentorSupportRequestNotes ? 'required' : ''}`}
+                className={this.state.mentorSupportRequestNotesOK ? 'title' : 'title required'}
                 htmlFor="support-request-notes">
                 Please explain: </label>
               <textarea
@@ -900,10 +908,10 @@ class PointTrackerForm extends React.Component {
                 cols="80"
                 wrap="hard"
               />
-            </div>
           </React.Fragment>
           : null
         }
+        </div>
       </div>
     );
 

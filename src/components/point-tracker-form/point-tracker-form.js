@@ -337,8 +337,8 @@ class PointTrackerForm extends React.Component {
           || (pointTracker.pointSheetStatus.other && !!pointTracker.pointSheetStatusNotes)));
     const mentorSupportRequestOK = this.state.mentorSupportRequest !== '';
     const mentorSupportRequestNotesOK = this.state.mentorSupportRequest === 'No'
-          || ((this.state.mentorSupportRequest !== 'No' 
-          && this.state.mentorSupportRequest !== '') && this.state.mentorSupportRequestNotes !== '');
+          || ((this.state.mentorSupportRequest !== 'No' && this.state.mentorSupportRequest !== '') 
+            && this.state.mentorSupportRequestNotes !== '');
     this.setState({
       playingTimeGranted,
       commentsMade,
@@ -878,21 +878,25 @@ class PointTrackerForm extends React.Component {
     const mentorSupportRequestJSX = (
       <div className="container">
         <div className="row ms-select">
-        <span className={`col-md-5 ${this.state.mentorSupportRequestOK ? '' : 'required'}`}>Do you need additional support from RA staff? </span>
-        <select 
-          name="support-request"
-          onChange={ this.handleSupportRequestChange }
-          value={ this.state.mentorSupportRequest || '' }>
-          <option value="">Pick One...</option>
-          <option value="No">No</option>
-          <option value="Student Follow Up">Student Follow Up</option>
-          <option value="Technical Support">Technical Support</option>
-          <option value="Other">Other</option>
-        </select>
+          <div className="request-prompt-container">
+            <span className={`${this.state.mentorSupportRequestOK ? '' : 'required'}`}>Do you need additional support? </span>
+          </div>
+          <div className="request-dropdown-container">
+            <select 
+              name="support-request"
+              onChange={ this.handleSupportRequestChange }
+              value={ this.state.mentorSupportRequest || '' }>
+              <option value="">Pick One...</option>
+              <option value="No">No</option>
+              <option value="Student Follow Up">Student Follow Up</option>
+              <option value="Technical Support">Technical Support</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
         </div>
+        <div className="support-request-notes">
         { this.state.mentorSupportRequest !== 'No' && this.state.mentorSupportRequest !== ''
           ? <React.Fragment>
-            <div className="support-request-notes">
               <label 
                 className={`title ${this.state.mentorSupportRequest !== 'No'
                   && !this.state.mentorSupportRequestNotes ? 'required' : ''}`}
@@ -906,10 +910,10 @@ class PointTrackerForm extends React.Component {
                 cols="80"
                 wrap="hard"
               />
-            </div>
           </React.Fragment>
           : null
         }
+        </div>
       </div>
     );
 

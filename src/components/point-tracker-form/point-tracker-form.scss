@@ -178,17 +178,28 @@ textarea {
 }
 
 .modal-footer {
+  // outline: 1px solid green;
   flex-direction: column;
   // justify-content: left !important;
 }
 
 .ms-select {
   justify-content: center !important;
-  padding-bottom: 0px;
+  padding-bottom: 10px;
 
   span {
     padding-right: 5px;
+    font-size: 1.2em;
+    text-align: right;
   }
+}
+
+.request-prompt-container {
+  padding-bottom: 0px;
+}
+
+.request-dropdown-container {
+  // outline: 1px solid blue;
 }
 
 .support-request-notes {

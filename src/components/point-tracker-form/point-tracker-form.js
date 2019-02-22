@@ -335,10 +335,9 @@ class PointTrackerForm extends React.Component {
           || pointTracker.pointSheetStatus.incomplete
           || pointTracker.pointSheetStatus.absent
           || (pointTracker.pointSheetStatus.other && !!pointTracker.pointSheetStatusNotes)));
-    const mentorSupportRequestOK = this.state.mentorSupportRequest !== '';
+    const mentorSupportRequestOK = !!this.state.mentorSupportRequest;
     const mentorSupportRequestNotesOK = this.state.mentorSupportRequest === 'No'
-          || ((this.state.mentorSupportRequest !== 'No' && this.state.mentorSupportRequest !== '') 
-            && this.state.mentorSupportRequestNotes !== '');
+          || (this.state.mentorSupportRequest !== 'No' && !!this.state.mentorSupportRequestNotes);
     this.setState({
       playingTimeGranted,
       commentsMade,
@@ -895,11 +894,10 @@ class PointTrackerForm extends React.Component {
           </div>
         </div>
         <div className="support-request-notes">
-        { this.state.mentorSupportRequest !== 'No' && this.state.mentorSupportRequest !== ''
+        { !!this.state.mentorSupportRequest && this.state.mentorSupportRequest !== 'No'
           ? <React.Fragment>
               <label 
-                className={`title ${this.state.mentorSupportRequest !== 'No'
-                  && !this.state.mentorSupportRequestNotes ? 'required' : ''}`}
+                className={this.state.mentorSupportRequestNotesOK ? 'title' : 'title required'}
                 htmlFor="support-request-notes">
                 Please explain: </label>
               <textarea

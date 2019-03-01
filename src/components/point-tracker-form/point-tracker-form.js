@@ -197,7 +197,9 @@ class PointTrackerForm extends React.Component {
 
     this.setState((prevState) => {
       const newState = { ...prevState };
-      const [subjectName, categoryName] = name.split('-');
+      const lastDash = name.lastIndexOf('-');
+      const subjectName = name.slice(0, lastDash);
+      const categoryName = name.slice(lastDash + 1);
 
       const newSubjects = newState.subjects
         .map((subject) => {

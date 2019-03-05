@@ -367,13 +367,6 @@ class PointTrackerForm extends React.Component {
         || (subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4)
       )
     ));
-    // const goodSubjectStamps = sr.PointTrackers__r.records.every(subject => (
-    //   subject.Stamps__c >= 0 && subject.Half_Stamps__c >= 0 && subject.Excused_Days__c >= 0 
-    //   && (
-    //     (subject.Class__r.Name.toLowerCase() === 'tutorial' && subject.Stamps__c + subject.Half_Stamps__c <= 8 - subject.Excused_Days__c * 2)
-    //     || (subject.Stamps__c + subject.Half_Stamps__c <= 20 - subject.Excused_Days__c * 4)
-    //   )
-    // ));
     const school = pointTracker.student.studentData.school.find(s => s.currentSchool);
     const isElementaryStudent = school ? school.isElementarySchool : false;
     const goodSubjectGrades = isElementaryStudent

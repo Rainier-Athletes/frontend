@@ -33,8 +33,9 @@ export default class SubjectColumn extends React.Component {
           Object.keys(this.props.subject.scoring)
             .map((markType, i) => {
               const { excusedDays, stamps, halfStamps } = this.props.subject.scoring;
+              const maxStamps = this.props.subject.subjectName.toLowerCase() !== 'tutorial' ? 20 - excusedDays * 4 : 8 - excusedDays * 2;
               const validScores = this.props.subject.scoring[markType] !== null && this.props.subject.scoring[markType] !== ''
-                && excusedDays >= 0 ? (stamps + halfStamps) <= (20 - excusedDays * 4) : false;
+                && excusedDays >= 0 ? (stamps + halfStamps) <= maxStamps : false;
               return (
                 <div className="grid-cell" key={ i }><input
                   type="number"

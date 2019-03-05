@@ -210,14 +210,17 @@ class PointTrackerForm extends React.Component {
               if (newSubject.grade === 'N') newSubject.grade = 'N/A';
               if (subjectName.toLowerCase() === 'tutorial') newSubject.grade = 'N/A';
             } else if (categoryName === 'excusedDays') {
-              newSubject.scoring.excusedDays = Math.min(Math.max(parseInt(event.target.value, 10), 0), 5);
+              const classDays = subjectName.toLowerCase() === 'tutorial' ? 4 : 5;
+              newSubject.scoring.excusedDays = Math.min(Math.max(parseInt(event.target.value, 10), 0), classDays);  
             } else {
               const currentValue = parseInt(event.target.value, 10);
               // test currentValue for NaN which doesn't equal itself.
               if (currentValue !== currentValue) { // eslint-disable-line
                 newSubject.scoring[categoryName] = '';
               } else {
-                const maxStampsPossible = 20 - (newSubject.scoring.excusedDays * 4);
+                const maxStampsPossible = subjectName.toLowerCase() === 'tutorial'
+                  ? 8 - (newSubject.scoring.excusedDays * 2)
+                  : 20 - (newSubject.scoring.excusedDays * 4);
                 const maxStampsAdjustment = categoryName === 'stamps'
                   ? newSubject.scoring.halfStamps
                   : newSubject.scoring.stamps;
@@ -358,7 +361,11 @@ class PointTrackerForm extends React.Component {
     if (!pointTracker.pointSheetStatus.turnedIn) return false;
 
     const goodSubjectStamps = pointTracker.subjects.every(subject => (
-      subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4 
+      subject.scoring.stamps >= 0 && subject.scoring.halfStamps >= 0 && subject.scoring.excusedDays >= 0
+      && (
+        (subject.subjectName.toLowerCase() === 'tutorial' && subject.scoring.stamps + subject.scoring.halfStamps <= 8 - subject.scoring.excusedDays * 2)
+        || (subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4)
+      )
     ));
     const school = pointTracker.student.studentData.school.find(s => s.currentSchool);
     const isElementaryStudent = school ? school.isElementarySchool : false;
@@ -455,7 +462,7 @@ class PointTrackerForm extends React.Component {
     const numberOfPeriods = subjects.length;
     const totalClassTokens = numberOfPeriods * 2;
     const totalTutorialTokens = isElementarySchool ? 0 : 4;
-    const totalGradeTokens = isElementarySchool ? 0 : numberOfPeriods;
+    const totalGradeTokens = isElementarySchool ? 0 : numberOfPeriods * 2;
     const totalTokensPossible = totalClassTokens + totalGradeTokens + totalTutorialTokens;
 
     const totalEarnedTokens = subjects.map((subject) => {

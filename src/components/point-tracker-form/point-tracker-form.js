@@ -494,11 +494,11 @@ class PointTrackerForm extends React.Component {
     const tokenPercentage = totalTokensEarned / totalTokensPossible;
 
     let earnedPlayingTime = 'None of Game';
-    if (tokenPercentage >= 0.35) earnedPlayingTime = 'One Quarter';
-    if (tokenPercentage >= 0.55) earnedPlayingTime = 'Two Quarters';
-    if (tokenPercentage >= 0.65) earnedPlayingTime = 'Three Quarters';
-    if (tokenPercentage >= 0.75) earnedPlayingTime = 'All but Start';
-    if (tokenPercentage >= 0.8) earnedPlayingTime = 'Entire Game';
+    if (tokenPercentage >= 0.4375) earnedPlayingTime = 'One Quarter';
+    if (tokenPercentage >= 0.5625) earnedPlayingTime = 'Two Quarters';
+    if (tokenPercentage >= 0.6875) earnedPlayingTime = 'Three Quarters';
+    if (tokenPercentage >= 0.8125) earnedPlayingTime = 'All but Start';
+    if (tokenPercentage >= 0.875) earnedPlayingTime = 'Entire Game';
     if (earnedPlayingTime !== this.state.earnedPlayingTime) {
       this.setState({
         ...this.state,

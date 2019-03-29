@@ -154,6 +154,9 @@ class PointTrackerForm extends React.Component {
         && selectedStudent.studentData.school.length
         ? selectedStudent.studentData.school.find(s => s.currentSchool).isElementarySchool
         : false;
+      if (newState.isElementaryStudent) {
+        newState.subjects = newState.subjects.filter(s => s.subjectName.toLowerCase() !== 'tutorial');
+      }
       newState.mentorMadeScheduledCheckin = -1;
       newState.studentMissedScheduledCheckin = -1;
       newState.playingTimeOnly = false;

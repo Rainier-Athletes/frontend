@@ -160,8 +160,6 @@ class PointTrackerForm extends React.Component {
       newState.mentorMadeScheduledCheckin = -1;
       newState.studentMissedScheduledCheckin = -1;
       newState.playingTimeOnly = false;
-      // elementary has no tutorial so pop it from the empty point tracker
-      if (newState.isElementaryStudent && !lastPointTracker) newState.subjects.pop();
       newState.title = `${newState.studentName}: ${getReportingPeriods()[1]}`;
       newState.synopsisSaved = false;
       newState.mentorGrantedPlayingTime = '';

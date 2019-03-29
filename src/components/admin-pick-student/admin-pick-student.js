@@ -58,8 +58,8 @@ class AdminPickStudent extends React.Component {
                 this.props.students
                   .filter(s => s.active && s.studentData) // only show students with defined studentData object
                   .sort((p1, p2) => {
-                    if (p1.lastName > p2.lastName) return 1;
-                    if (p1.lastName < p2.lastName) return -1;
+                    if (p1.lastName.toLowerCase() > p2.lastName.toLowerCase()) return 1;
+                    if (p1.lastName.toLowerCase() < p2.lastName.toLowerCase()) return -1;
                     return 0;
                   })
                   .map((p) => {

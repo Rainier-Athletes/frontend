@@ -74,7 +74,7 @@ class Navbar extends React.Component {
     const JSXNotLoggedIn = (
       <React.Fragment>
         <Link to={routes.ROOT_ROUTE}><img className="rainier-logo" src={ rainierBtn } /></Link>
-        <span className="login nav-content"><a href={ this.setGoogleOAuthUrl() }><img className="google-btn" src={ googleBtn } /></a></span>
+        <span className="login nav-content"><a href={ this.setGoogleOAuthUrl() }><img className="float-right gbtn" src={ googleBtn } /></a></span>
       </React.Fragment>
     );
 

@@ -35,12 +35,17 @@
     width: 14em;
   }
 
+  .gbtn {
+    width: 10em;
+  }
+  
   .login {
     color: white;
     float: right;
 
     .google-btn {
       width: 10em;
+      // height: 2em;
       margin: 1em;
     }
   }

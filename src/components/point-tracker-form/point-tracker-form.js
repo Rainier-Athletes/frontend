@@ -460,7 +460,7 @@ class PointTrackerForm extends React.Component {
       isElementarySchool = student.studentData.school.filter(s => s.currentSchool)[0].isElementarySchool; // eslint-disable-line
     }
 
-    const numberOfPeriods = subjects.length;
+    const numberOfPeriods = subjects.reduce((a, c) => a + (c.subjectName.toLowerCase() !== 'tutorial' ? 1 : 0), 0);
     const totalClassTokens = numberOfPeriods * 2;
     const totalTutorialTokens = isElementarySchool ? 0 : 4;
     const totalGradeTokens = isElementarySchool ? 0 : numberOfPeriods * 2;
@@ -470,22 +470,26 @@ class PointTrackerForm extends React.Component {
       const { grade, subjectName } = subject;
       // halfStamps are "X"s from the scoring sheet
       const { excusedDays, stamps, halfStamps } = subject.scoring;
-
-      let pointsPossible = 40 - (excusedDays * 8);
-      if (subjectName.toLowerCase() === 'tutorial') pointsPossible = 8 - (excusedDays * 2);
-      if (isElementarySchool && subjectName.toLowerCase() === 'tutorial') pointsPossible = 0;
-
-      const totalClassPointsEarned = (2 * stamps) + halfStamps;
-      const classPointPercentage = totalClassPointsEarned / pointsPossible;
-
       let classTokensEarned = 0;
-      if (classPointPercentage >= 0.50) classTokensEarned = 1;
-      if (classPointPercentage >= 0.75) classTokensEarned = 2;
-
       let gradeTokensEarned = 0;
-      if (!isElementarySchool && ['A', 'B', 'N/A'].includes(grade)) gradeTokensEarned = 2;
-      if (!isElementarySchool && grade === 'C') gradeTokensEarned = 1;
 
+      if (!isElementarySchool && subjectName.toLowerCase() === 'tutorial') {
+        const pointsPossible = 8 - (excusedDays * 2);
+        const totalClassPointsEarned = 2 * stamps;
+        const classPointPercentage = totalClassPointsEarned / pointsPossible;
+        classTokensEarned = 4 * classPointPercentage;
+        gradeTokensEarned = 0;
+      } else if (subjectName.toLowerCase() !== 'tutorial') {
+        const pointsPossible = 40 - (excusedDays * 8);
+        const totalClassPointsEarned = (2 * stamps) + halfStamps;
+        const classPointPercentage = totalClassPointsEarned / pointsPossible;
+
+        if (classPointPercentage >= 0.50) classTokensEarned = 1;
+        if (classPointPercentage >= 0.75) classTokensEarned = 2;
+
+        if (!isElementarySchool && ['A', 'B', 'N/A'].includes(grade)) gradeTokensEarned = 2;
+        if (!isElementarySchool && grade === 'C') gradeTokensEarned = 1;
+      }
       const totalTokensEarned = classTokensEarned + gradeTokensEarned;
 
       return totalTokensEarned;

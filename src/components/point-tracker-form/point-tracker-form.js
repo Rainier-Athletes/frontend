@@ -162,8 +162,8 @@ class PointTrackerForm extends React.Component {
       newState.playingTimeOnly = false;
       newState.title = `${newState.studentName}: ${getReportingPeriods()[1]}`;
       newState.synopsisSaved = false;
-      newState.mentorGrantedPlayingTime = '';
-      newState.synopsisComments.mentorGrantedPlayingTimeComments = '';
+      // newState.mentorGrantedPlayingTime = '';
+      // newState.synopsisComments.mentorGrantedPlayingTimeComments = '';
       newState.pointSheetStatusNotes = '';
       newState.pointSheetStatus.lost = false;
       newState.pointSheetStatus.incomplete = false;
@@ -256,9 +256,9 @@ class PointTrackerForm extends React.Component {
     pointTracker.subjects.forEach((subject) => {
       Object.assign(subject.scoring, emptyPointTracker.subjects[0].scoring);
     });
-    Object.assign(pointTracker.synopsisComments, emptyPointTracker.synopsisComments);
-    Object.assign(pointTracker.communications, emptyPointTracker.communications);
-    pointTracker.oneTeamNotes = emptyPointTracker.oneTeamNotes;
+    // Object.assign(pointTracker.synopsisComments, emptyPointTracker.synopsisComments);
+    // Object.assign(pointTracker.communications, emptyPointTracker.communications);
+    // pointTracker.oneTeamNotes = emptyPointTracker.oneTeamNotes;
   }
 
   handlePointSheetTurnedInChange = (event) => {

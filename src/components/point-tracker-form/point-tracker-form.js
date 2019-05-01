@@ -364,14 +364,14 @@ class PointTrackerForm extends React.Component {
     const goodSubjectStamps = pointTracker.subjects.every(subject => (
       subject.scoring.stamps >= 0 && subject.scoring.halfStamps >= 0 && subject.scoring.excusedDays >= 0
       && (
-        (subject.subjectName.toLowerCase() === 'tutorial' && subject.scoring.stamps + subject.scoring.halfStamps <= 8 - subject.scoring.excusedDays * 2)
+        (subject.subjectName.toLowerCase() === 'tutorial' && subject.scoring.stamps + subject.scoring.halfStamps <= 4 - subject.scoring.excusedDays)
         || (subject.scoring.stamps + subject.scoring.halfStamps <= 20 - subject.scoring.excusedDays * 4)
       )
     ));
     const school = pointTracker.student.studentData.school.find(s => s.currentSchool);
     const isElementaryStudent = school ? school.isElementarySchool : false;
     const goodSubjectGrades = isElementaryStudent
-      || pointTracker.subjects.every(subject => subject.grade !== '');
+      || pointTracker.subjects.every(subject => subject.subjectName.toLowerCase() === 'tutorial' || subject.grade !== '');
     return goodSubjectStamps && goodSubjectGrades;
   }
 
